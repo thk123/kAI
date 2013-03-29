@@ -1,2 +1,9 @@
 *.suo
 *.cache
+*/bin/Debug/*
+kAICore/obj/Debug/kAICore.csproj.FileListAbsolute.txt
+kAICore/obj/*
+kAIDocs/gen/*
+kAIDocs/html/*
+kAIDocs/Sandcastle/kAI.shfbproj_Thomas
+kAIDocs/Sandcastle/output.log

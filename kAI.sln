@@ -1,7 +1,28 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 11.00
 # Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kAICore", "kAICore\kAICore.csproj", "{A15829D4-123C-473F-9964-92D73DD4A8B1}"
+EndProject
+Project("{7CF6DF6D-3B04-46F8-A40B-537D21BCA0B4}") = "kAI", "kAIDocs\Sandcastle\kAI.shfbproj", "{1B28F4F0-02C9-479B-9973-6379FF786EB5}"
+	ProjectSection(ProjectDependencies) = postProject
+		{A15829D4-123C-473F-9964-92D73DD4A8B1} = {A15829D4-123C-473F-9964-92D73DD4A8B1}
+	EndProjectSection
+EndProject
 Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A15829D4-123C-473F-9964-92D73DD4A8B1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A15829D4-123C-473F-9964-92D73DD4A8B1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A15829D4-123C-473F-9964-92D73DD4A8B1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A15829D4-123C-473F-9964-92D73DD4A8B1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{1B28F4F0-02C9-479B-9973-6379FF786EB5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{1B28F4F0-02C9-479B-9973-6379FF786EB5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{1B28F4F0-02C9-479B-9973-6379FF786EB5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{1B28F4F0-02C9-479B-9973-6379FF786EB5}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
