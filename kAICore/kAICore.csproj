@@ -46,6 +46,7 @@
     <Compile Include="ILogger.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Object.cs" />
+    <Compile Include="Port.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
