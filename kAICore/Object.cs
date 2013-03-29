@@ -25,25 +25,26 @@ namespace kAI.Core
         /// Set the global logger used by all kAIObjects.
         /// </summary>
         /// <param name="lLogger">The instance of the logger for all objects to use.</param>
-        public static void SetLogger(kAIILogger lLogger)
+        public static void SetGlobalLogger(kAIILogger lLogger)
         {
             mGlobalLogger = lLogger;
-        }
-
-        /// <summary>
-        /// Default constructor, has no instance based logger.
-        /// </summary>
-        public kAIObject()
-        {
-            mLogger = null;
         }
 
         /// <summary>
         /// Set an instance based logger for this object (use SetLogger to set for all objects).
         /// </summary>
         /// <param name="lLogger">The logger for this instance to use.</param>
-        /// <seealso cref="kAIObject.SetLogger"/>
-        public kAIObject(kAIILogger lLogger)
+        /// <seealso cref="kAIObject.SetGlobalLogger"/>
+        public kAIObject(kAIILogger lLogger = null)
+        {
+            mLogger = lLogger;
+        }
+
+        /// <summary>
+        /// Sets the logger to be used by this instance.
+        /// </summary>
+        /// <param name="lLogger">The logger for this instance to use from now on. </param>
+        public void SetInstanceLogger(kAIILogger lLogger)
         {
             mLogger = lLogger;
         }
