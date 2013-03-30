@@ -52,7 +52,7 @@ namespace kAI.Core
         public void SetInputValue(T lNewValue)
         {
             // If we are connected, we tell the other port it has received a value.
-            foreach (kAIInputReceiver<T> lReceiver in mConnectingPorts as List<kAIInputReceiver<T>>)
+            foreach (kAIInputReceiver<T> lReceiver in mConnectingPorts.OfType<kAIInputReceiver<T>>())
             {
                 if (lReceiver != null)
                 {

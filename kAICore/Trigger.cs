@@ -46,9 +46,8 @@ namespace kAI.Core
             // If we are connected to something, we tell it the event was triggered.
             if (IsConnected)
             {
-                foreach (kAIPort lPort in mConnectingPorts )
+                foreach (kAITriggerReceiver lReceiver in mConnectingPorts.OfType<kAITriggerReceiver>())
                 {
-                    kAITriggerReceiver lReceiver = lPort as kAITriggerReceiver;
                     if (lReceiver != null)
                     {
                         lReceiver.ExecuteTrigger(this);
