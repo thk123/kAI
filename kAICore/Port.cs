@@ -274,6 +274,11 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// The type of a trigger. 
+        /// </summary>
+        public static readonly kAIPortType TriggerType = typeof(Boolean);
+
+        /// <summary>
         /// Standard constructor for a System.Type
         /// </summary>
         /// <param name="lType">The type to use. </param>
