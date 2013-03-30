@@ -8,7 +8,7 @@ namespace kAI.Core
     /// <summary>
     /// Represents a connectible port, can be from a behaviour, action, input, trigger etc.
     /// </summary>
-    public class kAIPort : kAIObject
+    public abstract class kAIPort : kAIObject
     {
         /// <summary>
         /// The port this port is connected to (null if disconnected).
@@ -186,6 +186,8 @@ namespace kAI.Core
             {
                 mConnectedPort = lOtherEnd;
                 lOtherEnd.mConnectedPort = this;
+                OnConnect(lOtherEnd);
+                lOtherEnd.OnConnect(this);
             }
             else
             {
@@ -196,12 +198,20 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// Called when this port gets connected to another port.
+        /// </summary>
+        /// <param name="lOtherEnd">The port this port has been connected to. </param>
+        protected virtual void OnConnect(kAIPort lOtherEnd) { ; }
+
+        /// <summary>
         /// Disconnect this port from whatever it is connected to. 
         /// </summary>
         public void Disconnect()
         {
             if (IsConnected)
             {
+                OnDisconnect();
+                mConnectedPort.OnDisconnect();
                 mConnectedPort.mConnectedPort = null;
                 mConnectedPort = null;
             }
@@ -210,6 +220,12 @@ namespace kAI.Core
                 LogWarning("Port not connected to anything", PortID);
             }
         }
+
+        //TODO: when we can be connected to multiple ports, need to distinguish one disconnection and many?
+        /// <summary>
+        /// Called when this port is disconnected.
+        /// </summary>
+        protected virtual void OnDisconnect() { ; }
 
         /// <summary>
         /// Check whether this port would be a valid connexion for the supplied other end. 

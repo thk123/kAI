@@ -45,6 +45,7 @@
   <ItemGroup>
     <Compile Include="Action.cs" />
     <Compile Include="ILogger.cs" />
+    <Compile Include="Input.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Node.cs" />
     <Compile Include="Object.cs" />
