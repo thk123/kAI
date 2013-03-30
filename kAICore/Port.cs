@@ -11,9 +11,9 @@ namespace kAI.Core
     public abstract class kAIPort : kAIObject
     {
         /// <summary>
-        /// The port this port is connected to (null if disconnected).
+        /// The set of ports this port connects to (not is connected from).
         /// </summary>
-        protected kAIPort mConnectedPort;
+        protected List<kAIPort> mConnectingPorts;
 
         /// <summary>
         /// The node this port belong to (if null, is a global node).
@@ -101,13 +101,13 @@ namespace kAI.Core
         }
 
         /// <summary>
-        /// Is this port currently connected to another port. 
+        /// Is this port currently connected to 1 or more ports. 
         /// </summary>
         public bool IsConnected
         {
             get
             {
-                return mConnectedPort != null;
+                return mConnectingPorts.Count > 0;
             }
         }
 
@@ -123,20 +123,26 @@ namespace kAI.Core
         }
 
         /// <summary>
-        /// Gets a construction of the current connexion, containing what this port is attached to etc.
+        /// Gets a list of all of the connexions leaving this port. 
         /// </summary>
-        public kAIConnexion Connexion
+        public IEnumerable<kAIConnexion> Connexions
         {
             get
             {
-                if (IsConnected)
+                List<kAIConnexion> lConnexions = new List<kAIConnexion>();
+                foreach (kAIPort lPort in mConnectingPorts)
                 {
-                    return new kAIConnexion(this, mConnectedPort);
+                    if (PortDirection == ePortDirection.PortDirection_Out)
+                    {
+                        lConnexions.Add(new kAIConnexion(this, lPort));
+                    }
+                    else
+                    {
+                        lConnexions.Add(new kAIConnexion(lPort, this));
+                    }
                 }
-                else
-                {
-                    return null;
-                }
+
+                return lConnexions;
             }
         }
 
@@ -150,7 +156,7 @@ namespace kAI.Core
         public kAIPort(kAIPortID lPortID, ePortDirection lPortDirection, kAIPortType lDataType, kAIILogger lLogger = null)
             :base(lLogger)
         {
-            mConnectedPort = null;
+            mConnectingPorts = new List<kAIPort>();
             PortID = lPortID;
             PortDirection = lPortDirection;
             DataType = lDataType;
@@ -174,27 +180,45 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// Create a connexion between this port and another port. 
+        /// </summary>
+        /// <param name="lOtherEnd">The port to connect to. </param>
+        /// <returns>The result of doing the connexion. </returns>
+        public ePortConnexionResult MakeConnexion(kAIPort lOtherEnd)
+        {
+            return kAIPort.ConnectPorts(this, lOtherEnd);
+        }
+
+        /// <summary>
+        /// Break a connexion between this port and another port connected to it. 
+        /// </summary>
+        /// <param name="lOtherEnd">The other port. </param>
+        public void BreakConnexion(kAIPort lOtherEnd)
+        {
+            kAIPort.DisconnectPorts(this, lOtherEnd);
+        }
+
+        /// <summary>
+        /// Break all the connexions between this port and all connected ports. 
+        /// </summary>
+        public void BreakAllConnexions()
+        {
+            foreach (kAIPort lPort in mConnectingPorts)
+            {
+                BreakConnexion(lPort);
+            }
+        }
+
+        /// <summary>
         /// Connect this port to another port. Will report a warning if something goes wrong.
         /// </summary>
         /// <param name="lOtherEnd">The port to attempt to connect to. </param>
         /// <returns>A result indicating how the connexion went. </returns>
-        public ePortConnexionResult Connect(kAIPort lOtherEnd)
+        private ePortConnexionResult Connect(kAIPort lOtherEnd)
         {
-            ePortConnexionResult lConnexionResult = CanConnect(lOtherEnd);
-
-            if (lConnexionResult == ePortConnexionResult.PortConnexionResult_OK)
-            {
-                mConnectedPort = lOtherEnd;
-                lOtherEnd.mConnectedPort = this;
-                OnConnect(lOtherEnd);
-                lOtherEnd.OnConnect(this);
-            }
-            else
-            {
-                LogWarning("Attempted to connect to invalid port.", lConnexionResult);
-            }
-
-            return lConnexionResult;
+            mConnectingPorts.Add(lOtherEnd);
+            OnConnect(lOtherEnd);
+            return ePortConnexionResult.PortConnexionResult_OK;
         }
 
         /// <summary>
@@ -204,24 +228,15 @@ namespace kAI.Core
         protected virtual void OnConnect(kAIPort lOtherEnd) { ; }
 
         /// <summary>
-        /// Disconnect this port from whatever it is connected to. 
+        /// Disconnect this port from the specified port. 
         /// </summary>
-        public void Disconnect()
+        /// <param name="lOtherEnd">The other port. </param>
+        private void Disconnect(kAIPort lOtherEnd)
         {
-            if (IsConnected)
-            {
-                OnDisconnect();
-                mConnectedPort.OnDisconnect();
-                mConnectedPort.mConnectedPort = null;
-                mConnectedPort = null;
-            }
-            else
-            {
-                LogWarning("Port not connected to anything", PortID);
-            }
+            mConnectingPorts.Remove(lOtherEnd);
+            OnDisconnect();
         }
 
-        //TODO: when we can be connected to multiple ports, need to distinguish one disconnection and many?
         /// <summary>
         /// Called when this port is disconnected.
         /// </summary>
@@ -230,12 +245,13 @@ namespace kAI.Core
         /// <summary>
         /// Check whether this port would be a valid connexion for the supplied other end. 
         /// </summary>
-        /// <param name="lOtherEnd">The port to test against.</param>
+        /// <param name="lPortA">The first port.</param>
+        /// <param name="lPortB">The second port. </param>
         /// <returns>A result indicating how the connexion went.</returns>
-        public ePortConnexionResult CanConnect(kAIPort lOtherEnd)
+        public static ePortConnexionResult CanConnect(kAIPort lPortA, kAIPort lPortB)
         {
-            bool lDirectionCheck = IsDirectionOpposite(lOtherEnd.PortDirection, PortDirection);
-            bool lDataCheck = AreDataTypesCompatible(lOtherEnd.DataType, DataType);
+            bool lDirectionCheck = IsDirectionOpposite(lPortA.PortDirection, lPortB.PortDirection);
+            bool lDataCheck = AreDataTypesCompatible(lPortA.DataType, lPortB.DataType);
 
             if (lDirectionCheck && lDataCheck)
             {
@@ -248,6 +264,71 @@ namespace kAI.Core
             else // (!lDataCheck)
             {
                 return ePortConnexionResult.PortConnexionResult_InvalidDataType;
+            }
+        }
+
+        /// <summary>
+        /// Connect two ports. 
+        /// </summary>
+        /// <param name="lPortA">The first port. </param>
+        /// <param name="lPortB">The second port. </param>
+        /// <returns>The result of attempting this connexion. </returns>
+        public static ePortConnexionResult ConnectPorts(kAIPort lPortA, kAIPort lPortB)
+        {
+            ePortConnexionResult lResult = CanConnect(lPortA, lPortB);
+            if (lResult == ePortConnexionResult.PortConnexionResult_OK)
+            {
+                lResult = lPortA.Connect(lPortB);
+                if (lResult == ePortConnexionResult.PortConnexionResult_OK)
+                {
+                    lResult = lPortB.Connect(lPortA);
+
+
+                    if (lResult != ePortConnexionResult.PortConnexionResult_OK)
+                    {
+                        //Something went wrong when connecting, so we disconnect the first port.
+                        lPortA.Disconnect(lPortB);
+                    }
+                }
+            }
+
+            return lResult;
+        }
+
+        /// <summary>
+        /// Checks whether two ports are connected.
+        /// </summary>
+        /// <param name="lPortA">The first port.</param>
+        /// <param name="lPortB">The second port. </param>
+        /// <returns>A boolean indicating if the two elements are connected. </returns>
+        public static bool ArePortsConnected(kAIPort lPortA, kAIPort lPortB)
+        {
+            foreach (kAIPort lOtherEnd in lPortA.mConnectingPorts)
+            {
+                if (lOtherEnd == lPortB)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        /// <summary>
+        /// Disconnect two ports. 
+        /// </summary>
+        /// <param name="lPortA">The first port. </param>
+        /// <param name="lPortB">The second port. </param>
+        public static void DisconnectPorts(kAIPort lPortA, kAIPort lPortB)
+        {
+            if (ArePortsConnected(lPortA, lPortB))
+            {
+                lPortA.Disconnect(lPortB);
+                lPortB.Disconnect(lPortA);
+            }
+            else
+            {
+                lPortA.LogError("Ports not connected", lPortA, lPortB);
             }
         }
 

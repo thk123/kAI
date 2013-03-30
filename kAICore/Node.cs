@@ -253,7 +253,7 @@ namespace kAI.Core
             kAIPort lPort = GetPort(lPortID);
             if(lPort != null)
             {
-                lPort.Disconnect();
+                lPort.BreakAllConnexions();
 
                 switch (lPort.PortDirection)
                 {
@@ -315,7 +315,7 @@ namespace kAI.Core
                 kAIPort lEndPort = lOtherNode.GetPort(lOtherPortID);
                 if (lEndPort != null)
                 {
-                    return lStartPort.Connect(lEndPort);
+                    return lStartPort.MakeConnexion(lEndPort);
                 }
                 else
                 {
@@ -339,7 +339,7 @@ namespace kAI.Core
             kAIPort lStartPort = GetPort(lStartPortID);
             if (lStartPortID != null)
             {
-                return lStartPort.Connect(lEndPort);
+                return lStartPort.MakeConnexion(lEndPort);
             }
             else
             {
@@ -354,12 +354,12 @@ namespace kAI.Core
         {
             foreach (kAIPort lPort in InPorts)
             {
-                lPort.Disconnect();
+                lPort.BreakAllConnexions();
             }
 
             foreach (kAIPort lPort in OutPorts)
             {
-                lPort.Disconnect();
+                lPort.BreakAllConnexions();
             }
         }
     }

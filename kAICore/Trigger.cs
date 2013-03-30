@@ -46,14 +46,17 @@ namespace kAI.Core
             // If we are connected to something, we tell it the event was triggered.
             if (IsConnected)
             {
-                kAITriggerReceiver lReciever = mConnectedPort as kAITriggerReceiver;
-                if (lReciever != null)
+                foreach (kAIPort lPort in mConnectingPorts )
                 {
-                    lReciever.ExecuteTrigger(this);
-                }
-                else
-                {
-                    LogError("Trigger connected to a non-trigger receiver", lReciever);
+                    kAITriggerReceiver lReceiver = lPort as kAITriggerReceiver;
+                    if (lReceiver != null)
+                    {
+                        lReceiver.ExecuteTrigger(this);
+                    }
+                    else
+                    {
+                        LogError("Trigger connected to a non-trigger receiver", lReceiver);
+                    }
                 }
             }
         }

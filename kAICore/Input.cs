@@ -52,16 +52,11 @@ namespace kAI.Core
         public void SetInputValue(T lNewValue)
         {
             // If we are connected, we tell the other port it has received a value.
-            if (IsConnected)
+            foreach (kAIInputReceiver<T> lReceiver in mConnectingPorts as List<kAIInputReceiver<T>>)
             {
-                kAIInputReceiver<T> lReceiver = mConnectedPort as kAIInputReceiver<T>;
                 if (lReceiver != null)
                 {
                     lReceiver.SetValue(lNewValue, this);
-                }
-                else
-                {
-                    LogError("Input port connected to a non-matching input port.", mConnectedPort);
                 }
             }
 
@@ -89,8 +84,10 @@ namespace kAI.Core
             }
             else
             {
-                LogError("Input port connected to a non-matching input port.", mConnectedPort);
+                LogError("Input port connected to a non-matching input port.", lOtherEnd);
             }
+
+            base.OnConnect(lOtherEnd);
         }
 
     }
@@ -99,7 +96,7 @@ namespace kAI.Core
     /// Represents a port that can be connected to an Input port. 
     /// </summary>
     /// <typeparam name="T">The type of input to receive (currently must match the kAIInput port).</typeparam>
-    class kAIInputReceiver<T> : kAIPort
+    public class kAIInputReceiver<T> : kAIPort
     {
         /// <summary>
         /// Event delgate for when the value received changes.
