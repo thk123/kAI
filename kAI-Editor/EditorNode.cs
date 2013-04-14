@@ -65,8 +65,8 @@ namespace kAI.Editor
         /// <summary>
         /// Construct a new editor node with the given node ID. 
         /// </summary>
-        /// <param name="lNodeId">The ID of the node that this node holds.</param>
-        public kAIEditorNode(kAINodeID lNodeId)
+        /// <param name="lBehaviour">The behaviour this node represents</param>
+        public kAIEditorNode(kAIBehaviour lBehaviour)
         {
             InitializeComponent();
             
@@ -74,16 +74,26 @@ namespace kAI.Editor
             mContainerOffset = new Point(0, 0);
 
             // Set the text to be the ID 
-            BehaviourName.Text = lNodeId.ToString();
+            //BehaviourName.Text = lNodeId.ToString();
 
             //TEMP: Don't randomly add a port?
-            AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_In, typeof(int)));
+            /*AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_In, typeof(int)));
             AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_Out, typeof(int)));
             AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_In, typeof(int)));
             AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_In, typeof(int)));
             AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_In, typeof(int)));
             AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_In, typeof(int)));
-            AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_In, typeof(int)));
+            AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_In, typeof(int)));*/
+
+            foreach(kAIPort lPort in lBehaviour.GlobalInPorts)
+            {
+                AddPort(lPort);
+            }
+
+            foreach (kAIPort lPort in lBehaviour.GlobalOutPorts)
+            {
+                AddPort(lPort);
+            }
         }
 
         /// <summary>

@@ -7,6 +7,8 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 
+using kAI.Core;
+
 namespace kAI.Editor
 {
     /// <summary>
@@ -37,18 +39,28 @@ namespace kAI.Editor
 
             nodes = new List<kAIEditorNode>();
         }
-               
 
-        void addBehaviourToolStripMenuItem_Click(object sender, EventArgs e)
+        /// <summary>
+        /// Add a new behaviour to the editor window. 
+        /// </summary>
+        /// <param name="lBehaviour">The behaviour to add. </param>
+        void AddBehaviour(kAIBehaviour lBehaviour)
         {
-            //TEMP: Clearly need to have a window asking what node etc.
-            kAIEditorNode lNewNode = new kAIEditorNode("TestNode");
+            kAIEditorNode lNewNode = new kAIEditorNode(lBehaviour);
 
             MainEditor.Panel2.Controls.Add(lNewNode);
 
             nodes.Add(lNewNode);
         }
 
+        void addBehaviourToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            BehaviourChooser lChooser = new BehaviourChooser();
+            if (lChooser.ShowDialog() == DialogResult.OK)
+            {
+                AddBehaviour(lChooser.GetSelectedBehaviour());
+            }
+        }
 
         // Used for dragging the window about
         void Panel2_MouseDown(object sender, MouseEventArgs e)

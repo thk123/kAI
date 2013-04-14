@@ -29,6 +29,13 @@ namespace kAI.Core
 
         List<kAINode> InternalNodes;
 
+        public kAIBehaviour()
+            : base()
+        {
+            GlobalInPorts = new List<kAIPort>();
+            GlobalOutPorts = new List<kAIPort>();
+        }
+
         public kAINodeID BehaviourID
         {
             get;
