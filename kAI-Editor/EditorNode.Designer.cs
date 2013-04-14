@@ -28,36 +28,52 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.NodeName = new System.Windows.Forms.Label();
+            this.MainNode = new System.Windows.Forms.Panel();
+            this.BehaviourName = new System.Windows.Forms.Label();
+            this.MainNode.SuspendLayout();
             this.SuspendLayout();
             // 
-            // NodeName
+            // MainNode
             // 
-            this.NodeName.AutoSize = true;
-            this.NodeName.ForeColor = System.Drawing.SystemColors.ControlLight;
-            this.NodeName.Location = new System.Drawing.Point(4, 4);
-            this.NodeName.Name = "NodeName";
-            this.NodeName.Size = new System.Drawing.Size(75, 13);
-            this.NodeName.TabIndex = 0;
-            this.NodeName.Text = "NODE_NAME";
+            this.MainNode.Anchor = ((System.Windows.Forms.AnchorStyles)(((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Bottom)
+                        | System.Windows.Forms.AnchorStyles.Left)));
+            this.MainNode.BackColor = System.Drawing.SystemColors.ControlDarkDark;
+            this.MainNode.Controls.Add(this.BehaviourName);
+            this.MainNode.ForeColor = System.Drawing.SystemColors.ControlLight;
+            this.MainNode.Location = new System.Drawing.Point(16, 0);
+            this.MainNode.Name = "MainNode";
+            this.MainNode.Size = new System.Drawing.Size(150, 150);
+            this.MainNode.TabIndex = 0;
+            this.MainNode.MouseDown += new System.Windows.Forms.MouseEventHandler(this.kAIEditorNode_MouseDown);
+            this.MainNode.MouseMove += new System.Windows.Forms.MouseEventHandler(this.kAIEditorNode_MouseMove);
+            // 
+            // BehaviourName
+            // 
+            this.BehaviourName.AutoSize = true;
+            this.BehaviourName.Location = new System.Drawing.Point(4, 4);
+            this.BehaviourName.Name = "BehaviourName";
+            this.BehaviourName.Size = new System.Drawing.Size(28, 13);
+            this.BehaviourName.TabIndex = 0;
+            this.BehaviourName.Text = "Test";
             // 
             // kAIEditorNode
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.BackColor = System.Drawing.SystemColors.ControlDarkDark;
-            this.Controls.Add(this.NodeName);
+            this.BackColor = System.Drawing.SystemColors.Control;
+            this.Controls.Add(this.MainNode);
             this.Name = "kAIEditorNode";
-            this.Size = new System.Drawing.Size(192, 79);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.kAIEditorNode_MouseDown);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.kAIEditorNode_MouseMove);
+            this.Size = new System.Drawing.Size(182, 150);
+            this.MainNode.ResumeLayout(false);
+            this.MainNode.PerformLayout();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
         #endregion
 
-        private System.Windows.Forms.Label NodeName;
+        private System.Windows.Forms.Panel MainNode;
+        internal System.Windows.Forms.Label BehaviourName;
+
     }
 }

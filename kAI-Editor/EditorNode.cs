@@ -28,6 +28,21 @@ namespace kAI.Editor
         Point mContainerOffset;
 
         /// <summary>
+        /// The next vertial position of a in port. 
+        /// </summary>
+        int mNextInPortY;
+
+        /// <summary>
+        /// The next vertical position of an out port. 
+        /// </summary>
+        int mNextOutPortY;
+
+        /// <summary>
+        /// The vertical distance between ports. 
+        /// </summary>
+        const int kPortVerticalSeperation = 10;
+
+        /// <summary>
         /// The position of this node in the behaviour web (independent of current view).
         /// </summary>
         public Point GlobalPosition
@@ -59,14 +74,55 @@ namespace kAI.Editor
             mContainerOffset = new Point(0, 0);
 
             // Set the text to be the ID 
-            NodeName.Text = lNodeId.ToString();
+            BehaviourName.Text = lNodeId.ToString();
+
+            //TEMP: Don't randomly add a port?
+            AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_In, typeof(int)));
+            AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_Out, typeof(int)));
+            AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_In, typeof(int)));
+            AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_In, typeof(int)));
+            AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_In, typeof(int)));
+            AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_In, typeof(int)));
+            AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_In, typeof(int)));
+        }
+
+        /// <summary>
+        /// Add a port to this node.
+        /// </summary>
+        /// <param name="lNewPort">The port to add. </param>
+        public void AddPort(kAIPort lNewPort)
+        {
+            kAIEditorPort lNewEditorPort = new kAIEditorPort(lNewPort);
+            if (lNewPort.PortDirection == kAIPort.ePortDirection.PortDirection_In)
+            {
+                Point lNewLocation = new Point();
+                lNewLocation.Y = mNextInPortY;
+                lNewLocation.X = MainNode.Location.X - lNewEditorPort.Width;
+
+                lNewEditorPort.Location = lNewLocation;
+                mNextInPortY += lNewEditorPort.Height + kPortVerticalSeperation;
+            }
+            else
+            {
+                Point lNewLocation = new Point();
+                lNewLocation.Y = mNextOutPortY;
+                lNewLocation.X = MainNode.Location.X + MainNode.Width;
+
+                lNewEditorPort.Location = lNewLocation;
+                mNextOutPortY += lNewEditorPort.Height + kPortVerticalSeperation;
+            }
+
+            // If the window is too short for this node, we extend it. 
+            ExtendWindow(lNewEditorPort.Location.Y + lNewEditorPort.Height);
+
+            Controls.Add(lNewEditorPort);
         }
 
         /// <summary>
         /// For updating the position of the containing editor. 
         /// </summary>
         /// <param name="lEditorDelta">How much the window has moved. </param>
-        public void SetViewPosition(Point lEditorDelta)
+        internal void SetViewPosition(Point lEditorDelta)
         {
             mContainerOffset = Util.AddPoints(mContainerOffset, lEditorDelta);
             UpdatePosition();
@@ -80,10 +136,23 @@ namespace kAI.Editor
             Location = Util.AddPoints(GlobalPosition, ContainerPosition);
         }
 
+        /// <summary>
+        /// If the window is no longer big enough to hold this new vertical limit, we extend the window.
+        /// </summary>
+        /// <param name="lNewVerticalMax">The new lower limit of the window.</param>
+        private void ExtendWindow(int lNewVerticalMax)
+        {
+            if (Height < lNewVerticalMax)
+            {
+                // We take half the separation so as to give equal weight.
+                Height = lNewVerticalMax + (kPortVerticalSeperation / 2);
+            }
+        }
+
         // When the mouse is pressed, we store the relative position for dragging.
         private void kAIEditorNode_MouseDown(object sender, MouseEventArgs e)
         {
-            mClickOffset = e.Location;
+            mClickOffset = Util.AddPoints(e.Location, ContainerPosition);
         }
 
         // When the mouse moves, we move the objects actual position and update the drawn position.

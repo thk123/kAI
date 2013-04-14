@@ -20,7 +20,7 @@ namespace kAI.Core
         /// <summary>
         /// An enum representing the direction of a port.
         /// </summary>
-        internal enum ePortDirection
+        public enum ePortDirection
         {
             /// <summary>
             /// This port is an 'In' port, ie stuff is connected to it. 
@@ -36,7 +36,7 @@ namespace kAI.Core
         /// <summary>
         /// Represents a result of a connexion between two <see cref="kAIPort"/>s.
         /// </summary>
-        internal enum ePortConnexionResult
+        public enum ePortConnexionResult
         {
             /// <summary>
             /// The connexion is valid
@@ -69,7 +69,7 @@ namespace kAI.Core
         /// <summary>
         /// The ID of the port, used to connect to it and identify it.
         /// </summary>
-        internal kAIPortID PortID
+        public kAIPortID PortID
         {
             get;
             private set;
@@ -78,7 +78,7 @@ namespace kAI.Core
         /// <summary>
         /// The direction of this port. 
         /// </summary>
-        internal ePortDirection PortDirection
+        public ePortDirection PortDirection
         {
             get;
             private set;
@@ -87,7 +87,7 @@ namespace kAI.Core
         /// <summary>
         /// The data type of this port.
         /// </summary>
-        internal kAIPortType DataType
+        public kAIPortType DataType
         {
             get;
             private set;
@@ -96,7 +96,7 @@ namespace kAI.Core
         /// <summary>
         /// Is this port currently connected to 1 or more ports. 
         /// </summary>
-        internal bool IsConnected
+        public bool IsConnected
         {
             get
             {
@@ -107,7 +107,7 @@ namespace kAI.Core
         /// <summary>
         /// Gets a list of all of the connexions leaving this port. 
         /// </summary>
-        internal IEnumerable<kAIConnexion> Connexions
+        public IEnumerable<kAIConnexion> Connexions
         {
             get
             {
@@ -135,7 +135,7 @@ namespace kAI.Core
         /// <param name="lPortDirection">The direction of the port. </param>
         /// <param name="lDataType">The data type of the port.</param>
         /// <param name="lLogger">Optionaly, the logger this instance should use. </param>
-        internal kAIPort(kAIPortID lPortID, ePortDirection lPortDirection, kAIPortType lDataType, kAIILogger lLogger = null)
+        public kAIPort(kAIPortID lPortID, ePortDirection lPortDirection, kAIPortType lDataType, kAIILogger lLogger = null)
             :base(lLogger)
         {
             mConnectingPorts = new List<kAIPort>();
