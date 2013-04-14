@@ -8,19 +8,26 @@ namespace kAI.Core
     /// <summary>
     /// Represents a connectible port, can be from a behaviour, action, input, trigger etc.
     /// </summary>
-    public class kAIPort : kAIObject
+    public abstract class kAIPort : kAIObject
     {
         /// <summary>
         /// The set of ports this port connects to (not is connected from).
         /// </summary>
         protected List<kAIPort> mConnectingPorts;
-        protected kAIPort mBoundPort;
 
+        /// <summary>
+        /// The node this port belong to (if null, is a global node).
+        /// </summary>
+        public kAINode OwningNode
+        {
+            get;
+            protected set;
+        }
 
         /// <summary>
         /// An enum representing the direction of a port.
         /// </summary>
-        internal enum ePortDirection
+        public enum ePortDirection
         {
             /// <summary>
             /// This port is an 'In' port, ie stuff is connected to it. 
@@ -36,7 +43,7 @@ namespace kAI.Core
         /// <summary>
         /// Represents a result of a connexion between two <see cref="kAIPort"/>s.
         /// </summary>
-        internal enum ePortConnexionResult
+        public enum ePortConnexionResult
         {
             /// <summary>
             /// The connexion is valid
@@ -69,7 +76,7 @@ namespace kAI.Core
         /// <summary>
         /// The ID of the port, used to connect to it and identify it.
         /// </summary>
-        internal kAIPortID PortID
+        public kAIPortID PortID
         {
             get;
             private set;
@@ -78,7 +85,7 @@ namespace kAI.Core
         /// <summary>
         /// The direction of this port. 
         /// </summary>
-        internal ePortDirection PortDirection
+        public ePortDirection PortDirection
         {
             get;
             private set;
@@ -87,7 +94,7 @@ namespace kAI.Core
         /// <summary>
         /// The data type of this port.
         /// </summary>
-        internal kAIPortType DataType
+        public kAIPortType DataType
         {
             get;
             private set;
@@ -96,7 +103,7 @@ namespace kAI.Core
         /// <summary>
         /// Is this port currently connected to 1 or more ports. 
         /// </summary>
-        internal bool IsConnected
+        public bool IsConnected
         {
             get
             {
@@ -105,9 +112,20 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// Is the port a global port or connected to some kAINode. 
+        /// </summary>
+        public bool IsGlobalPort
+        {
+            get
+            {
+                return OwningNode == null;
+            }
+        }
+
+        /// <summary>
         /// Gets a list of all of the connexions leaving this port. 
         /// </summary>
-        internal IEnumerable<kAIConnexion> Connexions
+        public IEnumerable<kAIConnexion> Connexions
         {
             get
             {
@@ -135,7 +153,7 @@ namespace kAI.Core
         /// <param name="lPortDirection">The direction of the port. </param>
         /// <param name="lDataType">The data type of the port.</param>
         /// <param name="lLogger">Optionaly, the logger this instance should use. </param>
-        internal kAIPort(kAIPortID lPortID, ePortDirection lPortDirection, kAIPortType lDataType, kAIILogger lLogger = null)
+        public kAIPort(kAIPortID lPortID, ePortDirection lPortDirection, kAIPortType lDataType, kAIILogger lLogger = null)
             :base(lLogger)
         {
             mConnectingPorts = new List<kAIPort>();
@@ -145,11 +163,28 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// Attach a port to a node. 
+        /// </summary>
+        /// <param name="lOwningNode">The node this port belongs to. </param>
+        public void Attach(kAINode lOwningNode)
+        {
+            if (OwningNode != null)
+            {
+                LogError("Node already connected", PortID);
+
+                //NOTE: Maybe should remove itself from other node, probably not required as this is not really meant to happen
+
+                return;
+            }
+            OwningNode = lOwningNode;
+        }
+
+        /// <summary>
         /// Create a connexion between this port and another port. 
         /// </summary>
         /// <param name="lOtherEnd">The port to connect to. </param>
         /// <returns>The result of doing the connexion. </returns>
-        internal ePortConnexionResult MakeConnexion(kAIPort lOtherEnd)
+        public ePortConnexionResult MakeConnexion(kAIPort lOtherEnd)
         {
             return kAIPort.ConnectPorts(this, lOtherEnd);
         }
@@ -158,7 +193,7 @@ namespace kAI.Core
         /// Break a connexion between this port and another port connected to it. 
         /// </summary>
         /// <param name="lOtherEnd">The other port. </param>
-        internal void BreakConnexion(kAIPort lOtherEnd)
+        public void BreakConnexion(kAIPort lOtherEnd)
         {
             kAIPort.DisconnectPorts(this, lOtherEnd);
         }
@@ -166,19 +201,11 @@ namespace kAI.Core
         /// <summary>
         /// Break all the connexions between this port and all connected ports. 
         /// </summary>
-        internal void BreakAllConnexions()
+        public void BreakAllConnexions()
         {
             foreach (kAIPort lPort in mConnectingPorts)
             {
                 BreakConnexion(lPort);
-            }
-        }
-
-        internal void CreateBoundPort()
-        {
-            if (PortDirection == ePortDirection.PortDirection_In)
-            {
-                //mBoundPort = new kAIPort()
             }
         }
 
@@ -215,14 +242,13 @@ namespace kAI.Core
         /// </summary>
         protected virtual void OnDisconnect() { ; }
 
-
         /// <summary>
         /// Check whether this port would be a valid connexion for the supplied other end. 
         /// </summary>
         /// <param name="lPortA">The first port.</param>
         /// <param name="lPortB">The second port. </param>
         /// <returns>A result indicating how the connexion went.</returns>
-        internal static ePortConnexionResult CanConnect(kAIPort lPortA, kAIPort lPortB)
+        public static ePortConnexionResult CanConnect(kAIPort lPortA, kAIPort lPortB)
         {
             bool lDirectionCheck = IsDirectionOpposite(lPortA.PortDirection, lPortB.PortDirection);
             bool lDataCheck = AreDataTypesCompatible(lPortA.DataType, lPortB.DataType);
@@ -247,7 +273,7 @@ namespace kAI.Core
         /// <param name="lPortA">The first port. </param>
         /// <param name="lPortB">The second port. </param>
         /// <returns>The result of attempting this connexion. </returns>
-        internal static ePortConnexionResult ConnectPorts(kAIPort lPortA, kAIPort lPortB)
+        public static ePortConnexionResult ConnectPorts(kAIPort lPortA, kAIPort lPortB)
         {
             ePortConnexionResult lResult = CanConnect(lPortA, lPortB);
             if (lResult == ePortConnexionResult.PortConnexionResult_OK)
@@ -275,7 +301,7 @@ namespace kAI.Core
         /// <param name="lPortA">The first port.</param>
         /// <param name="lPortB">The second port. </param>
         /// <returns>A boolean indicating if the two elements are connected. </returns>
-        internal static bool ArePortsConnected(kAIPort lPortA, kAIPort lPortB)
+        public static bool ArePortsConnected(kAIPort lPortA, kAIPort lPortB)
         {
             foreach (kAIPort lOtherEnd in lPortA.mConnectingPorts)
             {
@@ -293,7 +319,7 @@ namespace kAI.Core
         /// </summary>
         /// <param name="lPortA">The first port. </param>
         /// <param name="lPortB">The second port. </param>
-        internal static void DisconnectPorts(kAIPort lPortA, kAIPort lPortB)
+        public static void DisconnectPorts(kAIPort lPortA, kAIPort lPortB)
         {
             if (ArePortsConnected(lPortA, lPortB))
             {
@@ -503,6 +529,28 @@ namespace kAI.Core
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// The start node of this connexion (if not global, null if it is).
+        /// </summary>
+        public kAINode StartNode
+        {
+            get
+            {
+                return StartPort.OwningNode;
+            }
+        }
+
+        /// <summary>
+        /// The end node of this connexion (if global, this is null).
+        /// </summary>
+        public kAINode EndNode
+        {
+            get
+            {
+                return EndPort.OwningNode;
+            }
         }
 
         /// <summary>
