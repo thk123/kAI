@@ -431,7 +431,7 @@ namespace kAI.Core
         /// <returns>Whether the two ports match.</returns>
         public static bool operator== (kAIPortID lPortIDA, kAIPortID lPortIDB)
         {
-            return lPortIDA.PortID == lPortIDB.PortID;
+            return lPortIDA.Equals(lPortIDB);
         }
 
         /// <summary>
@@ -442,7 +442,7 @@ namespace kAI.Core
         /// <returns>Whether the two ports match.</returns>
         public static bool operator !=(kAIPortID lPortIDA, kAIPortID lPortIDB)
         {
-            return !(lPortIDA == lPortIDB);
+            return !lPortIDA.Equals(lPortIDB);
         }
 
         /// <summary>
@@ -452,10 +452,16 @@ namespace kAI.Core
         /// <returns>True if the two objects have the same ID</returns>
         public override bool Equals(object obj)
         {
+            if (ReferenceEquals(this, obj))
+                return true;
+
+            if (((object)obj == null))
+                return false;
+
             kAIPortID lPortID = obj as kAIPortID;
-            if (lPortID != null)
+            if (((object)lPortID != null))
             {
-                return lPortID == this;
+                return lPortID.PortID == PortID;
             }
             else
             {
@@ -469,7 +475,7 @@ namespace kAI.Core
         /// <returns>The hash of the object.</returns>
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return PortID.GetHashCode();
         }
 
         /// <summary>

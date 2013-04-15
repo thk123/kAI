@@ -73,27 +73,12 @@ namespace kAI.Editor
             // The container is started at zero.
             mContainerOffset = new Point(0, 0);
 
-            // Set the text to be the ID 
-            //BehaviourName.Text = lNodeId.ToString();
-
-            //TEMP: Don't randomly add a port?
-            /*AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_In, typeof(int)));
-            AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_Out, typeof(int)));
-            AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_In, typeof(int)));
-            AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_In, typeof(int)));
-            AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_In, typeof(int)));
-            AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_In, typeof(int)));
-            AddPort(new kAIPort("MyPort", kAIPort.ePortDirection.PortDirection_In, typeof(int)));*/
-
-            foreach(kAIPort lPort in lBehaviour.GlobalInPorts)
+            foreach(kAIPort lPort in lBehaviour.GlobalPorts)
             {
                 AddPort(lPort);
             }
 
-            foreach (kAIPort lPort in lBehaviour.GlobalOutPorts)
-            {
-                AddPort(lPort);
-            }
+            BehaviourName.Text = lBehaviour.NodeID;
         }
 
         /// <summary>

@@ -46,7 +46,7 @@ namespace kAI.Editor
         /// <summary>
         /// The underlying Type of this behaviour, eg kAIBehaviour for XML, the class for a Code behaviour. 
         /// </summary>
-        Type BehaviourType
+        public Type BehaviourType
         {
             get
             {
@@ -79,13 +79,13 @@ namespace kAI.Editor
         public kAIBehaviour Instantiate()
         {
             //TODO: This may need more types, eg does the behaviour need to know its node ID (probably not...? What about port connexions)
-            ConstructorInfo lConstructor = mBehaviourType.GetConstructor(Type.EmptyTypes);
+            ConstructorInfo lConstructor = mBehaviourType.GetConstructor(new Type[] { typeof(kAINodeID), typeof(kAIILogger) });
 
             // We found a valid constructor!
             if (lConstructor != null)
             {
                 // So we make the thing for realz. 
-                kAIBehaviour lBehaviour = (kAIBehaviour)lConstructor.Invoke(new Object[0]);
+                kAIBehaviour lBehaviour = (kAIBehaviour)lConstructor.Invoke(new Object[] { new kAINodeID("TemporaryNode"), null } );
                 return lBehaviour;
             }
             else
