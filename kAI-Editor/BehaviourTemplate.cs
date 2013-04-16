@@ -3,14 +3,17 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using System.Runtime.Serialization;
 
 using kAI.Core;
+using System.IO;
 
 namespace kAI.Editor
 {
     /// <summary>
     /// Represents a template with which to create a behaviour from. 
     /// </summary>
+    [DataContract(Name = "kAIBehaviourTemplate")]
     class kAIBehaviourTemplate
     {
         /// <summary>
@@ -34,6 +37,9 @@ namespace kAI.Editor
         /// </summary>
         Type mBehaviourType;
 
+        [DataMember()]
+        FileInfo mBehaviourXmlFile;
+
         /// <summary>
         /// The flavor of this template. 
         /// </summary>
@@ -41,6 +47,28 @@ namespace kAI.Editor
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// Where is the XML file representing this behaviour located. 
+        /// </summary>
+        public FileInfo BehaviourSourceXml
+        {
+            get
+            {
+                if (BehaviourFlavour == eBehaviourFlavour.BehaviourFlavour_Code)
+                {
+                    throw new Exception("No source directory for code behaviours");
+                }
+                else
+                {
+                    return mBehaviourXmlFile;
+                }
+            }
+            private set
+            {
+                mBehaviourXmlFile = value;
+            }
         }
 
         /// <summary>
@@ -66,10 +94,26 @@ namespace kAI.Editor
             }
         }
 
+        /// <summary>
+        /// Create a template from a class that inherits from kAIBehaviour, eg a code behaviour. 
+        /// </summary>
+        /// <param name="lBehaviourType"></param>
         public kAIBehaviourTemplate(Type lBehaviourType)
         {
             BehaviourType = lBehaviourType;
             BehaviourFlavour = eBehaviourFlavour.BehaviourFlavour_Code;
+            BehaviourSourceXml = null;
+        }
+
+        /// <summary>
+        /// Creates a template from an XML file representing a kAIBehaviour. 
+        /// </summary>
+        /// <param name="lSourceFile">The file this behaviour is based on.</param>
+        public kAIBehaviourTemplate(FileInfo lSourceFile)
+        {
+            BehaviourType = typeof(kAIBehaviour); //TEMP: Replace with typeof(XmlBehaviour)
+            BehaviourFlavour = eBehaviourFlavour.BehaviourFlavour_Xml;
+            BehaviourSourceXml = lSourceFile;
         }
 
         /// <summary>

@@ -6,7 +6,8 @@ using System.Drawing;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
-
+using System.Runtime.Serialization;
+using System.Xml;
 using kAI.Core;
 
 namespace kAI.Editor
@@ -16,15 +17,10 @@ namespace kAI.Editor
     /// </summary>
     public partial class Editor : Form
     {
-        /// <summary>
-        /// Stores the last point of the mouse, used when dragging to create a delta. 
-        /// </summary>
-        Point mLastPosition;
+        bool mIsProjectLoaded;
+        kAIProject mLoadedProject;
 
-        /// <summary>
-        /// TEMP: The list of nodes currently in the editor. 
-        /// </summary>
-        List<kAIEditorNode> nodes;
+        BehaviourEditorWindow mBehaviourEditor;
 
         /// <summary>
         /// Create a new editor. 
@@ -33,57 +29,60 @@ namespace kAI.Editor
         {
             InitializeComponent();
 
-            // We register these events so can deal with dragging about. 
-            MainEditor.Panel2.MouseDown += new MouseEventHandler(Panel2_MouseDown);
-            MainEditor.Panel2.MouseMove += new MouseEventHandler(Panel2_MouseMove);
-
-            nodes = new List<kAIEditorNode>();
+            mIsProjectLoaded = false;
+            mLoadedProject = null;            
         }
-
-        /// <summary>
-        /// Add a new behaviour to the editor window. 
-        /// </summary>
-        /// <param name="lBehaviour">The behaviour to add. </param>
-        void AddBehaviour(kAIBehaviour lBehaviour)
-        {
-            kAIEditorNode lNewNode = new kAIEditorNode(lBehaviour);
-
-            MainEditor.Panel2.Controls.Add(lNewNode);
-
-            nodes.Add(lNewNode);
-        }
+               
 
         void addBehaviourToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            BehaviourChooser lChooser = new BehaviourChooser();
-            if (lChooser.ShowDialog() == DialogResult.OK)
+            if(mIsProjectLoaded)
             {
-                AddBehaviour(lChooser.GetSelectedBehaviour());
-            }
-        }
-
-        // Used for dragging the window about
-        void Panel2_MouseDown(object sender, MouseEventArgs e)
-        {
-            mLastPosition = e.Location;   
-        }
-
-        // Used for dragging the window about. 
-        void Panel2_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                Point lDeltaPos = Util.SubtractPoints(e.Location, mLastPosition);
-
-                Console.WriteLine("Position: " + mLastPosition.ToString());
-
-                foreach (kAIEditorNode lNode in nodes)
+                BehaviourChooser lChooser = new BehaviourChooser();
+                if (lChooser.ShowDialog() == DialogResult.OK)
                 {
-                    lNode.SetViewPosition(lDeltaPos);
+                    mBehaviourEditor.AddBehaviour(lChooser.GetSelectedBehaviour());
                 }
-
-                mLastPosition = e.Location;
             }
         }
+
+        private void newProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ProjectProperties lNewProjectPropertiesViewer = new ProjectProperties(mLoadedProject);
+
+            // The user has decided to create a new project
+            if (lNewProjectPropertiesViewer.ShowDialog() == DialogResult.OK)
+            {
+                LoadProject(lNewProjectPropertiesViewer.mProperties);
+            }
+        }
+
+        private void LoadProject(kAIProject lProject)
+        {
+            mLoadedProject = lProject;
+            mIsProjectLoaded = true;
+
+            // Remove all old controls from the right hand window
+            MainEditor.Panel1.Controls.Clear();
+
+            Label lTestLabel = new Label();
+            lTestLabel.Text = "Test project made";
+            MainEditor.Panel1.Controls.Add(lTestLabel);
+
+            mBehaviourEditor = new BehaviourEditorWindow();
+            MainEditor.Panel2.Controls.Add(mBehaviourEditor);
+        }
+
+        private void openProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog lOpenDialog = new OpenFileDialog();
+            lOpenDialog.Filter = "kAI Project Files |*." + kAIProject.kProjectFileExtension;
+            if (lOpenDialog.ShowDialog() == DialogResult.OK)
+            {
+                DataContractSerializer lDeserialiser = new DataContractSerializer(typeof(kAIProject));
+                mLoadedProject = (kAIProject)lDeserialiser.ReadObject(lOpenDialog.OpenFile());
+            }
+        }
+       
     }
 }

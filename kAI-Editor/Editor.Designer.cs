@@ -28,29 +28,27 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.MainEditor = new System.Windows.Forms.SplitContainer();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.behaviourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createNewBehaviourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addBehaviourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.MainEditor = new System.Windows.Forms.SplitContainer();
-            this.menuStrip1.SuspendLayout();
+            this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             ((System.ComponentModel.ISupportInitialize)(this.MainEditor)).BeginInit();
             this.MainEditor.SuspendLayout();
+            this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // menuStrip1
+            // MainEditor
             // 
-            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.fileToolStripMenuItem,
-            this.behaviourToolStripMenuItem});
-            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
-            this.menuStrip1.Name = "menuStrip1";
-            this.menuStrip1.Size = new System.Drawing.Size(1226, 24);
-            this.menuStrip1.TabIndex = 0;
-            this.menuStrip1.Text = "menuStrip1";
+            this.MainEditor.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.MainEditor.Location = new System.Drawing.Point(0, 24);
+            this.MainEditor.Name = "MainEditor";
+            this.MainEditor.Size = new System.Drawing.Size(1226, 616);
+            this.MainEditor.SplitterDistance = 249;
+            this.MainEditor.TabIndex = 1;
             // 
             // fileToolStripMenuItem
             // 
@@ -64,14 +62,16 @@
             // newProjectToolStripMenuItem
             // 
             this.newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
-            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
-            this.newProjectToolStripMenuItem.Text = "New Project";
+            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newProjectToolStripMenuItem.Text = "New Project...";
+            this.newProjectToolStripMenuItem.Click += new System.EventHandler(this.newProjectToolStripMenuItem_Click);
             // 
             // openProjectToolStripMenuItem
             // 
             this.openProjectToolStripMenuItem.Name = "openProjectToolStripMenuItem";
-            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(143, 22);
+            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openProjectToolStripMenuItem.Text = "Open Project";
+            this.openProjectToolStripMenuItem.Click += new System.EventHandler(this.openProjectToolStripMenuItem_Click);
             // 
             // behaviourToolStripMenuItem
             // 
@@ -95,14 +95,16 @@
             this.addBehaviourToolStripMenuItem.Text = "Add Behaviour";
             this.addBehaviourToolStripMenuItem.Click += new System.EventHandler(this.addBehaviourToolStripMenuItem_Click);
             // 
-            // MainEditor
+            // menuStrip1
             // 
-            this.MainEditor.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.MainEditor.Location = new System.Drawing.Point(0, 24);
-            this.MainEditor.Name = "MainEditor";
-            this.MainEditor.Size = new System.Drawing.Size(1226, 616);
-            this.MainEditor.SplitterDistance = 249;
-            this.MainEditor.TabIndex = 1;
+            this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.fileToolStripMenuItem,
+            this.behaviourToolStripMenuItem});
+            this.menuStrip1.Location = new System.Drawing.Point(0, 0);
+            this.menuStrip1.Name = "menuStrip1";
+            this.menuStrip1.Size = new System.Drawing.Size(1226, 24);
+            this.menuStrip1.TabIndex = 0;
+            this.menuStrip1.Text = "menuStrip1";
             // 
             // Editor
             // 
@@ -114,10 +116,10 @@
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Editor";
             this.Text = "kAI Editor";
-            this.menuStrip1.ResumeLayout(false);
-            this.menuStrip1.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)(this.MainEditor)).EndInit();
             this.MainEditor.ResumeLayout(false);
+            this.menuStrip1.ResumeLayout(false);
+            this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -125,14 +127,14 @@
 
         #endregion
 
-        private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.SplitContainer MainEditor;
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newProjectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openProjectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem behaviourToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem createNewBehaviourToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem addBehaviourToolStripMenuItem;
-        private System.Windows.Forms.SplitContainer MainEditor;
+        private System.Windows.Forms.MenuStrip menuStrip1;
 
     }
 }

@@ -14,6 +14,10 @@ namespace kAI.Core
         /// The set of ports this port connects to (not is connected from).
         /// </summary>
         protected List<kAIPort> mConnectingPorts;
+
+        /// <summary>
+        /// Who knows at this stage, too early to tell. The idea was the "other side" to this port. 
+        /// </summary>
         protected kAIPort mBoundPort;
 
 
