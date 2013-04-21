@@ -6,9 +6,11 @@ using System.Reflection;
 using System.Runtime.Serialization;
 
 using kAI.Core;
+using kAI.Editor.Core;
+using kAI.Editor.Core.Util;
 using System.IO;
 
-namespace kAI.Editor
+namespace kAI.Editor.Core
 {
     /// <summary>
     /// Represents a template with which to create a behaviour from. 

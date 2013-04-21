@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 
-namespace kAI.Editor
+namespace kAI.Editor.Core.Util
 {
     /// <summary>
     /// The editor used to create kAI Behaviours.

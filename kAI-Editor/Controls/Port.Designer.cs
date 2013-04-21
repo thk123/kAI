@@ -1,6 +1,6 @@
-﻿namespace kAI.Editor
+﻿namespace kAI.Editor.Controls
 {
-    partial class BehaviourEditorWindow
+    partial class kAIEditorPort
     {
         /// <summary> 
         /// Required designer variable.
@@ -30,18 +30,21 @@
         {
             this.SuspendLayout();
             // 
-            // BehaviourEditorWindow
+            // kAIEditorPort
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.Name = "BehaviourEditorWindow";
-            this.Size = new System.Drawing.Size(1010, 770);
-            this.MouseDown += new System.Windows.Forms.MouseEventHandler(this.BehaviourEditorWindow_MouseDown);
-            this.MouseMove += new System.Windows.Forms.MouseEventHandler(this.BehaviourEditorWindow_MouseMove);
+            this.BackColor = System.Drawing.Color.Transparent;
+            this.Margin = new System.Windows.Forms.Padding(0);
+            this.Name = "kAIEditorPort";
+            this.Size = new System.Drawing.Size(16, 32);
+            this.MouseEnter += new System.EventHandler(this.kAIEditorPort_MouseEnter);
+            this.MouseLeave += new System.EventHandler(this.kAIEditorPort_MouseLeave);
             this.ResumeLayout(false);
 
         }
 
         #endregion
+
     }
 }

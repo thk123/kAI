@@ -8,8 +8,13 @@ using System.Text;
 using System.Windows.Forms;
 
 using kAI.Core;
+using kAI.Editor.Core;
+using kAI.Editor.Core.Util;
+using kAI.Editor.Forms;
+using kAI.Editor.Forms.ProjectProperties;
+using kAI.Editor.Controls;
 
-namespace kAI.Editor
+namespace kAI.Editor.Controls
 {
     /// <summary>
     /// A node in a behaviour web. 

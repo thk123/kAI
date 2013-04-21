@@ -9,7 +9,7 @@ using System.Windows.Forms;
 
 using kAI.Core;
 
-namespace kAI.Editor
+namespace kAI.Editor.Controls
 {
     /// <summary>
     /// Represents a port in the editor view

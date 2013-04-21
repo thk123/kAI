@@ -1,4 +1,4 @@
-﻿namespace kAI.Editor
+﻿namespace kAI.Editor.Controls
 {
     partial class kAIEditorNode
     {

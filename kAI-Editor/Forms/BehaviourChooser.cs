@@ -9,6 +9,11 @@ using System.Threading;
 using System.Windows.Forms;
 
 using kAI.Core;
+using kAI.Editor.Core;
+using kAI.Editor.Core.Util;
+using kAI.Editor.Forms;
+using kAI.Editor.Forms.ProjectProperties;
+using kAI.Editor.Controls;
 using System.Reflection;
 
 namespace kAI.Editor
