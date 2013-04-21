@@ -11,6 +11,45 @@ namespace kAI.Core
     public class kAIPort : kAIObject
     {
         /// <summary>
+        /// For when connexions are made or destroyed. 
+        /// </summary>
+        /// <param name="lSender">The node that has been connected to or disconnected from. </param>
+        /// <param name="lOtherEnd">The other end of the connexion.</param>
+        public delegate void ConnexionEvent(kAIPort lSender, kAIPort lOtherEnd);
+
+        /// <summary>
+        /// Occurs when something conects to this node. 
+        /// </summary>
+        public event ConnexionEvent OnConnected;
+
+        /// <summary>
+        /// Occurs when something gets disconnected from this node. 
+        /// </summary>
+        public event ConnexionEvent OnDisconnected;
+
+        /// <summary>
+        /// For when this node gets triggered by something connecting to it (or an external event).
+        /// </summary>
+        /// <param name="lSender">The port that just got triggered. </param>
+        public delegate void TriggerEvent(kAIPort lSender);
+        //TODO: Maybe provide the origin of the trigger?
+
+        /// <summary>
+        /// Occurs when this node gets triggered. 
+        /// </summary>
+        public event TriggerEvent OnTriggered;
+
+        //TODO: Data drive ports
+        /*public delegate void DataEvent(kAIPort lSender, Type lObjectData, object lData);
+        public event DataEvent OnDataSet;
+        public event DataEvent OnDataChanged;
+        public event DataEvent OnDataUnset;*/
+
+       
+ 
+
+
+        /// <summary>
         /// The set of ports this port connects to (not is connected from).
         /// </summary>
         protected List<kAIPort> mConnectingPorts;
@@ -149,6 +188,27 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// Tell this port it just got triggered. 
+        /// </summary>
+        public void Trigger()
+        {
+            if (DataType == kAIPortType.TriggerType)
+            {
+                if (PortDirection == ePortDirection.PortDirection_Out)
+                {
+                    foreach (kAIPort lConnectedPorts in mConnectingPorts)
+                    {
+                        lConnectedPorts.Trigger();
+                    }
+                }
+                else
+                {
+                    OnTriggered(this);
+                }
+            }
+        }
+
+        /// <summary>
         /// Create a connexion between this port and another port. 
         /// </summary>
         /// <param name="lOtherEnd">The port to connect to. </param>
@@ -178,14 +238,6 @@ namespace kAI.Core
             }
         }
 
-        internal void CreateBoundPort()
-        {
-            if (PortDirection == ePortDirection.PortDirection_In)
-            {
-                //mBoundPort = new kAIPort()
-            }
-        }
-
         /// <summary>
         /// Connect this port to another port. Will report a warning if something goes wrong.
         /// </summary>
@@ -202,7 +254,10 @@ namespace kAI.Core
         /// Called when this port gets connected to another port.
         /// </summary>
         /// <param name="lOtherEnd">The port this port has been connected to. </param>
-        protected virtual void OnConnect(kAIPort lOtherEnd) { ; }
+        protected virtual void OnConnect(kAIPort lOtherEnd) 
+        {
+            OnConnected(this, lOtherEnd);
+        }
 
         /// <summary>
         /// Disconnect this port from the specified port. 
@@ -211,13 +266,16 @@ namespace kAI.Core
         private void Disconnect(kAIPort lOtherEnd)
         {
             mConnectingPorts.Remove(lOtherEnd);
-            OnDisconnect();
+            OnDisconnect(lOtherEnd);
         }
 
         /// <summary>
         /// Called when this port is disconnected.
         /// </summary>
-        protected virtual void OnDisconnect() { ; }
+        protected virtual void OnDisconnect(kAIPort lOtherEnd) 
+        {
+            OnDisconnected(this, lOtherEnd);
+        }
 
 
         /// <summary>
