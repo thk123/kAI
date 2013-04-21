@@ -96,6 +96,21 @@ namespace kAI.Editor.Core
             }
         }
 
+        public string BehaviourName
+        {
+            get
+            {
+                if (BehaviourFlavour == eBehaviourFlavour.BehaviourFlavour_Code)
+                {
+                    return BehaviourType.Name;
+                }
+                else
+                {
+                    return BehaviourSourceXml.Name;
+                }
+            }
+        }
+
         /// <summary>
         /// Create a template from a class that inherits from kAIBehaviour, eg a code behaviour. 
         /// </summary>

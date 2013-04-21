@@ -31,6 +31,7 @@ namespace kAI.Editor
         kAIProject mLoadedProject;
 
         BehaviourEditorWindow mBehaviourEditor;
+        BehaviourTree mBehaviourTree;
 
         List<PropertyControllerBase<bool>> mProjectLoadedControls; // Controls that should only be enabled when a project is loaded.
 
@@ -67,9 +68,9 @@ namespace kAI.Editor
 
             SetEnabledProjectControls(true);
 
-            Label lTestLabel = new Label();
-            lTestLabel.Text = "Test project made";
-            MainEditor.Panel1.Controls.Add(lTestLabel);
+            mBehaviourTree = new BehaviourTree(lProject);
+            mBehaviourTree.Dock = DockStyle.Fill;
+            MainEditor.Panel1.Controls.Add(mBehaviourTree);
 
             mBehaviourEditor = new BehaviourEditorWindow();
             MainEditor.Panel2.Controls.Add(mBehaviourEditor);
@@ -138,6 +139,8 @@ namespace kAI.Editor
         {
             ProjectPropertiesForm lEditProject = new ProjectPropertiesForm(mLoadedProject);
             lEditProject.ShowDialog();
+
+            mBehaviourTree.UpdateTree(mLoadedProject);
         }
 
         private void closeProjectToolStripMenuItem_Click(object sender, EventArgs e)

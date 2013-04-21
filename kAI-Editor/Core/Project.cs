@@ -7,6 +7,9 @@ using System.Xml;
 using System.Runtime.Serialization;
 using System.Reflection;
 
+using kAI.Core;
+using kAI.Editor.Core.Util;
+
 namespace kAI.Editor.Core
 {
     /// <summary>
@@ -191,6 +194,16 @@ namespace kAI.Editor.Core
             Assembly lAssembly = Assembly.LoadFrom(lDLLPath.Name);
 
             ProjectDLLs.Add(lAssembly);
+
+            //Extract behaviors
+            foreach (Type lType in lAssembly.GetExportedTypes())
+            {
+                if (lType.DoesInherit(typeof(kAIBehaviour)))
+                {
+                    kAIBehaviourTemplate lTemplate = new kAIBehaviourTemplate(lType);
+                    Behaviours.Add(lTemplate);
+                }
+            }
         }
 
         /// <summary>
@@ -199,6 +212,24 @@ namespace kAI.Editor.Core
         /// <param name="lAssembly">The DLL to unload. </param>
         private void UnloadDLL(Assembly lAssembly)
         {
+            List<kAIBehaviourTemplate> lTemplatesToRemove = new List<kAIBehaviourTemplate>();
+            foreach (kAIBehaviourTemplate lTemplate in Behaviours)
+            {
+                if (lTemplate.BehaviourFlavour == kAIBehaviourTemplate.eBehaviourFlavour.BehaviourFlavour_Code)
+                {
+                    Type lUnderlyingType = lTemplate.BehaviourType;
+                    if (lUnderlyingType.Assembly.Equals(lAssembly))
+                    {
+                        lTemplatesToRemove.Add(lTemplate);
+                    }
+                }
+            }
+
+            foreach (kAIBehaviourTemplate lTemplate in lTemplatesToRemove)
+            {
+                Behaviours.Remove(lTemplate);
+            }
+
             ProjectDLLs.Remove(lAssembly);
         }
 

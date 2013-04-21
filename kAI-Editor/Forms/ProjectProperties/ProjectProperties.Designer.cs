@@ -50,9 +50,11 @@
             this.TabPage_Behaviours = new System.Windows.Forms.TabPage();
             this.Cancel_Btn = new System.Windows.Forms.Button();
             this.Confirm_Btn = new System.Windows.Forms.Button();
+            this.ProjectBehaviours_Title = new System.Windows.Forms.Label();
             this.ProjectProperties_TabControl.SuspendLayout();
             this.TabPage_General.SuspendLayout();
             this.TabPage_DLL.SuspendLayout();
+            this.TabPage_Behaviours.SuspendLayout();
             this.SuspendLayout();
             // 
             // ProjectProperties_TabControl
@@ -254,6 +256,7 @@
             // 
             // TabPage_Behaviours
             // 
+            this.TabPage_Behaviours.Controls.Add(this.ProjectBehaviours_Title);
             this.TabPage_Behaviours.Location = new System.Drawing.Point(4, 22);
             this.TabPage_Behaviours.Name = "TabPage_Behaviours";
             this.TabPage_Behaviours.Padding = new System.Windows.Forms.Padding(3);
@@ -282,6 +285,16 @@
             this.Confirm_Btn.UseVisualStyleBackColor = true;
             this.Confirm_Btn.Click += new System.EventHandler(this.Confirm_Btn_Click);
             // 
+            // ProjectBehaviours_Title
+            // 
+            this.ProjectBehaviours_Title.AutoSize = true;
+            this.ProjectBehaviours_Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ProjectBehaviours_Title.Location = new System.Drawing.Point(3, 3);
+            this.ProjectBehaviours_Title.Name = "ProjectBehaviours_Title";
+            this.ProjectBehaviours_Title.Size = new System.Drawing.Size(427, 55);
+            this.ProjectBehaviours_Title.TabIndex = 2;
+            this.ProjectBehaviours_Title.Text = "Project Behaviours";
+            // 
             // ProjectPropertiesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -297,6 +310,8 @@
             this.TabPage_General.PerformLayout();
             this.TabPage_DLL.ResumeLayout(false);
             this.TabPage_DLL.PerformLayout();
+            this.TabPage_Behaviours.ResumeLayout(false);
+            this.TabPage_Behaviours.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -325,5 +340,6 @@
         private System.Windows.Forms.TextBox DLL_BrowseText;
         private System.Windows.Forms.Button DLL_BrowseBtn;
         private System.Windows.Forms.Button DLL_AddBtn;
+        private System.Windows.Forms.Label ProjectBehaviours_Title;
     }
 }
