@@ -38,6 +38,7 @@
             this.closeProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.behavioursToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createNewXmlBehaviourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.addBehaviourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.MainEditor)).BeginInit();
             this.MainEditor.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -114,7 +115,8 @@
             // behavioursToolStripMenuItem
             // 
             this.behavioursToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.createNewXmlBehaviourToolStripMenuItem});
+            this.createNewXmlBehaviourToolStripMenuItem,
+            this.addBehaviourToolStripMenuItem});
             this.behavioursToolStripMenuItem.Name = "behavioursToolStripMenuItem";
             this.behavioursToolStripMenuItem.Size = new System.Drawing.Size(77, 20);
             this.behavioursToolStripMenuItem.Text = "Behaviours";
@@ -125,6 +127,13 @@
             this.createNewXmlBehaviourToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.createNewXmlBehaviourToolStripMenuItem.Text = "Create New Xml Behaviour";
             this.createNewXmlBehaviourToolStripMenuItem.Click += new System.EventHandler(this.createNewXmlBehaviourToolStripMenuItem_Click);
+            // 
+            // addBehaviourToolStripMenuItem
+            // 
+            this.addBehaviourToolStripMenuItem.Name = "addBehaviourToolStripMenuItem";
+            this.addBehaviourToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.addBehaviourToolStripMenuItem.Text = "Add Behaviour";
+            this.addBehaviourToolStripMenuItem.Click += new System.EventHandler(this.addBehaviourToolStripMenuItem_Click);
             // 
             // Editor
             // 
@@ -157,6 +166,7 @@
         private System.Windows.Forms.ToolStripMenuItem closeProjectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem behavioursToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem createNewXmlBehaviourToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem addBehaviourToolStripMenuItem;
 
     }
 }

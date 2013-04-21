@@ -34,6 +34,7 @@ namespace kAI.Editor
         BehaviourTree mBehaviourTree;
 
         List<PropertyControllerBase<bool>> mProjectLoadedControls; // Controls that should only be enabled when a project is loaded.
+        List<PropertyControllerBase<bool>> mBehaviourLoadedControls;
 
         /// <summary>
         /// Create a new editor. 
@@ -50,8 +51,12 @@ namespace kAI.Editor
             mProjectLoadedControls.Add(PropertyController.CreateForEnabledToolStrip(closeProjectToolStripMenuItem));
             mProjectLoadedControls.Add(PropertyController.CreateForEnabledToolStrip(createNewXmlBehaviourToolStripMenuItem));
 
+            mBehaviourLoadedControls = new List<PropertyControllerBase<bool>>();
+            mBehaviourLoadedControls.Add(PropertyController.CreateForEnabledToolStrip(addBehaviourToolStripMenuItem));
+
             // Disable all the project specific controls);
-            SetEnabledProjectControls(false);
+            SetEnabledSetControls(mProjectLoadedControls, false);
+            SetEnabledSetControls(mBehaviourLoadedControls, false);
 
         }
 
@@ -67,7 +72,7 @@ namespace kAI.Editor
             // Remove all old controls from the right hand window
             MainEditor.Panel1.Controls.Clear();
 
-            SetEnabledProjectControls(true);
+            SetEnabledSetControls(mProjectLoadedControls, true);
 
             mBehaviourTree = new BehaviourTree(lProject);
             mBehaviourTree.Dock = DockStyle.Fill;
@@ -83,16 +88,17 @@ namespace kAI.Editor
 
             mLoadedProject = null;
 
-            SetEnabledProjectControls(false);
+            SetEnabledSetControls(mProjectLoadedControls, false);
         }
 
         /// <summary>
         /// Either enable or disable all the project controls (eg controls that only make sense when a project is open). 
         /// </summary>
+        /// <param name="lSetOfControls">The set of controls to enable or disable.</param>
         /// <param name="lEnabled">Should the project controls be enabled. </param>
-        private void SetEnabledProjectControls(bool lEnabled)
+        private void SetEnabledSetControls(List<PropertyControllerBase<bool>> lSetOfControls, bool lEnabled)
         {
-            foreach (var lControls in mProjectLoadedControls)
+            foreach (var lControls in lSetOfControls)
             {
                 lControls.SetProperty(lEnabled);
             }
@@ -102,7 +108,7 @@ namespace kAI.Editor
         {
             if(mIsProjectLoaded)
             {
-                BehaviourChooser lChooser = new BehaviourChooser();
+                BehaviourChooser lChooser = new BehaviourChooser(mLoadedProject);
                 if (lChooser.ShowDialog() == DialogResult.OK)
                 {
                     mBehaviourEditor.AddBehaviour(lChooser.GetSelectedBehaviour());
@@ -153,6 +159,8 @@ namespace kAI.Editor
                 mBehaviourEditor = new BehaviourEditorWindow();
                 MainEditor.Panel2.Controls.Add(mBehaviourEditor);
                 mBehaviourEditor.Dock = DockStyle.Fill;
+
+                SetEnabledSetControls(mBehaviourLoadedControls, true);
             }
 
             mBehaviourEditor.NewBehaviour();

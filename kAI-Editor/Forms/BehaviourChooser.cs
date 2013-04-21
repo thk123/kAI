@@ -21,7 +21,7 @@ namespace kAI.Editor
     /// <summary>
     /// A form for choosing from a list of behaviours a specific behaviour. 
     /// </summary>
-    public partial class BehaviourChooser : Form
+    partial class BehaviourChooser : Form
     {
         /// <summary>
         /// The behaviour that is to be made. 
@@ -31,20 +31,16 @@ namespace kAI.Editor
         /// <summary>
         /// Create a new behaviour chooser form.
         /// </summary>
-        public BehaviourChooser()
+        public BehaviourChooser(kAIProject lProject)
         {
             InitializeComponent();
 
             mNewBehaviour = null;
 
-            //TEMP: Clearly need to select dll's in project properties and shouldn't waste time doing it when creating the form. 
-            Assembly lAssembly = Assembly.LoadFrom("kAITestBehaviours.dll");
-            List<kAIBehaviourTemplate> templates = kAIBehaviourTemplate.ReadBehavioursFromDll(lAssembly);
-            BehavioursList.Items.Add(lAssembly.FullName);
-            foreach (kAIBehaviourTemplate lTemplate in templates)
+            foreach (kAIBehaviourTemplate lTemplate in lProject.Behaviours)
             {
                 BehavioursList.Items.Add(lTemplate);
-            }
+            }           
 
         }
 
