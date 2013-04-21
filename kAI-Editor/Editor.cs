@@ -48,6 +48,7 @@ namespace kAI.Editor
             mProjectLoadedControls = new List<PropertyControllerBase<bool>>();
             mProjectLoadedControls.Add(PropertyController.CreateForEnabledToolStrip(projectPropertiesToolStripMenuItem));
             mProjectLoadedControls.Add(PropertyController.CreateForEnabledToolStrip(closeProjectToolStripMenuItem));
+            mProjectLoadedControls.Add(PropertyController.CreateForEnabledToolStrip(createNewXmlBehaviourToolStripMenuItem));
 
             // Disable all the project specific controls);
             SetEnabledProjectControls(false);
@@ -71,9 +72,6 @@ namespace kAI.Editor
             mBehaviourTree = new BehaviourTree(lProject);
             mBehaviourTree.Dock = DockStyle.Fill;
             MainEditor.Panel1.Controls.Add(mBehaviourTree);
-
-            mBehaviourEditor = new BehaviourEditorWindow();
-            MainEditor.Panel2.Controls.Add(mBehaviourEditor);
         }
 
         /// <summary>
@@ -146,6 +144,18 @@ namespace kAI.Editor
         private void closeProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             CloseProject();
+        }
+
+        private void createNewXmlBehaviourToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            if (mBehaviourEditor == null)
+            {
+                mBehaviourEditor = new BehaviourEditorWindow();
+                MainEditor.Panel2.Controls.Add(mBehaviourEditor);
+                mBehaviourEditor.Dock = DockStyle.Fill;
+            }
+
+            mBehaviourEditor.NewBehaviour();
         }
     }
 }

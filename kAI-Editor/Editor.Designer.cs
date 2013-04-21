@@ -36,6 +36,8 @@
             this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.projectPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.closeProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.behavioursToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.createNewXmlBehaviourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.MainEditor)).BeginInit();
             this.MainEditor.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -62,14 +64,14 @@
             // newProjectToolStripMenuItem
             // 
             this.newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
-            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.newProjectToolStripMenuItem.Text = "New Project...";
             this.newProjectToolStripMenuItem.Click += new System.EventHandler(this.newProjectToolStripMenuItem_Click);
             // 
             // openProjectToolStripMenuItem
             // 
             this.openProjectToolStripMenuItem.Name = "openProjectToolStripMenuItem";
-            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.openProjectToolStripMenuItem.Text = "Open Project";
             this.openProjectToolStripMenuItem.Click += new System.EventHandler(this.openProjectToolStripMenuItem_Click);
             // 
@@ -77,7 +79,8 @@
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.projectToolStripMenuItem});
+            this.projectToolStripMenuItem,
+            this.behavioursToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1226, 24);
@@ -108,6 +111,21 @@
             this.closeProjectToolStripMenuItem.Text = "Close Project";
             this.closeProjectToolStripMenuItem.Click += new System.EventHandler(this.closeProjectToolStripMenuItem_Click);
             // 
+            // behavioursToolStripMenuItem
+            // 
+            this.behavioursToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.createNewXmlBehaviourToolStripMenuItem});
+            this.behavioursToolStripMenuItem.Name = "behavioursToolStripMenuItem";
+            this.behavioursToolStripMenuItem.Size = new System.Drawing.Size(77, 20);
+            this.behavioursToolStripMenuItem.Text = "Behaviours";
+            // 
+            // createNewXmlBehaviourToolStripMenuItem
+            // 
+            this.createNewXmlBehaviourToolStripMenuItem.Name = "createNewXmlBehaviourToolStripMenuItem";
+            this.createNewXmlBehaviourToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.createNewXmlBehaviourToolStripMenuItem.Text = "Create New Xml Behaviour";
+            this.createNewXmlBehaviourToolStripMenuItem.Click += new System.EventHandler(this.createNewXmlBehaviourToolStripMenuItem_Click);
+            // 
             // Editor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -137,6 +155,8 @@
         private System.Windows.Forms.ToolStripMenuItem projectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem projectPropertiesToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem closeProjectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem behavioursToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem createNewXmlBehaviourToolStripMenuItem;
 
     }
 }

@@ -32,11 +32,29 @@ namespace kAI.Editor.Controls
         List<kAIEditorNode> nodes;
 
         /// <summary>
+        /// The next vertical position of a in port. 
+        /// </summary>
+        int mNextInPortY;
+
+        /// <summary>
+        /// The next vertical position of an out port. 
+        /// </summary>
+        int mNextOutPortY;
+
+        /// <summary>
+        /// The vertical distance between ports. 
+        /// </summary>
+        const int kPortVerticalSeperation = 10;
+
+        /// <summary>
         /// Create a new editor pane for a XML behaviour
         /// </summary>
         public BehaviourEditorWindow()
         {
             InitializeComponent();
+
+            mNextInPortY = 5;
+            mNextOutPortY = 5;
 
             nodes = new List<kAIEditorNode>();
         }
@@ -52,6 +70,54 @@ namespace kAI.Editor.Controls
             Controls.Add(lNewNode);
 
             nodes.Add(lNewNode);
+        }
+
+        /// <summary>
+        /// Create a new behaviour and load it in to the editor. 
+        /// </summary>
+        public void NewBehaviour()
+        {
+            //TEMP: Need to get the name from some dialog box or something. 
+            kAIXmlBehaviour lBehaviour = new kAIXmlBehaviour("NewBehaviour");
+
+            LoadBehaviour(lBehaviour);
+        }
+
+        /// <summary>
+        /// Load an existing XML behaviour in to the editor. 
+        /// </summary>
+        /// <param name="lBehaviour">The XML behaviour to load. </param>
+        public void LoadBehaviour(kAIXmlBehaviour lBehaviour)
+        {
+            foreach (kAIPort lGlobalPort in lBehaviour.GlobalPorts)
+            {
+                AddGlobalPort(lGlobalPort);
+            }
+        }
+
+        private void AddGlobalPort(kAIPort lNewPort)
+        {
+            kAIEditorPort lNewEditorPort = new kAIEditorPort(lNewPort);
+            if (lNewPort.PortDirection == kAIPort.ePortDirection.PortDirection_Out)
+            {
+                Point lNewLocation = new Point();
+                lNewLocation.Y = mNextInPortY;
+                lNewLocation.X = 0;
+
+                lNewEditorPort.Location = lNewLocation;
+                mNextInPortY += lNewEditorPort.Height + kPortVerticalSeperation;
+            }
+            else
+            {
+                Point lNewLocation = new Point();
+                lNewLocation.Y = mNextOutPortY;
+                lNewLocation.X = Width - lNewEditorPort.Width;
+
+                lNewEditorPort.Location = lNewLocation;
+                mNextOutPortY += lNewEditorPort.Height + kPortVerticalSeperation;
+            }
+
+            Controls.Add(lNewEditorPort);
         }
 
         private void BehaviourEditorWindow_MouseDown(object sender, MouseEventArgs e)
