@@ -12,6 +12,9 @@ namespace kAI.Editor.Forms.ProjectProperties
 {
     partial class ProjectPropertiesForm : Form
     {
+        /// <summary>
+        /// Sets the controls on the DLL tab from the project properties. 
+        /// </summary>
         private void SetDLLFormFromProject()
         {
             DLL_FlowList.Controls.Clear();
@@ -24,16 +27,18 @@ namespace kAI.Editor.Forms.ProjectProperties
             }
         }
 
+        /// <summary>
+        /// Sets the project properties from the settings on the DLLs screen. 
+        /// </summary>
+        private void SetProjectFromDLLForm()
+        {
+            //TODO: probably not required but for consistency should. 
+        }
+
         void lEntry_DLLRemovedEvent(DLLEntry lSender, Assembly lDLLToRemove)
         {
             Project.RemoveDLL(lDLLToRemove);
             DLL_FlowList.Controls.Remove(lSender);
-
-        }
-
-
-        private void SetProjectFromDLLForm()
-        {
 
         }
 

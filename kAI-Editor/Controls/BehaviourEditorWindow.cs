@@ -16,7 +16,9 @@ using kAI.Editor.Controls;
 
 namespace kAI.Editor.Controls
 {
-    ///
+    /// <summary>
+    /// The control that handles editing behaviours. 
+    /// </summary>
     public partial class BehaviourEditorWindow : UserControl
     {
         /// <summary>

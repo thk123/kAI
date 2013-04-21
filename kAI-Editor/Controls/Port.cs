@@ -16,15 +16,25 @@ namespace kAI.Editor.Controls
     /// </summary>
     public partial class kAIEditorPort : UserControl
     {
+        /// <summary>
+        /// The background image to use (i.e. when not hovered).
+        /// </summary>
         Image mBackgroundImage;
+
+        /// <summary>
+        /// The image to use when hovered. 
+        /// </summary>
         Image mHoverImage;
 
+        /// <summary>
+        /// The port this control is representing. 
+        /// </summary>
         kAIPort mPort;
 
         /// <summary>
         /// Create a editor port from a given port. 
         /// </summary>
-        /// <param name="lPort"></param>
+        /// <param name="lPort">The port this control is repesentings</param>
         public kAIEditorPort(kAIPort lPort)
         {
             InitializeComponent();
@@ -32,7 +42,7 @@ namespace kAI.Editor.Controls
 
             mPort = lPort;
 
-
+            // Based on the direction of the port, choose the image. 
             if (lPort.PortDirection == kAIPort.ePortDirection.PortDirection_In)
             {
 
@@ -48,6 +58,9 @@ namespace kAI.Editor.Controls
             ResetImage();
         }
 
+        /// <summary>
+        /// Set the image to the non-hovered state. 
+        /// </summary>
         void ResetImage()
         {
             BackgroundImage = mBackgroundImage;

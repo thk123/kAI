@@ -9,6 +9,9 @@ namespace kAI.Editor.Forms.ProjectProperties
 {
     partial class ProjectPropertiesForm : Form
     {
+        /// <summary>
+        /// Set the controls on the main page from the project. 
+        /// </summary>
         private void SetMainFormFromProject()
         {
             ProjectName_TextBox.Text = Project.ProjectName;
@@ -16,6 +19,9 @@ namespace kAI.Editor.Forms.ProjectProperties
             BehaviuorDir_TextBox.Text = Project.XmlBehaviourRoot.FullName;
         }
 
+        /// <summary>
+        /// Sets the properties in the project from the main page. 
+        /// </summary>
         private void SetProjectFromMainForm()
         {
             Project.ProjectName = ProjectName_TextBox.Text;

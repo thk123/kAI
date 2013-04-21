@@ -11,7 +11,7 @@ using System.Reflection;
 namespace kAI.Editor.Controls
 {
     /// <summary>
-    /// 
+    /// An DLL entry in the project properties control. 
     /// </summary>
     public partial class DLLEntry : UserControl
     {
@@ -27,11 +27,15 @@ namespace kAI.Editor.Controls
         /// </summary>
         public event DLLRemoved DLLRemovedEvent;
 
+        /// <summary>
+        /// The Assembly behind this entry. 
+        /// </summary>
         Assembly mAssembly;
 
         /// <summary>
-        /// 
+        /// Create a DLL entry representing a given assembly. 
         /// </summary>
+        /// <param name="lAssembly">The assembly this entry represents. </param>
         public DLLEntry(Assembly lAssembly)
         {
             InitializeComponent();
@@ -40,9 +44,9 @@ namespace kAI.Editor.Controls
         }
 
         /// <summary>
-        /// 
+        /// Sets the data of this control according to the DLL. 
         /// </summary>
-        /// <param name="lDLLEntry"></param>
+        /// <param name="lDLLEntry">The DLL to use to set the controls of the control. </param>
         private void SetDllEntry(Assembly lDLLEntry)
         {
             DLL_NameLabel.Text = lDLLEntry.GetName().Name;

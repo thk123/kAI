@@ -52,7 +52,52 @@ namespace kAI.Editor
             SetEnabledProjectControls(false);
 
         }
-               
+
+        /// <summary>
+        /// Load a given project in to the editor. 
+        /// </summary>
+        /// <param name="lProject"></param>
+        private void LoadProject(kAIProject lProject)
+        {
+            mLoadedProject = lProject;
+            mIsProjectLoaded = true;
+
+            // Remove all old controls from the right hand window
+            MainEditor.Panel1.Controls.Clear();
+
+            SetEnabledProjectControls(true);
+
+            Label lTestLabel = new Label();
+            lTestLabel.Text = "Test project made";
+            MainEditor.Panel1.Controls.Add(lTestLabel);
+
+            mBehaviourEditor = new BehaviourEditorWindow();
+            MainEditor.Panel2.Controls.Add(mBehaviourEditor);
+        }
+
+        /// <summary>
+        /// Close the currently open project. 
+        /// </summary>
+        private void CloseProject()
+        {
+            System.Diagnostics.Debug.Assert(mLoadedProject != null);
+
+            mLoadedProject = null;
+
+            SetEnabledProjectControls(false);
+        }
+
+        /// <summary>
+        /// Either enable or disable all the project controls (eg controls that only make sense when a project is open). 
+        /// </summary>
+        /// <param name="lEnabled">Should the project controls be enabled. </param>
+        private void SetEnabledProjectControls(bool lEnabled)
+        {
+            foreach (var lControls in mProjectLoadedControls)
+            {
+                lControls.SetProperty(lEnabled);
+            }
+        }
 
         void addBehaviourToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -76,42 +121,6 @@ namespace kAI.Editor
                 LoadProject(lNewProjectPropertiesViewer.Project);
             }
         }
-
-        private void LoadProject(kAIProject lProject)
-        {
-            mLoadedProject = lProject;
-            mIsProjectLoaded = true;
-
-            // Remove all old controls from the right hand window
-            MainEditor.Panel1.Controls.Clear();
-
-            SetEnabledProjectControls(true);
-
-            Label lTestLabel = new Label();
-            lTestLabel.Text = "Test project made";
-            MainEditor.Panel1.Controls.Add(lTestLabel);
-
-            mBehaviourEditor = new BehaviourEditorWindow();
-            MainEditor.Panel2.Controls.Add(mBehaviourEditor);
-        }
-
-        private void CloseProject()
-        {
-            System.Diagnostics.Debug.Assert(mLoadedProject != null);
-
-            mLoadedProject = null;
-
-            SetEnabledProjectControls(false);
-        }
-
-        private void SetEnabledProjectControls(bool lEnabled)
-        {
-            foreach (var lControls in mProjectLoadedControls)
-            {
-                lControls.SetProperty(lEnabled);
-            }
-        }
-
 
         private void openProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {

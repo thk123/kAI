@@ -17,7 +17,7 @@ using kAI.Editor.Core;
 namespace kAI.Editor.Forms.ProjectProperties
 {
     /// <summary>
-    /// 
+    /// A form showing the settings for this project. 
     /// </summary>
     partial class ProjectPropertiesForm : Form
     {
