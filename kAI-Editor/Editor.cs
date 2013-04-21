@@ -8,7 +8,17 @@ using System.Text;
 using System.Windows.Forms;
 using System.Runtime.Serialization;
 using System.Xml;
+using System.IO;
+
 using kAI.Core;
+using kAI.Editor.Core;
+using kAI.Editor.Core.Util;
+using kAI.Editor.Forms;
+using kAI.Editor.Forms.ProjectProperties;
+using kAI.Editor.Controls;
+
+
+
 
 namespace kAI.Editor
 {
@@ -22,6 +32,8 @@ namespace kAI.Editor
 
         BehaviourEditorWindow mBehaviourEditor;
 
+        List<PropertyControllerBase<bool>> mProjectLoadedControls; // Controls that should only be enabled when a project is loaded.
+
         /// <summary>
         /// Create a new editor. 
         /// </summary>
@@ -30,7 +42,15 @@ namespace kAI.Editor
             InitializeComponent();
 
             mIsProjectLoaded = false;
-            mLoadedProject = null;            
+            mLoadedProject = null;
+
+            mProjectLoadedControls = new List<PropertyControllerBase<bool>>();
+            mProjectLoadedControls.Add(PropertyController.CreateForEnabledToolStrip(projectPropertiesToolStripMenuItem));
+            mProjectLoadedControls.Add(PropertyController.CreateForEnabledToolStrip(closeProjectToolStripMenuItem));
+
+            // Disable all the project specific controls);
+            SetEnabledProjectControls(false);
+
         }
                
 
@@ -48,12 +68,12 @@ namespace kAI.Editor
 
         private void newProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            ProjectProperties lNewProjectPropertiesViewer = new ProjectProperties(mLoadedProject);
+            ProjectPropertiesForm lNewProjectPropertiesViewer = new ProjectPropertiesForm(mLoadedProject);
 
             // The user has decided to create a new project
             if (lNewProjectPropertiesViewer.ShowDialog() == DialogResult.OK)
             {
-                LoadProject(lNewProjectPropertiesViewer.mProperties);
+                LoadProject(lNewProjectPropertiesViewer.Project);
             }
         }
 
@@ -65,6 +85,8 @@ namespace kAI.Editor
             // Remove all old controls from the right hand window
             MainEditor.Panel1.Controls.Clear();
 
+            SetEnabledProjectControls(true);
+
             Label lTestLabel = new Label();
             lTestLabel.Text = "Test project made";
             MainEditor.Panel1.Controls.Add(lTestLabel);
@@ -73,16 +95,45 @@ namespace kAI.Editor
             MainEditor.Panel2.Controls.Add(mBehaviourEditor);
         }
 
+        private void CloseProject()
+        {
+            System.Diagnostics.Debug.Assert(mLoadedProject != null);
+
+            mLoadedProject = null;
+
+            SetEnabledProjectControls(false);
+        }
+
+        private void SetEnabledProjectControls(bool lEnabled)
+        {
+            foreach (var lControls in mProjectLoadedControls)
+            {
+                lControls.SetProperty(lEnabled);
+            }
+        }
+
+
         private void openProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog lOpenDialog = new OpenFileDialog();
             lOpenDialog.Filter = "kAI Project Files |*." + kAIProject.kProjectFileExtension;
             if (lOpenDialog.ShowDialog() == DialogResult.OK)
             {
-                DataContractSerializer lDeserialiser = new DataContractSerializer(typeof(kAIProject));
-                mLoadedProject = (kAIProject)lDeserialiser.ReadObject(lOpenDialog.OpenFile());
+                kAIProject lProject = kAIProject.Load(new FileInfo(lOpenDialog.FileName));
+
+                LoadProject(lProject);
             }
         }
-       
+
+        private void projectPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            ProjectPropertiesForm lEditProject = new ProjectPropertiesForm(mLoadedProject);
+            lEditProject.ShowDialog();
+        }
+
+        private void closeProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CloseProject();
+        }
     }
 }

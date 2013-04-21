@@ -1,6 +1,6 @@
-﻿namespace kAI.Editor
+﻿namespace kAI.Editor.Forms.ProjectProperties
 {
-    partial class ProjectProperties
+    partial class ProjectPropertiesForm
     {
         /// <summary>
         /// Required designer variable.
@@ -30,8 +30,6 @@
         {
             this.ProjectProperties_TabControl = new System.Windows.Forms.TabControl();
             this.TabPage_General = new System.Windows.Forms.TabPage();
-            this.Cancel_Btn = new System.Windows.Forms.Button();
-            this.Confirm_Btn = new System.Windows.Forms.Button();
             this.BehaviourDir_BrowseBtn = new System.Windows.Forms.Button();
             this.BehaviuorDir_TextBox = new System.Windows.Forms.TextBox();
             this.ProjectDir_BrowseBtn = new System.Windows.Forms.Button();
@@ -42,11 +40,19 @@
             this.ProjectName_Label = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.TabPage_DLL = new System.Windows.Forms.TabPage();
+            this.DLL_BrowseText = new System.Windows.Forms.TextBox();
+            this.DLL_BrowseBtn = new System.Windows.Forms.Button();
+            this.DLL_AddBtn = new System.Windows.Forms.Button();
+            this.DLL_FlowList = new System.Windows.Forms.FlowLayoutPanel();
+            this.DLL_TitleLabel = new System.Windows.Forms.Label();
             this.TabPage_Types = new System.Windows.Forms.TabPage();
             this.TabPage_Actions = new System.Windows.Forms.TabPage();
             this.TabPage_Behaviours = new System.Windows.Forms.TabPage();
+            this.Cancel_Btn = new System.Windows.Forms.Button();
+            this.Confirm_Btn = new System.Windows.Forms.Button();
             this.ProjectProperties_TabControl.SuspendLayout();
             this.TabPage_General.SuspendLayout();
+            this.TabPage_DLL.SuspendLayout();
             this.SuspendLayout();
             // 
             // ProjectProperties_TabControl
@@ -56,17 +62,15 @@
             this.ProjectProperties_TabControl.Controls.Add(this.TabPage_Types);
             this.ProjectProperties_TabControl.Controls.Add(this.TabPage_Actions);
             this.ProjectProperties_TabControl.Controls.Add(this.TabPage_Behaviours);
-            this.ProjectProperties_TabControl.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.ProjectProperties_TabControl.Dock = System.Windows.Forms.DockStyle.Top;
             this.ProjectProperties_TabControl.Location = new System.Drawing.Point(0, 0);
             this.ProjectProperties_TabControl.Name = "ProjectProperties_TabControl";
             this.ProjectProperties_TabControl.SelectedIndex = 0;
-            this.ProjectProperties_TabControl.Size = new System.Drawing.Size(969, 747);
+            this.ProjectProperties_TabControl.Size = new System.Drawing.Size(969, 713);
             this.ProjectProperties_TabControl.TabIndex = 0;
             // 
             // TabPage_General
             // 
-            this.TabPage_General.Controls.Add(this.Cancel_Btn);
-            this.TabPage_General.Controls.Add(this.Confirm_Btn);
             this.TabPage_General.Controls.Add(this.BehaviourDir_BrowseBtn);
             this.TabPage_General.Controls.Add(this.BehaviuorDir_TextBox);
             this.TabPage_General.Controls.Add(this.ProjectDir_BrowseBtn);
@@ -79,30 +83,10 @@
             this.TabPage_General.Location = new System.Drawing.Point(4, 22);
             this.TabPage_General.Name = "TabPage_General";
             this.TabPage_General.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage_General.Size = new System.Drawing.Size(961, 721);
+            this.TabPage_General.Size = new System.Drawing.Size(961, 687);
             this.TabPage_General.TabIndex = 0;
             this.TabPage_General.Text = "General";
             this.TabPage_General.UseVisualStyleBackColor = true;
-            // 
-            // Cancel_Btn
-            // 
-            this.Cancel_Btn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel_Btn.Location = new System.Drawing.Point(671, 690);
-            this.Cancel_Btn.Name = "Cancel_Btn";
-            this.Cancel_Btn.Size = new System.Drawing.Size(138, 23);
-            this.Cancel_Btn.TabIndex = 11;
-            this.Cancel_Btn.Text = "Cancel";
-            this.Cancel_Btn.UseVisualStyleBackColor = true;
-            // 
-            // Confirm_Btn
-            // 
-            this.Confirm_Btn.Location = new System.Drawing.Point(815, 690);
-            this.Confirm_Btn.Name = "Confirm_Btn";
-            this.Confirm_Btn.Size = new System.Drawing.Size(138, 23);
-            this.Confirm_Btn.TabIndex = 10;
-            this.Confirm_Btn.Text = "Confirm";
-            this.Confirm_Btn.UseVisualStyleBackColor = true;
-            this.Confirm_Btn.Click += new System.EventHandler(this.Confirm_Btn_Click);
             // 
             // BehaviourDir_BrowseBtn
             // 
@@ -189,20 +173,71 @@
             // 
             // TabPage_DLL
             // 
+            this.TabPage_DLL.Controls.Add(this.DLL_BrowseText);
+            this.TabPage_DLL.Controls.Add(this.DLL_BrowseBtn);
+            this.TabPage_DLL.Controls.Add(this.DLL_AddBtn);
+            this.TabPage_DLL.Controls.Add(this.DLL_FlowList);
+            this.TabPage_DLL.Controls.Add(this.DLL_TitleLabel);
             this.TabPage_DLL.Location = new System.Drawing.Point(4, 22);
             this.TabPage_DLL.Name = "TabPage_DLL";
             this.TabPage_DLL.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage_DLL.Size = new System.Drawing.Size(961, 721);
+            this.TabPage_DLL.Size = new System.Drawing.Size(961, 687);
             this.TabPage_DLL.TabIndex = 1;
             this.TabPage_DLL.Text = "DLL\'s";
             this.TabPage_DLL.UseVisualStyleBackColor = true;
+            // 
+            // DLL_BrowseText
+            // 
+            this.DLL_BrowseText.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Bottom | System.Windows.Forms.AnchorStyles.Left)));
+            this.DLL_BrowseText.Location = new System.Drawing.Point(13, 661);
+            this.DLL_BrowseText.Name = "DLL_BrowseText";
+            this.DLL_BrowseText.Size = new System.Drawing.Size(768, 20);
+            this.DLL_BrowseText.TabIndex = 3;
+            this.DLL_BrowseText.DoubleClick += new System.EventHandler(this.DLL_Browse);
+            // 
+            // DLL_BrowseBtn
+            // 
+            this.DLL_BrowseBtn.Location = new System.Drawing.Point(787, 658);
+            this.DLL_BrowseBtn.Name = "DLL_BrowseBtn";
+            this.DLL_BrowseBtn.Size = new System.Drawing.Size(75, 23);
+            this.DLL_BrowseBtn.TabIndex = 4;
+            this.DLL_BrowseBtn.Text = "Browse";
+            this.DLL_BrowseBtn.UseVisualStyleBackColor = true;
+            this.DLL_BrowseBtn.Click += new System.EventHandler(this.DLL_Browse);
+            // 
+            // DLL_AddBtn
+            // 
+            this.DLL_AddBtn.Location = new System.Drawing.Point(868, 658);
+            this.DLL_AddBtn.Name = "DLL_AddBtn";
+            this.DLL_AddBtn.Size = new System.Drawing.Size(75, 23);
+            this.DLL_AddBtn.TabIndex = 5;
+            this.DLL_AddBtn.Text = "Add";
+            this.DLL_AddBtn.UseVisualStyleBackColor = true;
+            this.DLL_AddBtn.Click += new System.EventHandler(this.DLL_AddBtn_Click);
+            // 
+            // DLL_FlowList
+            // 
+            this.DLL_FlowList.Location = new System.Drawing.Point(13, 61);
+            this.DLL_FlowList.Name = "DLL_FlowList";
+            this.DLL_FlowList.Size = new System.Drawing.Size(940, 591);
+            this.DLL_FlowList.TabIndex = 2;
+            // 
+            // DLL_TitleLabel
+            // 
+            this.DLL_TitleLabel.AutoSize = true;
+            this.DLL_TitleLabel.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.DLL_TitleLabel.Location = new System.Drawing.Point(3, 3);
+            this.DLL_TitleLabel.Name = "DLL_TitleLabel";
+            this.DLL_TitleLabel.Size = new System.Drawing.Size(308, 55);
+            this.DLL_TitleLabel.TabIndex = 1;
+            this.DLL_TitleLabel.Text = "Project DLL\'s";
             // 
             // TabPage_Types
             // 
             this.TabPage_Types.Location = new System.Drawing.Point(4, 22);
             this.TabPage_Types.Name = "TabPage_Types";
             this.TabPage_Types.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage_Types.Size = new System.Drawing.Size(961, 721);
+            this.TabPage_Types.Size = new System.Drawing.Size(961, 687);
             this.TabPage_Types.TabIndex = 2;
             this.TabPage_Types.Text = "Types";
             this.TabPage_Types.UseVisualStyleBackColor = true;
@@ -212,7 +247,7 @@
             this.TabPage_Actions.Location = new System.Drawing.Point(4, 22);
             this.TabPage_Actions.Name = "TabPage_Actions";
             this.TabPage_Actions.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage_Actions.Size = new System.Drawing.Size(961, 721);
+            this.TabPage_Actions.Size = new System.Drawing.Size(961, 687);
             this.TabPage_Actions.TabIndex = 3;
             this.TabPage_Actions.Text = "Actions";
             this.TabPage_Actions.UseVisualStyleBackColor = true;
@@ -222,22 +257,46 @@
             this.TabPage_Behaviours.Location = new System.Drawing.Point(4, 22);
             this.TabPage_Behaviours.Name = "TabPage_Behaviours";
             this.TabPage_Behaviours.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage_Behaviours.Size = new System.Drawing.Size(961, 721);
+            this.TabPage_Behaviours.Size = new System.Drawing.Size(961, 687);
             this.TabPage_Behaviours.TabIndex = 4;
             this.TabPage_Behaviours.Text = "Behaviours";
             this.TabPage_Behaviours.UseVisualStyleBackColor = true;
             // 
-            // ProjectProperties
+            // Cancel_Btn
+            // 
+            this.Cancel_Btn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
+            this.Cancel_Btn.Location = new System.Drawing.Point(675, 719);
+            this.Cancel_Btn.Name = "Cancel_Btn";
+            this.Cancel_Btn.Size = new System.Drawing.Size(138, 23);
+            this.Cancel_Btn.TabIndex = 13;
+            this.Cancel_Btn.Text = "Cancel";
+            this.Cancel_Btn.UseVisualStyleBackColor = true;
+            // 
+            // Confirm_Btn
+            // 
+            this.Confirm_Btn.Location = new System.Drawing.Point(819, 719);
+            this.Confirm_Btn.Name = "Confirm_Btn";
+            this.Confirm_Btn.Size = new System.Drawing.Size(138, 23);
+            this.Confirm_Btn.TabIndex = 12;
+            this.Confirm_Btn.Text = "Confirm";
+            this.Confirm_Btn.UseVisualStyleBackColor = true;
+            this.Confirm_Btn.Click += new System.EventHandler(this.Confirm_Btn_Click);
+            // 
+            // ProjectPropertiesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(969, 747);
+            this.Controls.Add(this.Cancel_Btn);
+            this.Controls.Add(this.Confirm_Btn);
             this.Controls.Add(this.ProjectProperties_TabControl);
-            this.Name = "ProjectProperties";
+            this.Name = "ProjectPropertiesForm";
             this.Text = "Project Properties";
             this.ProjectProperties_TabControl.ResumeLayout(false);
             this.TabPage_General.ResumeLayout(false);
             this.TabPage_General.PerformLayout();
+            this.TabPage_DLL.ResumeLayout(false);
+            this.TabPage_DLL.PerformLayout();
             this.ResumeLayout(false);
 
         }
@@ -259,7 +318,12 @@
         private System.Windows.Forms.Button ProjectDir_BrowseBtn;
         private System.Windows.Forms.TextBox ProjectDir_TextBox;
         private System.Windows.Forms.TextBox ProjectName_TextBox;
+        private System.Windows.Forms.FlowLayoutPanel DLL_FlowList;
+        private System.Windows.Forms.Label DLL_TitleLabel;
         private System.Windows.Forms.Button Cancel_Btn;
         private System.Windows.Forms.Button Confirm_Btn;
+        private System.Windows.Forms.TextBox DLL_BrowseText;
+        private System.Windows.Forms.Button DLL_BrowseBtn;
+        private System.Windows.Forms.Button DLL_AddBtn;
     }
 }

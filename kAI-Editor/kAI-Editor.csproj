@@ -52,63 +52,79 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BehaviourChooser.cs">
-      <SubType>Form</SubType>
-    </Compile>
-    <Compile Include="BehaviourChooser.Designer.cs">
-      <DependentUpon>BehaviourChooser.cs</DependentUpon>
-    </Compile>
-    <Compile Include="BehaviourEditorWindow.cs">
+    <Compile Include="Controls\DLLEntry.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="BehaviourEditorWindow.Designer.cs">
+    <Compile Include="Controls\DLLEntry.Designer.cs">
+      <DependentUpon>DLLEntry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\BehaviourChooser.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\BehaviourChooser.Designer.cs">
+      <DependentUpon>BehaviourChooser.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\BehaviourEditorWindow.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\BehaviourEditorWindow.Designer.cs">
       <DependentUpon>BehaviourEditorWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="BehaviourTemplate.cs" />
+    <Compile Include="Core\BehaviourTemplate.cs" />
     <Compile Include="Editor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Editor.Designer.cs">
       <DependentUpon>Editor.cs</DependentUpon>
     </Compile>
-    <Compile Include="EditorNode.cs">
+    <Compile Include="Controls\EditorNode.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="EditorNode.Designer.cs">
+    <Compile Include="Controls\EditorNode.Designer.cs">
       <DependentUpon>EditorNode.cs</DependentUpon>
     </Compile>
-    <Compile Include="Port.cs">
+    <Compile Include="Controls\Port.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Port.Designer.cs">
+    <Compile Include="Controls\Port.Designer.cs">
       <DependentUpon>Port.cs</DependentUpon>
     </Compile>
-    <Compile Include="Program.cs" />
-    <Compile Include="Project.cs" />
-    <Compile Include="ProjectProperties.cs">
+    <Compile Include="Forms\ProjectProperties\ProjectProperties_DLL.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="ProjectProperties.Designer.cs">
+    <Compile Include="Forms\ProjectProperties\ProjectProperties_Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Program.cs" />
+    <Compile Include="Core\Project.cs" />
+    <Compile Include="Forms\ProjectProperties\ProjectProperties.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProjectProperties\ProjectProperties.Designer.cs">
       <DependentUpon>ProjectProperties.cs</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Util.cs" />
-    <EmbeddedResource Include="BehaviourChooser.resx">
+    <Compile Include="Core\Util\PropertyController.cs" />
+    <Compile Include="Core\Util\Util.cs" />
+    <EmbeddedResource Include="Controls\DLLEntry.resx">
+      <DependentUpon>DLLEntry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\BehaviourChooser.resx">
       <DependentUpon>BehaviourChooser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="BehaviourEditorWindow.resx">
+    <EmbeddedResource Include="Controls\BehaviourEditorWindow.resx">
       <DependentUpon>BehaviourEditorWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Editor.resx">
       <DependentUpon>Editor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="EditorNode.resx">
+    <EmbeddedResource Include="Controls\EditorNode.resx">
       <DependentUpon>EditorNode.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Port.resx">
+    <EmbeddedResource Include="Controls\Port.resx">
       <DependentUpon>Port.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="ProjectProperties.resx">
+    <EmbeddedResource Include="Forms\ProjectProperties\ProjectProperties.resx">
       <DependentUpon>ProjectProperties.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
@@ -151,6 +167,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="Assets\Port.png" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Core\Behaviour\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

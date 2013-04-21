@@ -32,10 +32,10 @@
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.behaviourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.createNewBehaviourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.addBehaviourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
+            this.projectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.projectPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.closeProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.MainEditor)).BeginInit();
             this.MainEditor.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -73,38 +73,40 @@
             this.openProjectToolStripMenuItem.Text = "Open Project";
             this.openProjectToolStripMenuItem.Click += new System.EventHandler(this.openProjectToolStripMenuItem_Click);
             // 
-            // behaviourToolStripMenuItem
-            // 
-            this.behaviourToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.createNewBehaviourToolStripMenuItem,
-            this.addBehaviourToolStripMenuItem});
-            this.behaviourToolStripMenuItem.Name = "behaviourToolStripMenuItem";
-            this.behaviourToolStripMenuItem.Size = new System.Drawing.Size(72, 20);
-            this.behaviourToolStripMenuItem.Text = "Behaviour";
-            // 
-            // createNewBehaviourToolStripMenuItem
-            // 
-            this.createNewBehaviourToolStripMenuItem.Name = "createNewBehaviourToolStripMenuItem";
-            this.createNewBehaviourToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.createNewBehaviourToolStripMenuItem.Text = "Create New Behaviour";
-            // 
-            // addBehaviourToolStripMenuItem
-            // 
-            this.addBehaviourToolStripMenuItem.Name = "addBehaviourToolStripMenuItem";
-            this.addBehaviourToolStripMenuItem.Size = new System.Drawing.Size(191, 22);
-            this.addBehaviourToolStripMenuItem.Text = "Add Behaviour";
-            this.addBehaviourToolStripMenuItem.Click += new System.EventHandler(this.addBehaviourToolStripMenuItem_Click);
-            // 
             // menuStrip1
             // 
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
-            this.behaviourToolStripMenuItem});
+            this.projectToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1226, 24);
             this.menuStrip1.TabIndex = 0;
             this.menuStrip1.Text = "menuStrip1";
+            // 
+            // projectToolStripMenuItem
+            // 
+            this.projectToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.projectPropertiesToolStripMenuItem,
+            this.closeProjectToolStripMenuItem});
+            this.projectToolStripMenuItem.Name = "projectToolStripMenuItem";
+            this.projectToolStripMenuItem.Size = new System.Drawing.Size(56, 20);
+            this.projectToolStripMenuItem.Text = "Project";
+            // 
+            // projectPropertiesToolStripMenuItem
+            // 
+            this.projectPropertiesToolStripMenuItem.Enabled = false;
+            this.projectPropertiesToolStripMenuItem.Name = "projectPropertiesToolStripMenuItem";
+            this.projectPropertiesToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.projectPropertiesToolStripMenuItem.Text = "Project Properties";
+            this.projectPropertiesToolStripMenuItem.Click += new System.EventHandler(this.projectPropertiesToolStripMenuItem_Click);
+            // 
+            // closeProjectToolStripMenuItem
+            // 
+            this.closeProjectToolStripMenuItem.Name = "closeProjectToolStripMenuItem";
+            this.closeProjectToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
+            this.closeProjectToolStripMenuItem.Text = "Close Project";
+            this.closeProjectToolStripMenuItem.Click += new System.EventHandler(this.closeProjectToolStripMenuItem_Click);
             // 
             // Editor
             // 
@@ -131,10 +133,10 @@
         private System.Windows.Forms.ToolStripMenuItem fileToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newProjectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem openProjectToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem behaviourToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem createNewBehaviourToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem addBehaviourToolStripMenuItem;
         private System.Windows.Forms.MenuStrip menuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem projectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem projectPropertiesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem closeProjectToolStripMenuItem;
 
     }
 }
