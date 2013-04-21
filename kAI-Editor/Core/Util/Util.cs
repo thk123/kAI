@@ -57,7 +57,7 @@ namespace kAI.Editor.Core.Util
                     return true;
 
                 lCurrentType = lCurrentType.BaseType;
-            } while (lCurrentType != typeof(Object) || lCurrentType != null);
+            } while (lCurrentType != typeof(Object) && lCurrentType != null);
 
             return false;
         }

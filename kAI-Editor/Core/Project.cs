@@ -207,7 +207,11 @@ namespace kAI.Editor.Core
         /// <param name="lDLLPath">The path of the DLL to load. </param>
         private Assembly LoadDLL(FileInfo lDLLPath)
         {
-            Assembly lAssembly = Assembly.LoadFrom(lDLLPath.Name);
+            FileStream lDLLStream = lDLLPath.OpenRead();
+            byte[] lDLLArray = new byte[lDLLStream.Length];
+            lDLLStream.Read(lDLLArray, 0, (int)lDLLStream.Length);
+            
+            Assembly lAssembly = Assembly.Load(lDLLArray);
 
             ProjectDLLs.Add(lAssembly);
 
