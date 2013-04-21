@@ -39,12 +39,27 @@ namespace kAI.Editor.Core
         /// </summary>
         Type mBehaviourType;
 
+        [DataMember(Name="BehaviourType")]
+        private string BehaviourTypeName
+        {
+            get
+            {
+                return mBehaviourType == null ? null : mBehaviourType.AssemblyQualifiedName;
+            }
+            set
+            {
+                mBehaviourType = value == null ? null : Type.GetType(value);
+            }
+        }
+
+
         [DataMember()]
         FileInfo mBehaviourXmlFile;
 
         /// <summary>
         /// The flavor of this template. 
         /// </summary>
+        [DataMember()]
         public eBehaviourFlavour BehaviourFlavour
         {
             get;
@@ -128,7 +143,7 @@ namespace kAI.Editor.Core
         /// <param name="lSourceFile">The file this behaviour is based on.</param>
         public kAIBehaviourTemplate(FileInfo lSourceFile)
         {
-            BehaviourType = typeof(kAIBehaviour); //TEMP: Replace with typeof(XmlBehaviour)
+            BehaviourType = typeof(kAIXmlBehaviour);
             BehaviourFlavour = eBehaviourFlavour.BehaviourFlavour_Xml;
             BehaviourSourceXml = lSourceFile;
         }
@@ -139,19 +154,27 @@ namespace kAI.Editor.Core
         /// <returns>An instance of the behaviour specified in this template. </returns>
         public kAIBehaviour Instantiate()
         {
-            //TODO: This may need more types, eg does the behaviour need to know its node ID (probably not...? What about port connexions)
-            ConstructorInfo lConstructor = mBehaviourType.GetConstructor(new Type[] { typeof(kAINodeID), typeof(kAIILogger) });
-
-            // We found a valid constructor!
-            if (lConstructor != null)
+            if(BehaviourFlavour == eBehaviourFlavour.BehaviourFlavour_Code)
             {
-                // So we make the thing for realz. 
-                kAIBehaviour lBehaviour = (kAIBehaviour)lConstructor.Invoke(new Object[] { new kAINodeID("TemporaryNode"), null } );
-                return lBehaviour;
+                //TODO: This may need more types, eg does the behaviour need to know its node ID (probably not...? What about port connexions)
+                ConstructorInfo lConstructor = mBehaviourType.GetConstructor(new Type[] { typeof(kAIILogger) });
+
+                // We found a valid constructor!
+                if (lConstructor != null)
+                {
+                    // So we make the thing for realz. 
+                    kAIBehaviour lBehaviour = (kAIBehaviour)lConstructor.Invoke(new Object[] { null });
+                    return lBehaviour;
+                }
+                else
+                {
+                    throw new Exception("Could not instantiate!");
+                }
             }
             else
             {
-                throw new Exception("Could not instantiate!");
+                // TEMP: Clearly need to instantiate using a XMLDeserialiser. 
+                return null;
             }
         }
 

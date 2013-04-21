@@ -33,7 +33,7 @@ namespace kAI.Editor.Controls
         Point mContainerOffset;
 
         /// <summary>
-        /// The next vertial position of a in port. 
+        /// The next vertical position of a in port. 
         /// </summary>
         int mNextInPortY;
 

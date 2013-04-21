@@ -76,7 +76,7 @@ namespace kAI.Editor.Core
         /// <summary>
         /// List of types this project uses (such as vectors).
         /// </summary>
-        [DataMember()]
+        [DataMember()] //TODO: This won't work :P
         public List<Type> ProjectTypes
         {
             get;
@@ -144,7 +144,17 @@ namespace kAI.Editor.Core
         public void AddDLL(FileInfo lDLLPath)
         {
             ProjectDllPaths.Add(lDLLPath);
-            LoadDLL(lDLLPath);
+            Assembly lAssembly = LoadDLL(lDLLPath);
+
+            //Extract behaviors
+            foreach (Type lType in lAssembly.GetExportedTypes())
+            {
+                if (lType.DoesInherit(typeof(kAIBehaviour)))
+                {
+                    kAIBehaviourTemplate lTemplate = new kAIBehaviourTemplate(lType);
+                    Behaviours.Add(lTemplate);
+                }
+            }
         }
 
         /// <summary>
@@ -163,6 +173,12 @@ namespace kAI.Editor.Core
             UnloadDLL(lAssembly);
 
         }
+
+        public void AddXmlBehaviour(kAIXmlBehaviour lBehaviour)
+        {
+            //Behaviours.Add(new kAIBehaviourTemplate())
+        }
+
 
         /// <summary>
         /// Construct stuff that won't be loaded from the XML and hence won't be set up when we instantiate it. 
@@ -189,21 +205,13 @@ namespace kAI.Editor.Core
         /// Load a specific DLL. 
         /// </summary>
         /// <param name="lDLLPath">The path of the DLL to load. </param>
-        private void LoadDLL(FileInfo lDLLPath)
+        private Assembly LoadDLL(FileInfo lDLLPath)
         {
             Assembly lAssembly = Assembly.LoadFrom(lDLLPath.Name);
 
             ProjectDLLs.Add(lAssembly);
 
-            //Extract behaviors
-            foreach (Type lType in lAssembly.GetExportedTypes())
-            {
-                if (lType.DoesInherit(typeof(kAIBehaviour)))
-                {
-                    kAIBehaviourTemplate lTemplate = new kAIBehaviourTemplate(lType);
-                    Behaviours.Add(lTemplate);
-                }
-            }
+            return lAssembly;
         }
 
         /// <summary>
