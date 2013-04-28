@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 
 namespace kAI.Core
 {
@@ -9,11 +10,13 @@ namespace kAI.Core
     /// A simple wrapper class for behaviour IDs.
     /// Behaviours should have unique names. 
     /// </summary>
+    [DataContract()]
     public class kAIBehaviourID
     {
         /// <summary>
         /// The string of the behaviour ID
         /// </summary>
+        [DataMember()]
         public string BehaviourID
         {
             get;
@@ -95,7 +98,7 @@ namespace kAI.Core
         /// <returns>The hash of the object.</returns>
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return BehaviourID.GetHashCode();
         }
 
         /// <summary>
