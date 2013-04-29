@@ -53,6 +53,7 @@ namespace kAI.Editor
 
             mBehaviourLoadedControls = new List<PropertyControllerBase<bool>>();
             mBehaviourLoadedControls.Add(PropertyController.CreateForEnabledToolStrip(addBehaviourToolStripMenuItem));
+            mBehaviourLoadedControls.Add(PropertyController.CreateForEnabledToolStrip(saveToolStripMenuItem));
 
             // Disable all the project specific controls);
             SetEnabledSetControls(mProjectLoadedControls, false);
@@ -154,14 +155,24 @@ namespace kAI.Editor
 
         private void createNewXmlBehaviourToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            if (mBehaviourEditor == null)
-            {
-                mBehaviourEditor = new BehaviourEditorWindow();
-                MainEditor.Panel2.Controls.Add(mBehaviourEditor);
-                mBehaviourEditor.Dock = DockStyle.Fill;
+            // TODO: should get a default name from the project. 
+            XmlBehaviourCreator lCreator = new XmlBehaviourCreator(mLoadedProject, "New Behaviour");
 
-                SetEnabledSetControls(mBehaviourLoadedControls, true);
+            if(lCreator.ShowDialog() == DialogResult.OK)
+            {
+                if (mBehaviourEditor == null)
+                {
+                    mBehaviourEditor = new BehaviourEditorWindow(mLoadedProject);
+                    MainEditor.Panel2.Controls.Add(mBehaviourEditor);
+                    mBehaviourEditor.Dock = DockStyle.Fill;
+
+                    SetEnabledSetControls(mBehaviourLoadedControls, true);
+                }
+
+                mBehaviourEditor.NewBehaviour(lCreator.BehaviourID, lCreator.BehaviourPath);
             }
+        }
+
 
             mBehaviourEditor.NewBehaviour();
         }

@@ -41,7 +41,10 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Runtime.DurableInstancing" />
+    <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -101,6 +104,12 @@
     <Compile Include="Forms\ProjectProperties\ProjectProperties_Main.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Forms\ProjectProperties\XmlBehaviourCreatore.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\ProjectProperties\XmlBehaviourCreatore.Designer.cs">
+      <DependentUpon>XmlBehaviourCreatore.cs</DependentUpon>
+    </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Core\Project.cs" />
     <Compile Include="Forms\ProjectProperties\ProjectProperties.cs">
@@ -135,6 +144,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProjectProperties\ProjectProperties.resx">
       <DependentUpon>ProjectProperties.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\ProjectProperties\XmlBehaviourCreatore.resx">
+      <DependentUpon>XmlBehaviourCreatore.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>

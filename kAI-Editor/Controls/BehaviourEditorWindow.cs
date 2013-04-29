@@ -6,6 +6,9 @@ using System.Data;
 using System.Linq;
 using System.Text;
 using System.Windows.Forms;
+using System.Runtime.Serialization;
+using System.Xml;
+using System.IO;
 
 using kAI.Core;
 using kAI.Editor.Core;
@@ -19,17 +22,23 @@ namespace kAI.Editor.Controls
     /// <summary>
     /// The control that handles editing behaviours. 
     /// </summary>
-    public partial class BehaviourEditorWindow : UserControl
+    partial class BehaviourEditorWindow : UserControl
     {
+        /// <summary>
+        /// The behaviour currently being shown in this editor. 
+        /// </summary>
+        kAIXmlBehaviour mBehaviour;
+
+        FileInfo mBehaviourLocation;
+
+        kAIProject mProject;
+
+        List<kAIEditorNode> mNodes;
+
         /// <summary>
         /// Stores the last point of the mouse, used when dragging to create a delta. 
         /// </summary>
         Point mLastPosition;
-
-        /// <summary>
-        /// TEMP: The list of nodes currently in the editor. 
-        /// </summary>
-        List<kAIEditorNode> nodes;
 
         /// <summary>
         /// The next vertical position of a in port. 
@@ -49,14 +58,19 @@ namespace kAI.Editor.Controls
         /// <summary>
         /// Create a new editor pane for a XML behaviour
         /// </summary>
-        public BehaviourEditorWindow()
+        public BehaviourEditorWindow(kAIProject lProject)
         {
             InitializeComponent();
 
             mNextInPortY = 5;
             mNextOutPortY = 5;
 
-            nodes = new List<kAIEditorNode>();
+            mBehaviour = null;
+            mBehaviourLocation = null;
+
+            mNodes = new List<kAIEditorNode>();
+
+            mProject = lProject;
         }
 
         /// <summary>
@@ -75,10 +89,12 @@ namespace kAI.Editor.Controls
         /// <summary>
         /// Create a new behaviour and load it in to the editor. 
         /// </summary>
-        public void NewBehaviour()
+        public void NewBehaviour(kAIBehaviourID lBehaviourID, FileInfo lFile)
         {
             //TEMP: Need to get the name from some dialog box or something. 
-            kAIXmlBehaviour lBehaviour = new kAIXmlBehaviour("NewBehaviour");
+            kAIXmlBehaviour lBehaviour = new kAIXmlBehaviour(lBehaviourID);
+
+            mBehaviourLocation = lFile;
 
             LoadBehaviour(lBehaviour);
         }
@@ -132,7 +148,7 @@ namespace kAI.Editor.Controls
                 Point lDeltaPos = Util.SubtractPoints(e.Location, mLastPosition);
 
                 // Update each nodes position. 
-                foreach (kAIEditorNode lNode in nodes)
+                foreach (kAIEditorNode lNode in mNodes)
                 {
                     lNode.SetViewPosition(lDeltaPos);
                 }
