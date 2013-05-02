@@ -8,7 +8,7 @@ namespace kAI.Core
     /// <summary>
     /// Exception when try to add a global port to a behaviour that already has a port with the same node ID. 
     /// </summary>
-    public class kAIBehaviourPortAlreadyExistsException<T> : Exception
+    public class kAIBehaviourPortAlreadyExistsException : Exception
     {
         /// <summary>
         /// The port that was already present with the same PortID. 
@@ -31,7 +31,7 @@ namespace kAI.Core
         /// <summary>
         /// The behaviour who the port was being added to. 
         /// </summary>
-        public kAIBehaviour<T> mBehaviour
+        public kAIBehaviour mBehaviour
         {
             get;
             private set;
@@ -43,7 +43,7 @@ namespace kAI.Core
         /// <param name="lBehaviour">The behaviour which this port was added to. </param>
         /// <param name="lExistingPort">The existing port that has the same name as the new port. </param>
         /// <param name="lNewPort">The new port to be added. </param>
-        public kAIBehaviourPortAlreadyExistsException(kAIBehaviour<T> lBehaviour, kAIPort lExistingPort, kAIPort lNewPort)
+        public kAIBehaviourPortAlreadyExistsException(kAIBehaviour lBehaviour, kAIPort lExistingPort, kAIPort lNewPort)
         {
             mExistingPort = lExistingPort;
             mNewPort = lNewPort;

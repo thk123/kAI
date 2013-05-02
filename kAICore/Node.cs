@@ -13,6 +13,20 @@ namespace kAI.Core
     [DataContract()]
     public abstract class kAINodeBase : kAIObject
     {
+        private static List<Type> kNodeTypes = new List<Type>();
+        public static IEnumerable<Type> NodeTypes
+        {
+            get
+            {
+                return kNodeTypes;
+            }
+        }
+
+        internal static void AddNodeSerialType(Type lSerialType)
+        {
+            kNodeTypes.Add(lSerialType);
+        }
+
         /// <summary>
         /// For events when the activation state of this node changes. 
         /// </summary>
@@ -105,7 +119,7 @@ namespace kAI.Core
     /// <summary>
     /// AN object that can be put inside a node in an XML Behaviour. 
     /// </summary>
-    public interface kAIINodeObject<SerialType>
+    public interface kAIINodeObject
     {
         /// <summary>
         /// Get a list of ports that can be externally accessed by this object. 
@@ -117,7 +131,13 @@ namespace kAI.Core
         /// Data that can be used to serialise and deserialise this object
         /// </summary>
         /// <returns>An object that has the DataContractAttribute that will be used to store this arary. </returns>
-        SerialType GetDatatContractClass();
+        object GetDataContractClass();
+
+        /// <summary>
+        /// Get the type of the serialisable object within the node type. 
+        /// </summary>
+        /// <returns>The type of the serial object is. </returns>
+        Type GetDataContractType();
     }
 
     /// <summary>
@@ -125,7 +145,7 @@ namespace kAI.Core
     /// </summary>
     /// <typeparam name="T">The type of node (eg kAIBehaviour)</typeparam>
     [DataContract()]
-    public class kAINode<T, U> : kAINodeBase where  T : kAIINodeObject<U>
+    public class kAINode<T> : kAINodeBase where  T : kAIINodeObject
     {
         /// <summary>
         /// What object this node contains. 
@@ -145,9 +165,6 @@ namespace kAI.Core
         public kAINode(kAINodeID lNodeID, T lContents)
             :base(lNodeID)
         {
-            // Check the type of the node can be serailsed
-            System.Diagnostics.Debug.Assert(typeof(T).GetCustomAttributes(typeof(SerializableAttribute), false).Length > 0);
-
             NodeContents = lContents;
             if(NodeContents != null)
             {
@@ -155,7 +172,7 @@ namespace kAI.Core
                 {
                     AddGlobalPort(lPort);
                 }
-            }
+            }           
         }
 
         /// <summary>
@@ -177,17 +194,24 @@ namespace kAI.Core
         }
 
         /// <summary>
-        ///     
+        /// Get the type of the serialisable object within the node. 
         /// </summary>
-        /// <returns></returns>
+        /// <returns>The type of the serialisable object. </returns>
         public override Type GetNodeSerialableContentType()
         {
-            return typeof(U);
+            return NodeContents.GetDataContractType();
         }
 
+        /// <summary>
+        /// Get the object to be serialised. 
+        /// </summary>
+        /// <returns>A DataContract object to serialse when embedding the content of this node. </returns>
         public override object GetNodeSerialisableContent()
         {
-            return NodeContents.GetDatatContractClass();
+            // Check the type is in fact serialisable
+            Assert(NodeContents.GetDataContractType().GetCustomAttributes(typeof(SerializableAttribute), false).Length > 0);
+
+            return NodeContents.GetDataContractClass();
         }
     }
 }

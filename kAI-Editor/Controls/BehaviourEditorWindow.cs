@@ -77,19 +77,19 @@ namespace kAI.Editor.Controls
         /// Add a new behaviour to the editor window. 
         /// </summary>
         /// <param name="lBehaviour">The behaviour to add. </param>
-        public void AddBehaviour(kAIBehaviourBase lBehaviour)
+        public void AddBehaviour(kAIBehaviour lBehaviour)
         {
             // HACK: At the moment we are assuming a lot here about the nature of the behaviour.
             // We need to remove the double generic dependency on kAIBehaviour (this is ok since nothing needs
             // to know the type of the serial behaviour). 
             
             Type lBehaviourType = lBehaviour.GetType();
-            Type lBehaviouSerialType = lBehaviour.GetSerialType();
+            Type lBehaviouSerialType = lBehaviour.GetDataContractType();
 
-            Type lGenericNodeType = typeof(kAINode<,>).MakeGenericType(lBehaviourType, lBehaviouSerialType);
+            Type lGenericNodeType = typeof(kAINode<>).MakeGenericType(lBehaviourType);
 
 
-            kAINodeBase lBehaviourNode = new kAINode<kAICodeBehaviour, kAICodeBehaviour.kAICodeBehaviour_SerialiableObject>("Node", (kAICodeBehaviour)lBehaviour);
+            kAINodeBase lBehaviourNode = new kAINode<kAICodeBehaviour>("Node", (kAICodeBehaviour)lBehaviour);
             kAIEditorNode lNewNode = new kAIEditorNode(lBehaviourNode);
 
             Controls.Add(lNewNode);

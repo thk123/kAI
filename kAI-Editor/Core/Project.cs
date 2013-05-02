@@ -149,7 +149,7 @@ namespace kAI.Editor.Core
             //Extract behaviors
             foreach (Type lType in lAssembly.GetExportedTypes())
             {
-                if (lType.DoesInherit(typeof(kAIBehaviour<>)))
+                if (lType.DoesInherit(typeof(kAIBehaviour)))
                 {
                     kAIBehaviourTemplate lTemplate = new kAIBehaviourTemplate(lType);
                     Behaviours.Add(lTemplate);

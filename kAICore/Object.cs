@@ -162,14 +162,19 @@ namespace kAI.Core
         /// <param name="lMessage">Optionally, the message to display. </param>
         protected void Assert(bool lCondition, string lMessage = null)
         {
+            kAIObject.Assert(this, lCondition, lMessage);
+        }
+
+        protected static void Assert(kAIObject lObject, bool lCondition, string lMessage = null)
+        {
             if (!lCondition)
             {
-                LogCriticalError(lMessage);
+                //LogCriticalError(lMessage);
                 System.Diagnostics.Debugger.Break();
 
                 if (ExceptionOnAssert)
                 {
-                    ThrowException(new AssertFailedException(lMessage));
+                    //ThrowException(new AssertFailedException(lMessage));
                 }
             }
         }

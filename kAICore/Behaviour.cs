@@ -24,20 +24,10 @@ namespace kAI.Core
         BehaviourFlavour_Xml,
     }
 
-    public abstract class kAIBehaviourBase : kAIObject
-    {
-        public kAIBehaviourBase(kAIILogger lLogger = null)
-            : base(lLogger)
-        {}
-
-        public abstract Type GetSerialType();
-    }
-
     /// <summary>
     /// Represents a kAIBehaviour (can be code or XML). 
     /// </summary>
-
-    public abstract class kAIBehaviour<SerialType> : kAIBehaviourBase, kAIINodeObject<SerialType>
+    public abstract class kAIBehaviour : kAIObject, kAIINodeObject
     {
         readonly kAIPortID kOnActivatePort = "OnActivate";
         readonly kAIPortID kDeactivatePort = "Deactivate";
@@ -52,12 +42,6 @@ namespace kAI.Core
             get;
             private set;
         }
-
-        /*public eBehaviourFlavour BehaviourFlavour
-        {
-            get;
-            private set;
-        }*/
 
         /// <summary>
         /// The list of externally connectible ports. 
@@ -111,7 +95,7 @@ namespace kAI.Core
             }
             else
             {
-                ThrowException(new kAIBehaviourPortAlreadyExistsException<SerialType>(this, lNewPort, mExternalPorts[lNewPort.PortID]));
+                ThrowException(new kAIBehaviourPortAlreadyExistsException(this, lNewPort, mExternalPorts[lNewPort.PortID]));
             }
         }
 
@@ -152,33 +136,66 @@ namespace kAI.Core
         /// Get the data required to turn this object into an XML structure. 
         /// </summary>
         /// <returns></returns>
-        public abstract SerialType GetDatatContractClass();
+        public abstract object GetDataContractClass();
 
-        public override Type GetSerialType()
-        {
-            return typeof(SerialType);
-        }
+        /// <summary>
+        /// Gets the type of object returned in <see cref="GetDataContractClass"/>.
+        /// </summary>
+        /// <returns>The type of the serialiable used in this behaviour.</returns>
+        public abstract Type GetDataContractType();
     }
 
 
     /// <summary>
-    /// 
+    /// Represents a code behvaiour (one with an external implementation).
     /// </summary>
-    public abstract class kAICodeBehaviour : kAIBehaviour<kAICodeBehaviour.kAICodeBehaviour_SerialiableObject>
+    public abstract class kAICodeBehaviour : kAIBehaviour
     {
+
+        /// <summary>
+        /// Create a code behaviour. 
+        /// </summary>
+        /// <param name="lBehaviourID">The behaviour ID of the behaviour</param>
+        /// <param name="lLogger">Optionally, the logger with which to log any errors. </param>
+        protected kAICodeBehaviour(kAIBehaviourID lBehaviourID, kAIILogger lLogger = null)
+            :base(lBehaviourID, lLogger)
+        {}
+
+
+        /// <summary>
+        /// The class used to serialise this behaviour when used as a node within an XML behaviour. 
+        /// </summary>
         [DataContract()]
-        public class kAICodeBehaviour_SerialiableObject
+        class kAICodeBehaviour_SerialiableObject
         {
+            static kAICodeBehaviour_SerialiableObject()
+            {
+                kAINodeBase.AddNodeSerialType(typeof(kAICodeBehaviour_SerialiableObject));
+            }
+
             //NOTE: This may not be required. 
+            /// <summary>
+            /// The behaviour ID.
+            /// </summary>
             [DataMember()]
             public string BehaviourID;
 
+            /// <summary>
+            /// The type string of the code behaviour. 
+            /// </summary>
             [DataMember()]
             public string BehaviourType;
 
+            /// <summary>
+            /// The assembly the code behaviour is implemented in. 
+            /// </summary>
             [DataMember()]
             public string BehaviourAssembly;
 
+            /// <summary>
+            /// Create the serialisable object from the code behaviour.
+            /// </summary>
+            /// <param name="lBehaviour">The code behaviour to serialise. </param>
             public kAICodeBehaviour_SerialiableObject(kAICodeBehaviour lBehaviour)
             {
                 BehaviourID = lBehaviour.BehaviourID;
@@ -190,34 +207,45 @@ namespace kAI.Core
         }
 
         /// <summary>
-        /// 
+        /// Get the serialisable object to save when this behaviour of a child node. 
         /// </summary>
-        /// <param name="lBehaviourID"></param>
-        /// <param name="lLogger"></param>
-        protected kAICodeBehaviour(kAIBehaviourID lBehaviourID, kAIILogger lLogger = null)
-            : base(lBehaviourID, lLogger)
-        {}
-
-
+        /// <returns>The object to serialise using a DataContract serialiser. </returns>
+        public override object GetDataContractClass()
+        {
+            return new kAICodeBehaviour_SerialiableObject(this);
+        }
 
         /// <summary>
-        /// 
+        /// Gets the type of the serialisable object. 
         /// </summary>
-        /// <param name="lData"></param>
-        /// <param name="lAssemblyGetter"></param>
+        /// <note>
+        /// This is probably not required, since is literlly 
+        /// GetDataContractClass.GetType() and I can't see why you would need 
+        /// the type and not the object itself?? (Maybe when loading?)
+        /// </note>
         /// <returns></returns>
-        public static kAICodeBehaviour Load(kAICodeBehaviour_SerialiableObject lSerialObject, kAIXmlBehaviour.GetAssemblyByName lAssemblyGetter)
+        public override Type GetDataContractType()
         {
-            Type lBehaviourType = lAssemblyGetter((string)lSerialObject.BehaviourAssembly).GetType(lSerialObject.BehaviourType);
+            return typeof(kAICodeBehaviour_SerialiableObject);
+        }
+
+        /// <summary>
+        /// Create the code behaviour based on the serial object.
+        /// </summary>
+        /// <param name="lData">The serialised object that has been loaded. </param>
+        /// <param name="lAssemblyGetter">A method to get assemblys by full name to resolve types. </param>
+        /// <returns>A fully instantiated kAICodeBehaviour based on the data. </returns>
+        public static kAICodeBehaviour Load(object lSerialObject, kAIXmlBehaviour.GetAssemblyByName lAssemblyGetter)
+        {
+            kAICodeBehaviour_SerialiableObject lCastSerialObject = lSerialObject as kAICodeBehaviour_SerialiableObject;
+
+            kAIObject.Assert(null, lCastSerialObject != null);
+
+            Type lBehaviourType = lAssemblyGetter((string)lCastSerialObject.BehaviourAssembly).GetType(lCastSerialObject.BehaviourType);
             //kAICodeBehaviour lNewBehaviour = new kAICodeBehaviour(lData[0]);
             ConstructorInfo lConstructor = lBehaviourType.GetConstructor(new Type[] { typeof(kAIILogger) });
             object lBehaviour = lConstructor.Invoke(new Object[]{ null });
             return (kAICodeBehaviour)lBehaviour;
-        }
-
-        public override kAICodeBehaviour_SerialiableObject GetDatatContractClass()
-        {
-            return new kAICodeBehaviour_SerialiableObject(this);
         }
     }
 }

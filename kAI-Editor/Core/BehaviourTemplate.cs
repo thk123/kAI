@@ -87,7 +87,7 @@ namespace kAI.Editor.Core
             private set
             {
                 // Here we check that the type inherits from kAIBehaviour
-                if (value.DoesInherit(typeof(kAIBehaviourBase)))
+                if (value.DoesInherit(typeof(kAIBehaviour)))
                 {
                     mBehaviourType = value;
                 }
@@ -148,7 +148,7 @@ namespace kAI.Editor.Core
         /// Create the kAIBehaviour based on this template. 
         /// </summary>
         /// <returns>An instance of the behaviour specified in this template. </returns>
-        public kAIBehaviour<T> Instantiate<T>()
+        public kAIBehaviour Instantiate()
         {
             if(BehaviourFlavour == eBehaviourFlavour.BehaviourFlavour_Code)
             {
@@ -159,7 +159,7 @@ namespace kAI.Editor.Core
                 if (lConstructor != null)
                 {
                     // So we make the thing for realz. 
-                    kAIBehaviour<T> lBehaviour = (kAIBehaviour<T>)lConstructor.Invoke(new Object[] { null });
+                    kAIBehaviour lBehaviour = (kAIBehaviour)lConstructor.Invoke(new Object[] { null });
                     return lBehaviour;
                 }
                 else
@@ -203,7 +203,7 @@ namespace kAI.Editor.Core
             foreach (Type lType in lDLLAssembly.GetTypes())
             {
                 // Find out if they are a behaviour
-                if (lType.DoesInherit(typeof(kAIBehaviour<>)))
+                if (lType.DoesInherit(typeof(kAIBehaviour)))
                 {
                     // If they are, great, we make a template from them.
                     kAIBehaviourTemplate lNewTemplate = new kAIBehaviourTemplate(lType);

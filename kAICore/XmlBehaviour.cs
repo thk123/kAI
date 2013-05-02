@@ -14,7 +14,7 @@ namespace kAI.Core
     /// <summary>
     /// An XML behaviour (ie one created by the editor).
     /// </summary>
-    public class kAIXmlBehaviour : kAIBehaviour<kAIXmlBehaviour.kAIXmlBehaviour_SerialiableObject>
+    public class kAIXmlBehaviour : kAIBehaviour
     {
         /// <summary>
         /// This is the object that is used when embedding this behaviour in another XML behaviour to define the node.
@@ -22,6 +22,11 @@ namespace kAI.Core
         [DataContract()]
         public class kAIXmlBehaviour_SerialiableObject
         {
+            static kAIXmlBehaviour_SerialiableObject()
+            {
+                kAINodeBase.AddNodeSerialType(typeof(kAIXmlBehaviour_SerialiableObject));
+            }
+
             /// <summary>
             /// The ID of the behaviour.
             /// </summary>
@@ -53,8 +58,8 @@ namespace kAI.Core
         /// Represents the XML for the behaviour when saved out. 
         /// </summary>
         [DataContract(Name = "kAIXmlBehaviour")]
-        [KnownType(typeof(kAICodeBehaviour.kAICodeBehaviour_SerialiableObject))]
-        [KnownType(typeof(kAIXmlBehaviour.kAIXmlBehaviour_SerialiableObject))]
+        /*[KnownType(typeof(kAICodeBehaviour.kAICodeBehaviour_SerialiableObject))]
+        [KnownType(typeof(kAIXmlBehaviour.kAIXmlBehaviour_SerialiableObject))]*/
         private class kAIXmlBehaviour_InternalXml
         {
 
@@ -82,7 +87,7 @@ namespace kAI.Core
                 [DataMember()]
                 public object NodeContents;
 
-                public InternalNode(kAINodeBase lNode)
+                public InternalNode(kAIXmlBehaviour_InternalXml lParent, kAINodeBase lNode)
                 {
                     NodeID = lNode.NodeID;
                     NodeType = lNode.GetNodeContentsType().FullName;
@@ -92,6 +97,8 @@ namespace kAI.Core
                     NodeSerialAssembly = lNode.GetNodeSerialableContentType().Assembly.FullName;
                     NodeContents = lNode.GetNodeSerialisableContent();
 
+
+                    //lParent.SerialTypes.Add(lNode.GetNodeSerialableContentType());
                 }
 
             }
@@ -113,6 +120,7 @@ namespace kAI.Core
             public kAIXmlBehaviour_InternalXml()
             {
                 InternalNodes = new List<InternalNode>();
+                //SerialTypes = new List<Type>();
             }
 
             public kAIXmlBehaviour_InternalXml(kAIXmlBehaviour lBehaviour)
@@ -129,7 +137,7 @@ namespace kAI.Core
 
                     lBehaviour.Assert(lContentType == lContent.GetType(), "The content returned from the node does not match the reported type...");
 
-                    InternalNodes.Add(new InternalNode(lNodeBase));
+                    InternalNodes.Add(new InternalNode(this, lNodeBase));
                 }
             }
 
@@ -152,7 +160,7 @@ namespace kAI.Core
 
                     object lNodeContents = lLoader.Invoke(null, new object[] { lData, lAssemblyGetter });
 
-                    Type lGenericNodeType = typeof(kAINode<,>).MakeGenericType(lNodeType, lNodeSerialType);
+                    Type lGenericNodeType = typeof(kAINode<>).MakeGenericType(lNodeType);
                     ConstructorInfo lNodeConstructor = lGenericNodeType.GetConstructor(new Type[] { typeof(kAINodeID), lNodeType });
 
                     object lNode = lNodeConstructor.Invoke(new object[] { lInternalNode.NodeID, lNodeContents });
@@ -239,7 +247,7 @@ namespace kAI.Core
         {
             kAIXmlBehaviour_InternalXml lSaveableBehaviour = new kAIXmlBehaviour_InternalXml(this);
 
-            XmlObjectSerializer lProjectSerialiser = new DataContractSerializer(typeof(kAIXmlBehaviour_InternalXml));
+            XmlObjectSerializer lProjectSerialiser = new DataContractSerializer(typeof(kAIXmlBehaviour_InternalXml), kAINodeBase.NodeTypes);
 
             // Settings for writing the XML file 
             XmlWriterSettings lSettings = new XmlWriterSettings();
@@ -260,9 +268,14 @@ namespace kAI.Core
         {
         }
 
-        public override kAIXmlBehaviour_SerialiableObject GetDatatContractClass()
+        public override object GetDataContractClass()
         {
             return new kAIXmlBehaviour_SerialiableObject(this);
+        }
+
+        public override Type GetDataContractType()
+        {
+            return typeof(kAIXmlBehaviour_SerialiableObject);
         }
 
         /// <summary>
@@ -273,11 +286,13 @@ namespace kAI.Core
         /// <returns>An instantiated behaviour based on the provided XML. </returns>
         public static kAIXmlBehaviour Load(FileInfo lFileInfo, GetAssemblyByName lAssemblyGetter)
         {
-            XmlObjectSerializer lProjectDeserialiser = new DataContractSerializer(typeof(kAIXmlBehaviour_InternalXml));
+            XmlObjectSerializer lProjectDeserialiser = new DataContractSerializer(typeof(kAIXmlBehaviour_InternalXml), kAINodeBase.NodeTypes);
 
             kAIXmlBehaviour_InternalXml lXmlFile = (kAIXmlBehaviour_InternalXml)lProjectDeserialiser.ReadObject(lFileInfo.OpenRead());
 
             return new kAIXmlBehaviour(lXmlFile, lAssemblyGetter, lFileInfo);
         }
+
+        
     }
 }
