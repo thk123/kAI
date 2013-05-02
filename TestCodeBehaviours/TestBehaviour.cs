@@ -7,7 +7,7 @@ using kAI.Core;
 
 namespace TestCodeBehaviours
 {
-    public class TestBehaviour : kAIBehaviour
+    public class TestBehaviour : kAICodeBehaviour
     {
 
         public TestBehaviour(kAIILogger lLogger = null)

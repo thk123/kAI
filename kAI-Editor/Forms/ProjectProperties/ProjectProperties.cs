@@ -107,18 +107,7 @@ namespace kAI.Editor.Forms.ProjectProperties
                 }
             }
 
-            // We serialise the project in to an XML file and save the changes
-            XmlObjectSerializer lProjectSerialiser = new DataContractSerializer(typeof(kAIProject));
-
-            // Settings for writing the XML file 
-            XmlWriterSettings lSettings = new XmlWriterSettings();
-            lSettings.Indent = true;
-            lSettings.NamespaceHandling = NamespaceHandling.OmitDuplicates;
-
-            // Create the writer and write the file. 
-            XmlWriter lWriter = XmlWriter.Create(Project.ProjectFile.FullName, lSettings);
-            lProjectSerialiser.WriteObject(lWriter, Project);
-            lWriter.Close();
+            Project.Save();
 
             DialogResult = DialogResult.OK;
         }

@@ -82,7 +82,6 @@
             this.BehaviourName_Text.Name = "BehaviourName_Text";
             this.BehaviourName_Text.Size = new System.Drawing.Size(393, 20);
             this.BehaviourName_Text.TabIndex = 4;
-            this.BehaviourName_Text.TextChanged += new System.EventHandler(this.BehaviourName_Text_TextChanged);
             // 
             // BehaviourLocation_Text
             // 

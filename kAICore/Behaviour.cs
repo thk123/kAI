@@ -2,28 +2,62 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
+using System.Xml;
+using System.Reflection;
 
 namespace kAI.Core
 {
     /// <summary>
+    /// The flavour of behaviour. 
+    /// </summary>
+    public enum eBehaviourFlavour
+    {
+        /// <summary>
+        /// A code behaviour - one extracted from a dll.
+        /// </summary>
+        BehaviourFlavour_Code,
+
+        /// <summary>
+        /// A behaviour created within kAI-Editor, mainly the compilation of other behaviors/actions. 
+        /// </summary>
+        BehaviourFlavour_Xml,
+    }
+
+    public abstract class kAIBehaviourBase : kAIObject
+    {
+        public kAIBehaviourBase(kAIILogger lLogger = null)
+            : base(lLogger)
+        {}
+
+        public abstract Type GetSerialType();
+    }
+
+    /// <summary>
     /// Represents a kAIBehaviour (can be code or XML). 
     /// </summary>
-    public abstract class kAIBehaviour : kAIObject, kAIINodeObject
+
+    public abstract class kAIBehaviour<SerialType> : kAIBehaviourBase, kAIINodeObject<SerialType>
     {
         readonly kAIPortID kOnActivatePort = "OnActivate";
         readonly kAIPortID kDeactivatePort = "Deactivate";
-
 
         Dictionary<kAIPortID, kAIPort> mExternalPorts;
 
         /// <summary>
         /// The unique (in this behaviour) name of this behaviour instance.
         /// </summary>
-        public kAIBehaviourID NodeID
+        public kAIBehaviourID BehaviourID
         {
             get;
             private set;
         }
+
+        /*public eBehaviourFlavour BehaviourFlavour
+        {
+            get;
+            private set;
+        }*/
 
         /// <summary>
         /// The list of externally connectible ports. 
@@ -44,7 +78,7 @@ namespace kAI.Core
         public kAIBehaviour(kAIBehaviourID lNodeID, kAIILogger lLogger = null)
             : base(lLogger)
         {
-            NodeID = lNodeID;
+            BehaviourID = lNodeID;
 
             mExternalPorts = new Dictionary<kAIPortID, kAIPort>();
 
@@ -77,7 +111,7 @@ namespace kAI.Core
             }
             else
             {
-                throw new kAIBehaviourPortAlreadyExistsException(this, lNewPort, mExternalPorts[lNewPort.PortID]);
+                ThrowException(new kAIBehaviourPortAlreadyExistsException<SerialType>(this, lNewPort, mExternalPorts[lNewPort.PortID]));
             }
         }
 
@@ -113,61 +147,78 @@ namespace kAI.Core
         {
             GetPort(kDeactivatePort).Trigger();
         }
+
+        /// <summary>
+        /// Get the data required to turn this object into an XML structure. 
+        /// </summary>
+        /// <returns></returns>
+        public abstract SerialType GetDatatContractClass();
+
+        public override Type GetSerialType()
+        {
+            return typeof(SerialType);
+        }
     }
 
+
     /// <summary>
-    /// Exception when try to add a global port to a behaviour that already has a port with the same node ID. 
+    /// 
     /// </summary>
-    public class kAIBehaviourPortAlreadyExistsException : Exception
+    public abstract class kAICodeBehaviour : kAIBehaviour<kAICodeBehaviour.kAICodeBehaviour_SerialiableObject>
     {
-        /// <summary>
-        /// The port that was already present with the same PortID. 
-        /// </summary>
-        public kAIPort mExistingPort
+        [DataContract()]
+        public class kAICodeBehaviour_SerialiableObject
         {
-            get;
-            private set;
+            //NOTE: This may not be required. 
+            [DataMember()]
+            public string BehaviourID;
+
+            [DataMember()]
+            public string BehaviourType;
+
+            [DataMember()]
+            public string BehaviourAssembly;
+
+            public kAICodeBehaviour_SerialiableObject(kAICodeBehaviour lBehaviour)
+            {
+                BehaviourID = lBehaviour.BehaviourID;
+                Type lBehaviourType = lBehaviour.GetType();
+
+                BehaviourType = lBehaviourType.FullName;
+                BehaviourAssembly = lBehaviourType.Assembly.FullName;
+            }
         }
 
         /// <summary>
-        /// The port that was being added but whose name was already taken. 
+        /// 
         /// </summary>
-        public kAIPort mNewPort
-        {
-            get;
-            private set;
-        }
+        /// <param name="lBehaviourID"></param>
+        /// <param name="lLogger"></param>
+        protected kAICodeBehaviour(kAIBehaviourID lBehaviourID, kAIILogger lLogger = null)
+            : base(lBehaviourID, lLogger)
+        {}
+
+
 
         /// <summary>
-        /// The behaviour who the port was being added to. 
+        /// 
         /// </summary>
-        public kAIBehaviour mBehaviour
+        /// <param name="lData"></param>
+        /// <param name="lAssemblyGetter"></param>
+        /// <returns></returns>
+        public static kAICodeBehaviour Load(kAICodeBehaviour_SerialiableObject lSerialObject, kAIXmlBehaviour.GetAssemblyByName lAssemblyGetter)
         {
-            get;
-            private set;
+            Type lBehaviourType = lAssemblyGetter((string)lSerialObject.BehaviourAssembly).GetType(lSerialObject.BehaviourType);
+            //kAICodeBehaviour lNewBehaviour = new kAICodeBehaviour(lData[0]);
+            ConstructorInfo lConstructor = lBehaviourType.GetConstructor(new Type[] { typeof(kAIILogger) });
+            object lBehaviour = lConstructor.Invoke(new Object[]{ null });
+            return (kAICodeBehaviour)lBehaviour;
         }
 
-        /// <summary>
-        /// Construct the exception. 
-        /// </summary>
-        /// <param name="lBehaviour">The behaviour which this port was added to. </param>
-        /// <param name="lExistingPort">The existing port that has the same name as the new port. </param>
-        /// <param name="lNewPort">The new port to be added. </param>
-        public kAIBehaviourPortAlreadyExistsException(kAIBehaviour lBehaviour, kAIPort lExistingPort, kAIPort lNewPort)
+        public override kAICodeBehaviour_SerialiableObject GetDatatContractClass()
         {
-            mExistingPort = lExistingPort;
-            mNewPort = lNewPort;
-            mBehaviour = lBehaviour;
+            return new kAICodeBehaviour_SerialiableObject(this);
         }
-
-        /// <summary>
-        /// Gets the message of the exception. 
-        /// </summary>
-        /// <returns>A string explaining what has happened. </returns>
-        public override string ToString()
-        {
-            return "Attempted to create a port in behaviour \"" + mBehaviour.NodeID + "\" whose name already existed: \"" + mExistingPort.PortID + "\"";
-        } 
     }
 }
 

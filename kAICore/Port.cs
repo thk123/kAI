@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 
 namespace kAI.Core
 {
@@ -445,11 +446,13 @@ namespace kAI.Core
     /// <summary>
     /// A simple wrapper class for port IDs 
     /// </summary>
+    [DataContract()]
     public class kAIPortID
     {
         /// <summary>
         /// The string of the port id
         /// </summary>
+        [DataMember()]
         public string PortID
         {
             get;

@@ -2,12 +2,15 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
+using System.Xml;
 
 namespace kAI.Core
 {
     /// <summary>
     /// Base (non-generic) class for a node within an XML behaviour
     /// </summary>
+    [DataContract()]
     public abstract class kAINodeBase : kAIObject
     {
         /// <summary>
@@ -77,9 +80,19 @@ namespace kAI.Core
         /// <returns>Returns a type of the containing node (will inherit from kAIINodeObject).</returns>
         public abstract Type GetNodeContentsType();
 
+        public abstract Type GetNodeSerialableContentType();
+
+        public abstract object GetNodeSerialisableContent();
 
         /// <summary>
-        /// Add a externally accesible port to the node. 
+        /// Get a list of externally accessible ports from this node. 
+        /// </summary>
+        /// <returns>The list of ports. </returns>
+        public abstract IEnumerable<kAIPort> GetExternalPorts();
+
+
+        /// <summary>
+        /// Add a externally accessible port to the node. 
         /// </summary>
         /// <param name="lNewPort"></param>
         protected virtual void AddGlobalPort(kAIPort lNewPort)
@@ -92,24 +105,32 @@ namespace kAI.Core
     /// <summary>
     /// AN object that can be put inside a node in an XML Behaviour. 
     /// </summary>
-    public interface kAIINodeObject
+    public interface kAIINodeObject<SerialType>
     {
         /// <summary>
         /// Get a list of ports that can be externally accessed by this object. 
         /// </summary>
         /// <returns>A list of ports that can be accessed. </returns>
         IEnumerable<kAIPort> GetExternalPorts();
+
+        /// <summary>
+        /// Data that can be used to serialise and deserialise this object
+        /// </summary>
+        /// <returns>An object that has the DataContractAttribute that will be used to store this arary. </returns>
+        SerialType GetDatatContractClass();
     }
 
     /// <summary>
     /// A node within an XML behaviour. 
     /// </summary>
     /// <typeparam name="T">The type of node (eg kAIBehaviour)</typeparam>
-    public class kAINode<T> : kAINodeBase where  T : kAIINodeObject  
+    [DataContract()]
+    public class kAINode<T, U> : kAINodeBase where  T : kAIINodeObject<U>
     {
         /// <summary>
         /// What object this node contains. 
         /// </summary>
+        [DataMember()]
         public T NodeContents
         {
             get;
@@ -124,11 +145,16 @@ namespace kAI.Core
         public kAINode(kAINodeID lNodeID, T lContents)
             :base(lNodeID)
         {
-            NodeContents = lContents;
+            // Check the type of the node can be serailsed
+            System.Diagnostics.Debug.Assert(typeof(T).GetCustomAttributes(typeof(SerializableAttribute), false).Length > 0);
 
-            foreach (kAIPort lPort in lContents.GetExternalPorts())
+            NodeContents = lContents;
+            if(NodeContents != null)
             {
-                AddGlobalPort(lPort);
+                foreach (kAIPort lPort in lContents.GetExternalPorts())
+                {
+                    AddGlobalPort(lPort);
+                }
             }
         }
 
@@ -138,7 +164,30 @@ namespace kAI.Core
         /// <returns>Type of the contents. </returns>
         public override Type GetNodeContentsType()
         {
-            return typeof(T);
+            return NodeContents.GetType();
+        }
+
+        /// <summary>
+        /// Get a list of ports that can be externally accessed by this object. 
+        /// </summary>
+        /// <returns>A list of ports that can be accessed. </returns>
+        public override IEnumerable<kAIPort> GetExternalPorts()
+        {
+            return NodeContents.GetExternalPorts();
+        }
+
+        /// <summary>
+        ///     
+        /// </summary>
+        /// <returns></returns>
+        public override Type GetNodeSerialableContentType()
+        {
+            return typeof(U);
+        }
+
+        public override object GetNodeSerialisableContent()
+        {
+            return NodeContents.GetDatatContractClass();
         }
     }
 }

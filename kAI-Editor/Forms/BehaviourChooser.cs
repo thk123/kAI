@@ -26,7 +26,7 @@ namespace kAI.Editor
         /// <summary>
         /// The behaviour that is to be made. 
         /// </summary>
-        kAIBehaviour mNewBehaviour;
+        kAIBehaviourBase mNewBehaviour;
 
         /// <summary>
         /// Create a new behaviour chooser form.
@@ -48,7 +48,7 @@ namespace kAI.Editor
         /// Get the selected behaviour, shouldn't be called before the dialogue box has closed. 
         /// </summary>
         /// <returns>An instance of the new behaviour to make. </returns>
-        public kAIBehaviour GetSelectedBehaviour()
+        public kAIBehaviourBase GetSelectedBehaviour()
         {
             return mNewBehaviour;
         }
@@ -63,9 +63,15 @@ namespace kAI.Editor
                 kAIBehaviourTemplate lTemplateBehaviour = lSelectedItem.SelectedItem as kAIBehaviourTemplate;
                 if (lTemplateBehaviour != null)
                 {
+                    Type lBehaviourType = lTemplateBehaviour.BehaviourType;
+
+                    ConstructorInfo lBehaviourConstructor = lBehaviourType.GetConstructor(new Type[] { typeof(kAIILogger) });
+                    object lBehaviour = lBehaviourConstructor.Invoke(new object[] { null });
+                    mNewBehaviour = (kAIBehaviourBase)lBehaviour;
+
                     // Yes, ok we try and instantiate a behaviour based on this template. This can be got by 
                     // whoever called the show dialogue using GetSelectedBehaviour. 
-                    mNewBehaviour = lTemplateBehaviour.Instantiate();
+                   // mNewBehaviour = lTemplateBehaviour.Instantiate();
                     DialogResult = DialogResult.OK;
                 }
             }

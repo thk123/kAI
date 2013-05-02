@@ -77,26 +77,42 @@ namespace kAI.Editor.Controls
         /// Add a new behaviour to the editor window. 
         /// </summary>
         /// <param name="lBehaviour">The behaviour to add. </param>
-        public void AddBehaviour(kAIBehaviour lBehaviour)
+        public void AddBehaviour(kAIBehaviourBase lBehaviour)
         {
-            kAIEditorNode lNewNode = new kAIEditorNode(lBehaviour);
+            // HACK: At the moment we are assuming a lot here about the nature of the behaviour.
+            // We need to remove the double generic dependency on kAIBehaviour (this is ok since nothing needs
+            // to know the type of the serial behaviour). 
+            
+            Type lBehaviourType = lBehaviour.GetType();
+            Type lBehaviouSerialType = lBehaviour.GetSerialType();
+
+            Type lGenericNodeType = typeof(kAINode<,>).MakeGenericType(lBehaviourType, lBehaviouSerialType);
+
+
+            kAINodeBase lBehaviourNode = new kAINode<kAICodeBehaviour, kAICodeBehaviour.kAICodeBehaviour_SerialiableObject>("Node", (kAICodeBehaviour)lBehaviour);
+            kAIEditorNode lNewNode = new kAIEditorNode(lBehaviourNode);
 
             Controls.Add(lNewNode);
 
-            nodes.Add(lNewNode);
+            mBehaviour.AddNode(lBehaviourNode);
+
+            mNodes.Add(lNewNode);
         }
 
         /// <summary>
         /// Create a new behaviour and load it in to the editor. 
         /// </summary>
-        public void NewBehaviour(kAIBehaviourID lBehaviourID, FileInfo lFile)
+        /// <returns>The new XML behaviour that was created.</returns>
+        public kAIXmlBehaviour NewBehaviour(kAIBehaviourID lBehaviourID, FileInfo lFile)
         {
             //TEMP: Need to get the name from some dialog box or something. 
-            kAIXmlBehaviour lBehaviour = new kAIXmlBehaviour(lBehaviourID);
+            kAIXmlBehaviour lBehaviour = new kAIXmlBehaviour(lBehaviourID, lFile);
 
             mBehaviourLocation = lFile;
 
             LoadBehaviour(lBehaviour);
+
+            return lBehaviour;
         }
 
         /// <summary>
@@ -109,6 +125,16 @@ namespace kAI.Editor.Controls
             {
                 AddGlobalPort(lGlobalPort);
             }
+
+            mBehaviour = lBehaviour;
+        }
+
+        /// <summary>
+        /// Save the behaviour.
+        /// </summary>
+        public void SaveBehaviour()
+        {
+            mBehaviour.Save();
         }
 
         private void AddGlobalPort(kAIPort lNewPort)

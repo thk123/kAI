@@ -16,3 +16,6 @@ kAITestBehaviours/obj/*
 kAI-Editor/Assets/00000002
 kAI-Editor/Assets/00000003
 TestCodeBehaviours/obj/*
+TraceAndTestImpact.testsettings
+Local.testsettings
+kAIPM_2/*

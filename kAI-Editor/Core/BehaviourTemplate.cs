@@ -15,32 +15,19 @@ namespace kAI.Editor.Core
     /// <summary>
     /// Represents a template with which to create a behaviour from. 
     /// </summary>
-    [DataContract(Name = "kAIBehaviourTemplate")]
+    [DataContract()]
     class kAIBehaviourTemplate
     {
-        /// <summary>
-        /// The flavour of behaviour. 
-        /// </summary>
-        public enum eBehaviourFlavour
-        {
-            /// <summary>
-            /// A code behaviour - one extracted from a dll.
-            /// </summary>
-            BehaviourFlavour_Code, 
-
-            /// <summary>
-            /// A behaviour created within kAI-Editor, mainly the compilation of other behaviors/actions. 
-            /// </summary>
-            BehaviourFlavour_Xml, 
-        }
+        
 
         /// <summary>
         /// The type of this template, must point to a type that inherits from kAIBehaviour
         /// </summary>
         Type mBehaviourType;
+        string mBehaviourTypeNameString;
 
         [DataMember(Name="BehaviourType")]
-        private string BehaviourTypeName
+        string BehaviourTypeName
         {
             get
             {
@@ -48,7 +35,7 @@ namespace kAI.Editor.Core
             }
             set
             {
-                mBehaviourType = value == null ? null : Type.GetType(value);
+                mBehaviourTypeNameString = value;
             }
         }
 
@@ -100,7 +87,7 @@ namespace kAI.Editor.Core
             private set
             {
                 // Here we check that the type inherits from kAIBehaviour
-                if (value.DoesInherit(typeof(kAIBehaviour)))
+                if (value.DoesInherit(typeof(kAIBehaviourBase)))
                 {
                     mBehaviourType = value;
                 }
@@ -111,19 +98,26 @@ namespace kAI.Editor.Core
             }
         }
 
-        public string BehaviourName
+        [DataMember()]
+        public kAIBehaviourID BehaviourName
         {
-            get
+            get;
+            private set;
+        }
+
+        public void SetType(kAIProject lProject)
+        {
+            mBehaviourType = Type.GetType(mBehaviourTypeNameString, (lName) => // Get the type by the name provided
             {
-                if (BehaviourFlavour == eBehaviourFlavour.BehaviourFlavour_Code)
+                return lProject.ProjectDLLs.Find((lAssembly) => // Find the assembly within the loaded assemblies
                 {
-                    return BehaviourType.Name;
-                }
-                else
-                {
-                    return BehaviourSourceXml.Name;
-                }
-            }
+                    return lAssembly.FullName == lName.FullName; // Where match is a full name match
+                });
+            }, 
+            (lAssembly, lName, lMatch) => // Find the type within the assembly
+            { 
+                return lAssembly.GetType(lName, lMatch); // Just get the type
+            }, true); // We really want errors. 
         }
 
         /// <summary>
@@ -134,6 +128,8 @@ namespace kAI.Editor.Core
         {
             BehaviourType = lBehaviourType;
             BehaviourFlavour = eBehaviourFlavour.BehaviourFlavour_Code;
+            BehaviourName = lBehaviourType.Name;
+
             BehaviourSourceXml = null;
         }
 
@@ -141,18 +137,18 @@ namespace kAI.Editor.Core
         /// Creates a template from an XML file representing a kAIBehaviour. 
         /// </summary>
         /// <param name="lSourceFile">The file this behaviour is based on.</param>
-        public kAIBehaviourTemplate(FileInfo lSourceFile)
+        public kAIBehaviourTemplate(kAIXmlBehaviour lSourceFile)
         {
             BehaviourType = typeof(kAIXmlBehaviour);
             BehaviourFlavour = eBehaviourFlavour.BehaviourFlavour_Xml;
-            BehaviourSourceXml = lSourceFile;
+            BehaviourName = lSourceFile.BehaviourID;
         }
 
         /// <summary>
         /// Create the kAIBehaviour based on this template. 
         /// </summary>
         /// <returns>An instance of the behaviour specified in this template. </returns>
-        public kAIBehaviour Instantiate()
+        public kAIBehaviour<T> Instantiate<T>()
         {
             if(BehaviourFlavour == eBehaviourFlavour.BehaviourFlavour_Code)
             {
@@ -163,7 +159,7 @@ namespace kAI.Editor.Core
                 if (lConstructor != null)
                 {
                     // So we make the thing for realz. 
-                    kAIBehaviour lBehaviour = (kAIBehaviour)lConstructor.Invoke(new Object[] { null });
+                    kAIBehaviour<T> lBehaviour = (kAIBehaviour<T>)lConstructor.Invoke(new Object[] { null });
                     return lBehaviour;
                 }
                 else
@@ -173,7 +169,6 @@ namespace kAI.Editor.Core
             }
             else
             {
-                // TEMP: Clearly need to instantiate using a XMLDeserialiser. 
                 return null;
             }
         }
@@ -208,7 +203,7 @@ namespace kAI.Editor.Core
             foreach (Type lType in lDLLAssembly.GetTypes())
             {
                 // Find out if they are a behaviour
-                if (lType.DoesInherit(typeof(kAIBehaviour)))
+                if (lType.DoesInherit(typeof(kAIBehaviour<>)))
                 {
                     // If they are, great, we make a template from them.
                     kAIBehaviourTemplate lNewTemplate = new kAIBehaviourTemplate(lType);

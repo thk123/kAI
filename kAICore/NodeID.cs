@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Runtime.Serialization;
 
 namespace kAI.Core
 {
@@ -9,11 +10,13 @@ namespace kAI.Core
     /// A simple wrapper class for node IDs.
     /// Every object within an kAIXmlBehaviour has a unique node  ID. 
     /// </summary>
+    [DataContract()]
     public class kAINodeID
     {
         /// <summary>
         /// The string of the node ID
         /// </summary>
+        [DataMember()]
         public string NodeID
         {
             get;

@@ -53,7 +53,7 @@ namespace kAI.Editor.Forms.ProjectProperties
         private void SetDataFromValues()
         {
             BehaviourID = BehaviourName_Text.Text;
-            mContainingDirectory = new DirectoryInfo(BehaviourName_Text.Text);
+            mContainingDirectory = new DirectoryInfo(BehaviourLocation_Text.Text);
         }
 
         private void BehaviourLocation_Browse(object sender, EventArgs e)
@@ -83,11 +83,6 @@ namespace kAI.Editor.Forms.ProjectProperties
             {
                 MessageBox.Show("A behaviour with this name exists already, each behaviour must have a unique name");
             }
-        }
-
-        private void BehaviourName_Text_TextChanged(object sender, EventArgs e)
-        {
-            
         }
     }
 }

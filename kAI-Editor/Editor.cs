@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Windows.Forms;
 using System.Runtime.Serialization;
+using System.Reflection;
 using System.Xml;
 using System.IO;
 
@@ -50,6 +51,7 @@ namespace kAI.Editor
             mProjectLoadedControls.Add(PropertyController.CreateForEnabledToolStrip(projectPropertiesToolStripMenuItem));
             mProjectLoadedControls.Add(PropertyController.CreateForEnabledToolStrip(closeProjectToolStripMenuItem));
             mProjectLoadedControls.Add(PropertyController.CreateForEnabledToolStrip(createNewXmlBehaviourToolStripMenuItem));
+            mProjectLoadedControls.Add(PropertyController.CreateForEnabledToolStrip(saveProjectToolStripMenuItem));
 
             mBehaviourLoadedControls = new List<PropertyControllerBase<bool>>();
             mBehaviourLoadedControls.Add(PropertyController.CreateForEnabledToolStrip(addBehaviourToolStripMenuItem));
@@ -77,7 +79,14 @@ namespace kAI.Editor
 
             mBehaviourTree = new BehaviourTree(lProject);
             mBehaviourTree.Dock = DockStyle.Fill;
+            mBehaviourTree.OnBehaviourDoubleClick += new BehaviourTree.NodeEvent(mBehaviourTree_OnBehaviourDoubleClick);
             MainEditor.Panel1.Controls.Add(mBehaviourTree);
+        }
+
+        void mBehaviourTree_OnBehaviourDoubleClick(kAIBehaviourTemplate lTemplate)
+        {
+            /*LoadBehaviour(lTemplate);
+            mBehaviourEditor.LoadBehaviour((kAIXmlBehaviour)lTemplate.Instantiate());*/
         }
 
         /// <summary>
@@ -102,6 +111,18 @@ namespace kAI.Editor
             foreach (var lControls in lSetOfControls)
             {
                 lControls.SetProperty(lEnabled);
+            }
+        }
+
+        private void LoadBehaviour(kAIBehaviourTemplate lTemplate)
+        {
+            if (mBehaviourEditor == null)
+            {
+                mBehaviourEditor = new BehaviourEditorWindow(mLoadedProject);
+                MainEditor.Panel2.Controls.Add(mBehaviourEditor);
+                mBehaviourEditor.Dock = DockStyle.Fill;
+
+                SetEnabledSetControls(mBehaviourLoadedControls, true);
             }
         }
 
@@ -169,12 +190,59 @@ namespace kAI.Editor
                     SetEnabledSetControls(mBehaviourLoadedControls, true);
                 }
 
-                mBehaviourEditor.NewBehaviour(lCreator.BehaviourID, lCreator.BehaviourPath);
+                kAIXmlBehaviour lBehaviour = mBehaviourEditor.NewBehaviour(lCreator.BehaviourID, lCreator.BehaviourPath);
+
+                mLoadedProject.AddXmlBehaviour(lBehaviour);
+
+                mBehaviourTree.UpdateTree(mLoadedProject);
             }
         }
 
+        private void saveToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mBehaviourEditor.SaveBehaviour();
+        }
 
-            mBehaviourEditor.NewBehaviour();
+        private void loadToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            OpenFileDialog lOpenDialog = new OpenFileDialog();
+            lOpenDialog.Filter = "XML Behaviours|*" + kAIXmlBehaviour.kAIXmlBehaviourExtension;
+
+            if (lOpenDialog.ShowDialog() == DialogResult.OK)
+            {
+                kAIXmlBehaviour.Load(new FileInfo(lOpenDialog.FileName), (s) =>
+                {
+                    if (s == Assembly.GetExecutingAssembly().FullName)
+                    {
+                        return Assembly.GetExecutingAssembly();
+                    }
+                    else
+                    {
+                        foreach(AssemblyName lAssemblyName in Assembly.GetExecutingAssembly().GetReferencedAssemblies())
+                        {
+                            if (lAssemblyName.FullName == s)
+                            {
+                                Assembly lAssembly = Assembly.Load(lAssemblyName);
+                                if (lAssembly != null)
+                                {
+                                    return lAssembly;
+                                }
+                            }
+                        }
+
+
+                        return mLoadedProject.ProjectDLLs.Find((lAssembly) =>
+                            {
+                                return lAssembly.FullName == s;
+                            });
+                    }
+                });
+            }
+        }
+
+        private void saveProjectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mLoadedProject.Save();
         }
     }
 }

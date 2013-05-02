@@ -2,19 +2,36 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
-
+using System.Runtime.Serialization;
 
 namespace kAI.Core
 {
     /// <summary>
     /// The root class all kAI.Core Objects inherit from. Provides functions for logging messages and error
     /// </summary>
+    [DataContract()]    
     public abstract class kAIObject
     {
+        /// <summary>
+        /// A method for handling exceptions from within kAI. 
+        /// </summary>
+        /// <param name="lException">The exception that was thrown. </param>
+        /// <param name="lSender">The object that threw the exception. </param>
+        public delegate void ExceptionHandle(Exception lException, kAIObject lSender);
+
         /// <summary>
         /// The global logger to be used by all classes.
         /// </summary>
         static kAIILogger mGlobalLogger;
+
+        static ExceptionHandle ExceptionHandler
+        {
+            get;
+            set;
+        }
+
+        public static bool ExceptionOnAssert = false;
+        
 
         /// <summary>
         /// The logger of this instance, only used by this object.
@@ -120,5 +137,48 @@ namespace kAI.Core
                 mLogger.LogCriticalError(GetType().ToString() + ": " + lError, lDetails);
             }
         }
+
+        /// <summary>
+        /// Throw an exception. An specific handler can be specified using kAIObject.ExceptionHandler.
+        /// </summary>
+        /// <seealso cref="ExceptionHandler"/>
+        /// <param name="lException">The exception that has been thrown. </param>
+        protected void ThrowException(Exception lException)
+        {
+            if (kAIObject.ExceptionHandler != null)
+            {
+                ExceptionHandler(lException, this);
+            }
+            else
+            {
+                throw lException;
+            }
+        }
+
+        /// <summary>
+        /// Assert that something should be true. Optionally can throw an exception if it isn't. 
+        /// </summary>
+        /// <param name="lCondition">The condition to check. </param>
+        /// <param name="lMessage">Optionally, the message to display. </param>
+        protected void Assert(bool lCondition, string lMessage = null)
+        {
+            if (!lCondition)
+            {
+                LogCriticalError(lMessage);
+                System.Diagnostics.Debugger.Break();
+
+                if (ExceptionOnAssert)
+                {
+                    ThrowException(new AssertFailedException(lMessage));
+                }
+            }
+        }
+    }
+
+    class AssertFailedException : Exception
+    {
+        public AssertFailedException(string lMessage = null)
+            :base(lMessage)
+        {}
     }
 }

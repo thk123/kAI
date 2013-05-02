@@ -20,21 +20,24 @@ namespace kAI.Editor.Controls
     partial class BehaviourTree : UserControl
     {
         /// <summary>
+        /// Handler for when a behaviour node gets instantiated. 
+        /// </summary>
+        /// <param name="lTemplate">The template that node represented. </param>
+        public delegate void NodeEvent(kAIBehaviourTemplate lTemplate);
+
+        public event NodeEvent OnBehaviourDoubleClick;
+        public event NodeEvent OnBehaviourInstantiated;
+
+
+        /// <summary>
         /// A node in a behaviour tree that represents a specific behaviour template. 
         /// </summary>
-        class BehaviourNode : TreeNode
+        class BehaviourTreeNode : TreeNode
         {
-            /// <summary>
-            /// Handler for when a behaviour node gets instantiated. 
-            /// </summary>
-            /// <param name="lSender">The tree node that sent the request. </param>
-            /// <param name="lTemplate">The template that node represented. </param>
-            public delegate void InstantiatedEvent(BehaviourNode lSender, kAIBehaviourTemplate lTemplate);
-
             /// <summary>
             /// Occurs when the behaviour is instantiated. 
             /// </summary>
-            public event InstantiatedEvent OnInstantiation;
+            public event NodeEvent OnInstantiation;
 
             /// <summary>
             /// The template this node represents. 
@@ -49,7 +52,7 @@ namespace kAI.Editor.Controls
             /// Creates node representing the specific template. 
             /// </summary>
             /// <param name="lTemplate">The behaviour template this node represents. </param>
-            public BehaviourNode(kAIBehaviourTemplate lTemplate)
+            public BehaviourTreeNode(kAIBehaviourTemplate lTemplate)
                 :base(lTemplate.BehaviourName)
             {
                 TemplateBehaviour = lTemplate;
@@ -60,10 +63,13 @@ namespace kAI.Editor.Controls
                 ContextMenu.MenuItems.Add(lInstantiateMenu);
             }
 
+            // The instantiate button was pressed. 
             void lInstantiateMenu_Click(object sender, EventArgs e)
             {
-                if(OnInstantiation != null)
-                    OnInstantiation(this, TemplateBehaviour);
+                if (OnInstantiation != null)
+                {
+                    OnInstantiation(TemplateBehaviour);
+                }
             }
         }
 
@@ -76,7 +82,11 @@ namespace kAI.Editor.Controls
             InitializeComponent();
 
             FillTree(lProject);
+
+
+            BehaviourTree_Tree.NodeMouseDoubleClick += new TreeNodeMouseClickEventHandler(BehaviourTree_Tree_NodeMouseDoubleClick);
         }
+
 
         /// <summary>
         /// When the behaviors have changed, update the tree. 
@@ -102,13 +112,40 @@ namespace kAI.Editor.Controls
             foreach (kAIBehaviourTemplate lTemplate in lProject.Behaviours)
             {
                 //TODO: Sort by folders and DLLs
-                if (lTemplate.BehaviourFlavour == kAIBehaviourTemplate.eBehaviourFlavour.BehaviourFlavour_Code)
+
+                BehaviourTreeNode lNewNode = new BehaviourTreeNode(lTemplate);
+                if (lTemplate.BehaviourFlavour == eBehaviourFlavour.BehaviourFlavour_Code)
                 {
-                    lCodeNode.Nodes.Add(new BehaviourNode(lTemplate));
+                    lCodeNode.Nodes.Add(lNewNode);
                 }
                 else
                 {
-                    lXmlNode.Nodes.Add(new BehaviourNode(lTemplate));
+                    lXmlNode.Nodes.Add(lNewNode);
+                }
+
+                lNewNode.OnInstantiation += new NodeEvent(lNewNode_OnInstantiation);
+            }
+        }
+
+        // Propagate the behaviour instantiated event out. 
+        void lNewNode_OnInstantiation(kAIBehaviourTemplate lTemplate)
+        {
+            if (OnBehaviourInstantiated != null)
+            {
+                OnBehaviourInstantiated(lTemplate);
+            }
+        }
+
+
+        // A node was double clicked, so open it. 
+        void BehaviourTree_Tree_NodeMouseDoubleClick(object sender, TreeNodeMouseClickEventArgs e)
+        {
+            BehaviourTreeNode lSelectedNode = e.Node as BehaviourTreeNode;
+            if (lSelectedNode != null)
+            {
+                if (OnBehaviourDoubleClick != null)
+                {
+                    OnBehaviourDoubleClick(lSelectedNode.TemplateBehaviour);
                 }
             }
         }

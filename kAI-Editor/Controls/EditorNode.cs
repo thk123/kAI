@@ -70,20 +70,20 @@ namespace kAI.Editor.Controls
         /// <summary>
         /// Construct a new editor node with the given node ID. 
         /// </summary>
-        /// <param name="lBehaviour">The behaviour this node represents</param>
-        public kAIEditorNode(kAIBehaviour lBehaviour)
+        /// <param name="lNode">The behaviour this node represents</param>
+        public kAIEditorNode(kAINodeBase lNode)
         {
             InitializeComponent();
             
             // The container is started at zero.
             mContainerOffset = new Point(0, 0);
 
-            foreach(kAIPort lPort in lBehaviour.GlobalPorts)
+            foreach(kAIPort lPort in lNode.GetExternalPorts())
             {
                 AddPort(lPort);
             }
 
-            BehaviourName.Text = lBehaviour.NodeID;
+            BehaviourName.Text = lNode.NodeID;
         }
 
         /// <summary>

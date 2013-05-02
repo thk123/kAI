@@ -84,7 +84,7 @@ namespace kAI.Editor.Core
         }
 
         /// <summary>
-        /// The locatino of the file of the project. 
+        /// The location of the file of the project. 
         /// </summary>
         public FileInfo ProjectFile
         {
@@ -149,7 +149,7 @@ namespace kAI.Editor.Core
             //Extract behaviors
             foreach (Type lType in lAssembly.GetExportedTypes())
             {
-                if (lType.DoesInherit(typeof(kAIBehaviour)))
+                if (lType.DoesInherit(typeof(kAIBehaviour<>)))
                 {
                     kAIBehaviourTemplate lTemplate = new kAIBehaviourTemplate(lType);
                     Behaviours.Add(lTemplate);
@@ -164,10 +164,10 @@ namespace kAI.Editor.Core
         public void RemoveDLL(Assembly lAssembly)
         {
             // Remove the matching file
-            ProjectDllPaths.RemoveAll((lFileInfo) => 
-                { 
-                    return lFileInfo.FullName == lAssembly.Location; 
-                } );
+            ProjectDllPaths.RemoveAll((lFileInfo) =>
+            {
+                return lFileInfo.FullName == lAssembly.Location;
+            });
 
             // And unload it from loaded DLLs
             UnloadDLL(lAssembly);
@@ -176,7 +176,25 @@ namespace kAI.Editor.Core
 
         public void AddXmlBehaviour(kAIXmlBehaviour lBehaviour)
         {
-            //Behaviours.Add(new kAIBehaviourTemplate())
+            Behaviours.Add(new kAIBehaviourTemplate(lBehaviour));
+        }
+
+        /// <summary>
+        /// Check to see if there exists a behaviour in this project with the same behaviour ID. 
+        /// </summary>
+        /// <param name="lBehaviourID">The behaviour ID to check. </param>
+        /// <returns>A boolean indicating if the name is avaliable, where true means the name is acceptable. </returns>
+        public bool CheckBehaviourName(kAIBehaviourID lBehaviourID)
+        {
+            foreach (kAIBehaviourTemplate lTemplate in Behaviours)
+            {
+                if (lTemplate.BehaviourName == lBehaviourID)
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
 
@@ -198,6 +216,14 @@ namespace kAI.Editor.Core
             foreach (FileInfo lDLLPath in ProjectDllPaths)
             {
                 LoadDLL(lDLLPath);
+            }
+
+            foreach (kAIBehaviourTemplate lTemplate in Behaviours)
+            {
+                if (lTemplate.BehaviourFlavour == eBehaviourFlavour.BehaviourFlavour_Code)
+                {
+                    lTemplate.SetType(this);
+                }
             }
         }
 
@@ -227,7 +253,7 @@ namespace kAI.Editor.Core
             List<kAIBehaviourTemplate> lTemplatesToRemove = new List<kAIBehaviourTemplate>();
             foreach (kAIBehaviourTemplate lTemplate in Behaviours)
             {
-                if (lTemplate.BehaviourFlavour == kAIBehaviourTemplate.eBehaviourFlavour.BehaviourFlavour_Code)
+                if (lTemplate.BehaviourFlavour == eBehaviourFlavour.BehaviourFlavour_Code)
                 {
                     Type lUnderlyingType = lTemplate.BehaviourType;
                     if (lUnderlyingType.Assembly.Equals(lAssembly))
@@ -263,6 +289,22 @@ namespace kAI.Editor.Core
             lNewProject.Load();
 
             return lNewProject;
+        }
+
+        public void Save()
+        {
+            // We serialise the project in to an XML file and save the changes
+            XmlObjectSerializer lProjectSerialiser = new DataContractSerializer(typeof(kAIProject));
+
+            // Settings for writing the XML file 
+            XmlWriterSettings lSettings = new XmlWriterSettings();
+            lSettings.Indent = true;
+            lSettings.NamespaceHandling = NamespaceHandling.OmitDuplicates;
+
+            // Create the writer and write the file. 
+            XmlWriter lWriter = XmlWriter.Create(ProjectFile.FullName, lSettings);
+            lProjectSerialiser.WriteObject(lWriter, this);
+            lWriter.Close();
         }
     }
 }
