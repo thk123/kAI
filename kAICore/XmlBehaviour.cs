@@ -22,11 +22,6 @@ namespace kAI.Core
         [DataContract()]
         public class kAIXmlBehaviour_SerialiableObject
         {
-            static kAIXmlBehaviour_SerialiableObject()
-            {
-                kAINodeBase.AddNodeSerialType(typeof(kAIXmlBehaviour_SerialiableObject));
-            }
-
             /// <summary>
             /// The ID of the behaviour.
             /// </summary>
@@ -58,8 +53,8 @@ namespace kAI.Core
         /// Represents the XML for the behaviour when saved out. 
         /// </summary>
         [DataContract(Name = "kAIXmlBehaviour")]
-        /*[KnownType(typeof(kAICodeBehaviour.kAICodeBehaviour_SerialiableObject))]
-        [KnownType(typeof(kAIXmlBehaviour.kAIXmlBehaviour_SerialiableObject))]*/
+        [KnownType(typeof(kAICodeBehaviour.kAICodeBehaviour_SerialiableObject))]
+        [KnownType(typeof(kAIXmlBehaviour.kAIXmlBehaviour_SerialiableObject))]
         private class kAIXmlBehaviour_InternalXml
         {
 
@@ -246,8 +241,8 @@ namespace kAI.Core
         public void Save()
         {
             kAIXmlBehaviour_InternalXml lSaveableBehaviour = new kAIXmlBehaviour_InternalXml(this);
-
-            XmlObjectSerializer lProjectSerialiser = new DataContractSerializer(typeof(kAIXmlBehaviour_InternalXml), kAINodeBase.NodeTypes);
+            
+            XmlObjectSerializer lProjectSerialiser = new DataContractSerializer(typeof(kAIXmlBehaviour_InternalXml));
 
             // Settings for writing the XML file 
             XmlWriterSettings lSettings = new XmlWriterSettings();
@@ -286,7 +281,7 @@ namespace kAI.Core
         /// <returns>An instantiated behaviour based on the provided XML. </returns>
         public static kAIXmlBehaviour Load(FileInfo lFileInfo, GetAssemblyByName lAssemblyGetter)
         {
-            XmlObjectSerializer lProjectDeserialiser = new DataContractSerializer(typeof(kAIXmlBehaviour_InternalXml), kAINodeBase.NodeTypes);
+            XmlObjectSerializer lProjectDeserialiser = new DataContractSerializer(typeof(kAIXmlBehaviour_InternalXml));
 
             kAIXmlBehaviour_InternalXml lXmlFile = (kAIXmlBehaviour_InternalXml)lProjectDeserialiser.ReadObject(lFileInfo.OpenRead());
 

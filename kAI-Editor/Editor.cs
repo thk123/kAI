@@ -210,7 +210,7 @@ namespace kAI.Editor
 
             if (lOpenDialog.ShowDialog() == DialogResult.OK)
             {
-                kAIXmlBehaviour.Load(new FileInfo(lOpenDialog.FileName), (s) =>
+                kAIXmlBehaviour lBehaviour = kAIXmlBehaviour.Load(new FileInfo(lOpenDialog.FileName), (s) =>
                 {
                     if (s == Assembly.GetExecutingAssembly().FullName)
                     {
@@ -237,6 +237,10 @@ namespace kAI.Editor
                             });
                     }
                 });
+
+                LoadBehaviour(null);
+
+                mBehaviourEditor.LoadBehaviour(lBehaviour);
             }
         }
 

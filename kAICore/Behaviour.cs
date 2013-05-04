@@ -166,13 +166,8 @@ namespace kAI.Core
         /// The class used to serialise this behaviour when used as a node within an XML behaviour. 
         /// </summary>
         [DataContract()]
-        class kAICodeBehaviour_SerialiableObject
+        internal class kAICodeBehaviour_SerialiableObject
         {
-            static kAICodeBehaviour_SerialiableObject()
-            {
-                kAINodeBase.AddNodeSerialType(typeof(kAICodeBehaviour_SerialiableObject));
-            }
-
             //NOTE: This may not be required. 
             /// <summary>
             /// The behaviour ID.

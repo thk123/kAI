@@ -13,20 +13,6 @@ namespace kAI.Core
     [DataContract()]
     public abstract class kAINodeBase : kAIObject
     {
-        private static List<Type> kNodeTypes = new List<Type>();
-        public static IEnumerable<Type> NodeTypes
-        {
-            get
-            {
-                return kNodeTypes;
-            }
-        }
-
-        internal static void AddNodeSerialType(Type lSerialType)
-        {
-            kNodeTypes.Add(lSerialType);
-        }
-
         /// <summary>
         /// For events when the activation state of this node changes. 
         /// </summary>

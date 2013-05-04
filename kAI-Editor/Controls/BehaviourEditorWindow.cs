@@ -99,6 +99,14 @@ namespace kAI.Editor.Controls
             mNodes.Add(lNewNode);
         }
 
+        public void AddNode(kAINodeBase lNode)
+        {
+            kAIEditorNode lEditorNode = new kAIEditorNode(lNode);
+            Controls.Add(lEditorNode);
+
+            mNodes.Add(lEditorNode);
+        }
+
         /// <summary>
         /// Create a new behaviour and load it in to the editor. 
         /// </summary>
@@ -126,6 +134,10 @@ namespace kAI.Editor.Controls
                 AddGlobalPort(lGlobalPort);
             }
 
+            foreach (kAINodeBase lInternalNode in lBehaviour.InternalNodes)
+            {
+                AddNode(lInternalNode);
+            }
             mBehaviour = lBehaviour;
         }
 
