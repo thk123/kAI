@@ -78,18 +78,8 @@ namespace kAI.Editor.Controls
         /// </summary>
         /// <param name="lBehaviour">The behaviour to add. </param>
         public void AddBehaviour(kAIBehaviour lBehaviour)
-        {
-            // HACK: At the moment we are assuming a lot here about the nature of the behaviour.
-            // We need to remove the double generic dependency on kAIBehaviour (this is ok since nothing needs
-            // to know the type of the serial behaviour). 
-            
-            Type lBehaviourType = lBehaviour.GetType();
-            Type lBehaviouSerialType = lBehaviour.GetDataContractType();
-
-            Type lGenericNodeType = typeof(kAINode<>).MakeGenericType(lBehaviourType);
-
-
-            kAINodeBase lBehaviourNode = new kAINode<kAICodeBehaviour>("Node", (kAICodeBehaviour)lBehaviour);
+        {         
+            kAINode lBehaviourNode = new kAINode("Node", lBehaviour);
             kAIEditorNode lNewNode = new kAIEditorNode(lBehaviourNode);
 
             Controls.Add(lNewNode);
@@ -99,7 +89,7 @@ namespace kAI.Editor.Controls
             mNodes.Add(lNewNode);
         }
 
-        public void AddNode(kAINodeBase lNode)
+        public void AddNode(kAINode lNode)
         {
             kAIEditorNode lEditorNode = new kAIEditorNode(lNode);
             Controls.Add(lEditorNode);
@@ -134,7 +124,7 @@ namespace kAI.Editor.Controls
                 AddGlobalPort(lGlobalPort);
             }
 
-            foreach (kAINodeBase lInternalNode in lBehaviour.InternalNodes)
+            foreach (kAINode lInternalNode in lBehaviour.InternalNodes)
             {
                 AddNode(lInternalNode);
             }

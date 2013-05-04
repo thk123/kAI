@@ -71,7 +71,7 @@ namespace kAI.Editor.Controls
         /// Construct a new editor node with the given node ID. 
         /// </summary>
         /// <param name="lNode">The behaviour this node represents</param>
-        public kAIEditorNode(kAINodeBase lNode)
+        public kAIEditorNode(kAINode lNode)
         {
             InitializeComponent();
             

@@ -82,7 +82,7 @@ namespace kAI.Core
                 [DataMember()]
                 public object NodeContents;
 
-                public InternalNode(kAIXmlBehaviour_InternalXml lParent, kAINodeBase lNode)
+                public InternalNode(kAIXmlBehaviour_InternalXml lParent, kAINode lNode)
                 {
                     NodeID = lNode.NodeID;
                     NodeType = lNode.GetNodeContentsType().FullName;
@@ -125,7 +125,7 @@ namespace kAI.Core
 
                 InternalNodes = new List<InternalNode>();
 
-                foreach (kAINodeBase lNodeBase in lBehaviour.InternalNodes)
+                foreach (kAINode lNodeBase in lBehaviour.InternalNodes)
                 {
                     Type lContentType = lNodeBase.GetNodeSerialableContentType();
                     object lContent = lNodeBase.GetNodeSerialisableContent();
@@ -136,7 +136,7 @@ namespace kAI.Core
                 }
             }
 
-            public IEnumerable<kAINodeBase> GetInternalNodes(GetAssemblyByName lAssemblyGetter)
+            public IEnumerable<kAINode> GetInternalNodes(GetAssemblyByName lAssemblyGetter)
             {
                 foreach (InternalNode lInternalNode in InternalNodes)
                 {
@@ -155,12 +155,14 @@ namespace kAI.Core
 
                     object lNodeContents = lLoader.Invoke(null, new object[] { lData, lAssemblyGetter });
 
-                    Type lGenericNodeType = typeof(kAINode<>).MakeGenericType(lNodeType);
-                    ConstructorInfo lNodeConstructor = lGenericNodeType.GetConstructor(new Type[] { typeof(kAINodeID), lNodeType });
+                    kAINode lNewNode = new kAINode(lInternalNode.NodeID, (kAIINodeObject)lNodeContents);
 
-                    object lNode = lNodeConstructor.Invoke(new object[] { lInternalNode.NodeID, lNodeContents });
+                    //Type lGenericNodeType = typeof(kAINode).MakeGenericType(lNodeType);
+                    //ConstructorInfo lNodeConstructor = lGenericNodeType.GetConstructor(new Type[] { typeof(kAINodeID), lNodeType });
 
-                    yield return (kAINodeBase)lNode;
+                    //object lNode = lNodeConstructor.Invoke(new object[] { lInternalNode.NodeID, lNodeContents });
+
+                    yield return lNewNode;
                 }
             }
         }
@@ -191,7 +193,7 @@ namespace kAI.Core
         /// <summary>
         /// The nodes within the XML behaviour. 
         /// </summary>
-        public IEnumerable<kAINodeBase> InternalNodes
+        public IEnumerable<kAINode> InternalNodes
         {
             get
             {
@@ -199,7 +201,7 @@ namespace kAI.Core
             }
         }
 
-        Dictionary<kAINodeID, kAINodeBase> mNodes;
+        Dictionary<kAINodeID, kAINode> mNodes;
 
         /// <summary>
         /// Create a new XML behaviour 
@@ -209,15 +211,15 @@ namespace kAI.Core
         public kAIXmlBehaviour(kAIBehaviourID lBehaviourID, FileInfo lFile, kAIILogger lLogger = null)
             : base(lBehaviourID, lLogger)
         {
-            mNodes = new Dictionary<kAINodeID, kAINodeBase>();
+            mNodes = new Dictionary<kAINodeID, kAINode>();
             XmlLocation = lFile;
         }
 
         private kAIXmlBehaviour(kAIXmlBehaviour_InternalXml lSource, GetAssemblyByName lAssemblyGetter, FileInfo lSourceFile, kAIILogger lLogger = null)
             : base(lSource.BehaviourID, lLogger)
         {
-            mNodes = new Dictionary<kAINodeID, kAINodeBase>();
-            foreach (kAINodeBase lNode in lSource.GetInternalNodes(lAssemblyGetter))
+            mNodes = new Dictionary<kAINodeID, kAINode>();
+            foreach (kAINode lNode in lSource.GetInternalNodes(lAssemblyGetter))
             {
                 mNodes.Add(lNode.NodeID, lNode);
             }
@@ -229,7 +231,7 @@ namespace kAI.Core
         /// Add a node inside this behaviour. 
         /// </summary>
         /// <param name="lNode">The node to add. </param>
-        public void AddNode(kAINodeBase lNode)
+        public void AddNode(kAINode lNode)
         {
             lNode.Active = false;
             mNodes.Add(lNode.NodeID, lNode);
