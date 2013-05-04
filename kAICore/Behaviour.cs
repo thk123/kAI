@@ -60,9 +60,20 @@ namespace kAI.Core
         /// <param name="lNodeID">The unique (to this behaviours enviorment) node ID for this instance. </param>
         /// <param name="lLogger">Optionally, the logger this instance should use when logging anything. </param>
         public kAIBehaviour(kAIBehaviourID lNodeID, kAIILogger lLogger = null)
-            : base(lLogger)
+            : this(lLogger)
         {
             BehaviourID = lNodeID;
+        }
+
+        /// <summary>
+        /// Used for constructing a behaviour with a name equal to the type. 
+        /// </summary>
+        /// <param name="lLogger">Optionally, the logger this instance should use when logging anything. </param>   
+        protected kAIBehaviour(kAIILogger lLogger = null)
+            : base(lLogger)
+        {
+            BehaviourID = GetType().Name;
+
 
             mExternalPorts = new Dictionary<kAIPortID, kAIPort>();
 
@@ -136,7 +147,7 @@ namespace kAI.Core
         /// Get the data required to turn this object into an XML structure. 
         /// </summary>
         /// <returns></returns>
-        public abstract object GetDataContractClass();
+        public abstract kAIINodeSerialObject GetDataContractClass();
 
         /// <summary>
         /// Gets the type of object returned in <see cref="GetDataContractClass"/>.
@@ -155,23 +166,20 @@ namespace kAI.Core
         /// <summary>
         /// Create a code behaviour. 
         /// </summary>
-        /// <param name="lBehaviourID">The behaviour ID of the behaviour</param>
+        /// <note>Since we don't pass up a name, the type of this object is used. </note>
         /// <param name="lLogger">Optionally, the logger with which to log any errors. </param>
-        protected kAICodeBehaviour(kAIBehaviourID lBehaviourID, kAIILogger lLogger = null)
-            :base(lBehaviourID, lLogger)
-        {}
+        protected kAICodeBehaviour(kAIILogger lLogger = null)
+            :base(lLogger)
+        {
+        }
 
 
         /// <summary>
         /// The class used to serialise this behaviour when used as a node within an XML behaviour. 
         /// </summary>
         [DataContract()]
-        internal class kAICodeBehaviour_SerialiableObject
+        internal class SerialObject : kAIINodeSerialObject
         {
-            //NOTE: This may not be required. 
-            /// <summary>
-            /// The behaviour ID.
-            /// </summary>
             [DataMember()]
             public string BehaviourID;
 
@@ -191,13 +199,30 @@ namespace kAI.Core
             /// Create the serialisable object from the code behaviour.
             /// </summary>
             /// <param name="lBehaviour">The code behaviour to serialise. </param>
-            public kAICodeBehaviour_SerialiableObject(kAICodeBehaviour lBehaviour)
-            {
-                BehaviourID = lBehaviour.BehaviourID;
-                Type lBehaviourType = lBehaviour.GetType();
+            public SerialObject(kAICodeBehaviour lBehaviour)
+                :this(lBehaviour.GetType())
+            {}
 
-                BehaviourType = lBehaviourType.FullName;
-                BehaviourAssembly = lBehaviourType.Assembly.FullName;
+            public SerialObject(Type lCodeBehaviourType)
+            {
+                BehaviourID = lCodeBehaviourType.Name;
+                BehaviourType = lCodeBehaviourType.FullName;
+                BehaviourAssembly = lCodeBehaviourType.Assembly.FullName;
+            }
+
+            public string GetFriendlyName()
+            {
+                return BehaviourType;
+            }
+
+            public kAIINodeObject Instantiate(kAIXmlBehaviour.GetAssemblyByName lAssemblyResolve)
+            {
+                return kAICodeBehaviour.Load(this, lAssemblyResolve);
+            }
+
+            public eNodeFlavour GetNodeFlavour()
+            {
+                return eNodeFlavour.BehaviourCode;
             }
         }
 
@@ -205,9 +230,9 @@ namespace kAI.Core
         /// Get the serialisable object to save when this behaviour of a child node. 
         /// </summary>
         /// <returns>The object to serialise using a DataContract serialiser. </returns>
-        public override object GetDataContractClass()
+        public override kAIINodeSerialObject GetDataContractClass()
         {
-            return new kAICodeBehaviour_SerialiableObject(this);
+            return new SerialObject(this);
         }
 
         /// <summary>
@@ -221,7 +246,7 @@ namespace kAI.Core
         /// <returns></returns>
         public override Type GetDataContractType()
         {
-            return typeof(kAICodeBehaviour_SerialiableObject);
+            return typeof(SerialObject);
         }
 
         /// <summary>
@@ -232,7 +257,7 @@ namespace kAI.Core
         /// <returns>A fully instantiated kAICodeBehaviour based on the data. </returns>
         public static kAICodeBehaviour Load(object lSerialObject, kAIXmlBehaviour.GetAssemblyByName lAssemblyGetter)
         {
-            kAICodeBehaviour_SerialiableObject lCastSerialObject = lSerialObject as kAICodeBehaviour_SerialiableObject;
+            SerialObject lCastSerialObject = lSerialObject as SerialObject;
 
             kAIObject.Assert(null, lCastSerialObject != null);
 
@@ -241,6 +266,13 @@ namespace kAI.Core
             ConstructorInfo lConstructor = lBehaviourType.GetConstructor(new Type[] { typeof(kAIILogger) });
             object lBehaviour = lConstructor.Invoke(new Object[]{ null });
             return (kAICodeBehaviour)lBehaviour;
+        }
+
+        public static kAIINodeSerialObject CreateSerialObjectFromType(Type t)
+        {
+            //TODO: Assert(t inherits from kAICodeBehaviour)
+
+            return new SerialObject(t);
         }
     }
 }

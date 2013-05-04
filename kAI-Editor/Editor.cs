@@ -83,7 +83,7 @@ namespace kAI.Editor
             MainEditor.Panel1.Controls.Add(mBehaviourTree);
         }
 
-        void mBehaviourTree_OnBehaviourDoubleClick(kAIBehaviourTemplate lTemplate)
+        void mBehaviourTree_OnBehaviourDoubleClick(kAIINodeSerialObject lObject)
         {
             /*LoadBehaviour(lTemplate);
             mBehaviourEditor.LoadBehaviour((kAIXmlBehaviour)lTemplate.Instantiate());*/
@@ -114,7 +114,7 @@ namespace kAI.Editor
             }
         }
 
-        private void LoadBehaviour(kAIBehaviourTemplate lTemplate)
+        private void CreateBehaviourEditorWindow()
         {
             if (mBehaviourEditor == null)
             {
@@ -192,7 +192,7 @@ namespace kAI.Editor
 
                 kAIXmlBehaviour lBehaviour = mBehaviourEditor.NewBehaviour(lCreator.BehaviourID, lCreator.BehaviourPath);
 
-                mLoadedProject.AddXmlBehaviour(lBehaviour);
+                mLoadedProject.AddXmlBehaviour(lBehaviour.GetDataContractClass());
 
                 mBehaviourTree.UpdateTree(mLoadedProject);
             }
@@ -210,7 +210,10 @@ namespace kAI.Editor
 
             if (lOpenDialog.ShowDialog() == DialogResult.OK)
             {
-                kAIXmlBehaviour lBehaviour = kAIXmlBehaviour.Load(new FileInfo(lOpenDialog.FileName), (s) =>
+
+
+                //TODO: Add existing behaviour and hence create a behaviour from a FileInfo. 
+                /*kAIXmlBehaviour lBehaviour = kAIXmlBehaviour.Load(new FileInfo(lOpenDialog.FileName), (s) =>
                 {
                     if (s == Assembly.GetExecutingAssembly().FullName)
                     {
@@ -240,7 +243,7 @@ namespace kAI.Editor
 
                 LoadBehaviour(null);
 
-                mBehaviourEditor.LoadBehaviour(lBehaviour);
+                mBehaviourEditor.LoadBehaviour(lBehaviour);*/
             }
         }
 

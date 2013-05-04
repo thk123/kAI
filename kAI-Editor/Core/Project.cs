@@ -67,7 +67,7 @@ namespace kAI.Editor.Core
         /// A list of the behaviors in this project (both code and XML). 
         /// </summary>
         [DataMember()]
-        public List<kAIBehaviourTemplate> Behaviours
+        public Dictionary<string, kAIINodeSerialObject> NodeObjects
         {
             get;
             private set;
@@ -129,7 +129,7 @@ namespace kAI.Editor.Core
             XmlBehaviourRoot = new DirectoryInfo(ProjectRoot.FullName + "\\Behaviours\\");
 
             ProjectDllPaths = new List<FileInfo>();
-            Behaviours = new List<kAIBehaviourTemplate>();
+            NodeObjects = new Dictionary<string, kAIINodeSerialObject>();
             ProjectTypes = new List<Type>();
 
             // We also initialise all the types that wouldn't have come from the XML
@@ -151,8 +151,8 @@ namespace kAI.Editor.Core
             {
                 if (lType.DoesInherit(typeof(kAIBehaviour)))
                 {
-                    kAIBehaviourTemplate lTemplate = new kAIBehaviourTemplate(lType);
-                    Behaviours.Add(lTemplate);
+                    kAIINodeSerialObject lSerialObject = kAICodeBehaviour.CreateSerialObjectFromType(lType);
+                    NodeObjects.Add(lSerialObject.GetFriendlyName(), lSerialObject);
                 }
             }
         }
@@ -174,9 +174,9 @@ namespace kAI.Editor.Core
 
         }
 
-        public void AddXmlBehaviour(kAIXmlBehaviour lBehaviour)
+        public void AddXmlBehaviour(kAIINodeSerialObject lBehaviour)
         {
-            Behaviours.Add(new kAIBehaviourTemplate(lBehaviour));
+            NodeObjects.Add(lBehaviour.GetFriendlyName(), lBehaviour);
         }
 
         /// <summary>
@@ -186,11 +186,14 @@ namespace kAI.Editor.Core
         /// <returns>A boolean indicating if the name is avaliable, where true means the name is acceptable. </returns>
         public bool CheckBehaviourName(kAIBehaviourID lBehaviourID)
         {
-            foreach (kAIBehaviourTemplate lTemplate in Behaviours)
+            foreach (kAIINodeSerialObject lTemplate in NodeObjects.Values)
             {
-                if (lTemplate.BehaviourName == lBehaviourID)
+                if (lTemplate.GetNodeFlavour().IsBehaviourFlavour())
                 {
-                    return false;
+                    if (lTemplate.GetFriendlyName() == lBehaviourID)
+                    {
+                        return false;
+                    }
                 }
             }
 
@@ -218,13 +221,13 @@ namespace kAI.Editor.Core
                 LoadDLL(lDLLPath);
             }
 
-            foreach (kAIBehaviourTemplate lTemplate in Behaviours)
+            /*foreach (kAIBehaviourTemplate lTemplate in NodeObjects.Values)
             {
                 if (lTemplate.BehaviourFlavour == eBehaviourFlavour.BehaviourFlavour_Code)
                 {
                     lTemplate.SetType(this);
                 }
-            }
+            }*/
         }
 
         /// <summary>
@@ -250,22 +253,23 @@ namespace kAI.Editor.Core
         /// <param name="lAssembly">The DLL to unload. </param>
         private void UnloadDLL(Assembly lAssembly)
         {
-            List<kAIBehaviourTemplate> lTemplatesToRemove = new List<kAIBehaviourTemplate>();
-            foreach (kAIBehaviourTemplate lTemplate in Behaviours)
+            List<kAIINodeSerialObject> lTemplatesToRemove = new List<kAIINodeSerialObject>();
+            foreach (kAIINodeSerialObject lTemplate in NodeObjects.Values)
             {
-                if (lTemplate.BehaviourFlavour == eBehaviourFlavour.BehaviourFlavour_Code)
+                if (lTemplate.GetNodeFlavour() == eNodeFlavour.BehaviourCode)
                 {
-                    Type lUnderlyingType = lTemplate.BehaviourType;
+                    //TODO: need to somehow remove??
+                    /*Type lUnderlyingType = lTemplate.;
                     if (lUnderlyingType.Assembly.Equals(lAssembly))
                     {
                         lTemplatesToRemove.Add(lTemplate);
-                    }
+                    }*/
                 }
             }
 
-            foreach (kAIBehaviourTemplate lTemplate in lTemplatesToRemove)
+            foreach (kAIINodeSerialObject lTemplate in lTemplatesToRemove)
             {
-                Behaviours.Remove(lTemplate);
+                NodeObjects.Remove(lTemplate.GetFriendlyName());
             }
 
             ProjectDLLs.Remove(lAssembly);
@@ -278,7 +282,7 @@ namespace kAI.Editor.Core
         /// <returns>An instantiated kAIProject with the relevant properties. </returns>
         public static kAIProject Load(FileInfo lProjectXml)
         {
-            DataContractSerializer lDeserialiser = new DataContractSerializer(typeof(kAIProject));
+            DataContractSerializer lDeserialiser = new DataContractSerializer(typeof(kAIProject), kAINode.NodeSerialTypes);
             FileStream lStream = lProjectXml.OpenRead();
             kAIProject lNewProject = (kAIProject)lDeserialiser.ReadObject(lStream);
             lNewProject.ProjectDLLs = new List<Assembly>();
@@ -294,7 +298,7 @@ namespace kAI.Editor.Core
         public void Save()
         {
             // We serialise the project in to an XML file and save the changes
-            XmlObjectSerializer lProjectSerialiser = new DataContractSerializer(typeof(kAIProject));
+            XmlObjectSerializer lProjectSerialiser = new DataContractSerializer(typeof(kAIProject), kAINode.NodeSerialTypes);
 
             // Settings for writing the XML file 
             XmlWriterSettings lSettings = new XmlWriterSettings();
@@ -305,6 +309,40 @@ namespace kAI.Editor.Core
             XmlWriter lWriter = XmlWriter.Create(ProjectFile.FullName, lSettings);
             lProjectSerialiser.WriteObject(lWriter, this);
             lWriter.Close();
+        }
+
+        //TODO: Change this string to AssemblyName
+        /// <summary>
+        /// Resolve an assembly name to an assembly (either loaded or referenced by the kAIProject. 
+        /// </summary>
+        /// <param name="lAssemblyName">The full name of the assembly</param>
+        /// <returns>The assmebly if it is found somewhere. </returns>
+        public Assembly GetAssemblyByName(string lAssemblyName)
+        {
+            if (lAssemblyName == Assembly.GetExecutingAssembly().FullName)
+            {
+                return Assembly.GetExecutingAssembly();
+            }
+            else
+            {
+                foreach (AssemblyName lRefdAssemblyName in Assembly.GetExecutingAssembly().GetReferencedAssemblies())
+                {
+                    if (lRefdAssemblyName.FullName == lAssemblyName)
+                    {
+                        Assembly lAssembly = Assembly.Load(lRefdAssemblyName);
+                        if (lAssembly != null)
+                        {
+                            return lAssembly;
+                        }
+                    }
+                }
+
+
+                return ProjectDLLs.Find((lAssembly) =>
+                {
+                    return lAssembly.FullName == lAssemblyName;
+                });
+            }
         }
     }
 }

@@ -11,7 +11,7 @@ namespace TestCodeBehaviours
     {
 
         public TestBehaviour(kAIILogger lLogger = null)
-            : base("TestBehaviour", lLogger)
+            : base(lLogger)
         {
 
         }

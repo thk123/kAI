@@ -23,7 +23,7 @@ namespace kAI.Editor.Controls
         /// Handler for when a behaviour node gets instantiated. 
         /// </summary>
         /// <param name="lTemplate">The template that node represented. </param>
-        public delegate void NodeEvent(kAIBehaviourTemplate lTemplate);
+        public delegate void NodeEvent(kAIINodeSerialObject lTemplate);
 
         public event NodeEvent OnBehaviourDoubleClick;
         public event NodeEvent OnBehaviourInstantiated;
@@ -42,7 +42,7 @@ namespace kAI.Editor.Controls
             /// <summary>
             /// The template this node represents. 
             /// </summary>
-            public kAIBehaviourTemplate TemplateBehaviour
+            public kAIINodeSerialObject TemplateBehaviour
             {
                 get;
                 private set;
@@ -52,8 +52,8 @@ namespace kAI.Editor.Controls
             /// Creates node representing the specific template. 
             /// </summary>
             /// <param name="lTemplate">The behaviour template this node represents. </param>
-            public BehaviourTreeNode(kAIBehaviourTemplate lTemplate)
-                :base(lTemplate.BehaviourName)
+            public BehaviourTreeNode(kAIINodeSerialObject lTemplate)
+                :base(lTemplate.GetFriendlyName())
             {
                 TemplateBehaviour = lTemplate;
 
@@ -109,18 +109,23 @@ namespace kAI.Editor.Controls
             TreeNode lXmlNode = lRootNode.Nodes.Add("Xml Behaviours");
             TreeNode lCodeNode = lRootNode.Nodes.Add("Code Behaviours");
 
-            foreach (kAIBehaviourTemplate lTemplate in lProject.Behaviours)
+            foreach (kAIINodeSerialObject lSerialNode in lProject.NodeObjects.Values)
             {
                 //TODO: Sort by folders and DLLs
 
-                BehaviourTreeNode lNewNode = new BehaviourTreeNode(lTemplate);
-                if (lTemplate.BehaviourFlavour == eBehaviourFlavour.BehaviourFlavour_Code)
+                BehaviourTreeNode lNewNode = new BehaviourTreeNode(lSerialNode);
+                switch (lSerialNode.GetNodeFlavour())
                 {
-                    lCodeNode.Nodes.Add(lNewNode);
-                }
-                else
-                {
-                    lXmlNode.Nodes.Add(lNewNode);
+                    case eNodeFlavour.BehaviourXml:
+                        lXmlNode.Nodes.Add(lNewNode);
+                        break;
+                    case eNodeFlavour.BehaviourCode:
+                        lCodeNode.Nodes.Add(lNewNode);
+                        break;
+                    case eNodeFlavour.UnknownType:
+                        break;
+                    default:
+                        break;
                 }
 
                 lNewNode.OnInstantiation += new NodeEvent(lNewNode_OnInstantiation);
@@ -128,7 +133,7 @@ namespace kAI.Editor.Controls
         }
 
         // Propagate the behaviour instantiated event out. 
-        void lNewNode_OnInstantiation(kAIBehaviourTemplate lTemplate)
+        void lNewNode_OnInstantiation(kAIINodeSerialObject lTemplate)
         {
             if (OnBehaviourInstantiated != null)
             {

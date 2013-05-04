@@ -8,32 +8,60 @@ using System.Xml;
 namespace kAI.Core
 {
     /// <summary>
-    /// AN object that can be put inside a node in an XML Behaviour. 
+    /// The serial version of a node object.
     /// </summary>
-    public interface kAIINodeObject
-    {
-        /// <summary>
-        /// Get a list of ports that can be externally accessed by this object. 
-        /// </summary>
-        /// <returns>A list of ports that can be accessed. </returns>
-        IEnumerable<kAIPort> GetExternalPorts();
-
-        /// <summary>
-        /// Data that can be used to serialise and deserialise this object
-        /// </summary>
-        /// <returns>An object that has the DataContractAttribute that will be used to store this arary. </returns>
-        object GetDataContractClass();
-
-        /// <summary>
-        /// Get the type of the serialisable object within the node type. 
-        /// </summary>
-        /// <returns>The type of the serial object is. </returns>
-        Type GetDataContractType();
-    }
-
+    /// <note> 
+    /// All classes implementing this interface MUST add themselves to
+    /// <see cref="kAINode.NodeSerialTypes"/> so they can be saved and 
+    /// loaded. 
+    /// </note>
+    /// <seealso cref=">kAIINodeObject"/>
     public interface kAIINodeSerialObject
     {
+        /// <summary>
+        /// Get the name for this object (its type depends on the type of the node. 
+        /// </summary>
+        /// <returns></returns>
+        string GetFriendlyName();
 
+        eNodeFlavour GetNodeFlavour();
+
+        kAIINodeObject Instantiate(kAIXmlBehaviour.GetAssemblyByName lAssemblyResolve);
+    }
+
+
+    /// <summary>
+    /// The types a node object can be. 
+    /// </summary>
+    public enum eNodeFlavour
+    {
+        /// <summary>
+        /// The node is a XML based behaviour object. 
+        /// </summary>
+        BehaviourXml,
+
+        /// <summary>
+        /// The node is a code based behaviour object.
+        /// </summary>
+        BehaviourCode,
+
+        /// <summary>
+        /// The type is unknown. 
+        /// </summary>
+        UnknownType,
+    }
+
+    public static class NodeFlavour
+    {
+        /// <summary>
+        /// Is this a behaviour flavour (either code or XML). 
+        /// </summary>
+        /// <param name="lFlavour">The flavour to test. </param>
+        /// <returns>A boolean indicating if it is a behaviour. </returns>
+        public static bool IsBehaviourFlavour(this eNodeFlavour lFlavour)
+        {
+            return lFlavour == eNodeFlavour.BehaviourCode || lFlavour == eNodeFlavour.BehaviourXml;
+        }
     }
 
     /// <summary>
@@ -49,6 +77,17 @@ namespace kAI.Core
         /// <param name="lNewState">The new state of the node. Eg true, the node is now active. </param>
         public delegate void ActivationChangedEvent(kAINode lSender, bool lNewState);
 
+        /// <summary>
+        /// Get the serial objects of the types that can be embedded within a node. 
+        /// </summary>
+        public static IEnumerable<Type> NodeSerialTypes
+        {
+            get
+            {
+                yield return typeof(kAIXmlBehaviour.SerialObject);
+                yield return typeof(kAICodeBehaviour.SerialObject);
+            }
+        }
 
         /// <summary>
         /// Is the node currently active. 

@@ -79,7 +79,6 @@
     <Compile Include="Controls\BehaviourEditorWindow.Designer.cs">
       <DependentUpon>BehaviourEditorWindow.cs</DependentUpon>
     </Compile>
-    <Compile Include="Core\BehaviourTemplate.cs" />
     <Compile Include="Editor.cs">
       <SubType>Form</SubType>
     </Compile>

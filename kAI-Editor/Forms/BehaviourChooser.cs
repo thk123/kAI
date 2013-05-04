@@ -28,6 +28,8 @@ namespace kAI.Editor
         /// </summary>
         kAIBehaviour mNewBehaviour;
 
+        kAIProject mProject;
+
         /// <summary>
         /// Create a new behaviour chooser form.
         /// </summary>
@@ -37,10 +39,12 @@ namespace kAI.Editor
 
             mNewBehaviour = null;
 
-            foreach (kAIBehaviourTemplate lTemplate in lProject.Behaviours)
+            foreach (kAIINodeSerialObject lTemplate in lProject.NodeObjects.Values)
             {
                 BehavioursList.Items.Add(lTemplate);
-            }           
+            }
+
+            mProject = lProject;
 
         }
 
@@ -60,22 +64,21 @@ namespace kAI.Editor
             if (lSelectedItem != null)
             {
                 // Was the item a behaviour template
-                kAIBehaviourTemplate lTemplateBehaviour = lSelectedItem.SelectedItem as kAIBehaviourTemplate;
+                kAIINodeSerialObject lTemplateBehaviour = lSelectedItem.SelectedItem as kAIINodeSerialObject;
                 if (lTemplateBehaviour != null)
                 {
-                    Type lBehaviourType = lTemplateBehaviour.BehaviourType;
+                    mNewBehaviour = lTemplateBehaviour.Instantiate(mProject.GetAssemblyByName) as kAIBehaviour;
 
-                    ConstructorInfo lBehaviourConstructor = lBehaviourType.GetConstructor(new Type[] { typeof(kAIILogger) });
-                    object lBehaviour = lBehaviourConstructor.Invoke(new object[] { null });
-                    mNewBehaviour = (kAIBehaviour)lBehaviour;
-
-                    // Yes, ok we try and instantiate a behaviour based on this template. This can be got by 
-                    // whoever called the show dialogue using GetSelectedBehaviour. 
-                   // mNewBehaviour = lTemplateBehaviour.Instantiate();
-                    DialogResult = DialogResult.OK;
+                    if (mNewBehaviour != null)
+                    {
+                        DialogResult = DialogResult.OK;
+                    }
+                    else
+                    {
+                        //TODO: Error! 
+                    }                    
                 }
             }
-            
         }
     }
 }
