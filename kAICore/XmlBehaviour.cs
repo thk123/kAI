@@ -282,13 +282,22 @@ namespace kAI.Core
         /// <param name="lSerialObject">the serialised version of this XML behaviour.</param>
         /// <param name="lAssemblyGetter">The method to use resolve unknown types. </param>
         /// <returns>An instantiated behaviour based on the provided XML. </returns>
-        public static kAIXmlBehaviour Load(SerialObject lSerialObject, GetAssemblyByName lAssemblyGetter)
+        public static kAIXmlBehaviour Load(kAIINodeSerialObject lSerialObject, GetAssemblyByName lAssemblyGetter)
         {
-            XmlObjectSerializer lProjectDeserialiser = new DataContractSerializer(typeof(kAIXmlBehaviour_InternalXml), kAINode.NodeSerialTypes);
+            SerialObject lRealSerial = lSerialObject as SerialObject;
+            if (lRealSerial != null)
+            {
+                XmlObjectSerializer lProjectDeserialiser = new DataContractSerializer(typeof(kAIXmlBehaviour_InternalXml), kAINode.NodeSerialTypes);
 
-            kAIXmlBehaviour_InternalXml lXmlFile = (kAIXmlBehaviour_InternalXml)lProjectDeserialiser.ReadObject(lSerialObject.XmlBehaviourFile.OpenRead());
+                kAIXmlBehaviour_InternalXml lXmlFile = (kAIXmlBehaviour_InternalXml)lProjectDeserialiser.ReadObject(lRealSerial.XmlBehaviourFile.OpenRead());
 
-            return new kAIXmlBehaviour(lXmlFile, lAssemblyGetter, lSerialObject.XmlBehaviourFile);
+                return new kAIXmlBehaviour(lXmlFile, lAssemblyGetter, lRealSerial.XmlBehaviourFile);
+            }
+            else
+            {
+                //TODO: Error!
+                return null;
+            }
         }
 
         

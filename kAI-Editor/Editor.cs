@@ -85,6 +85,12 @@ namespace kAI.Editor
 
         void mBehaviourTree_OnBehaviourDoubleClick(kAIINodeSerialObject lObject)
         {
+            CreateBehaviourEditorWindow();
+            if (lObject.GetNodeFlavour() == eNodeFlavour.BehaviourXml)
+            {
+                mBehaviourEditor.LoadBehaviour(kAIXmlBehaviour.Load(lObject, mLoadedProject.GetAssemblyByName));
+            }
+
             /*LoadBehaviour(lTemplate);
             mBehaviourEditor.LoadBehaviour((kAIXmlBehaviour)lTemplate.Instantiate());*/
         }
