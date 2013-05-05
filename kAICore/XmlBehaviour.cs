@@ -47,21 +47,38 @@ namespace kAI.Core
                 lXmlBehaviour.Assert(XmlBehaviourFile != null, "Attempted to add a file that hasn't been saved.");
             }
 
+            /// <summary>
+            /// Gets the name of this serial object. 
+            /// </summary>
+            /// <returns>The behaviourID of this XML behaviour. </returns>
             public string GetFriendlyName()
             {
                 return BehaviourID;
             }
 
+            /// <summary>
+            /// Gets the type of this node serial type.
+            /// </summary>
+            /// <returns>The type -- BehaviourXML. </returns>
             public eNodeFlavour GetNodeFlavour()
             {
                 return eNodeFlavour.BehaviourXml;
             }
 
-            public kAIINodeObject Instantiate(kAIXmlBehaviour.GetAssemblyByName lAssemblyResolve)
+            /// <summary>
+            /// Create this <see cref="kAIINodeObject"/> this serial object is representing.
+            /// </summary>
+            /// <param name="lAssemblyResolver">The method to use to resolve assembly names to get types. </param>
+            /// <returns>An instantiated kAIXMLBehaviour. </returns>
+            public kAIINodeObject Instantiate(kAIXmlBehaviour.GetAssemblyByName lAssemblyResolver)
             {
-                return kAIXmlBehaviour.Load(this, lAssemblyResolve);
+                return kAIXmlBehaviour.Load(this, lAssemblyResolver);
             }
 
+            /// <summary>
+            /// Gets the string representation of this behaviour.
+            /// </summary>
+            /// <returns></returns>
             public override string ToString()
             {
                 return GetFriendlyName();
@@ -213,6 +230,7 @@ namespace kAI.Core
         /// Create a new XML behaviour 
         /// </summary>
         /// <param name="lBehaviourID">The name of the new behaviour. </param>
+        /// <param name="lFile">Where this behaviour should be saved. </param>
         /// <param name="lLogger">Optionally, the logger this behaviour should use. </param>
         public kAIXmlBehaviour(kAIBehaviourID lBehaviourID, FileInfo lFile, kAIILogger lLogger = null)
             : base(lBehaviourID, lLogger)
@@ -271,11 +289,20 @@ namespace kAI.Core
         {
         }
 
+        /// <summary>
+        /// Gets the <see cref="kAIINodeSerialObject"/>of this XML Behaviour. 
+        /// </summary>
+        /// <returns>The serial object representing this XML behaviour. </returns>
         public override kAIINodeSerialObject GetDataContractClass()
         {
             return new SerialObject(this);
         }
 
+        /// <summary>
+        /// Get the type of the serial object this <see cref="kAIINodeObject"/> produces. Will inherit from 
+        /// <see cref="kAIINodeSerialObject"/>.
+        /// </summary>
+        /// <returns>The type of the serial object. </returns>
         public override Type GetDataContractType()
         {
             return typeof(SerialObject);
@@ -304,7 +331,5 @@ namespace kAI.Core
                 return null;
             }
         }
-
-        
     }
 }

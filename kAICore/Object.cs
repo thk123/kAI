@@ -30,6 +30,9 @@ namespace kAI.Core
             set;
         }
 
+        /// <summary>
+        /// Should an exception be thrown if an assert fails. 
+        /// </summary>
         public static bool ExceptionOnAssert = false;
         
 
@@ -165,6 +168,12 @@ namespace kAI.Core
             kAIObject.Assert(this, lCondition, lMessage);
         }
 
+        /// <summary>
+        /// Assert that something should be true. Optionally can throw an exception if it isn't. 
+        /// </summary>
+        /// <param name="lObject">The object that did the assert. </param>
+        /// <param name="lCondition">The condition to check. </param>
+        /// <param name="lMessage">Optionally, the message to show if the assert fails. </param>
         protected static void Assert(kAIObject lObject, bool lCondition, string lMessage = null)
         {
             if (!lCondition)
@@ -180,8 +189,15 @@ namespace kAI.Core
         }
     }
 
+    /// <summary>
+    /// The exception that gets triggered when an assert fails (and assert exceptions on). 
+    /// </summary>
     class AssertFailedException : Exception
     {
+        /// <summary>
+        /// Create the exception based on the assert message. 
+        /// </summary>
+        /// <param name="lMessage"></param>
         public AssertFailedException(string lMessage = null)
             :base(lMessage)
         {}

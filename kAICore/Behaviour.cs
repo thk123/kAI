@@ -178,7 +178,7 @@ namespace kAI.Core
         /// The class used to serialise this behaviour when used as a node within an XML behaviour. 
         /// </summary>
         [DataContract()]
-        internal class SerialObject : kAIINodeSerialObject
+        internal class SerialObject : kAIObject, kAIINodeSerialObject
         {
             [DataMember()]
             public string BehaviourID;
@@ -199,32 +199,59 @@ namespace kAI.Core
             /// Create the serialisable object from the code behaviour.
             /// </summary>
             /// <param name="lBehaviour">The code behaviour to serialise. </param>
-            public SerialObject(kAICodeBehaviour lBehaviour)
-                :this(lBehaviour.GetType())
+            /// <param name="lLogger">Optionally, the logger this instance should use when logging anything. </param>   
+            public SerialObject(kAICodeBehaviour lBehaviour, kAIILogger lLogger = null)
+                :this(lBehaviour.GetType(), lLogger)
             {}
 
-            public SerialObject(Type lCodeBehaviourType)
+            /// <summary>
+            /// Create a SerialObject based of the type (so don't have to instantiate an entire behaviour). 
+            /// </summary>
+            /// <param name="lCodeBehaviourType">The type to base this serial object off. </param>
+            /// <param name="lLogger">Optionally, the logger this instance should use when logging anything. </param>   
+            public SerialObject(Type lCodeBehaviourType, kAIILogger lLogger = null)
+                :base(lLogger)
             {
+                // Check the type does actually inherit from CodeBehaviour.
+                Assert(lCodeBehaviourType.DoesInherit(typeof(kAICodeBehaviour)));
+
                 BehaviourID = lCodeBehaviourType.Name;
                 BehaviourType = lCodeBehaviourType.FullName;
                 BehaviourAssembly = lCodeBehaviourType.Assembly.FullName;
             }
 
+            /// <summary>
+            /// Gets the string representation of this serial object. 
+            /// </summary>
+            /// <returns>Returns the type of this code behaviour. </returns>
             public string GetFriendlyName()
             {
                 return BehaviourType;
             }
 
-            public kAIINodeObject Instantiate(kAIXmlBehaviour.GetAssemblyByName lAssemblyResolve)
+            /// <summary>
+            /// Create an instance of this code behaviour for embedding in an XML behaviour. 
+            /// </summary>
+            /// <param name="lAssemblyResolver">The method to use to resolve assembly names to get types. </param>
+            /// <returns>An instantaited version of the code behaviour this serail object represents. </returns>
+            public kAIINodeObject Instantiate(kAIXmlBehaviour.GetAssemblyByName lAssemblyResolver)
             {
-                return kAICodeBehaviour.Load(this, lAssemblyResolve);
+                return kAICodeBehaviour.Load(this, lAssemblyResolver);
             }
 
+            /// <summary>
+            /// Gets the type of this node serial type.
+            /// </summary>
+            /// <returns>The type -- BehaviourCode. </returns>
             public eNodeFlavour GetNodeFlavour()
             {
                 return eNodeFlavour.BehaviourCode;
             }
 
+            /// <summary>
+            /// Gets the string representation of this serial object. 
+            /// </summary>
+            /// <returns>Returns the type of this code behaviour. </returns>
             public override string ToString()
             {
                 return GetFriendlyName();
@@ -273,11 +300,16 @@ namespace kAI.Core
             return (kAICodeBehaviour)lBehaviour;
         }
 
-        public static kAIINodeSerialObject CreateSerialObjectFromType(Type t)
+        /// <summary>
+        /// Creates a serial object from the type (to avoid instantiating the whole behaviour when loading a project).
+        /// </summary>
+        /// <param name="lType">The type to base the serial object off. </param>
+        /// <returns>The serial object based on this type. </returns>
+        public static kAIINodeSerialObject CreateSerialObjectFromType(Type lType)
         {
             //TODO: Assert(t inherits from kAICodeBehaviour)
 
-            return new SerialObject(t);
+            return new SerialObject(lType);
         }
     }
 }

@@ -15,7 +15,7 @@ namespace kAI.Core
     /// <see cref="kAINode.NodeSerialTypes"/> so they can be saved and 
     /// loaded. 
     /// </note>
-    /// <seealso cref=">kAIINodeObject"/>
+    /// <seealso cref="kAIINodeObject"/>
     public interface kAIINodeSerialObject
     {
         /// <summary>
@@ -24,9 +24,19 @@ namespace kAI.Core
         /// <returns></returns>
         string GetFriendlyName();
 
+        /// <summary>
+        /// Gets the flavour of this node serial object. 
+        /// </summary>
+        /// <returns>What type is this serial object. </returns>
         eNodeFlavour GetNodeFlavour();
 
-        kAIINodeObject Instantiate(kAIXmlBehaviour.GetAssemblyByName lAssemblyResolve);
+        /// <summary>
+        /// Create the node object this serial type is representing. Can be used to load it 
+        /// or embed it into an XML behaviour. 
+        /// </summary>
+        /// <param name="lAssemblyResolver">The method to use to resolve assembly names to get types. </param>
+        /// <returns>An instantiated INodeObject this serial object was representing. </returns>
+        kAIINodeObject Instantiate(kAIXmlBehaviour.GetAssemblyByName lAssemblyResolver);
     }
 
 
@@ -51,6 +61,9 @@ namespace kAI.Core
         UnknownType,
     }
 
+    /// <summary>
+    /// Contains methods relating to the enum <see cref="eNodeFlavour"/>.
+    /// </summary>
     public static class NodeFlavour
     {
         /// <summary>

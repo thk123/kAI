@@ -41,25 +41,5 @@ namespace kAI.Editor.Core.Util
         {
             return new Point(lLHS.X + lRHS.X, lLHS.Y + lRHS.Y);
         }
-
-        /// <summary>
-        /// Find out if a type is inherited (either directly or indirectly) from a given type.
-        /// </summary>
-        /// <param name="lBaseType">The type to check. </param>
-        /// <param name="lTargetParent">The parent type to see if lBaseType inherits from. </param>
-        /// <returns>True if the provided type, or any of its parents are lTargetParent.</returns>
-        public static bool DoesInherit(this Type lBaseType, Type lTargetParent)
-        {
-            Type lCurrentType = lBaseType;
-            do 
-            {
-                if (lCurrentType == lTargetParent)
-                    return true;
-
-                lCurrentType = lCurrentType.BaseType;
-            } while (lCurrentType != typeof(Object) && lCurrentType != null);
-
-            return false;
-        }
     }
 }
