@@ -61,6 +61,11 @@ namespace kAI.Core
             {
                 return kAIXmlBehaviour.Load(this, lAssemblyResolve);
             }
+
+            public override string ToString()
+            {
+                return GetFriendlyName();
+            }
         }
 
         /// <summary>

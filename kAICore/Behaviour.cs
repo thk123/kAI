@@ -224,6 +224,11 @@ namespace kAI.Core
             {
                 return eNodeFlavour.BehaviourCode;
             }
+
+            public override string ToString()
+            {
+                return GetFriendlyName();
+            }
         }
 
         /// <summary>
@@ -252,10 +257,10 @@ namespace kAI.Core
         /// <summary>
         /// Create the code behaviour based on the serial object.
         /// </summary>
-        /// <param name="lData">The serialised object that has been loaded. </param>
+        /// <param name="lSerialObject">The serialised object that has been loaded. </param>
         /// <param name="lAssemblyGetter">A method to get assemblys by full name to resolve types. </param>
         /// <returns>A fully instantiated kAICodeBehaviour based on the data. </returns>
-        public static kAICodeBehaviour Load(object lSerialObject, kAIXmlBehaviour.GetAssemblyByName lAssemblyGetter)
+        public static kAICodeBehaviour Load(kAIINodeSerialObject lSerialObject, kAIXmlBehaviour.GetAssemblyByName lAssemblyGetter)
         {
             SerialObject lCastSerialObject = lSerialObject as SerialObject;
 
