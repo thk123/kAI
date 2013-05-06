@@ -486,7 +486,11 @@ namespace kAI.Core
             {
                 XmlObjectSerializer lProjectDeserialiser = new DataContractSerializer(typeof(kAIXmlBehaviour_InternalXml), kAINode.NodeSerialTypes);
 
-                kAIXmlBehaviour_InternalXml lXmlFile = (kAIXmlBehaviour_InternalXml)lProjectDeserialiser.ReadObject(lRealSerial.XmlBehaviourFile.OpenRead());
+                Stream lXmlStream = lRealSerial.XmlBehaviourFile.OpenRead();
+
+                kAIXmlBehaviour_InternalXml lXmlFile = (kAIXmlBehaviour_InternalXml)lProjectDeserialiser.ReadObject(lXmlStream);
+
+                lXmlStream.Close();
 
                 return new kAIXmlBehaviour(lXmlFile, lAssemblyGetter, lRealSerial.XmlBehaviourFile);
             }
