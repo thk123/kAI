@@ -176,12 +176,17 @@ namespace kAI.Core
         /// Get the object to be serialised. 
         /// </summary>
         /// <returns>A DataContract object to serialse when embedding the content of this node. </returns>
-        public object GetNodeSerialisableContent()
+        public kAIINodeSerialObject GetNodeSerialisableContent()
         {
-            // Check the type is in fact serialisable
-            Assert(NodeContents.GetDataContractType().GetCustomAttributes(typeof(SerializableAttribute), false).Length > 0);
+            kAIINodeSerialObject lSerialData = NodeContents.GetDataContractClass();
 
-            return NodeContents.GetDataContractClass();
+            // Check the type actually matches the reported type
+            Assert(NodeContents.GetDataContractType() == lSerialData.GetType());
+
+            // Check the type is in fact serialisable
+            Assert(NodeContents.GetDataContractType().GetCustomAttributes(typeof(DataContractAttribute), false).Length > 0);         
+
+            return lSerialData;
         }
 
         /// <summary>
