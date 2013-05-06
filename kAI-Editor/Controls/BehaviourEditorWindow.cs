@@ -62,13 +62,7 @@ namespace kAI.Editor.Controls
         {
             InitializeComponent();
 
-            mNextInPortY = 5;
-            mNextOutPortY = 5;
-
-            mBehaviour = null;
-            mBehaviourLocation = null;
-
-            mNodes = new List<kAIEditorNode>();
+            ClearBehaviour();
 
             mProject = lProject;
         }
@@ -119,6 +113,11 @@ namespace kAI.Editor.Controls
         /// <param name="lBehaviour">The XML behaviour to load. </param>
         public void LoadBehaviour(kAIXmlBehaviour lBehaviour)
         {
+            if (mBehaviour != null)
+            {
+                ClearBehaviour();
+            }
+
             foreach (kAIPort lGlobalPort in lBehaviour.InternalPorts)
             {
                 AddInternalPort(lGlobalPort);
@@ -137,6 +136,27 @@ namespace kAI.Editor.Controls
         public void SaveBehaviour()
         {
             mBehaviour.Save();
+        }
+
+        /// <summary>
+        /// Unloads the currently unloaded behaviour. 
+        /// </summary>
+        public void ClearBehaviour()
+        {
+            if (mBehaviour != null)
+            {
+                mBehaviour.Save();
+            }
+
+            mNextInPortY = 5;
+            mNextOutPortY = 5;
+
+            mBehaviour = null;
+            mBehaviourLocation = null;
+
+            mNodes = new List<kAIEditorNode>();
+
+            Controls.Clear();
         }
 
         private void AddInternalPort(kAIPort lNewPort)
