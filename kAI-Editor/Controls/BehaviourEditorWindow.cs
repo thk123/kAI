@@ -119,9 +119,9 @@ namespace kAI.Editor.Controls
         /// <param name="lBehaviour">The XML behaviour to load. </param>
         public void LoadBehaviour(kAIXmlBehaviour lBehaviour)
         {
-            foreach (kAIPort lGlobalPort in lBehaviour.GlobalPorts)
+            foreach (kAIPort lGlobalPort in lBehaviour.InternalPorts)
             {
-                AddGlobalPort(lGlobalPort);
+                AddInternalPort(lGlobalPort);
             }
 
             foreach (kAINode lInternalNode in lBehaviour.InternalNodes)
@@ -139,7 +139,7 @@ namespace kAI.Editor.Controls
             mBehaviour.Save();
         }
 
-        private void AddGlobalPort(kAIPort lNewPort)
+        private void AddInternalPort(kAIPort lNewPort)
         {
             kAIEditorPort lNewEditorPort = new kAIEditorPort(lNewPort);
             if (lNewPort.PortDirection == kAIPort.ePortDirection.PortDirection_Out)

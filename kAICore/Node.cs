@@ -80,7 +80,6 @@ namespace kAI.Core
     /// <summary>
     /// A node within an XML behaviour. 
     /// </summary>
-    [DataContract()]
     public class kAINode : kAIObject
     {
         /// <summary>
@@ -103,11 +102,6 @@ namespace kAI.Core
         }
 
         /// <summary>
-        /// Is the node currently active. 
-        /// </summary>
-        bool mActive;
-
-        /// <summary>
         /// A dictionary of externally connectible ports. 
         /// </summary>
         Dictionary<kAIPortID, kAIPort> mExternalPorts;
@@ -115,7 +109,6 @@ namespace kAI.Core
         /// <summary>
         /// What object this node contains. 
         /// </summary>
-        [DataMember()]
         public kAIINodeObject NodeContents
         {
             get;
@@ -132,32 +125,6 @@ namespace kAI.Core
         }
 
         /// <summary>
-        /// Is this node currently active in the containing behaviour. 
-        /// </summary>
-        public bool Active
-        {
-            get
-            {
-                return mActive;
-            }
-            set
-            {
-                if (mActive != value)
-                {
-                    mActive = value;
-
-                    OnActivationStateChanged(this, mActive);
-                }
-            }
-        }
-
-
-        /// <summary>
-        /// Triggered when the activation state of the node changes. 
-        /// </summary>
-        public event ActivationChangedEvent OnActivationStateChanged;
-
-        /// <summary>
         /// Create a new node containing an object of type T. 
         /// </summary>
         /// <param name="lNodeID">The ID of the node. </param>
@@ -166,7 +133,6 @@ namespace kAI.Core
         {
             NodeID = lNodeID;
 
-            mActive = false;
             mExternalPorts = new Dictionary<kAIPortID, kAIPort>();
 
             NodeContents = lContents;
@@ -176,8 +142,9 @@ namespace kAI.Core
                 {
                     AddGlobalPort(lPort);
                 }
-            }           
+            }
         }
+
         /// <summary>
         /// Returns the type of the ports contents. 
         /// </summary>

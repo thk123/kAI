@@ -95,7 +95,7 @@ namespace kAI.Core
             /// Represents a node inside the behaviour when written out. 
             /// </summary>
             [DataContract()]
-            struct InternalNode
+            struct SerialNode
             {
                 [DataMember()]
                 public kAINodeID NodeID;
@@ -115,7 +115,7 @@ namespace kAI.Core
                 [DataMember()]
                 public object NodeContents;
 
-                public InternalNode(kAINode lNode)
+                public SerialNode(kAINode lNode)
                 {
                     NodeID = lNode.NodeID;
                     NodeType = lNode.GetNodeContentsType().FullName;
@@ -127,6 +127,34 @@ namespace kAI.Core
                 }
             }
 
+            [DataContract()]
+            struct SerialPort
+            {
+                [DataMember()]
+                public string PortID;
+
+                [DataMember()]
+                public kAIPort.ePortDirection PortDirection;
+
+                [DataMember()]
+                public string PortDataType;
+
+                [DataMember()]
+                public string PortDataTypeAssembly;
+
+                [DataMember()]
+                public bool IsGloballyAccesible;
+
+                public SerialPort(InternalPort lPort)
+                {
+                    PortID = lPort.Port.PortID;
+                    PortDirection = lPort.Port.PortDirection;
+                    PortDataType = lPort.Port.DataType.DataType.FullName;
+                    PortDataTypeAssembly = lPort.Port.DataType.DataType.Assembly.FullName;
+                    IsGloballyAccesible = lPort.IsGloballyAccesible;
+                }
+            }
+
             [DataMember()]
             public string BehaviourID
             {
@@ -135,7 +163,14 @@ namespace kAI.Core
             }
 
             [DataMember()]
-            private List<InternalNode> InternalNodes
+            private List<SerialNode> InternalNodes
+            {
+                get;
+                set;
+            }
+
+            [DataMember()]
+            private List<SerialPort> InternalPorts
             {
                 get;
                 set;
@@ -143,7 +178,7 @@ namespace kAI.Core
 
             public kAIXmlBehaviour_InternalXml()
             {
-                InternalNodes = new List<InternalNode>();
+                InternalNodes = new List<SerialNode>();
             }
 
             public kAIXmlBehaviour_InternalXml(kAIXmlBehaviour lBehaviour)
@@ -151,7 +186,7 @@ namespace kAI.Core
                 // the behaviour to save
                 BehaviourID = lBehaviour.BehaviourID;
 
-                InternalNodes = new List<InternalNode>();
+                InternalNodes = new List<SerialNode>();
 
                 foreach (kAINode lNodeBase in lBehaviour.InternalNodes)
                 {
@@ -160,13 +195,25 @@ namespace kAI.Core
 
                     lBehaviour.Assert(lContentType == lContent.GetType(), "The content returned from the node does not match the reported type...");
 
-                    InternalNodes.Add(new InternalNode(lNodeBase));
+                    InternalNodes.Add(new SerialNode(lNodeBase));
+                }
+
+                InternalPorts = new List<SerialPort>();
+
+                foreach (InternalPort lPort in lBehaviour.mInternalPorts.Values)
+                {
+                    InternalPorts.Add(new SerialPort(lPort));
                 }
             }
 
+            /// <summary>
+            /// Get each of the internal nodes saved within this serial object. 
+            /// </summary>
+            /// <param name="lAssemblyGetter">The method to use to get assemblies to resolve types. </param>
+            /// <returns>A list of nodes this serial object represents. </returns>
             public IEnumerable<kAINode> GetInternalNodes(GetAssemblyByName lAssemblyGetter)
             {
-                foreach (InternalNode lInternalNode in InternalNodes)
+                foreach (SerialNode lInternalNode in InternalNodes)
                 {
 
                     // Get the type of the thing we want to construct
@@ -188,6 +235,43 @@ namespace kAI.Core
                     yield return lNewNode;
                 }
             }
+
+            /// <summary>
+            /// Get each of the internal ports saved within this serial object. 
+            /// </summary>
+            /// <param name="lAssemblyGetter">The method to use to get assemblies to resolve types. </param>
+            /// <returns>A list of ports this serial object represents. </returns>
+            public IEnumerable<InternalPort> GetInternalPorts(GetAssemblyByName lAssemblyGetter)
+            {
+                foreach (SerialPort lInternalPort in InternalPorts)
+                {
+                    Assembly lPortTypeAssembly = lAssemblyGetter(lInternalPort.PortDataTypeAssembly);
+                    Type lPortType = lPortTypeAssembly.GetType(lInternalPort.PortDataType);
+                    kAIPort lPort = new kAIPort(lInternalPort.PortID, lInternalPort.PortDirection, lPortType);
+
+                    InternalPort lWrappedPort = new InternalPort { Port = lPort, IsGloballyAccesible = lInternalPort.IsGloballyAccesible };
+
+                    yield return lWrappedPort;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Wraps an internal port with extra information, 
+        /// specifically whether is has an associated external port. 
+        /// </summary>
+        private struct InternalPort
+        {
+            /// <summary>
+            /// The port in question.
+            /// </summary>
+            public kAIPort Port;
+
+            /// <summary>
+            /// Does this port have an external port linked with it. 
+            /// </summary>
+            public bool IsGloballyAccesible;
+
         }
 
         //TODO: move me to the project with a specific method exposed. 
@@ -197,10 +281,15 @@ namespace kAI.Core
         /// <param name="lFullName"></param>
         /// <returns></returns>
         public delegate Assembly GetAssemblyByName(string lFullName);
+
         /// <summary>
         /// Extension for XML behaviours. 
         /// </summary>
         public const string kAIXmlBehaviourExtension = "xml";
+
+        //Internal port IDs
+        private readonly kAIPortID kOnActivatePortID = "OnActivate";
+        private readonly kAIPortID kDeactivatePortID = "Deactivate";
 
         /// <summary>
         /// The location of the XML file.
@@ -220,11 +309,33 @@ namespace kAI.Core
         {
             get
             {
-                return mNodes.Values;
+                return mInternalNodes.Values;
             }
         }
 
-        Dictionary<kAINodeID, kAINode> mNodes;
+        /// <summary>
+        /// Get the ports within this XML behaviour. 
+        /// </summary>
+        public IEnumerable<kAIPort> InternalPorts
+        {
+            get
+            {
+                foreach(InternalPort lInternalPort in mInternalPorts.Values)
+                {
+                    yield return lInternalPort.Port;
+                }
+            }
+        }
+
+        /// <summary>
+        /// Nodes within this XML behaviour. 
+        /// </summary>
+        Dictionary<kAINodeID, kAINode> mInternalNodes;
+
+        /// <summary>
+        /// Ports within this XML behaviour.
+        /// </summary>
+        Dictionary<kAIPortID, InternalPort> mInternalPorts;
 
         /// <summary>
         /// Create a new XML behaviour 
@@ -233,22 +344,47 @@ namespace kAI.Core
         /// <param name="lFile">Where this behaviour should be saved. </param>
         /// <param name="lLogger">Optionally, the logger this behaviour should use. </param>
         public kAIXmlBehaviour(kAIBehaviourID lBehaviourID, FileInfo lFile, kAIILogger lLogger = null)
-            : base(lBehaviourID, lLogger)
+            : this(lBehaviourID, lLogger)
         {
-            mNodes = new Dictionary<kAINodeID, kAINode>();
             XmlLocation = lFile;
+
+            // Create the internal ports 
+            kAIPort lOnActivatePort = new kAIPort(kOnActivatePortID, kAIPort.ePortDirection.PortDirection_Out, kAIPortType.TriggerType, lLogger);
+            AddInternalPort(lOnActivatePort, false);
+
+            kAIPort lDeactivatePort = new kAIPort(kDeactivatePortID, kAIPort.ePortDirection.PortDirection_In, kAIPortType.TriggerType, lLogger);
+            lDeactivatePort.OnTriggered += new kAIPort.TriggerEvent(lDeactivatePort_OnTriggered);
+            AddInternalPort(lDeactivatePort, false);
         }
 
+        /// <summary>
+        /// Create a kAIXMLBehaviour based off a loaded save file for it. 
+        /// </summary>
+        /// <param name="lSource">The loaded XML file. </param>
+        /// <param name="lAssemblyGetter">The method to use to resolve assembly names to get types. </param>
+        /// <param name="lSourceFile">The source file this behaviour is loaded from. </param>
+        /// <param name="lLogger">Optionally, the logger this behaviour should use. </param>
         private kAIXmlBehaviour(kAIXmlBehaviour_InternalXml lSource, GetAssemblyByName lAssemblyGetter, FileInfo lSourceFile, kAIILogger lLogger = null)
-            : base(lSource.BehaviourID, lLogger)
+            : this(lSource.BehaviourID, lLogger)
         {
-            mNodes = new Dictionary<kAINodeID, kAINode>();
+            XmlLocation = lSourceFile;
+
             foreach (kAINode lNode in lSource.GetInternalNodes(lAssemblyGetter))
             {
-                mNodes.Add(lNode.NodeID, lNode);
+                AddNode(lNode);
             }
 
-            XmlLocation = lSourceFile;
+            foreach (InternalPort lPort in lSource.GetInternalPorts(lAssemblyGetter))
+            {
+                AddInternalPort(lPort);
+            }
+        }
+
+        private kAIXmlBehaviour(kAIBehaviourID lBehaviourID, kAIILogger lLogger = null)
+            : base(lBehaviourID, lLogger)
+        {
+            mInternalNodes = new Dictionary<kAINodeID, kAINode>();
+            mInternalPorts = new Dictionary<kAIPortID, InternalPort>();
         }
 
         /// <summary>
@@ -257,8 +393,7 @@ namespace kAI.Core
         /// <param name="lNode">The node to add. </param>
         public void AddNode(kAINode lNode)
         {
-            lNode.Active = false;
-            mNodes.Add(lNode.NodeID, lNode);
+            mInternalNodes.Add(lNode.NodeID, lNode);
         }
 
         /// <summary>
@@ -309,6 +444,36 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// Add internally accessible port. 
+        /// </summary>
+        /// <param name="lNewPort">The new port to add. </param>
+        /// <param name="lExpose">Should this port have a corresponding externally accesible port. </param>
+        private void AddInternalPort(kAIPort lNewPort, bool lExpose = false)
+        {
+            AddInternalPort(new InternalPort { Port = lNewPort, IsGloballyAccesible = lExpose });
+        }
+
+        private void AddInternalPort(InternalPort lInternalPort)
+        {
+            if (mInternalPorts.ContainsKey(lInternalPort.Port.PortID))
+            {
+                throw new kAIBehaviourPortAlreadyExistsException(this, mInternalPorts[lInternalPort.Port.PortID].Port, lInternalPort.Port);
+            }
+            else
+            {
+                mInternalPorts.Add(lInternalPort.Port.PortID, lInternalPort);
+
+                if (lInternalPort.IsGloballyAccesible)
+                {
+                    // TODO: If InPort, then create an out port and add an event listener for the inport 
+                    // to trigger the out port.
+                    // else create an inport and listen to its trigger for when to trigger ours
+                }
+
+            }
+        }
+
+        /// <summary>
         /// Load an XML Behaviour from a file. 
         /// </summary>
         /// <param name="lSerialObject">the serialised version of this XML behaviour.</param>
@@ -330,6 +495,21 @@ namespace kAI.Core
                 //TODO: Error!
                 return null;
             }
+        }
+
+        /// <summary>
+        /// Called once this behaviour gets activated. 
+        /// </summary>
+        protected override void OnActivate()
+        {
+            // Trigger the activate port. 
+            mInternalPorts[kOnActivatePortID].Port.Trigger();
+        }
+
+        // The deactivate port was triggered => this behaviour wants to be deactivated. 
+        void lDeactivatePort_OnTriggered(kAIPort lSender)
+        {
+            Deactivate();
         }
     }
 }
