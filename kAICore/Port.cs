@@ -257,7 +257,8 @@ namespace kAI.Core
         /// <param name="lOtherEnd">The port this port has been connected to. </param>
         protected virtual void OnConnect(kAIPort lOtherEnd) 
         {
-            OnConnected(this, lOtherEnd);
+            if(OnConnected != null)
+                OnConnected(this, lOtherEnd);
         }
 
         /// <summary>

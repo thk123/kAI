@@ -396,6 +396,11 @@ namespace kAI.Core
             mInternalNodes.Add(lNode.NodeID, lNode);
         }
 
+        public void AddConnexion(kAIPort lStartPort, kAIPort lEndPort)
+        {
+            lStartPort.MakeConnexion(lEndPort);
+        }
+
         /// <summary>
         /// Save this XML behaviour in to an XML file. 
         /// </summary>

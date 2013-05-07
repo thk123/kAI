@@ -1,0 +1,53 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<kAIProject xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/kAI.Editor.Core">
+  <NodeObjects xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>TestCodeBehaviours.TestBehaviour</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAICodeBehaviour.SerialObject">
+        <d4p1:BehaviourAssembly>TestCodeBehaviours, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null</d4p1:BehaviourAssembly>
+        <d4p1:BehaviourID>TestBehaviour</d4p1:BehaviourID>
+        <d4p1:BehaviourType>TestCodeBehaviours.TestBehaviour</d4p1:BehaviourType>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>TestBehaviour1</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAIXmlBehaviour.SerialObject">
+        <d4p1:BehaviourID>
+          <d4p1:BehaviourID>TestBehaviour1</d4p1:BehaviourID>
+        </d4p1:BehaviourID>
+        <d4p1:XmlBehaviourFile xmlns:d5p1="http://schemas.datacontract.org/2004/07/System.IO">
+          <OriginalPath xmlns:d6p1="http://www.w3.org/2001/XMLSchema" i:type="d6p1:string" xmlns="">C:\Users\Thomas\VS Projects\C#\kAI\kAI-Example\Behaviours\//TestBehaviour1.xml</OriginalPath>
+          <FullPath xmlns:d6p1="http://www.w3.org/2001/XMLSchema" i:type="d6p1:string" xmlns="">C:\Users\Thomas\VS Projects\C#\kAI\kAI-Example\Behaviours\TestBehaviour1.xml</FullPath>
+        </d4p1:XmlBehaviourFile>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>TestBehaviour2</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAIXmlBehaviour.SerialObject">
+        <d4p1:BehaviourID>
+          <d4p1:BehaviourID>TestBehaviour2</d4p1:BehaviourID>
+        </d4p1:BehaviourID>
+        <d4p1:XmlBehaviourFile xmlns:d5p1="http://schemas.datacontract.org/2004/07/System.IO">
+          <OriginalPath xmlns:d6p1="http://www.w3.org/2001/XMLSchema" i:type="d6p1:string" xmlns="">C:\Users\Thomas\VS Projects\C#\kAI\kAI-Example\Behaviours\//TestBehaviour2.xml</OriginalPath>
+          <FullPath xmlns:d6p1="http://www.w3.org/2001/XMLSchema" i:type="d6p1:string" xmlns="">C:\Users\Thomas\VS Projects\C#\kAI\kAI-Example\Behaviours\TestBehaviour2.xml</FullPath>
+        </d4p1:XmlBehaviourFile>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+  </NodeObjects>
+  <ProjectDllPaths xmlns:d2p1="http://schemas.datacontract.org/2004/07/System.IO">
+    <d2p1:FileInfo>
+      <OriginalPath xmlns:d4p1="http://www.w3.org/2001/XMLSchema" i:type="d4p1:string" xmlns="">C:\Users\Thomas\VS Projects\C#\kAI\kAI-Example\DLLs\TestCodeBehaviours.dll</OriginalPath>
+      <FullPath xmlns:d4p1="http://www.w3.org/2001/XMLSchema" i:type="d4p1:string" xmlns="">C:\Users\Thomas\VS Projects\C#\kAI\kAI-Example\DLLs\TestCodeBehaviours.dll</FullPath>
+    </d2p1:FileInfo>
+  </ProjectDllPaths>
+  <ProjectName>kAI-Example</ProjectName>
+  <ProjectRoot xmlns:d2p1="http://schemas.datacontract.org/2004/07/System.IO">
+    <OriginalPath xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string" xmlns="">C:\Users\Thomas\VS Projects\C#\kAI\kAI-Example</OriginalPath>
+    <FullPath xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string" xmlns="">C:\Users\Thomas\VS Projects\C#\kAI\kAI-Example</FullPath>
+  </ProjectRoot>
+  <ProjectTypes xmlns:d2p1="http://schemas.datacontract.org/2004/07/System" />
+  <XmlBehaviourRoot xmlns:d2p1="http://schemas.datacontract.org/2004/07/System.IO">
+    <OriginalPath xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string" xmlns="">C:\Users\Thomas\VS Projects\C#\kAI\kAI-Example\Behaviours\</OriginalPath>
+    <FullPath xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string" xmlns="">C:\Users\Thomas\VS Projects\C#\kAI\kAI-Example\Behaviours\</FullPath>
+  </XmlBehaviourRoot>
+</kAIProject>

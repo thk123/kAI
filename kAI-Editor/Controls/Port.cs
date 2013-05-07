@@ -29,7 +29,11 @@ namespace kAI.Editor.Controls
         /// <summary>
         /// The port this control is representing. 
         /// </summary>
-        kAIPort mPort;
+        public kAIPort Port
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Create a editor port from a given port. 
@@ -40,7 +44,7 @@ namespace kAI.Editor.Controls
             InitializeComponent();
 
 
-            mPort = lPort;
+            Port = lPort;
 
             // Based on the direction of the port, choose the image. 
             if (lPort.PortDirection == kAIPort.ePortDirection.PortDirection_In)

@@ -55,6 +55,9 @@ namespace kAI.Editor.Controls
         /// </summary>
         const int kPortVerticalSeperation = 10;
 
+        bool mIsMakingConnexion;
+        kAIEditorPort mStartingPort;
+
         /// <summary>
         /// Create a new editor pane for a XML behaviour
         /// </summary>
@@ -89,6 +92,8 @@ namespace kAI.Editor.Controls
             Controls.Add(lEditorNode);
 
             mNodes.Add(lEditorNode);
+
+            lEditorNode.OnPortClicked += new kAIEditorNode.PortClicked(lEditorNode_OnPortClicked);
         }
 
         /// <summary>
@@ -154,6 +159,9 @@ namespace kAI.Editor.Controls
             mBehaviour = null;
             mBehaviourLocation = null;
 
+            mIsMakingConnexion = false;
+            mStartingPort = null;
+
             mNodes = new List<kAIEditorNode>();
 
             Controls.Clear();
@@ -181,7 +189,53 @@ namespace kAI.Editor.Controls
                 mNextOutPortY += lNewEditorPort.Height + kPortVerticalSeperation;
             }
 
+            lNewEditorPort.Click += new EventHandler(lNewEditorPort_Click);
+
             Controls.Add(lNewEditorPort);
+        }
+
+        void lNewEditorPort_Click(object sender, EventArgs e)
+        {
+            kAIEditorPort lPortClicked = sender as kAIEditorPort;
+            if(lPortClicked != null)
+            {
+                if (mIsMakingConnexion)
+                {
+                    // Assert mOtherPort != null
+
+                    FormConnexion(mStartingPort, lPortClicked);
+                }
+                else
+                {
+                    mIsMakingConnexion = true;
+                    mStartingPort = lPortClicked;
+                }
+            }
+            else
+            {
+                System.Diagnostics.Debugger.Break();
+            }
+        }
+
+        void lEditorNode_OnPortClicked(kAIEditorPort lPortClicked, kAINode lOwningNode)
+        {
+            if (mIsMakingConnexion)
+            {
+                FormConnexion(mStartingPort, lPortClicked);
+            }
+            else
+            {
+                mIsMakingConnexion = true;
+                mStartingPort = lPortClicked;
+            }
+        }
+
+        void FormConnexion(kAIEditorPort lStartPort, kAIEditorPort lEndPort)
+        {
+            mBehaviour.AddConnexion(lStartPort.Port, lEndPort.Port);
+
+            Graphics lG = Graphics.FromHwnd(Handle);
+            lG.DrawBezier(new Pen(Color.Black), new Point(0, 0), new Point(100, 10), new Point(100, 100), new Point(200, 200));
         }
 
         private void BehaviourEditorWindow_MouseDown(object sender, MouseEventArgs e)

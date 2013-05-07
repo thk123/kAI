@@ -21,6 +21,8 @@ namespace kAI.Editor.Controls
     /// </summary>
     public partial class kAIEditorNode : UserControl
     {
+        public delegate void PortClicked(kAIEditorPort lPortClicked, kAINode lOwningNode);
+
         /// <summary>
         /// Stores the position of the mouse relative to the top left hand corner of the item so 
         /// can be dragged without jumping at the start.
@@ -41,6 +43,12 @@ namespace kAI.Editor.Controls
         /// The next vertical position of an out port. 
         /// </summary>
         int mNextOutPortY;
+
+        public kAINode Node
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// The vertical distance between ports. 
@@ -67,6 +75,12 @@ namespace kAI.Editor.Controls
             }
         }
 
+
+        /// <summary>
+        /// Triggered when one of the ports within this node is clicked. 
+        /// </summary>
+        public event PortClicked OnPortClicked;
+
         /// <summary>
         /// Construct a new editor node with the given node ID. 
         /// </summary>
@@ -84,6 +98,8 @@ namespace kAI.Editor.Controls
             }
 
             BehaviourName.Text = lNode.NodeID;
+
+            Node = lNode;
         }
 
         /// <summary>
@@ -115,7 +131,21 @@ namespace kAI.Editor.Controls
             // If the window is too short for this node, we extend it. 
             ExtendWindow(lNewEditorPort.Location.Y + lNewEditorPort.Height);
 
+            lNewEditorPort.Click += new EventHandler(lNewEditorPort_Click);
+
             Controls.Add(lNewEditorPort);
+        }
+
+        void lNewEditorPort_Click(object sender, EventArgs e)
+        {
+            kAIEditorPort lClickedPort = sender as kAIEditorPort;
+            if (lClickedPort != null)
+            {
+                if (OnPortClicked != null)
+                {
+                    OnPortClicked(lClickedPort, Node);
+                }
+            }
         }
 
         /// <summary>
