@@ -202,8 +202,7 @@ namespace kAI.Editor.Controls
                 if (mIsMakingConnexion)
                 {
                     // Assert mOtherPort != null
-
-                    FormConnexion(mStartingPort, lPortClicked);
+                    EndDrag(lPortClicked);
                 }
                 else
                 {
@@ -221,7 +220,7 @@ namespace kAI.Editor.Controls
         {
             if (mIsMakingConnexion)
             {
-                FormConnexion(mStartingPort, lPortClicked);
+                EndDrag(lPortClicked);
             }
             else
             {
@@ -230,12 +229,19 @@ namespace kAI.Editor.Controls
             }
         }
 
+        void EndDrag(kAIEditorPort lEndPort)
+        {
+            FormConnexion(mStartingPort, lEndPort);
+            lEndPort = null;
+            mIsMakingConnexion = false;
+        }
+
         void FormConnexion(kAIEditorPort lStartPort, kAIEditorPort lEndPort)
         {
             mBehaviour.AddConnexion(lStartPort.Port, lEndPort.Port);
 
             Graphics lG = Graphics.FromHwnd(Handle);
-            lG.DrawBezier(new Pen(Color.Black), new Point(0, 0), new Point(100, 10), new Point(100, 100), new Point(200, 200));
+            lG.DrawCurve(new Pen(Color.Black), new Point[] { lStartPort.GetControlPosition(this), lEndPort.GetControlPosition(this) });
         }
 
         private void BehaviourEditorWindow_MouseDown(object sender, MouseEventArgs e)

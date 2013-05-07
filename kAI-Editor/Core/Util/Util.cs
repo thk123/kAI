@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Drawing;
+using System.Windows.Forms;
 
 namespace kAI.Editor.Core.Util
 {
@@ -40,6 +41,18 @@ namespace kAI.Editor.Core.Util
         public static Point AddPoints(Point lLHS, Point lRHS)
         {
             return new Point(lLHS.X + lRHS.X, lLHS.Y + lRHS.Y);
+        }
+
+        public static Point GetControlPosition(this Control lControl, Control lDesiredRoot = null)
+        {
+            Point lPosition = lControl.Location;
+            while (lControl.Parent != lDesiredRoot)
+            {
+                lControl = lControl.Parent;
+                lPosition = AddPoints(lPosition, lControl.Location);
+            }
+
+            return lPosition;
         }
     }
 }
