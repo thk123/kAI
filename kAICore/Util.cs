@@ -29,5 +29,18 @@ namespace kAI.Core
 
             return false;
         }
+
+        /// <summary>
+        /// Get the opposite direction of the port. 
+        /// </summary>
+        /// <param name="lDirection">The direction to revsere. </param>
+        /// <returns>The opposite direction (eg in returns out, out returns in). </returns>
+        public static kAIPort.ePortDirection OppositeDirection(this kAIPort.ePortDirection lDirection)
+        {
+            if (lDirection == kAIPort.ePortDirection.PortDirection_In)
+                return kAIPort.ePortDirection.PortDirection_Out;
+            else
+                return kAIPort.ePortDirection.PortDirection_In;
+        }
     }
 }

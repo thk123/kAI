@@ -14,6 +14,12 @@ namespace kAI.Core
     public class kAINodeID
     {
         /// <summary>
+        /// Is the ID of a non-existent node. 
+        /// </summary>
+        public static readonly kAINodeID InvalidNodeID = "InvalidNode";
+
+
+        /// <summary>
         /// The string of the node ID
         /// </summary>
         [DataMember()]

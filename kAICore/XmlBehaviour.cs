@@ -158,6 +158,7 @@ namespace kAI.Core
             }
         }
 
+
         /// <summary>
         /// Nodes within this XML behaviour. 
         /// </summary>
@@ -209,6 +210,11 @@ namespace kAI.Core
             {
                 AddInternalPort(lPort);
             }
+
+            foreach (kAIPort.kAIConnexion lConnexion in lSource.GetInternalConnexions(this))
+            {
+                AddConnexion(lConnexion.StartPort, lConnexion.EndPort);
+            }
         }
 
         private kAIXmlBehaviour(kAIBehaviourID lBehaviourID, kAIILogger lLogger = null)
@@ -227,9 +233,25 @@ namespace kAI.Core
             mInternalNodes.Add(lNode.NodeID, lNode);
         }
 
+        /// <summary>
+        /// Add a internal connexion within this behaviour. 
+        /// </summary>
+        /// <param name="lStartPort">The starting port of this connexion. </param>
+        /// <param name="lEndPort">The ending port of this connexion. </param>
         public void AddConnexion(kAIPort lStartPort, kAIPort lEndPort)
         {
-            lStartPort.MakeConnexion(lEndPort);
+            // Design justification:
+            // Need to represent the connexions within the XML behaviour and ports
+            // need to be able to quickly inform their connexions when triggered
+            // Since the average behaviour is sparse (that is relatively few connexions 
+            // per number of nodes (since most nodes won't be connected to most other nodes)
+            // This => uses a adjacency lists (as opposed to matrix)
+            // Also, since each port needs to be able to tell connected ports quickly
+            // It makes sense for each of the lists of adjacencies is stored in the ports
+            // Also since connexions go from Out to In, only store at one end
+            // (Trade off: expensive for an in port to remove all of its connexions)
+
+            kAIPort.ConnectPorts(lStartPort, lEndPort);
         }
 
         /// <summary>
@@ -291,9 +313,10 @@ namespace kAI.Core
 
         private void AddInternalPort(InternalPort lInternalPort)
         {
+            kAIPort lPortToAdd = lInternalPort.Port;
             if (mInternalPorts.ContainsKey(lInternalPort.Port.PortID))
             {
-                throw new kAIBehaviourPortAlreadyExistsException(this, mInternalPorts[lInternalPort.Port.PortID].Port, lInternalPort.Port);
+                throw new kAIBehaviourPortAlreadyExistsException(this, mInternalPorts[lInternalPort.Port.PortID].Port, lPortToAdd);
             }
             else
             {
@@ -306,6 +329,24 @@ namespace kAI.Core
                     // else create an inport and listen to its trigger for when to trigger ours
                 }
 
+            }
+        }
+
+        private kAIPort GetInternalPort(kAIPortID lPortID, kAINodeID lNodeID)
+        {
+            // Is the start node ID a real node.
+            if (lNodeID == kAINodeID.InvalidNodeID)
+            {
+                return mInternalPorts[lPortID].Port;
+            }
+            else // The start node is invalid, so is a global port. 
+            {
+                kAINode lStartNode = mInternalNodes[lNodeID];
+
+                Assert(lStartNode);
+
+                // TODO: Need a method to just get a port from the dictionary
+                return lStartNode.GetExternalPorts().First((lPort) => { return lPort.PortID == lPortID; });
             }
         }
 

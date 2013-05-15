@@ -86,6 +86,31 @@ namespace kAI.Core
                 }
             }
 
+            [DataContract()]
+            struct SerialConnexion
+            {
+                [DataMember()]
+                public kAIPortID StartPortID;
+
+                [DataMember()]
+                public kAINodeID StartNodeID;
+
+                [DataMember()]
+                public kAIPortID EndPortID;
+
+                [DataMember()]
+                public kAINodeID EndNodeID;
+
+                public SerialConnexion(kAIPort.kAIConnexion lConnexion)
+                {
+                    StartPortID = lConnexion.StartPort.PortID;
+                    StartNodeID = lConnexion.StartPort.OwningNodeID;
+
+                    EndPortID = lConnexion.EndPort.PortID;
+                    EndNodeID = lConnexion.EndPort.OwningNodeID;
+                }
+            }
+
             [DataMember()]
             public string BehaviourID
             {
@@ -107,6 +132,13 @@ namespace kAI.Core
                 set;
             }
 
+            [DataMember()]
+            private List<SerialConnexion> InternalConnexions
+            {
+                get;
+                set;
+            }
+
             public InternalXml()
             {
                 InternalNodes = new List<SerialNode>();
@@ -119,6 +151,8 @@ namespace kAI.Core
 
                 InternalNodes = new List<SerialNode>();
 
+                InternalConnexions = new List<SerialConnexion>();
+
                 foreach (kAINode lNodeBase in lBehaviour.InternalNodes)
                 {
                     Type lContentType = lNodeBase.GetNodeSerialableContentType();
@@ -127,6 +161,20 @@ namespace kAI.Core
                     lBehaviour.Assert(lContentType == lContent.GetType(), "The content returned from the node does not match the reported type...");
 
                     InternalNodes.Add(new SerialNode(lNodeBase));
+
+                    foreach (kAIPort lPort in lNodeBase.GetExternalPorts())
+                    {
+                        if (lPort.PortDirection == kAIPort.ePortDirection.PortDirection_Out)
+                        {
+                            // TODO: some how we need, for each of the adjacent ports, get their node owners
+                            // probably at the point where we make the connexion, we need to store this information
+
+                            foreach (kAIPort.kAIConnexion lConnexion in lPort.Connexions)
+                            {
+                                InternalConnexions.Add(new SerialConnexion(lConnexion));
+                            }
+                        }
+                    }
                 }
 
                 InternalPorts = new List<SerialPort>();
@@ -134,6 +182,14 @@ namespace kAI.Core
                 foreach (InternalPort lPort in lBehaviour.mInternalPorts.Values)
                 {
                     InternalPorts.Add(new SerialPort(lPort));
+
+                    if (lPort.Port.PortDirection == kAIPort.ePortDirection.PortDirection_Out)
+                    {
+                        foreach (kAIPort.kAIConnexion lConnexion in lPort.Port.Connexions)
+                        {
+                            InternalConnexions.Add(new SerialConnexion(lConnexion));
+                        }
+                    }
                 }
             }
 
@@ -183,6 +239,20 @@ namespace kAI.Core
                     InternalPort lWrappedPort = new InternalPort { Port = lPort, IsGloballyAccesible = lInternalPort.IsGloballyAccesible };
 
                     yield return lWrappedPort;
+                }
+            }
+
+            public IEnumerable<kAIPort.kAIConnexion> GetInternalConnexions(kAIXmlBehaviour lBehaviour)
+            {
+                foreach (SerialConnexion lInternalConnexion in InternalConnexions)
+                {
+                    // First get the start port
+                    kAIPort lStartPort = lBehaviour.GetInternalPort(lInternalConnexion.StartPortID, lInternalConnexion.StartNodeID);
+
+                    // Now get the end port
+                    kAIPort lEndPort = lBehaviour.GetInternalPort(lInternalConnexion.EndPortID, lInternalConnexion.EndNodeID);
+
+                    yield return new kAIPort.kAIConnexion(lStartPort, lEndPort);
                 }
             }
         }

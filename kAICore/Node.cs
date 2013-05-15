@@ -140,6 +140,9 @@ namespace kAI.Core
             {
                 foreach (kAIPort lPort in lContents.GetExternalPorts())
                 {
+                    // Set the ID of the port so it can be connected. 
+                    lPort.OwningNode = this;
+
                     AddGlobalPort(lPort);
                 }
             }

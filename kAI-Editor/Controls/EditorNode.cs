@@ -21,6 +21,11 @@ namespace kAI.Editor.Controls
     /// </summary>
     public partial class kAIEditorNode : UserControl
     {
+        /// <summary>
+        /// Handler for a a port clicked event. 
+        /// </summary>
+        /// <param name="lPortClicked">The port that was clicked. </param>
+        /// <param name="lOwningNode">The node that this port belongs to (if any). </param>
         public delegate void PortClicked(kAIEditorPort lPortClicked, kAINode lOwningNode);
 
         /// <summary>
@@ -44,6 +49,9 @@ namespace kAI.Editor.Controls
         /// </summary>
         int mNextOutPortY;
 
+        /// <summary>
+        /// The node this control is representing. 
+        /// </summary>
         public kAINode Node
         {
             get;
