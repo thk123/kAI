@@ -60,7 +60,7 @@ namespace kAI.Core
         /// <returns>Whether the two nodes match.</returns>
         public static bool operator== (kAINodeID lNodeIDA, kAINodeID lNodeIDB)
         {
-            return lNodeIDA.NodeID == lNodeIDB.NodeID;
+            return lNodeIDA.Equals(lNodeIDB);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace kAI.Core
         /// <returns>Whether the two nodes match.</returns>
         public static bool operator !=(kAINodeID lNodeIDA, kAINodeID lNodeIDB)
         {
-            return !(lNodeIDA == lNodeIDB);
+            return !lNodeIDA.Equals(lNodeIDB);
         }
 
         /// <summary>
@@ -81,10 +81,16 @@ namespace kAI.Core
         /// <returns>True if the two objects have the same ID</returns>
         public override bool Equals(object obj)
         {
+            if (ReferenceEquals(this, obj))
+                return true;
+
+            if (((object)obj == null))
+                return false;
+
             kAINodeID lNodeID = obj as kAINodeID;
-            if (lNodeID != null)
+            if (((object)lNodeID != null))
             {
-                return lNodeID == this;
+                return lNodeID.NodeID == NodeID;
             }
             else
             {
@@ -98,7 +104,7 @@ namespace kAI.Core
         /// <returns>The hash of the object.</returns>
         public override int GetHashCode()
         {
-            return base.GetHashCode();
+            return NodeID.GetHashCode();
         }
 
         /// <summary>

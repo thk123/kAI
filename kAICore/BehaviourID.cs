@@ -60,7 +60,7 @@ namespace kAI.Core
         /// <returns>Whether the two behaviours match.</returns>
         public static bool operator ==(kAIBehaviourID lBehaviourIDA, kAIBehaviourID lBehaviourIDB)
         {
-            return lBehaviourIDA.BehaviourID == lBehaviourIDB.BehaviourID;
+            return lBehaviourIDA.Equals(lBehaviourIDB);
         }
 
         /// <summary>
@@ -71,7 +71,7 @@ namespace kAI.Core
         /// <returns>Whether the two behaviours match.</returns>
         public static bool operator !=(kAIBehaviourID lBehaviourIDA, kAIBehaviourID lBehaviourIDB)
         {
-            return !(lBehaviourIDA == lBehaviourIDB);
+            return !lBehaviourIDA.Equals(lBehaviourIDB);
         }
 
         /// <summary>
@@ -81,10 +81,16 @@ namespace kAI.Core
         /// <returns>True if the two objects have the same ID</returns>
         public override bool Equals(object obj)
         {
+            if (ReferenceEquals(this, obj))
+                return true;
+
+            if (((object)obj == null))
+                return false;
+
             kAIBehaviourID lBehaviourID = obj as kAIBehaviourID;
-            if (lBehaviourID != null)
+            if (((object)lBehaviourID != null))
             {
-                return lBehaviourID == this;
+                return lBehaviourID.BehaviourID == BehaviourID;
             }
             else
             {
