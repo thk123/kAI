@@ -169,6 +169,16 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// Assert that an object should be not null. 
+        /// </summary>
+        /// <param name="lCheckIsObject">Checks this object is not null. </param>
+        /// <param name="lMessage">Optionally, the message to display. </param>
+        protected void Assert(object lCheckIsObject, string lMessage = null)
+        {
+            Assert(lCheckIsObject != null, lMessage);
+        }
+
+        /// <summary>
         /// Assert that something should be true. Optionally can throw an exception if it isn't. 
         /// </summary>
         /// <param name="lObject">The object that did the assert. </param>
