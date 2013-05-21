@@ -324,9 +324,23 @@ namespace kAI.Core
 
                 if (lInternalPort.IsGloballyAccesible)
                 {
-                    // TODO: If InPort, then create an out port and add an event listener for the inport 
-                    // to trigger the out port.
-                    // else create an inport and listen to its trigger for when to trigger ours
+                    kAIPort lExternalPort = new kAIPort(lPortToAdd.PortID, lPortToAdd.PortDirection.OppositeDirection(), lPortToAdd.DataType);
+
+                    // Trigger the internal port if our direction is in
+                    if (lExternalPort.PortDirection == kAIPort.ePortDirection.PortDirection_In)
+                    {
+                        lExternalPort.OnTriggered += (lSender) =>
+                            {
+                                mInternalPorts[lSender.PortID].Port.Trigger();
+                            };
+                    }
+                    else // The external port in an outward port, so should be trigger when the internal port is
+                    {
+                        lPortToAdd.OnTriggered += (lSender) =>
+                            {
+                                GetPort(lSender.PortID).Trigger();
+                            };
+                    }
                 }
 
             }
