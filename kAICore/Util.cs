@@ -42,5 +42,17 @@ namespace kAI.Core
             else
                 return kAIPort.ePortDirection.PortDirection_In;
         }
+
+        /// <summary>
+        /// Gets the value or the provided default value if the value is null. 
+        /// </summary>
+        /// <typeparam name="T">The nullable type to use.</typeparam>
+        /// <param name="lObject">The object to check.</param>
+        /// <param name="lDefault">The default value to return if lObject is null. </param>
+        /// <returns>Either lObject or lDefault iff lObject is null. </returns>
+        public static T GetValueOrDefault<T>(this T lObject, T lDefault) where T : class
+        {
+            return lObject != null ? lObject : lDefault;
+        }
     }
 }

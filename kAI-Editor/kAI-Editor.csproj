@@ -67,6 +67,7 @@
     <Compile Include="Controls\DLLEntry.Designer.cs">
       <DependentUpon>DLLEntry.cs</DependentUpon>
     </Compile>
+    <Compile Include="Core\ConsoleLogger.cs" />
     <Compile Include="Forms\BehaviourChooser.cs">
       <SubType>Form</SubType>
     </Compile>

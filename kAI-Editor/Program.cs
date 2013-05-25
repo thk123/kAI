@@ -3,6 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Windows.Forms;
 
+using kAI.Core;
+using kAI.Editor.Core;
+
 namespace kAI.Editor
 {
     static class Program
@@ -13,6 +16,9 @@ namespace kAI.Editor
         [STAThread]
         static void Main()
         {
+            kAIObject.GlobalLogger = ConsoleLogger.Get();
+            ConsoleLogger.Get().LogMessage("kAI Editor starting");
+
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             Application.Run(new Editor());
