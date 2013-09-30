@@ -175,7 +175,7 @@ namespace kAI.Core
         /// <param name="lMessage">Optionally, the message to display. </param>
         protected void Assert(object lCheckIsObject, string lMessage = null)
         {
-            Assert(lCheckIsObject != null, lMessage);
+            Assert(this, lCheckIsObject != null, lMessage);
         }
 
         /// <summary>
@@ -187,6 +187,26 @@ namespace kAI.Core
         protected static void Assert(kAIObject lObject, bool lCondition, string lMessage = null)
         {
             if (!lCondition)
+            {
+                //LogCriticalError(lMessage);
+                System.Diagnostics.Debugger.Break();
+
+                if (ExceptionOnAssert)
+                {
+                    //ThrowException(new AssertFailedException(lMessage));
+                }
+            }
+        }
+
+        /// <summary>
+        /// Assert that something should be true. Optionally can throw an exception if it isn't. 
+        /// </summary>
+        /// <param name="lObject">The object that did the assert. </param>
+        /// <param name="lCheckIsObject">The object to check is not null. </param>
+        /// <param name="lMessage">Optionally, the message to show if the assert fails. </param>
+        protected static void Assert(kAIObject lObject, object lCheckIsObject, string lMessage = null)
+        {
+            if (lObject == null)
             {
                 //LogCriticalError(lMessage);
                 System.Diagnostics.Debugger.Break();

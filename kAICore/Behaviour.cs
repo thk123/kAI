@@ -215,7 +215,7 @@ namespace kAI.Core
 
 
     /// <summary>
-    /// Represents a code behvaiour (one with an external implementation).
+    /// Represents a code behaviour (one with an external implementation).
     /// </summary>
     public abstract class kAICodeBehaviour : kAIBehaviour
     {
