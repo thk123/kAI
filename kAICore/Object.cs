@@ -184,7 +184,7 @@ namespace kAI.Core
         /// <param name="lObject">The object that did the assert. </param>
         /// <param name="lCondition">The condition to check. </param>
         /// <param name="lMessage">Optionally, the message to show if the assert fails. </param>
-        protected static void Assert(kAIObject lObject, bool lCondition, string lMessage = null)
+        public static void Assert(kAIObject lObject, bool lCondition, string lMessage = null)
         {
             if (!lCondition)
             {
@@ -204,9 +204,9 @@ namespace kAI.Core
         /// <param name="lObject">The object that did the assert. </param>
         /// <param name="lCheckIsObject">The object to check is not null. </param>
         /// <param name="lMessage">Optionally, the message to show if the assert fails. </param>
-        protected static void Assert(kAIObject lObject, object lCheckIsObject, string lMessage = null)
+        public static void Assert(kAIObject lObject, object lCheckIsObject, string lMessage = null)
         {
-            if (lObject == null)
+            if (lCheckIsObject == null)
             {
                 //LogCriticalError(lMessage);
                 System.Diagnostics.Debugger.Break();

@@ -242,6 +242,12 @@ namespace kAI.Core
                 }
             }
 
+            /// <summary>
+            /// Gets each of the links contained within this behaviour (ie from/to ports that are either internal ports of this behaviour or
+            /// external ports of nodes contained within it). 
+            /// </summary>
+            /// <param name="lBehaviour">The partially constructed behaviour that has the ports we wish to connect. </param>
+            /// <returns>All the connexions. </returns>
             public IEnumerable<kAIPort.kAIConnexion> GetInternalConnexions(kAIXmlBehaviour lBehaviour)
             {
                 foreach (SerialConnexion lInternalConnexion in InternalConnexions)

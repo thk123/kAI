@@ -26,7 +26,7 @@ namespace kAI.Editor.Controls
         /// </summary>
         /// <param name="lPortClicked">The port that was clicked. </param>
         /// <param name="lOwningNode">The node that this port belongs to (if any). </param>
-        public delegate void PortClicked(kAIEditorPort lPortClicked, kAINode lOwningNode);
+        public delegate void PortClicked(kAIEditorPortWinForms lPortClicked, kAINode lOwningNode);
 
         /// <summary>
         /// Stores the position of the mouse relative to the top left hand corner of the item so 
@@ -116,7 +116,7 @@ namespace kAI.Editor.Controls
         /// <param name="lNewPort">The port to add. </param>
         public void AddPort(kAIPort lNewPort)
         {
-            kAIEditorPort lNewEditorPort = new kAIEditorPort(lNewPort);
+            kAIEditorPortWinForms lNewEditorPort = new kAIEditorPortWinForms(lNewPort);
             if (lNewPort.PortDirection == kAIPort.ePortDirection.PortDirection_In)
             {
                 Point lNewLocation = new Point();
@@ -146,7 +146,7 @@ namespace kAI.Editor.Controls
 
         void lNewEditorPort_Click(object sender, EventArgs e)
         {
-            kAIEditorPort lClickedPort = sender as kAIEditorPort;
+            kAIEditorPortWinForms lClickedPort = sender as kAIEditorPortWinForms;
             if (lClickedPort != null)
             {
                 if (OnPortClicked != null)

@@ -17,6 +17,7 @@ using kAI.Editor.Core.Util;
 using kAI.Editor.Forms;
 using kAI.Editor.Forms.ProjectProperties;
 using kAI.Editor.Controls;
+using kAI.Editor.Controls.DX;
 
 
 
@@ -31,11 +32,12 @@ namespace kAI.Editor
         bool mIsProjectLoaded;
         kAIProject mLoadedProject;
 
-        BehaviourEditorWindow mBehaviourEditor;
         BehaviourTree mBehaviourTree;
 
         List<PropertyControllerBase<bool>> mProjectLoadedControls; // Controls that should only be enabled when a project is loaded.
         List<PropertyControllerBase<bool>> mBehaviourLoadedControls;
+
+        kAIBehaviourEditorWindow mBehaviourEditor;
 
         /// <summary>
         /// Create a new editor. 
@@ -61,6 +63,18 @@ namespace kAI.Editor
             SetEnabledSetControls(mProjectLoadedControls, false);
             SetEnabledSetControls(mBehaviourLoadedControls, false);
 
+            mBehaviourEditor = null;
+        }
+
+        /// <summary>
+        /// If we have an XML behaviour loaded, we update the DX Editor window
+        /// </summary>
+        public void RenderUpdate()
+        {
+            if(mBehaviourEditor != null)
+            {
+                mBehaviourEditor.Update();
+            }
         }
 
         /// <summary>
@@ -85,14 +99,13 @@ namespace kAI.Editor
 
         void mBehaviourTree_OnBehaviourDoubleClick(kAIINodeSerialObject lObject)
         {
-            CreateBehaviourEditorWindow();
+            // If it was a kAI-Behaviour, we load it.
             if (lObject.GetNodeFlavour() == eNodeFlavour.BehaviourXml)
             {
+                CreateBehaviourEditorWindow();
                 mBehaviourEditor.LoadBehaviour(kAIXmlBehaviour.Load(lObject, mLoadedProject.GetAssemblyByName));
             }
-
-            /*LoadBehaviour(lTemplate);
-            mBehaviourEditor.LoadBehaviour((kAIXmlBehaviour)lTemplate.Instantiate());*/
+            
         }
 
         /// <summary>
@@ -101,6 +114,8 @@ namespace kAI.Editor
         private void CloseProject()
         {
             System.Diagnostics.Debug.Assert(mLoadedProject != null);
+
+            DestroyBehaviourEditorWindow();
 
             mLoadedProject = null;
 
@@ -124,11 +139,21 @@ namespace kAI.Editor
         {
             if (mBehaviourEditor == null)
             {
-                mBehaviourEditor = new BehaviourEditorWindow(mLoadedProject);
-                MainEditor.Panel2.Controls.Add(mBehaviourEditor);
-                mBehaviourEditor.Dock = DockStyle.Fill;
+                // Here we chose our implemenation for the editor. 
+                //kAIIBehaviourEditorGraphicalImplementator lImpl = new BehaviourEditorWindowWinForms();
+                kAIIBehaviourEditorGraphicalImplementator lImpl = new BehaviourEditorWindowDX();
+                
+                lImpl.Init(MainEditor.Panel2);
 
-                SetEnabledSetControls(mBehaviourLoadedControls, true);
+                mBehaviourEditor = new kAIBehaviourEditorWindow(mLoadedProject, lImpl);
+            }
+        }
+
+        private void DestroyBehaviourEditorWindow()
+        {
+            if (mBehaviourEditor != null)
+            {
+                mBehaviourEditor.Destroy();
             }
         }
 
@@ -139,7 +164,8 @@ namespace kAI.Editor
                 BehaviourChooser lChooser = new BehaviourChooser(mLoadedProject);
                 if (lChooser.ShowDialog() == DialogResult.OK)
                 {
-                    mBehaviourEditor.AddBehaviour(lChooser.GetSelectedBehaviour());
+                    // TODO: Add a behaviour to the behaviour editor DX
+                    //mBehaviourEditor.AddBehaviour(lChooser.GetSelectedBehaviour());
                 }
             }
         }
@@ -187,26 +213,25 @@ namespace kAI.Editor
 
             if(lCreator.ShowDialog() == DialogResult.OK)
             {
-                if (mBehaviourEditor == null)
-                {
-                    mBehaviourEditor = new BehaviourEditorWindow(mLoadedProject);
-                    MainEditor.Panel2.Controls.Add(mBehaviourEditor);
-                    mBehaviourEditor.Dock = DockStyle.Fill;
+                CreateBehaviourEditorWindow();
 
-                    SetEnabledSetControls(mBehaviourLoadedControls, true);
-                }
+                //kAIXmlBehaviour lBehaviour = 
 
-                kAIXmlBehaviour lBehaviour = mBehaviourEditor.NewBehaviour(lCreator.BehaviourID, lCreator.BehaviourPath);
+                kAIXmlBehaviour lBehaviour = new kAIXmlBehaviour(lCreator.BehaviourID, lCreator.BehaviourPath);
+                mBehaviourEditor.LoadBehaviour(lBehaviour);
+
+
+                /*kAIXmlBehaviour lBehaviour = mBehaviourEditor.NewBehaviour();
 
                 mLoadedProject.AddXmlBehaviour(lBehaviour.GetDataContractClass());
 
-                mBehaviourTree.UpdateTree(mLoadedProject);
+                mBehaviourTree.UpdateTree(mLoadedProject);*/
             }
         }
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mBehaviourEditor.SaveBehaviour();
+            //mBehaviourEditor.SaveBehaviour();
         }
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -256,6 +281,11 @@ namespace kAI.Editor
         private void saveProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             mLoadedProject.Save();
+        }
+
+        private void Editor_FormClosed(object sender, FormClosedEventArgs e)
+        {
+            DestroyBehaviourEditorWindow();
         }
     }
 }
