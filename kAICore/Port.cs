@@ -458,15 +458,9 @@ namespace kAI.Core
         /// <param name="lPortB">The second port. </param>
         internal static void DisconnectPorts(kAIPort lPortA, kAIPort lPortB)
         {
-            if (ArePortsConnected(lPortA, lPortB))
-            {
-                lPortA.Disconnect(lPortB);
-                lPortB.Disconnect(lPortA);
-            }
-            else
-            {
-                lPortA.LogError("Ports not connected", lPortA, lPortB);
-            }
+            Assert(null, ArePortsConnected(lPortA, lPortB), "Attempted to disconnect two ports that aren't disconnected. ");
+            lPortA.Disconnect(lPortB);
+            lPortB.Disconnect(lPortA);
         }
 
         /// <summary>

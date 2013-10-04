@@ -9,7 +9,7 @@ namespace kAI.Core
     /// <summary>
     /// The root class all kAI.Core Objects inherit from. Provides functions for logging messages and error
     /// </summary>
-    [DataContract()]    
+    [DataContract()]
     public abstract class kAIObject
     {
         /// <summary>
@@ -20,11 +20,19 @@ namespace kAI.Core
         public delegate void ExceptionHandle(Exception lException, kAIObject lSender);
 
         /// <summary>
-        /// The global logger to be used by all classes.
+        /// The global logger to be used by all classes. If the instance logger is set, 
+        /// this will be used instead. 
         /// </summary>
-        static kAIILogger mGlobalLogger;
+        public static kAIILogger GlobalLogger
+        {
+            get;
+            set;
+        }
 
-        static ExceptionHandle ExceptionHandler
+        /// <summary>
+        /// A method for handling exceptions
+        /// </summary>
+        public static ExceptionHandle ExceptionHandler
         {
             get;
             set;
@@ -34,56 +42,49 @@ namespace kAI.Core
         /// Should an exception be thrown if an assert fails. 
         /// </summary>
         public static bool ExceptionOnAssert = false;
-        
 
         /// <summary>
         /// The logger of this instance, only used by this object.
+        /// If this object is null, then the global logger will be used. 
         /// </summary>
-        kAIILogger mLogger;
-
-        /// <summary>
-        /// Set the global logger used by all kAIObjects.
-        /// </summary>
-        /// <param name="lLogger">The instance of the logger for all objects to use.</param>
-        public static void SetGlobalLogger(kAIILogger lLogger)
+        public kAIILogger Logger
         {
-            mGlobalLogger = lLogger;
+            get;
+            set;
         }
 
         /// <summary>
         /// Set an instance based logger for this object (use SetLogger to set for all objects).
         /// </summary>
         /// <param name="lLogger">The logger for this instance to use.</param>
-        /// <seealso cref="kAIObject.SetGlobalLogger"/>
+        /// <seealso cref="kAIObject.GlobalLogger"/>
         public kAIObject(kAIILogger lLogger = null)
         {
-            mLogger = lLogger;
+            Logger = lLogger;
         }
 
         /// <summary>
-        /// Sets the logger to be used by this instance.
-        /// </summary>
-        /// <param name="lLogger">The logger for this instance to use from now on. </param>
-        public void SetInstanceLogger(kAIILogger lLogger)
-        {
-            mLogger = lLogger;
-        }
-
-        /// <summary>
-        /// Log a message using the global logger and/or instance logger marked as a message.
+        /// Log a message using the relevant logger. 
         /// </summary>
         /// <param name="lMessage">The message to log.</param>
         /// <param name="lDetails">Any additional information.</param>
-        public void LogMessage(string lMessage, params object[] lDetails)
+        protected void LogMessage(string lMessage, params KeyValuePair<string, object>[] lDetails)
         {
-            if (mLogger != null)
-            {
-                mLogger.LogMessage(GetType().ToString() + ": " + lMessage, lDetails);
-            }
+            LogMessage(this, lMessage, lDetails);
+        }
 
-            if (mGlobalLogger != null)
+        /// <summary>
+        /// Log a message using the relevant logger. 
+        /// </summary>
+        /// <param name="lCaller">The object that called this log, null if global</param>
+        /// <param name="lMessage">The message to log.</param>
+        /// <param name="lDetails">Any additional information.</param>
+        public static void LogMessage(kAIObject lCaller, string lMessage, params KeyValuePair<string, object>[] lDetails)
+        {
+            kAIILogger lLogger = GetLoggerForInstance(lCaller);
+            if (lLogger != null)
             {
-                mLogger.LogMessage(GetType().ToString() + ": " + lMessage, lDetails);
+                lLogger.LogMessage(lMessage, lDetails);
             }
         }
 
@@ -92,69 +93,23 @@ namespace kAI.Core
         /// </summary>
         /// <param name="lWarning">The warning string.</param>
         /// <param name="lDetails">Any additional information. </param>
-        public void LogWarning(string lWarning, params object[] lDetails)
+        protected void LogWarning(string lWarning, params KeyValuePair<string, object>[] lDetails)
         {
-            if (mLogger != null)
-            {
-                mLogger.LogWarning(GetType().ToString() + ": " + lWarning, lDetails);
-            }
-
-            if (mGlobalLogger != null)
-            {
-                mLogger.LogWarning(GetType().ToString() + ": " + lWarning, lDetails);
-            }
+            LogWarning(this, lWarning, lDetails);
         }
 
         /// <summary>
-        /// Log a message using the global logger and/or instance logger marked as an error.
+        /// Log a message using the global logger and/or instance logger marked as a warning.
         /// </summary>
-        /// <param name="lError">The error string.</param>
-        /// <param name="lDetails">Any additional information.</param>
-        public void LogError(string lError, params object[] lDetails)
+        /// <param name="lCaller">The object that called this log, null if global</param>
+        /// <param name="lWarning">The warning string.</param>
+        /// <param name="lDetails">Any additional information. </param>
+        public static void LogWarning(kAIObject lCaller, string lWarning, params KeyValuePair<string, object>[] lDetails)
         {
-            if (mLogger != null)
+            kAIILogger lLogger = GetLoggerForInstance(lCaller);
+            if (lLogger != null)
             {
-                mLogger.LogError(GetType().ToString() + ": " + lError, lDetails);
-            }
-
-            if (mGlobalLogger != null)
-            {
-                mLogger.LogError(GetType().ToString() + ": " + lError, lDetails);
-            }
-        }
-
-        /// <summary>
-        /// Log a message using the global logger and/or instance logger marked as an critical error (eg no recovery).
-        /// </summary>
-        /// <param name="lError">The error string.</param>
-        /// <param name="lDetails">Any additional information.</param>
-        public void LogCriticalError(string lError, params object[] lDetails)
-        {
-            if (mLogger != null)
-            {
-                mLogger.LogCriticalError(GetType().ToString() + ": " + lError, lDetails);
-            }
-
-            if (mGlobalLogger != null)
-            {
-                mLogger.LogCriticalError(GetType().ToString() + ": " + lError, lDetails);
-            }
-        }
-
-        /// <summary>
-        /// Throw an exception. An specific handler can be specified using kAIObject.ExceptionHandler.
-        /// </summary>
-        /// <seealso cref="ExceptionHandler"/>
-        /// <param name="lException">The exception that has been thrown. </param>
-        protected void ThrowException(Exception lException)
-        {
-            if (kAIObject.ExceptionHandler != null)
-            {
-                ExceptionHandler(lException, this);
-            }
-            else
-            {
-                throw lException;
+                lLogger.LogWarning(lWarning, lDetails);
             }
         }
 
@@ -165,56 +120,122 @@ namespace kAI.Core
         /// <param name="lMessage">Optionally, the message to display. </param>
         protected void Assert(bool lCondition, string lMessage = null)
         {
-            kAIObject.Assert(this, lCondition, lMessage);
+            Assert(this, lCondition, lMessage);
+        }
+
+        /// <summary>
+        /// Assert that something should be true. Optionally can throw an exception if it isn't. 
+        /// </summary>
+        /// <param name="lCaller">The object that called this log, null if global</param>
+        /// <param name="lCondition">The condition to check. </param>
+        /// <param name="lMessage">Optionally, the message to display. </param>
+        public static void Assert(kAIObject lCaller, bool lCondition, string lMessage = null)
+        {
+            if (!lCondition)
+            {
+                AssertFailed(lCaller, lMessage);
+            }
         }
 
         /// <summary>
         /// Assert that an object should be not null. 
         /// </summary>
-        /// <param name="lCheckIsObject">Checks this object is not null. </param>
+        /// <param name="lObjectToCheck">Checks this object is not null. </param>
         /// <param name="lMessage">Optionally, the message to display. </param>
-        protected void Assert(object lCheckIsObject, string lMessage = null)
+        protected void Assert(object lObjectToCheck, string lMessage = null)
         {
-            Assert(this, lCheckIsObject != null, lMessage);
+            Assert(this, lObjectToCheck, lMessage);
         }
 
         /// <summary>
-        /// Assert that something should be true. Optionally can throw an exception if it isn't. 
+        /// Assert that an object should be not null. 
         /// </summary>
-        /// <param name="lObject">The object that did the assert. </param>
-        /// <param name="lCondition">The condition to check. </param>
-        /// <param name="lMessage">Optionally, the message to show if the assert fails. </param>
-        public static void Assert(kAIObject lObject, bool lCondition, string lMessage = null)
+        /// <param name="lCaller">The object that called this log, null if global</param>
+        /// <param name="lObjectToCheck">Checks this object is not null. </param>
+        /// <param name="lMessage">Optionally, the message to display. </param>
+        public static void Assert(kAIObject lCaller, object lObjectToCheck, string lMessage = null)
         {
-            if (!lCondition)
+            if (lObjectToCheck == null)
             {
-                //LogCriticalError(lMessage);
-                System.Diagnostics.Debugger.Break();
-
-                if (ExceptionOnAssert)
-                {
-                    //ThrowException(new AssertFailedException(lMessage));
-                }
+                AssertFailed(lCaller, lMessage);
             }
         }
 
         /// <summary>
-        /// Assert that something should be true. Optionally can throw an exception if it isn't. 
+        /// Throw an exception. An specific handler can be specified using kAIObject.ExceptionHandler.
         /// </summary>
-        /// <param name="lObject">The object that did the assert. </param>
-        /// <param name="lCheckIsObject">The object to check is not null. </param>
-        /// <param name="lMessage">Optionally, the message to show if the assert fails. </param>
-        public static void Assert(kAIObject lObject, object lCheckIsObject, string lMessage = null)
+        /// <seealso cref="ExceptionHandler"/>
+        /// <param name="lException">The exception that has been thrown. </param>
+        protected void ThrowException(Exception lException)
         {
-            if (lCheckIsObject == null)
-            {
-                //LogCriticalError(lMessage);
-                System.Diagnostics.Debugger.Break();
+            ThrowException(this, lException);
+        }
 
-                if (ExceptionOnAssert)
-                {
-                    //ThrowException(new AssertFailedException(lMessage));
-                }
+        /// <summary>
+        /// Throw an exception. An specific handler can be specified using kAIObject.ExceptionHandler.
+        /// </summary>
+        /// <seealso cref="ExceptionHandler"/>
+        /// <param name="lCaller">The object that called this log, null if global</param>
+        /// <param name="lException">The exception that has been thrown. </param>
+        public static void ThrowException(kAIObject lCaller, Exception lException)
+        {
+            kAIILogger lLogger = GetLoggerForInstance(lCaller);
+            if (lLogger != null)
+            {
+                lLogger.LogCriticalError("Exception thrown: " + lException.GetType().Name,
+                    new KeyValuePair<string, object>("Error Message", lException.Message),
+                    new KeyValuePair<string, object>("Stack", lException.StackTrace),
+                    new KeyValuePair<string, object>("Exception", lException));
+            }
+
+            if (ExceptionHandler != null)
+            {
+                ExceptionHandler(lException, lCaller);
+            }
+            else
+            {
+                throw lException;
+            }
+        }
+
+        /// <summary>
+        /// An assert failed so we call this to decide what to do.
+        /// </summary>
+        /// <param name="lCaller">The object that asserted the fact. </param>
+        /// <param name="lMessage">The message associated with the assert. </param>
+        private static void AssertFailed(kAIObject lCaller, string lMessage = null)
+        {
+            kAIILogger lLogger = GetLoggerForInstance(lCaller);
+            if (lLogger != null)
+            {
+                lLogger.LogError("Assert failed: " + lMessage.GetValueOrDefault(""));
+            }
+
+
+            if (ExceptionOnAssert)
+            {
+                ThrowException(lCaller, new AssertFailedException(lMessage));
+            }
+            else
+            {
+                System.Diagnostics.Debugger.Break();
+            }
+        }
+
+        /// <summary>
+        /// Gets the logger to be used for the given instance. 
+        /// </summary>
+        /// <param name="lObject">The instance to get the logger for, can be null. </param>
+        /// <returns>An instance of the logger to use, or null if there is no applicable logger. </returns>
+        private static kAIILogger GetLoggerForInstance(kAIObject lObject)
+        {
+            if (lObject != null)
+            {
+                return lObject.Logger.GetValueOrDefault(GlobalLogger);
+            }
+            else
+            {
+                return GlobalLogger;
             }
         }
     }
@@ -229,7 +250,7 @@ namespace kAI.Core
         /// </summary>
         /// <param name="lMessage"></param>
         public AssertFailedException(string lMessage = null)
-            :base(lMessage)
-        {}
+            : base(lMessage)
+        { }
     }
 }

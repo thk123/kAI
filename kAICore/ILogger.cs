@@ -16,27 +16,27 @@ namespace kAI.Core
         /// </summary>
         /// <param name="lMessage">The message.</param>
         /// <param name="lDetails">Any additional information. </param>
-        void LogMessage(string lMessage, params object[] lDetails);
+        void LogMessage(string lMessage, params KeyValuePair<string, object>[] lDetails);
 
         /// <summary>
         /// Log a warning. Something unexpected has happened, but can carry on. 
         /// </summary>
         /// <param name="lWarning">The warning message. </param>
         /// <param name="lDetails"></param>
-        void LogWarning(string lWarning, params object[] lDetails);
+        void LogWarning(string lWarning, params KeyValuePair<string, object>[] lDetails);
 
         /// <summary>
         /// An error has occurred, normally should stop, AI will behave unexpectedly
         /// </summary>
         /// <param name="lError">The error message. </param>
         /// <param name="lDetails">Any additional information.</param>
-        void LogError(string lError, params object[] lDetails);
+        void LogError(string lError, params KeyValuePair<string, object>[] lDetails);
 
         /// <summary>
         /// Something has gone catastrophically wrong, it is impossible for kAI to continue. 
         /// </summary>
         /// <param name="lError">The error message.</param>
         /// <param name="lDetails">Any additional information.</param>
-        void LogCriticalError(string lError, params object[] lDetails);
+        void LogCriticalError(string lError, params KeyValuePair<string, object>[] lDetails);
     }
 }

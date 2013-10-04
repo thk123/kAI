@@ -71,7 +71,6 @@
     <Compile Include="Controls\DX\BehaviourEditorWindowDX.cs" />
     <Compile Include="Controls\DX\NodeCoordinate.cs" />
     <Compile Include="Controls\DX\NodeEditorDX.cs" />
-    <Compile Include="Controls\EditorPort.cs" />
     <Compile Include="Controls\GLEE\BehaviourEditorWindowGLEE.cs" />
     <Compile Include="Controls\WinForms\BehaviourTree.cs">
       <SubType>UserControl</SubType>
@@ -85,7 +84,7 @@
     <Compile Include="Controls\WinForms\DLLEntry.Designer.cs">
       <DependentUpon>DLLEntry.cs</DependentUpon>
     </Compile>
-    <Compile Include="EditorDX.cs" />
+    <Compile Include="Core\ConsoleLogger.cs" />
     <Compile Include="Windows\BehaviourChooser.cs">
       <SubType>Form</SubType>
     </Compile>
