@@ -48,7 +48,11 @@
     <Reference Include="Microsoft.GLEE.GraphViewerGDI">
       <HintPath>..\..\..\..\Program Files (x86)\Microsoft Research\GLEE\bin\Microsoft.GLEE.GraphViewerGDI.dll</HintPath>
     </Reference>
-    <Reference Include="SlimDX, Version=2.0.10.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
+    <Reference Include="SlimDX, Version=2.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
+      <SpecificVersion>False</SpecificVersion>
+    </Reference>
+    <Reference Include="SpriteTextRenderer, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>C:\Users\Thomas\Downloads\SpriteTextRenderer.dll</HintPath>
       <SpecificVersion>False</SpecificVersion>
     </Reference>
     <Reference Include="System" />
@@ -210,6 +214,7 @@
     <Folder Include="Core\Behaviour\" />
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Assets\Node.png" />
     <Content Include="Assets\triangle.fx" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

@@ -12,6 +12,9 @@ using SlimDX.Multimedia;
 using Device = SlimDX.Direct3D11.Device;
 using Resource = SlimDX.Direct3D11.Resource;
 using Buffer = SlimDX.Direct3D11.Buffer;
+using Factory = SlimDX.DXGI.Factory;
+using SlimDX.DirectWrite;
+using SpriteTextRenderer;
 
 using kAI.Core;
 using System.Drawing;
@@ -28,8 +31,38 @@ namespace kAI.Editor.Controls.DX
         SwapChain swapChain;
         RenderTargetView renderTarget;
 
+        public SpriteRenderer SpriteRenderer
+        {
+            get;
+            private set;
+        }
+
+        public TextBlockRenderer TextRenderer
+        {
+            get;
+            private set;
+        }
+
+        ShaderResourceView[] mTextures;
+
+        public enum eTextureID
+        {
+            NodeTexture,
+            InPort,
+            InPort_Hover,
+            OutPort,
+            OutPort_Hover,
+
+            TextureCount
+        }
+
+
         // Control that holds the renderer. 
-        Control mParentControl;
+        public Control ParentControl
+        {
+            get;
+            private set;
+        }
 
         // Nodes currently being rendered.
         List<kAINodeEditorDX> mNodes;
@@ -40,7 +73,14 @@ namespace kAI.Editor.Controls.DX
         bool mMouseDown = false;
 
         // Location of the camera.
-        NodeCoordinate mCameraPosition = new NodeCoordinate(0, 0);
+        NodeCoordinate mCameraPosition;
+        public NodeCoordinate CameraPosition
+        {
+            get
+            {
+                return mCameraPosition;
+            }
+        }
 
         /// <summary>
         /// Create a behaviour editor window using DirectX. 
@@ -48,6 +88,7 @@ namespace kAI.Editor.Controls.DX
         public BehaviourEditorWindowDX()
         {
             mNodes = new List<kAINodeEditorDX>();
+            mCameraPosition = new NodeCoordinate(0, 0);
         }
 
         /// <summary>
@@ -56,7 +97,7 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lParentControl">The control to embed the editor in to. </param>
         public void Init(Control lParentControl)
         {
-            mParentControl = lParentControl;
+            ParentControl = lParentControl;
 
             // Listen for mouse events, needs to be abstracted. 
             SlimDX.RawInput.Device.RegisterDevice(UsagePage.Generic, UsageId.Mouse, SlimDX.RawInput.DeviceFlags.None);
@@ -136,7 +177,30 @@ namespace kAI.Editor.Controls.DX
                 }
 
                 context.OutputMerger.SetTargets(renderTarget);
+                SpriteRenderer.RefreshViewport();
+                
             };
+
+            // Create text rendering stuff
+            SpriteRenderer = new SpriteRenderer(device);
+            TextRenderer = new TextBlockRenderer(SpriteRenderer, "Arial", FontWeight.Normal, SlimDX.DirectWrite.FontStyle.Normal, FontStretch.Normal, 12.0f);
+
+            // Create the shader resources for each of the textures
+            mTextures = new ShaderResourceView[(int)eTextureID.TextureCount];
+            mTextures[(int)eTextureID.NodeTexture] = new ShaderResourceView(device, Texture2D.FromFile(device, @"E:\dev\C#\kAI\kAI-Editor\Assets\Node.png"));
+            mTextures[(int)eTextureID.InPort] = new ShaderResourceView(device, Texture2D.FromFile(device, @"E:\dev\C#\kAI\kAI-Editor\Assets\InPort.png"));
+            mTextures[(int)eTextureID.InPort_Hover] = new ShaderResourceView(device, Texture2D.FromFile(device, @"E:\dev\C#\kAI\kAI-Editor\Assets\InPort_Hover.png"));
+            mTextures[(int)eTextureID.OutPort] = new ShaderResourceView(device, Texture2D.FromFile(device, @"E:\dev\C#\kAI\kAI-Editor\Assets\OutPort.png"));
+            mTextures[(int)eTextureID.OutPort_Hover] = new ShaderResourceView(device, Texture2D.FromFile(device, @"E:\dev\C#\kAI\kAI-Editor\Assets\OutPort_Hover.png"));
+
+        }
+
+        public ShaderResourceView GetTexture(eTextureID lTextureID)
+        {
+            int lTexIdInt = (int)lTextureID;
+            kAIObject.Assert(null, lTexIdInt < (int)eTextureID.TextureCount, "Invalid texture id");
+
+            return mTextures[lTexIdInt];
         }
 
         void Device_MouseInput(object sender, MouseInputEventArgs e)
@@ -158,8 +222,7 @@ namespace kAI.Editor.Controls.DX
 
             if (mMouseDown)
             {
-
-                mCameraPosition.Translate(-e.X, e.Y);
+                mCameraPosition.Translate(-e.X, -e.Y);
             }
         }
 
@@ -177,7 +240,7 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lNode">The node to render.  </param>
         public void AddNode(kAI.Core.kAINode lNode)
         {
-            
+            mNodes.Add(new kAINodeEditorDX(lNode, new NodeCoordinate(15, 15), new Size(200, 100)));
         }
 
         /// <summary>
@@ -252,42 +315,32 @@ namespace kAI.Editor.Controls.DX
         {
             // clear the render target to a stylish grey
             context.ClearRenderTargetView(renderTarget, Color.DarkGray);
-            
+
+            // 3D render with vertices (abandoned)
+            //Render();
+
+            // 2D render using SlimDX SpriteTextRenderer http://sdxspritetext.codeplex.com/
+            Render2D();
+
+            // Swap the back and front buffers
+            swapChain.Present(0, PresentFlags.None);            
+        }
+
+        private void Render()
+        {
             // Number of vertices used per mesh
             const int kNumberVertices = 4;
-
             // If we have some nodes, we draw them
-            if(mNodes.Count > 0)
+            if (mNodes.Count > 0)
             {
-
                 // Fill a stream with vertices, 12 bytes per vert (x, y, z) * number of verts per node * number of nodes
                 var vertices = new DataStream(12 * kNumberVertices * mNodes.Count, true, true);
                 foreach (kAINodeEditorDX lNode in mNodes)
                 {
-                    Size lNodeSize = lNode.Size; // The size in pixels of the node
 
-                    NodeCoordinate lNodePosition = lNode.Position; // The position in global pixels of the node
-
-                    // Get a vector3 of where this position is in normalised space ([-1, 1] x [-1, 1])
-                    Vector3 lNodePositionNormalised = lNodePosition.GetNormalisedPositionV3(mParentControl, mCameraPosition);
-
-                    // Get a vector3 representing what the width and height are in normalised space ([-1, 1] x [-1, 1]
-                    Vector3 lNodeSizeNormalised = lNodeSize.GetNormalisedSizeFromSizeV3(mParentControl);
-
-                    Vector3 lTopLeft, lTopRight, lBottomLeft, lBottomRight;
-
-                    lTopLeft = lNodePositionNormalised;
-                    lTopRight = lNodePositionNormalised + Vector3.Modulate(Vector3.UnitX, lNodeSizeNormalised);
-                    lBottomRight = lNodePositionNormalised + lNodeSizeNormalised;
-                    lBottomLeft = lNodePositionNormalised + Vector3.Modulate(Vector3.UnitY, lNodeSizeNormalised);
-
-                    // We are a triangle strip so we can draw the quad using only 4 vertices
-                    vertices.Write(lTopLeft); 
-                    vertices.Write(lBottomLeft);
-                    vertices.Write(lTopRight);
-                    vertices.Write(lBottomRight);
+                    lNode.Render(vertices, ParentControl, CameraPosition);
                 }
-                
+
                 // Reset the vertices stream to the start for filling in the buffer
                 vertices.Position = 0;
 
@@ -296,7 +349,7 @@ namespace kAI.Editor.Controls.DX
 
                 // Set the vertex buffer
                 context.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, 12, 0));
-    
+
                 // For each of the nodes, we draw its collection of vertices
                 for (int i = 0; i < mNodes.Count; ++i)
                 {
@@ -306,10 +359,17 @@ namespace kAI.Editor.Controls.DX
                 // Free the buffer and stream
                 vertexBuffer.Dispose();
                 vertices.Dispose();
-            }
 
-            // Swap the back and front buffers
-            swapChain.Present(0, PresentFlags.None);
+            }
+        }
+
+        private void Render2D()
+        {
+            foreach (kAINodeEditorDX lNode in mNodes)
+            {
+                lNode.Render2D(this);
+            }
+            SpriteRenderer.Flush();
         }
 
         /// <summary>
@@ -317,10 +377,12 @@ namespace kAI.Editor.Controls.DX
         /// </summary>
         public void Destroy()
         {
+            TextRenderer.Dispose();
+            SpriteRenderer.Dispose();
+
             context.Device.Dispose();
             swapChain.Dispose();
             context.Dispose();
-            
         }
 
         /// <summary>

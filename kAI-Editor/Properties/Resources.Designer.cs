@@ -83,6 +83,16 @@ namespace kAI.Editor.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap Node {
+            get {
+                object obj = ResourceManager.GetObject("Node", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap OutPort {
             get {
                 object obj = ResourceManager.GetObject("OutPort", resourceCulture);
