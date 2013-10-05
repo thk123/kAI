@@ -18,7 +18,7 @@ namespace kAI.Editor.Controls.DX
     /// <summary>
     /// Represents a renderable node within a behaviour for DirectX.
     /// </summary>
-    class kAINodeEditorDX
+    class kAIEditorNodeDX
     {
         /// <summary>
         /// The position of the node in absolute pixels. 
@@ -50,7 +50,7 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lNode">The node this renderable node represents. </param>
         /// <param name="lPoint">The location of the node in absolute pixels. </param>
         /// <param name="lSize">The size of the node in absolute pixels. </param>
-        public kAINodeEditorDX(kAINode lNode, NodeCoordinate lPoint, Size lSize)
+        public kAIEditorNodeDX(kAINode lNode, NodeCoordinate lPoint, Size lSize)
         {
             Position = lPoint;
             Size = lSize;

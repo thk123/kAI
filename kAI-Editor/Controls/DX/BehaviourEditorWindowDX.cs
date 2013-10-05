@@ -65,7 +65,7 @@ namespace kAI.Editor.Controls.DX
         }
 
         // Nodes currently being rendered.
-        List<kAINodeEditorDX> mNodes;
+        List<kAIEditorNodeDX> mNodes;
 
         // Mouse management stuff, abstract me!
         float zoom = 1.0f;
@@ -87,7 +87,7 @@ namespace kAI.Editor.Controls.DX
         /// </summary>
         public BehaviourEditorWindowDX()
         {
-            mNodes = new List<kAINodeEditorDX>();
+            mNodes = new List<kAIEditorNodeDX>();
             mCameraPosition = new NodeCoordinate(0, 0);
         }
 
@@ -240,7 +240,7 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lNode">The node to render.  </param>
         public void AddNode(kAI.Core.kAINode lNode)
         {
-            mNodes.Add(new kAINodeEditorDX(lNode, new NodeCoordinate(15, 15), new Size(200, 100)));
+            mNodes.Add(new kAIEditorNodeDX(lNode, new NodeCoordinate(15, 15), new Size(200, 100)));
         }
 
         /// <summary>
@@ -335,7 +335,7 @@ namespace kAI.Editor.Controls.DX
             {
                 // Fill a stream with vertices, 12 bytes per vert (x, y, z) * number of verts per node * number of nodes
                 var vertices = new DataStream(12 * kNumberVertices * mNodes.Count, true, true);
-                foreach (kAINodeEditorDX lNode in mNodes)
+                foreach (kAIEditorNodeDX lNode in mNodes)
                 {
 
                     lNode.Render(vertices, ParentControl, CameraPosition);
@@ -365,7 +365,7 @@ namespace kAI.Editor.Controls.DX
 
         private void Render2D()
         {
-            foreach (kAINodeEditorDX lNode in mNodes)
+            foreach (kAIEditorNodeDX lNode in mNodes)
             {
                 lNode.Render2D(this);
             }
