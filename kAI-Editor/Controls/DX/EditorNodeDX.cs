@@ -41,8 +41,17 @@ namespace kAI.Editor.Controls.DX
 
         kAINode mNode;
 
+        List<kAIEditorPortDX> mExternalPorts;
+
         // GUI points (for laying out elements of the node). 
         readonly Point kNodeNamePosition = new Point(5, 5);
+        readonly Point kInPortStartPosition = new Point(-(int)kAIEditorPortDX.PortSize.X, 30);
+        readonly Point kOutPortStartPosition;
+        readonly int kPortDeltaY = (int)kAIEditorPortDX.PortSize.Y + 5;
+
+        // Represents the positions for the next port to be added to the behaviour. 
+        Point mCurrentInPosition;
+        Point mCurrentOutPosition;
 
         /// <summary>
         /// Create a new node for rendering. 
@@ -55,6 +64,18 @@ namespace kAI.Editor.Controls.DX
             Position = lPoint;
             Size = lSize;
             mNode = lNode;
+
+            kOutPortStartPosition = new Point(lSize.Width, 30);
+
+            mCurrentInPosition = kInPortStartPosition;
+            mCurrentOutPosition = kOutPortStartPosition;
+
+            IEnumerable<kAIPort> lExternalPorts = lNode.GetExternalPorts();
+            mExternalPorts = new List<kAIEditorPortDX>();
+            foreach (kAIPort lExternalPort in lExternalPorts)
+            {
+                AddExternalPort(lExternalPort);
+            }
         }
 
         /// <summary>
@@ -100,6 +121,32 @@ namespace kAI.Editor.Controls.DX
             // Render the node label.
             lEditorWindow.TextRenderer.DrawString(mNode.NodeID.ToString(), new Vector2(lFormPosition.X + kNodeNamePosition.X, lFormPosition.Y + kNodeNamePosition.Y), new Color4(Color.White));
 
+            foreach (kAIEditorPortDX lEditorPort in mExternalPorts)
+            {
+                lEditorPort.Render2D(lEditorWindow);
+            }
         }
+
+        void AddExternalPort(kAIPort lPort)
+        {
+            kAIObject.Assert(null, lPort.OwningNode == mNode, "Tried to set as an external port a port which is not related to this node");
+
+            NodeCoordinate lPositionForPort;
+            if (lPort.PortDirection == kAIPort.ePortDirection.PortDirection_In)
+            {
+                lPositionForPort = Position + mCurrentInPosition;
+                mCurrentInPosition.Offset(0, kPortDeltaY);
+            }
+            else
+            {
+                lPositionForPort = Position + mCurrentOutPosition;
+                mCurrentOutPosition.Offset(0, kPortDeltaY);
+            }
+            kAIEditorPortDX lEditorPort = new kAIEditorPortDX(lPort, lPositionForPort);
+
+            mExternalPorts.Add(lEditorPort);
+        }
+
+        
     }
 }

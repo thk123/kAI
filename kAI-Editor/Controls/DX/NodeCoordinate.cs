@@ -69,6 +69,15 @@ namespace kAI.Editor.Controls.DX
         }
 
         /// <summary>
+        /// This returns the absolute position. 
+        /// </summary>
+        /// <returns>The pixel position. </returns>
+        public Point GetPositionFixed()
+        {
+            return mPosition;
+        }
+
+        /// <summary>
         /// Deprecated: Get a vector2 of this point going from the global space, through the form space
         /// into the normalised space [-1, 1] x [-1, 1]
         /// </summary>
@@ -99,6 +108,16 @@ namespace kAI.Editor.Controls.DX
         public override string ToString()
         {
             return mPosition.ToString();
+        }
+
+        public static NodeCoordinate operator +(NodeCoordinate lLHS, Point lRHS)
+        {
+            return new NodeCoordinate(lLHS.mPosition.X + lRHS.X, lLHS.mPosition.Y + lRHS.Y);
+        }
+
+        public static NodeCoordinate operator -(NodeCoordinate lLHS, Point lRHS)
+        {
+            return new NodeCoordinate(lLHS.mPosition.X - lRHS.X, lLHS.mPosition.Y - lRHS.Y);
         }
     }
 

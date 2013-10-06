@@ -67,6 +67,9 @@ namespace kAI.Editor.Controls.DX
         // Nodes currently being rendered.
         List<kAIEditorNodeDX> mNodes;
 
+        // Internal ports currently being rendered.
+        List<kAIEditorPortDX> mPorts;
+
         // Mouse management stuff, abstract me!
         float zoom = 1.0f;
         int tick = 0;
@@ -82,12 +85,23 @@ namespace kAI.Editor.Controls.DX
             }
         }
 
+        // GUI points for laying out new ports
+        Point mInPortStartPosition;
+        readonly Point kOutPortStartPosition = new Point(0, 5);
+        readonly int kPortDeltaY = (int)kAIEditorPortDX.PortSize.Y + 5;
+
+        // Represents the positions for the next port to be added to the behaviour. 
+        Point mCurrentInPosition;
+        Point mCurrentOutPosition;
+
         /// <summary>
         /// Create a behaviour editor window using DirectX. 
         /// </summary>
         public BehaviourEditorWindowDX()
         {
             mNodes = new List<kAIEditorNodeDX>();
+            mPorts = new List<kAIEditorPortDX>();
+
             mCameraPosition = new NodeCoordinate(0, 0);
         }
 
@@ -98,6 +112,11 @@ namespace kAI.Editor.Controls.DX
         public void Init(Control lParentControl)
         {
             ParentControl = lParentControl;
+
+            mInPortStartPosition = new Point(ParentControl.Width - (int)kAIEditorPortDX.PortSize.X, 5);
+
+            mCurrentInPosition = mInPortStartPosition;
+            mCurrentOutPosition = kOutPortStartPosition;
 
             // Listen for mouse events, needs to be abstracted. 
             SlimDX.RawInput.Device.RegisterDevice(UsagePage.Generic, UsageId.Mouse, SlimDX.RawInput.DeviceFlags.None);
@@ -178,7 +197,21 @@ namespace kAI.Editor.Controls.DX
 
                 context.OutputMerger.SetTargets(renderTarget);
                 SpriteRenderer.RefreshViewport();
-                
+
+                int lNewX = ParentControl.Width - (int)kAIEditorPortDX.PortSize.X;
+                int lDeltaX = lNewX - mCurrentInPosition.X;
+
+                // Move the point to take in to account the new size
+                mInPortStartPosition = new Point(lNewX, 5);
+                mCurrentInPosition.X = mInPortStartPosition.X;
+
+                foreach (kAIEditorPortDX lInternalPort in mPorts)
+                {
+                    if (lInternalPort.Port.PortDirection == kAIPort.ePortDirection.PortDirection_In) 
+                    {
+                        lInternalPort.UpdatePosition(lDeltaX, 0);
+                    }
+                }
             };
 
             // Create text rendering stuff
@@ -276,7 +309,20 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lPort">The internal port to render. </param>
         public void AddInternalPort(kAI.Core.kAIPort lPort)
         {
-          //  throw new NotImplementedException();
+            NodeCoordinate lPos;
+            if (lPort.PortDirection == kAIPort.ePortDirection.PortDirection_In)
+            {
+                lPos = new NodeCoordinate(mCurrentInPosition.X, mCurrentInPosition.Y);
+                mCurrentInPosition.Offset(0, kPortDeltaY);
+            }
+            else
+            {
+                lPos = new NodeCoordinate(mCurrentOutPosition.X, mCurrentOutPosition.Y);
+                mCurrentOutPosition.Offset(0, kPortDeltaY);
+            }
+
+            kAIEditorPortDX lEditorPort = new kAIEditorPortDX(lPort, lPos);
+            mPorts.Add(lEditorPort);
         }
 
         /// <summary>
@@ -369,6 +415,12 @@ namespace kAI.Editor.Controls.DX
             {
                 lNode.Render2D(this);
             }
+
+            foreach (kAIEditorPortDX lPort in mPorts)
+            {
+                lPort.Render2D(this);
+            }
+
             SpriteRenderer.Flush();
         }
 
@@ -379,6 +431,11 @@ namespace kAI.Editor.Controls.DX
         {
             TextRenderer.Dispose();
             SpriteRenderer.Dispose();
+
+            for (eTextureID lTexture = (eTextureID)0; lTexture < eTextureID.TextureCount; ++lTexture)
+            {
+                mTextures[(int)lTexture].Dispose();
+            }
 
             context.Device.Dispose();
             swapChain.Dispose();

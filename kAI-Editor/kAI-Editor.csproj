@@ -73,8 +73,9 @@
   <ItemGroup>
     <Compile Include="Controls\BehaviourEditorWindow.cs" />
     <Compile Include="Controls\DX\BehaviourEditorWindowDX.cs" />
+    <Compile Include="Controls\DX\EditorPortDX.cs" />
     <Compile Include="Controls\DX\NodeCoordinate.cs" />
-    <Compile Include="Controls\DX\NodeEditorDX.cs" />
+    <Compile Include="Controls\DX\EditorNodeDX.cs" />
     <Compile Include="Controls\GLEE\BehaviourEditorWindowGLEE.cs" />
     <Compile Include="Controls\WinForms\BehaviourTree.cs">
       <SubType>UserControl</SubType>
