@@ -69,6 +69,7 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lNode">The node this renderable node represents. </param>
         /// <param name="lPoint">The location of the node in absolute pixels. </param>
         /// <param name="lSize">The size of the node in absolute pixels. </param>
+        /// <param name="lEditorWindow">The editor window this node belongs to. </param>
         public kAIEditorNodeDX(kAINode lNode, NodeCoordinate lPoint, Size lSize, kAIBehaviourEditorWindowDX lEditorWindow)
         {
             Position = lPoint;

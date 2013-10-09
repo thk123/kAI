@@ -54,6 +54,7 @@ namespace kAI.Editor.Controls.DX
         /// </summary>
         /// <param name="lPort">The port being represented. </param>
         /// <param name="lPosition">The position of the port. </param>
+        /// <param name="lEditorWindow">The editor window this node belongs to. </param>
         public kAIEditorPortDX(kAIPort lPort, NodeCoordinate lPosition, kAIBehaviourEditorWindowDX lEditorWindow)
         {
             Port = lPort;
