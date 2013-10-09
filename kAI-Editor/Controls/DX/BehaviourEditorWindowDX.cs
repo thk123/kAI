@@ -24,27 +24,12 @@ namespace kAI.Editor.Controls.DX
     /// <summary>
     /// The DirectX implementation of the editor window. 
     /// </summary>
-    class BehaviourEditorWindowDX : kAIIBehaviourEditorGraphicalImplementator
+    class kAIBehaviourEditorWindowDX : kAIIBehaviourEditorGraphicalImplementator
     {
-        // DX stuff:
-        DeviceContext context;
-        SwapChain swapChain;
-        RenderTargetView renderTarget;
-
-        public SpriteRenderer SpriteRenderer
-        {
-            get;
-            private set;
-        }
-
-        public TextBlockRenderer TextRenderer
-        {
-            get;
-            private set;
-        }
-
-        ShaderResourceView[] mTextures;
-
+        /// <summary>
+        /// IDs of the textures.
+        /// </summary>
+        /// <seealso cref="kAIBehaviourEditorWindowDX.GetTexture"/>
         public enum eTextureID
         {
             NodeTexture,
@@ -56,13 +41,24 @@ namespace kAI.Editor.Controls.DX
             TextureCount
         }
 
+        // Positions of the first internal ports on the left and right. 
+        readonly Point kOutPortStartPosition = new Point(0, 5);
+        readonly int kPortDeltaY = (int)kAIEditorPortDX.sPortSize.Y + 5;
 
-        // Control that holds the renderer. 
-        public Control ParentControl
-        {
-            get;
-            private set;
-        }
+        static Random sRandom = new Random();
+
+        /// <summary>
+        /// When two ports have been connected. 
+        /// </summary>
+        public event Action<kAI.Core.kAIPort, kAI.Core.kAIPort> OnConnexion;
+
+        // DX stuff:
+        DeviceContext mContext;
+        SwapChain mSwapChain;
+        RenderTargetView mRenderTarget;
+
+        // The loaded textures.
+        ShaderResourceView[] mTextures;
 
         // Nodes currently being rendered.
         List<kAIEditorNodeDX> mNodes;
@@ -70,34 +66,70 @@ namespace kAI.Editor.Controls.DX
         // Internal ports currently being rendered.
         List<kAIEditorPortDX> mPorts;
 
-        // Mouse management stuff, abstract me!
-        float zoom = 1.0f;
-        int tick = 0;
-        bool mMouseDown = false;
-
         // Location of the camera.
+        // TODO: abstract the camera stuff
         NodeCoordinate mCameraPosition;
-        public NodeCoordinate CameraPosition
-        {
-            get
-            {
-                return mCameraPosition;
-            }
-        }
+        Point mLastMousePoint;
 
-        // GUI points for laying out new ports
+        // GUI points for laying out new ports (not readonly as depends on dynamic data). 
         Point mInPortStartPosition;
-        readonly Point kOutPortStartPosition = new Point(0, 5);
-        readonly int kPortDeltaY = (int)kAIEditorPortDX.PortSize.Y + 5;
 
         // Represents the positions for the next port to be added to the behaviour. 
         Point mCurrentInPosition;
         Point mCurrentOutPosition;
 
         /// <summary>
+        /// The SpriteRenderer to use for rendering standard 2D textures. 
+        /// </summary>
+        public SpriteRenderer SpriteRenderer
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The TextRenderer to use for rendering standard text. 
+        /// </summary>
+        public TextBlockRenderer TextRenderer
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Control that holds the renderer. 
+        /// </summary>
+        public Control ParentControl
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The input manager for this editor. 
+        /// </summary>
+        public kAIInputManagerDX InputManager
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The location in absolute space of the camera. 
+        /// TODO: Not sure why this needs to be a property or whatever...?
+        /// </summary>
+        public NodeCoordinate CameraPosition
+        {
+            get
+            {
+                return mCameraPosition;
+            }
+        }        
+
+        /// <summary>
         /// Create a behaviour editor window using DirectX. 
         /// </summary>
-        public BehaviourEditorWindowDX()
+        public kAIBehaviourEditorWindowDX()
         {
             mNodes = new List<kAIEditorNodeDX>();
             mPorts = new List<kAIEditorPortDX>();
@@ -113,14 +145,14 @@ namespace kAI.Editor.Controls.DX
         {
             ParentControl = lParentControl;
 
-            mInPortStartPosition = new Point(ParentControl.Width - (int)kAIEditorPortDX.PortSize.X, 5);
+            InputManager = new kAIInputManagerDX(lParentControl, this);
+
+            InputManager.OnMouseDown += new EventHandler<MouseEventArgs>(InputManager_OnMouseDown);
+
+            mInPortStartPosition = new Point(ParentControl.Width - (int)kAIEditorPortDX.sPortSize.X, 5);
 
             mCurrentInPosition = mInPortStartPosition;
             mCurrentOutPosition = kOutPortStartPosition;
-
-            // Listen for mouse events, needs to be abstracted. 
-            SlimDX.RawInput.Device.RegisterDevice(UsagePage.Generic, UsageId.Mouse, SlimDX.RawInput.DeviceFlags.None);
-            SlimDX.RawInput.Device.MouseInput += new EventHandler<MouseInputEventArgs>(Device_MouseInput);           
 
             // Do all the DX stuff, should probably be in a different class or something. 
             // TODO: These things => memory leaks, need to be moved
@@ -141,17 +173,17 @@ namespace kAI.Editor.Controls.DX
                 SwapEffect = SwapEffect.Discard
             };
 
-            Device.CreateWithSwapChain(DriverType.Hardware, DeviceCreationFlags.Debug, description, out device, out swapChain);
+            Device.CreateWithSwapChain(DriverType.Hardware, DeviceCreationFlags.Debug, description, out device, out mSwapChain);
 
             // create a view of our render target, which is the backbuffer of the swap chain we just created
-            using (var resource = Resource.FromSwapChain<Texture2D>(swapChain, 0))
-                renderTarget = new RenderTargetView(device, resource);
+            using (var resource = Resource.FromSwapChain<Texture2D>(mSwapChain, 0))
+                mRenderTarget = new RenderTargetView(device, resource);
 
             // setting a viewport is required if you want to actually see anything
-            context = device.ImmediateContext;
+            mContext = device.ImmediateContext;
             var viewport = new Viewport(0.0f, 0.0f, lParentControl.ClientSize.Width, lParentControl.ClientSize.Height);
-            context.OutputMerger.SetTargets(renderTarget);
-            context.Rasterizer.SetViewports(viewport);
+            mContext.OutputMerger.SetTargets(mRenderTarget);
+            mContext.Rasterizer.SetViewports(viewport);
 
             // load and compile the vertex shader, TODO: Relative paths...
             using (var bytecode = ShaderBytecode.CompileFromFile(@"E:\dev\C#\kAI\kAI-Editor\Assets\triangle.fx", "VShader", "vs_4_0", ShaderFlags.None, EffectFlags.None))
@@ -171,34 +203,34 @@ namespace kAI.Editor.Controls.DX
             var layout = new InputLayout(device, inputSignature, elements);
             // configure the Input Assembler portion of the pipeline with the vertex data
 
-            context.InputAssembler.InputLayout = layout;
-            context.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
+            mContext.InputAssembler.InputLayout = layout;
+            mContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
 
             // set the shaders
-            context.VertexShader.Set(vertexShader);
-            context.PixelShader.Set(pixelShader);
+            mContext.VertexShader.Set(vertexShader);
+            mContext.PixelShader.Set(pixelShader);
 
             // prevent DXGI handling of alt+enter, which doesn't work properly with Winforms
-            using (var factory = swapChain.GetParent<Factory>())
+            using (var factory = mSwapChain.GetParent<Factory>())
                 factory.SetWindowAssociation(lParentControl.Handle, WindowAssociationFlags.IgnoreAltEnter);
 
             lParentControl.Resize += (o, e) =>
             {
                 // Resize the viewport and the buffer
                 var lNewViewport = new Viewport(0.0f, 0.0f, lParentControl.ClientSize.Width, lParentControl.ClientSize.Height);
-                context.Rasterizer.SetViewports(lNewViewport);
-                renderTarget.Dispose();
+                mContext.Rasterizer.SetViewports(lNewViewport);
+                mRenderTarget.Dispose();
 
-                swapChain.ResizeBuffers(2, 0, 0, Format.R8G8B8A8_UNorm, SwapChainFlags.AllowModeSwitch);
-                using (var resource = Resource.FromSwapChain<Texture2D>(swapChain, 0))
+                mSwapChain.ResizeBuffers(2, 0, 0, Format.R8G8B8A8_UNorm, SwapChainFlags.AllowModeSwitch);
+                using (var resource = Resource.FromSwapChain<Texture2D>(mSwapChain, 0))
                 {
-                    renderTarget = new RenderTargetView(device, resource);
+                    mRenderTarget = new RenderTargetView(device, resource);
                 }
 
-                context.OutputMerger.SetTargets(renderTarget);
+                mContext.OutputMerger.SetTargets(mRenderTarget);
                 SpriteRenderer.RefreshViewport();
 
-                int lNewX = ParentControl.Width - (int)kAIEditorPortDX.PortSize.X;
+                int lNewX = ParentControl.Width - (int)kAIEditorPortDX.sPortSize.X;
                 int lDeltaX = lNewX - mCurrentInPosition.X;
 
                 // Move the point to take in to account the new size
@@ -209,7 +241,8 @@ namespace kAI.Editor.Controls.DX
                 {
                     if (lInternalPort.Port.PortDirection == kAIPort.ePortDirection.PortDirection_In) 
                     {
-                        lInternalPort.UpdatePosition(lDeltaX, 0);
+                        lInternalPort.UpdatePosition(-lDeltaX, 0);
+                        lInternalPort.FinalisePosition();
                     }
                 }
             };
@@ -228,35 +261,17 @@ namespace kAI.Editor.Controls.DX
 
         }
 
+        /// <summary>
+        /// Get a specific texture from the id. 
+        /// </summary>
+        /// <param name="lTextureID">The ID of the texture. </param>
+        /// <returns>The texture ready to be drawn. </returns>
         public ShaderResourceView GetTexture(eTextureID lTextureID)
         {
             int lTexIdInt = (int)lTextureID;
             kAIObject.Assert(null, lTexIdInt < (int)eTextureID.TextureCount, "Invalid texture id");
 
             return mTextures[lTexIdInt];
-        }
-
-        void Device_MouseInput(object sender, MouseInputEventArgs e)
-        {
-
-            int value = tick + (e.WheelDelta / 120);
-            tick = value;
-            zoom = (float)Math.Pow(2.0, (double)value / 10.0);
-
-            if (e.ButtonFlags.HasFlag(MouseButtonFlags.LeftDown))
-            {
-                mMouseDown = true;
-                
-            }
-            else if (e.ButtonFlags.HasFlag(MouseButtonFlags.LeftUp))
-            {
-                mMouseDown = false;
-            }
-
-            if (mMouseDown)
-            {
-                mCameraPosition.Translate(-e.X, -e.Y);
-            }
         }
 
         /// <summary>
@@ -273,7 +288,7 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lNode">The node to render.  </param>
         public void AddNode(kAI.Core.kAINode lNode)
         {
-            mNodes.Add(new kAIEditorNodeDX(lNode, new NodeCoordinate(15, 15), new Size(200, 100)));
+            mNodes.Add(new kAIEditorNodeDX(lNode, new NodeCoordinate(sRandom.Next(500), sRandom.Next(500)), new Size(200, 100), this));
         }
 
         /// <summary>
@@ -321,7 +336,7 @@ namespace kAI.Editor.Controls.DX
                 mCurrentOutPosition.Offset(0, kPortDeltaY);
             }
 
-            kAIEditorPortDX lEditorPort = new kAIEditorPortDX(lPort, lPos);
+            kAIEditorPortDX lEditorPort = new kAIEditorPortDX(lPort, lPos, this);
             mPorts.Add(lEditorPort);
         }
 
@@ -360,7 +375,7 @@ namespace kAI.Editor.Controls.DX
         public void EditorUpdate()
         {
             // clear the render target to a stylish grey
-            context.ClearRenderTargetView(renderTarget, Color.DarkGray);
+            mContext.ClearRenderTargetView(mRenderTarget, Color.DarkGray);
 
             // 3D render with vertices (abandoned)
             //Render();
@@ -369,9 +384,30 @@ namespace kAI.Editor.Controls.DX
             Render2D();
 
             // Swap the back and front buffers
-            swapChain.Present(0, PresentFlags.None);            
+            mSwapChain.Present(0, PresentFlags.None);            
         }
 
+        /// <summary>
+        /// Dispose all of the SlimDX COM objects. 
+        /// </summary>
+        public void Destroy()
+        {
+            TextRenderer.Dispose();
+            SpriteRenderer.Dispose();
+
+            for (eTextureID lTexture = (eTextureID)0; lTexture < eTextureID.TextureCount; ++lTexture)
+            {
+                mTextures[(int)lTexture].Dispose();
+            }
+
+            mContext.Device.Dispose();
+            mSwapChain.Dispose();
+            mContext.Dispose();
+        }
+
+        /// <summary>
+        /// Deprecated: Performs the 3D render using vertices, does not work very well.
+        /// </summary>
         private void Render()
         {
             // Number of vertices used per mesh
@@ -391,15 +427,15 @@ namespace kAI.Editor.Controls.DX
                 vertices.Position = 0;
 
                 // Fill the buffer to draw from
-                var vertexBuffer = new Buffer(context.Device, vertices, 12 * kNumberVertices * mNodes.Count, ResourceUsage.Default, BindFlags.VertexBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
+                var vertexBuffer = new Buffer(mContext.Device, vertices, 12 * kNumberVertices * mNodes.Count, ResourceUsage.Default, BindFlags.VertexBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
 
                 // Set the vertex buffer
-                context.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, 12, 0));
+                mContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(vertexBuffer, 12, 0));
 
                 // For each of the nodes, we draw its collection of vertices
                 for (int i = 0; i < mNodes.Count; ++i)
                 {
-                    context.Draw(kNumberVertices, kNumberVertices * i);
+                    mContext.Draw(kNumberVertices, kNumberVertices * i);
                 }
 
                 // Free the buffer and stream
@@ -409,6 +445,9 @@ namespace kAI.Editor.Controls.DX
             }
         }
 
+        /// <summary>
+        /// Performs the 2D render using SpriteTextRenderer dll. 
+        /// </summary>
         private void Render2D()
         {
             foreach (kAIEditorNodeDX lNode in mNodes)
@@ -424,30 +463,26 @@ namespace kAI.Editor.Controls.DX
             SpriteRenderer.Flush();
         }
 
-        /// <summary>
-        /// Dispose all of the SlimDX COM objects. 
-        /// </summary>
-        public void Destroy()
+        void InputManager_OnMouseUp(object sender, MouseEventArgs e)
         {
-            TextRenderer.Dispose();
-            SpriteRenderer.Dispose();
-
-            for (eTextureID lTexture = (eTextureID)0; lTexture < eTextureID.TextureCount; ++lTexture)
-            {
-                mTextures[(int)lTexture].Dispose();
-            }
-
-            context.Device.Dispose();
-            swapChain.Dispose();
-            context.Dispose();
+            InputManager.OnMouseMove -= InputManager_OnMouseMove;
+            InputManager.OnMouseUp -= InputManager_OnMouseUp;
         }
 
-        /// <summary>
-        /// When two ports have been connected. 
-        /// </summary>
-        public event Action<kAI.Core.kAIPort, kAI.Core.kAIPort> OnConnexion;
+        void InputManager_OnMouseMove(object sender, MouseEventArgs e)
+        {
+            mCameraPosition.Translate(mLastMousePoint.X - e.X, mLastMousePoint.Y - e.Y);
+            mLastMousePoint = e.Location;
+        }
 
-        
-
+        void InputManager_OnMouseDown(object sender, MouseEventArgs e)
+        {
+            if (!InputManager.MouseOnSomething)
+            {
+                mLastMousePoint = e.Location;
+                InputManager.OnMouseMove += new EventHandler<MouseEventArgs>(InputManager_OnMouseMove);
+                InputManager.OnMouseUp += new EventHandler<MouseEventArgs>(InputManager_OnMouseUp);
+            }
+        }
     }
 }

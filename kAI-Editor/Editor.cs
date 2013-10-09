@@ -141,7 +141,7 @@ namespace kAI.Editor
             {
                 // Here we chose our implemenation for the editor. 
                 //kAIIBehaviourEditorGraphicalImplementator lImpl = new BehaviourEditorWindowWinForms();
-                kAIIBehaviourEditorGraphicalImplementator lImpl = new BehaviourEditorWindowDX();
+                kAIIBehaviourEditorGraphicalImplementator lImpl = new kAIBehaviourEditorWindowDX();
                 
                 lImpl.Init(MainEditor.Panel2);
 

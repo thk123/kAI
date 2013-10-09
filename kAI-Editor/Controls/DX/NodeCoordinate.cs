@@ -40,8 +40,8 @@ namespace kAI.Editor.Controls.DX
 
             // To get from a form point to a node point, we must shift the origin to the centre and move according to the camera
             mPosition = new Point(
-                (lWidth / 2) - lFormPos.X + lCameraPos.mPosition.X,
-                (lHeight / 2) - lFormPos.Y + lCameraPos.mPosition.X);
+                lFormPos.X - (lWidth / 2) + lCameraPos.mPosition.X,
+                lFormPos.Y - (lHeight / 2) + lCameraPos.mPosition.Y);
         }
 
         /// <summary>
@@ -51,7 +51,8 @@ namespace kAI.Editor.Controls.DX
         /// <param name="ldY">Y offset. </param>
         public void Translate(int ldX, int ldY)
         {
-            mPosition.Offset(new Point(ldX, ldY));
+            //mPosition.Offset(new Point(ldX, ldY));
+            mPosition = new Point(mPosition.X + ldX, mPosition.Y + ldY);
         }
 
         /// <summary>
@@ -225,6 +226,11 @@ namespace kAI.Editor.Controls.DX
             return new Vector2(
                 (lFormSize.Width) / lHalfWidth,
                 (lFormSize.Height) / lHalfHeight);
+        }
+
+        public static int GetSquareSize(this Rectangle lSize)
+        {
+            return (lSize.Width * lSize.Width) + (lSize.Height * lSize.Height);
         }
     }
 }

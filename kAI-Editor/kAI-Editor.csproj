@@ -74,8 +74,10 @@
     <Compile Include="Controls\BehaviourEditorWindow.cs" />
     <Compile Include="Controls\DX\BehaviourEditorWindowDX.cs" />
     <Compile Include="Controls\DX\EditorPortDX.cs" />
+    <Compile Include="Controls\DX\InputManagerDX.cs" />
     <Compile Include="Controls\DX\NodeCoordinate.cs" />
     <Compile Include="Controls\DX\EditorNodeDX.cs" />
+    <Compile Include="Controls\DX\RTree.cs" />
     <Compile Include="Controls\GLEE\BehaviourEditorWindowGLEE.cs" />
     <Compile Include="Controls\WinForms\BehaviourTree.cs">
       <SubType>UserControl</SubType>
@@ -180,6 +182,7 @@
       <DependentUpon>Resources.resx</DependentUpon>
       <DesignTime>True</DesignTime>
     </Compile>
+    <Compile Include="Controls\DX\MouseEventResponders.cs" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
