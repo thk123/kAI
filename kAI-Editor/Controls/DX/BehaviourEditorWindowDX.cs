@@ -78,6 +78,12 @@ namespace kAI.Editor.Controls.DX
         Point mCurrentInPosition;
         Point mCurrentOutPosition;
 
+        ShaderSignature inputSignature;
+        Device device;
+
+        VertexShader vertexShader;
+        PixelShader pixelShader;
+
         /// <summary>
         /// The SpriteRenderer to use for rendering standard 2D textures. 
         /// </summary>
@@ -156,10 +162,7 @@ namespace kAI.Editor.Controls.DX
 
             // Do all the DX stuff, should probably be in a different class or something. 
             // TODO: These things => memory leaks, need to be moved
-            Device device;
-            ShaderSignature inputSignature;
-            VertexShader vertexShader;
-            PixelShader pixelShader;
+            
 
             var description = new SwapChainDescription()
             {
@@ -274,6 +277,21 @@ namespace kAI.Editor.Controls.DX
             return mTextures[lTexIdInt];
         }
 
+        public List<Point> GetPointPath(kAIPort.kAIConnexion lConnexion)
+        {
+            List<Point> lPoints = new List<Point>();
+
+            kAIEditorPortDX lStart = GetPort(lConnexion.StartPort);
+            lPoints.Add(lStart.Position.GetPositionFixed());
+
+            kAIEditorPortDX lEnd = GetPort(lConnexion.EndPort);
+            lPoints.Add(lEnd.Position.GetPositionFixed());
+
+            return lPoints;
+        }
+
+        
+
         /// <summary>
         /// Unload the behaviour from the editor (eg delete all nodes, ports and connexions). 
         /// </summary>
@@ -306,7 +324,11 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lConnexion">The connexion to render. </param>
         public void AddConnexion(kAI.Core.kAIPort.kAIConnexion lConnexion)
         {
-          //  throw new NotImplementedException();
+            kAIPort lOutPort = lConnexion.StartPort.PortDirection == kAIPort.ePortDirection.PortDirection_Out ?
+                lConnexion.StartPort : lConnexion.EndPort;
+
+            kAIEditorPortDX lStartEditorPort = GetPort(lOutPort);
+            //lStartEditorPort
         }
 
         /// <summary>
@@ -383,6 +405,8 @@ namespace kAI.Editor.Controls.DX
             // 2D render using SlimDX SpriteTextRenderer http://sdxspritetext.codeplex.com/
             Render2D();
 
+            LineRender();
+
             // Swap the back and front buffers
             mSwapChain.Present(0, PresentFlags.None);            
         }
@@ -403,6 +427,56 @@ namespace kAI.Editor.Controls.DX
             mContext.Device.Dispose();
             mSwapChain.Dispose();
             mContext.Dispose();
+        }
+
+        private void LineRender()
+        {
+            var elements = new[] { new InputElement("POSITION", 0, Format.R32G32B32_Float, 0) };
+            var layout = new InputLayout(mContext.Device, inputSignature, elements);
+            // configure the Input Assembler portion of the pipeline with the vertex data
+
+            // Configure the Contexts input assembler (must be done to undo what the 2D render does).
+            mContext.InputAssembler.InputLayout = layout;
+
+            mContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.LineStrip;
+
+            // TODO: would somehow like to set the geometry shader to some kind of beizure curve
+            mContext.GeometryShader.Set(null);
+            mContext.VertexShader.Set(vertexShader);
+            mContext.PixelShader.Set(pixelShader);
+
+            foreach (kAIEditorPortDX lPort in mPorts)
+            {
+                lPort.LineRender();
+            }
+
+            foreach (kAIEditorNodeDX lNode in mNodes)
+            {
+                lNode.LineRender();
+            }
+        }
+
+        public void RenderLine(List<Point> lPoints)
+        {
+            // TODO: move the line renderer in to own class then can cause exception if function called at the wrong time
+            DataStream lVertices = new DataStream(12 * lPoints.Count, true, true);
+
+            foreach (Point lPoint in lPoints)
+            {
+                // TODO: These points aren't correct
+                Vector3 lNormalisedPoint = lPoint.GetNormalisedPointFromFormV3(ParentControl);
+                lVertices.Write(lNormalisedPoint);
+
+
+            }
+            lVertices.Position = 0;
+
+            Buffer lVertexBuffer = new Buffer(device, lVertices, 12 * lPoints.Count, ResourceUsage.Default, BindFlags.VertexBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
+            mContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(lVertexBuffer, 12, 0));
+            mContext.Draw(lPoints.Count, 0);
+
+            lVertices.Dispose();
+            lVertexBuffer.Dispose();
         }
 
         /// <summary>
@@ -461,6 +535,47 @@ namespace kAI.Editor.Controls.DX
             }
 
             SpriteRenderer.Flush();
+        }
+
+        /// <summary>
+        /// Get the editor port of some port somewhere in the behaviour (can be internal or external). 
+        /// </summary>
+        /// <param name="lPort">The port to find. </param>
+        /// <returns>The EditorPort that represents this port. </returns>
+        private kAIEditorPortDX GetPort(kAIPort lPort)
+        {
+            if (lPort.OwningNode == null)
+            {
+                foreach (kAIEditorPortDX lEditorPort in mPorts)
+                {
+                    if (lEditorPort.Port.PortID == lPort.PortID)
+                    {
+                        return lEditorPort;
+                    }
+                }
+            }
+            else
+            {
+                kAIEditorNodeDX lOwningNode = GetNode(lPort.OwningNode);
+                return lOwningNode.GetExternalPort(lPort);
+            }
+
+            kAIObject.Assert(null, false, "Could not find specified port in this behaviour");
+            return null;
+        }
+
+        private kAIEditorNodeDX GetNode(kAINode lNode)
+        {
+            foreach (kAIEditorNodeDX lEditorNode in mNodes)
+            {
+                if (lEditorNode.Node.NodeID == lNode.NodeID)
+                {
+                    return lEditorNode;
+                }
+            }
+
+            kAIObject.Assert(null, false, "Could not find specified node in this behaviour");
+            return null;
         }
 
         void InputManager_OnMouseUp(object sender, MouseEventArgs e)

@@ -25,8 +25,7 @@ namespace kAI.Editor.Controls.DX
         readonly Point kOutPortStartPosition;
         readonly int kPortDeltaY = (int)kAIEditorPortDX.sPortSize.Y + 5;
 
-        // The node that is being represented. 
-        kAINode mNode;
+        
 
         // The set of ports this node has
         List<kAIEditorPortDX> mExternalPorts;
@@ -43,6 +42,15 @@ namespace kAI.Editor.Controls.DX
 
         // The rectangle we were at, so we can remove it. 
         Rectangle lAddedRectangle;
+
+        /// <summary>
+        /// The node that is being represented.  
+        /// </summary>
+        public kAINode Node
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// The position of the node in absolute pixels. 
@@ -74,7 +82,7 @@ namespace kAI.Editor.Controls.DX
         {
             Position = lPoint;
             Size = lSize;
-            mNode = lNode;
+            Node = lNode;
             mBeingDragged = false;
 
             mEditorWindow = lEditorWindow;
@@ -94,7 +102,7 @@ namespace kAI.Editor.Controls.DX
             lAddedRectangle = new Rectangle(Position.GetPositionFixed(), Size);
 
             lEditorWindow.InputManager.AddClickListenArea(lAddedRectangle,
-                new kAIMouseEventResponders { OnMouseDown = OnMouseDown , RectangleId = mNode.NodeID },
+                new kAIMouseEventResponders { OnMouseDown = OnMouseDown , RectangleId = Node.NodeID },
                 false);
         }
 
@@ -139,11 +147,19 @@ namespace kAI.Editor.Controls.DX
             lEditorWindow.SpriteRenderer.Draw(lEditorWindow.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.NodeTexture), new Vector2(lFormPosition.X, lFormPosition.Y), new Vector2(Size.Width, Size.Height), CoordinateType.Absolute);
 
             // Render the node label.
-            lEditorWindow.TextRenderer.DrawString(mNode.NodeID.ToString(), new Vector2(lFormPosition.X + kNodeNamePosition.X, lFormPosition.Y + kNodeNamePosition.Y), new Color4(Color.White));
+            lEditorWindow.TextRenderer.DrawString(Node.NodeID.ToString(), new Vector2(lFormPosition.X + kNodeNamePosition.X, lFormPosition.Y + kNodeNamePosition.Y), new Color4(Color.White));
 
             foreach (kAIEditorPortDX lEditorPort in mExternalPorts)
             {
                 lEditorPort.Render2D(lEditorWindow);
+            }
+        }
+
+        public void LineRender()
+        {
+            foreach (kAIEditorPortDX lPort in mExternalPorts)
+            {
+                lPort.LineRender();
             }
         }
 
@@ -153,7 +169,7 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lPort"></param>
         void AddExternalPort(kAIPort lPort)
         {
-            kAIObject.Assert(null, lPort.OwningNode == mNode, "Tried to set as an external port a port which is not related to this node");
+            kAIObject.Assert(null, lPort.OwningNode == Node, "Tried to set as an external port a port which is not related to this node");
 
             NodeCoordinate lPositionForPort;
             if (lPort.PortDirection == kAIPort.ePortDirection.PortDirection_In)
@@ -169,6 +185,20 @@ namespace kAI.Editor.Controls.DX
             kAIEditorPortDX lEditorPort = new kAIEditorPortDX(lPort, lPositionForPort, mEditorWindow);
 
             mExternalPorts.Add(lEditorPort);
+        }
+
+        public kAIEditorPortDX GetExternalPort(kAIPort lPort)
+        {
+            foreach (kAIEditorPortDX lEditorPort in mExternalPorts)
+            {
+                if (lEditorPort.Port.PortID == lPort.PortID)
+                {
+                    return lEditorPort;
+                }
+            }
+
+            kAIObject.Assert(null, false, "Could not find specified external port on this node.");
+            return null;
         }
 
         void OnMouseDown(object sender, MouseEventArgs e)

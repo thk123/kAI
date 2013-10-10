@@ -20,10 +20,7 @@ namespace kAI.Editor.Controls.DX
         /// <summary>
         /// The size of the port graphic. 
         /// </summary>
-        public static readonly Vector2 sPortSize;
-
-        // Absolute position of the node. 
-        NodeCoordinate mPosition;
+        public static readonly Vector2 sPortSize;        
 
         // Is the mouse currently hovering over the node. 
         bool mIsHovering;
@@ -35,6 +32,8 @@ namespace kAI.Editor.Controls.DX
         // used to remove ourselves from the input manager when moved. 
         Rectangle mAddedRectangle;
 
+        List<kAIEditorConnexionDX> mConnexions;
+
         /// <summary>
         /// The port this GUI element is representing.
         /// </summary>
@@ -42,7 +41,16 @@ namespace kAI.Editor.Controls.DX
         {
             get;
             private set;
-        }        
+        }
+
+        /// <summary>
+        /// Absolute position of the node.
+        /// </summary>
+        public NodeCoordinate Position
+        {
+            get;
+            private set;
+        }
 
         static kAIEditorPortDX()
         {
@@ -58,17 +66,27 @@ namespace kAI.Editor.Controls.DX
         public kAIEditorPortDX(kAIPort lPort, NodeCoordinate lPosition, kAIBehaviourEditorWindowDX lEditorWindow)
         {
             Port = lPort;
-            mPosition = lPosition;
+            Position = lPosition;
 
             mIsHovering = false;
 
             mEditorWindow = lEditorWindow;
 
-            mAddedRectangle = new Rectangle(mPosition.GetPositionFixed(), new Size((int)sPortSize.X, (int)sPortSize.Y));
+            mAddedRectangle = new Rectangle(Position.GetPositionFixed(), new Size((int)sPortSize.X, (int)sPortSize.Y));
 
             mEditorWindow.InputManager.AddClickListenArea(mAddedRectangle, 
                 new kAIMouseEventResponders{ OnMouseHover = OnHover, OnMouseLeave = OnLeave, RectangleId = Port.OwningNodeID + ":" + Port.PortID},
                 Port.OwningNode == null); // if the port is an internal node (ie no owning node) then it doesn't move with the camera
+
+            mConnexions = new List<kAIEditorConnexionDX>();
+
+            if(Port.PortDirection == kAIPort.ePortDirection.PortDirection_Out)
+            {
+                foreach (kAIPort.kAIConnexion lConnexion in Port.Connexions)
+                {
+                    mConnexions.Add(new kAIEditorConnexionDX(lConnexion, mEditorWindow));
+                }
+            }
 
         }
 
@@ -81,8 +99,8 @@ namespace kAI.Editor.Controls.DX
         public void UpdatePosition(int ldX, int ldY)
         {
             //mPosition.Translate(ldX, ldY);
-            Point lOldPoint = mPosition.GetPositionFixed();
-            mPosition = new NodeCoordinate(lOldPoint.X - ldX, lOldPoint.Y - ldY);
+            Point lOldPoint = Position.GetPositionFixed();
+            Position = new NodeCoordinate(lOldPoint.X - ldX, lOldPoint.Y - ldY);
         }
 
         /// <summary>
@@ -92,7 +110,7 @@ namespace kAI.Editor.Controls.DX
         {
             kAIMouseEventResponders lResponder = mEditorWindow.InputManager.RemoveClickListenArea(mAddedRectangle, Port.OwningNode == null);
 
-            mAddedRectangle = new Rectangle(mPosition.GetPositionFixed(), new Size((int)sPortSize.X, (int)sPortSize.Y));
+            mAddedRectangle = new Rectangle(Position.GetPositionFixed(), new Size((int)sPortSize.X, (int)sPortSize.Y));
 
             mEditorWindow.InputManager.AddClickListenArea(mAddedRectangle,
                 lResponder,
@@ -112,12 +130,12 @@ namespace kAI.Editor.Controls.DX
             if (Port.OwningNode != null)
             {
                 // If we are an external node, we move with our parent node and hence the camera
-                lFormPosition = mPosition.GetFormPosition(lContainerEditor.ParentControl, lContainerEditor.CameraPosition);
+                lFormPosition = Position.GetFormPosition(lContainerEditor.ParentControl, lContainerEditor.CameraPosition);
             }
             else
             {
                 // Otherwise we are an internal node so we stay fixed to the edge of the screen
-                lFormPosition = mPosition.GetPositionFixed();
+                lFormPosition = Position.GetPositionFixed();
             }
 
             Vector2 lLabelPosition;
@@ -180,6 +198,19 @@ namespace kAI.Editor.Controls.DX
 
             lContainerEditor.SpriteRenderer.Draw(lTexture, new Vector2(lFormPosition.X, lFormPosition.Y) , sPortSize, SpriteTextRenderer.CoordinateType.Absolute);
             lContainerEditor.TextRenderer.DrawString(Port.PortID, lLabelPosition, new Color4(Color.White));
+
+            foreach (kAIEditorConnexionDX lConnexion in mConnexions)
+            {
+                lConnexion.Render2D();
+            }
+        }
+
+        public void LineRender()
+        {
+            foreach (kAIEditorConnexionDX lConnexion in mConnexions)
+            {
+                lConnexion.LineRender();
+            }
         }
 
         void lUnderlyingControl_MouseLeave(object sender, EventArgs e)
