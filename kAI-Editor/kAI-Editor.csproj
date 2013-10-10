@@ -51,10 +51,6 @@
     <Reference Include="SlimDX, Version=2.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86">
       <SpecificVersion>False</SpecificVersion>
     </Reference>
-    <Reference Include="SpriteTextRenderer, Version=1.1.1.0, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>C:\Users\Thomas\Downloads\SpriteTextRenderer.dll</HintPath>
-      <SpecificVersion>False</SpecificVersion>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.DurableInstancing" />
@@ -183,6 +179,7 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Controls\DX\MouseEventResponders.cs" />
+    <Content Include="Assets\beizure.fx" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -197,6 +194,10 @@
     <ProjectReference Include="..\kAICore\kAICore.csproj">
       <Project>{A15829D4-123C-473F-9964-92D73DD4A8B1}</Project>
       <Name>kAICore</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\SpriteTextRenderer\SpriteTextRenderer\SpriteTextRenderer.csproj">
+      <Project>{1F50D114-1B5C-4822-B3AA-659A0B3CF62E}</Project>
+      <Name>SpriteTextRenderer</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
