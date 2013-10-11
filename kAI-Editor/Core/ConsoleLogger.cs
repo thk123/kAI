@@ -22,7 +22,7 @@ namespace kAI.Editor.Core
         private void WriteString(string lText, ConsoleColor lColour = ConsoleColor.Gray)
         {
             Console.ForegroundColor = lColour;
-            Console.WriteLine(DateTime.Now.ToString("hh:mm:ss") + ": " + lText);
+            Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + ": " + lText);
             Console.ResetColor();
         }
 
