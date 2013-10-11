@@ -102,10 +102,16 @@ namespace kAI.Editor
             // If it was a kAI-Behaviour, we load it.
             if (lObject.GetNodeFlavour() == eNodeFlavour.BehaviourXml)
             {
-                CreateBehaviourEditorWindow();
-                mBehaviourEditor.LoadBehaviour(kAIXmlBehaviour.Load(lObject, mLoadedProject.GetAssemblyByName));
+                LoadBehaviour(kAIXmlBehaviour.Load(lObject, mLoadedProject.GetAssemblyByName));
             }
             
+        }
+
+        private void LoadBehaviour(kAIXmlBehaviour lBehaviour)
+        {
+            CreateBehaviourEditorWindow();
+            mBehaviourEditor.LoadBehaviour(lBehaviour);
+            SetEnabledSetControls(mBehaviourLoadedControls, true);
         }
 
         /// <summary>
@@ -119,6 +125,7 @@ namespace kAI.Editor
 
             mLoadedProject = null;
 
+            SetEnabledSetControls(mBehaviourLoadedControls, false);
             SetEnabledSetControls(mProjectLoadedControls, false);
         }
 
@@ -154,6 +161,8 @@ namespace kAI.Editor
             {
                 mBehaviourEditor.Destroy();
             }
+
+            SetEnabledSetControls(mBehaviourLoadedControls, false);
         }
 
         void addBehaviourToolStripMenuItem_Click(object sender, EventArgs e)
@@ -215,9 +224,9 @@ namespace kAI.Editor
                 CreateBehaviourEditorWindow();
 
                 //kAIXmlBehaviour lBehaviour = 
-
+                
                 kAIXmlBehaviour lBehaviour = new kAIXmlBehaviour(lCreator.BehaviourID, lCreator.BehaviourPath);
-                mBehaviourEditor.LoadBehaviour(lBehaviour);
+                LoadBehaviour(lBehaviour);
 
 
                 /*kAIXmlBehaviour lBehaviour = mBehaviourEditor.NewBehaviour();
@@ -230,7 +239,7 @@ namespace kAI.Editor
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //mBehaviourEditor.SaveBehaviour();
+            mBehaviourEditor.SaveBehaviour();
         }
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)

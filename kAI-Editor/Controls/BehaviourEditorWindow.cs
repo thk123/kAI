@@ -83,9 +83,6 @@ namespace kAI.Editor.Controls
                 UnloadBehaviour();
             }
 
-            kAIPort lFirst = lBehaviour.InternalPorts.First();
-            lBehaviour.AddConnexion(lFirst, lBehaviour.InternalPorts.First((p) => { return p.PortID != lFirst.PortID; }));
-
             foreach (kAIPort lGlobalPort in lBehaviour.InternalPorts)
             {
                 AddInternalPort(lGlobalPort);
