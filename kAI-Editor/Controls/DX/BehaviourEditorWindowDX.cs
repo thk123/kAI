@@ -17,6 +17,7 @@ using SlimDX.DirectWrite;
 using SpriteTextRenderer;
 
 using kAI.Core;
+using kAI.Editor.Controls.DX.Coordinates;
 using System.Drawing;
 
 namespace kAI.Editor.Controls.DX
@@ -68,7 +69,7 @@ namespace kAI.Editor.Controls.DX
 
         // Location of the camera.
         // TODO: abstract the camera stuff
-        NodeCoordinate mCameraPosition;
+        AbsolutePosition mCameraPosition;
         Point mLastMousePoint;
 
         // GUI points for laying out new ports (not readonly as depends on dynamic data). 
@@ -124,7 +125,7 @@ namespace kAI.Editor.Controls.DX
         /// The location in absolute space of the camera. 
         /// TODO: Not sure why this needs to be a property or whatever...?
         /// </summary>
-        public NodeCoordinate CameraPosition
+        public AbsolutePosition CameraPosition
         {
             get
             {
@@ -139,8 +140,6 @@ namespace kAI.Editor.Controls.DX
         {
             mNodes = new List<kAIEditorNodeDX>();
             mPorts = new List<kAIEditorPortDX>();
-
-            mCameraPosition = new NodeCoordinate(0, 0);
         }
 
         /// <summary>
@@ -150,6 +149,10 @@ namespace kAI.Editor.Controls.DX
         public void Init(Control lParentControl)
         {
             ParentControl = lParentControl;
+
+            int lHalfWidth = ParentControl.Width / 2;
+            int lHalfHeight = ParentControl.Height / 2;
+            mCameraPosition = new AbsolutePosition(-lHalfWidth, -lHalfHeight, false);
 
             InputManager = new kAIInputManagerDX(lParentControl, this);
 
@@ -240,14 +243,14 @@ namespace kAI.Editor.Controls.DX
                 mInPortStartPosition = new Point(lNewX, 5);
                 mCurrentInPosition.X = mInPortStartPosition.X;
 
-                foreach (kAIEditorPortDX lInternalPort in mPorts)
+                foreach (kAIEditorPortDX lInternalPort in mPorts.FindAll((lPort) =>
+                    { return lPort.Port.PortDirection == kAIPort.ePortDirection.PortDirection_In; }))
                 {
-                    if (lInternalPort.Port.PortDirection == kAIPort.ePortDirection.PortDirection_In) 
-                    {
-                        lInternalPort.UpdatePosition(-lDeltaX, 0);
-                        lInternalPort.FinalisePosition();
-                    }
+                    lInternalPort.UpdatePosition(lDeltaX, 0);
+                    lInternalPort.FinalisePosition();
                 }
+
+                InvalidateConnexionPositions();
             };
 
             // Create text rendering stuff
@@ -277,15 +280,30 @@ namespace kAI.Editor.Controls.DX
             return mTextures[lTexIdInt];
         }
 
-        public List<Point> GetPointPath(kAIPort.kAIConnexion lConnexion)
+        public void InvalidateConnexionPositions()
         {
-            List<Point> lPoints = new List<Point>();
+            foreach (kAIEditorPortDX lInternalPort in mPorts.FindAll((lPort) => 
+                { return lPort.Port.PortDirection == kAIPort.ePortDirection.PortDirection_Out; }))
+            {
+                lInternalPort.InvalidateConnexionPositions();
+            }
+        }
+
+        /// <summary>
+        /// Create a path between two ports (at the moment, is just a straight line,
+        /// could be extended to avoid objects etc.). 
+        /// </summary>
+        /// <param name="lConnexion">The connexion to create a path between</param>
+        /// <returns>A list of absolute points to connect. </returns>
+        public List<AbsolutePosition> GetPointPath(kAIPort.kAIConnexion lConnexion)
+        {
+            List<AbsolutePosition> lPoints = new List<AbsolutePosition>();
 
             kAIEditorPortDX lStart = GetPort(lConnexion.StartPort);
-            lPoints.Add(lStart.Position.GetPositionFixed());
+            lPoints.Add(lStart.GetConnexionPoint());
 
             kAIEditorPortDX lEnd = GetPort(lConnexion.EndPort);
-            lPoints.Add(lEnd.Position.GetPositionFixed());
+            lPoints.Add(lEnd.GetConnexionPoint());
 
             return lPoints;
         }
@@ -306,7 +324,7 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lNode">The node to render.  </param>
         public void AddNode(kAI.Core.kAINode lNode)
         {
-            mNodes.Add(new kAIEditorNodeDX(lNode, new NodeCoordinate(sRandom.Next(500), sRandom.Next(500)), new Size(200, 100), this));
+            mNodes.Add(new kAIEditorNodeDX(lNode, new AbsolutePosition(-250 + sRandom.Next(500), -250 + sRandom.Next(500), false), new AbsoluteSize(200, 100), this));
         }
 
         /// <summary>
@@ -346,15 +364,15 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lPort">The internal port to render. </param>
         public void AddInternalPort(kAI.Core.kAIPort lPort)
         {
-            NodeCoordinate lPos;
+            AbsolutePosition lPos;
             if (lPort.PortDirection == kAIPort.ePortDirection.PortDirection_In)
             {
-                lPos = new NodeCoordinate(mCurrentInPosition.X, mCurrentInPosition.Y);
+                lPos = new AbsolutePosition(mCurrentInPosition.X, mCurrentInPosition.Y, true);
                 mCurrentInPosition.Offset(0, kPortDeltaY);
             }
             else
             {
-                lPos = new NodeCoordinate(mCurrentOutPosition.X, mCurrentOutPosition.Y);
+                lPos = new AbsolutePosition(mCurrentOutPosition.X, mCurrentOutPosition.Y, true);
                 mCurrentOutPosition.Offset(0, kPortDeltaY);
             }
 
@@ -456,24 +474,23 @@ namespace kAI.Editor.Controls.DX
             }
         }
 
-        public void RenderLine(List<Point> lPoints)
+        public void RenderLine(List<AbsolutePosition> lPoints)
         {
             // TODO: move the line renderer in to own class then can cause exception if function called at the wrong time
-            DataStream lVertices = new DataStream(12 * lPoints.Count, true, true);
+            DataStream lVertices = new DataStream(12 * (lPoints.Count), true, true);
 
-            foreach (Point lPoint in lPoints)
+            foreach (AbsolutePosition lPoint in lPoints)
             {
                 // TODO: These points aren't correct
-                Vector3 lNormalisedPoint = lPoint.GetNormalisedPointFromFormV3(ParentControl);
-                lVertices.Write(lNormalisedPoint);
-
-
+                NormalisedPosition lNormalised = new NormalisedPosition(lPoint, CameraPosition, ParentControl);
+                lVertices.Write(lNormalised.GetAsV3());
             }
+
             lVertices.Position = 0;
 
-            Buffer lVertexBuffer = new Buffer(device, lVertices, 12 * lPoints.Count, ResourceUsage.Default, BindFlags.VertexBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
+            Buffer lVertexBuffer = new Buffer(device, lVertices, 12 * (lPoints.Count), ResourceUsage.Default, BindFlags.VertexBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
             mContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(lVertexBuffer, 12, 0));
-            mContext.Draw(lPoints.Count, 0);
+            mContext.Draw(lPoints.Count , 0);
 
             lVertices.Dispose();
             lVertexBuffer.Dispose();
@@ -586,7 +603,7 @@ namespace kAI.Editor.Controls.DX
 
         void InputManager_OnMouseMove(object sender, MouseEventArgs e)
         {
-            mCameraPosition.Translate(mLastMousePoint.X - e.X, mLastMousePoint.Y - e.Y);
+            mCameraPosition = mCameraPosition.Translate(mLastMousePoint.X - e.X, mLastMousePoint.Y - e.Y);
             mLastMousePoint = e.Location;
         }
 

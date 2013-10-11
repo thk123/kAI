@@ -54,5 +54,10 @@ namespace kAI.Editor.Core.Util
 
             return lPosition;
         }
+
+        public static int GetSquareSize(this Rectangle lSize)
+        {
+            return (lSize.Width * lSize.Width) + (lSize.Height * lSize.Height);
+        }
     }
 }

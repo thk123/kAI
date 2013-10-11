@@ -5,6 +5,7 @@ using System.Text;
 using System.Drawing;
 
 using kAI.Core;
+using kAI.Editor.Controls.DX.Coordinates;
 
 namespace kAI.Editor.Controls.DX
 {
@@ -13,7 +14,7 @@ namespace kAI.Editor.Controls.DX
         kAIPort.kAIConnexion mConnexion;
         kAIBehaviourEditorWindowDX mEditor;
 
-        List<Point> mPath;
+        List<AbsolutePosition> mPath;
 
         public kAIEditorConnexionDX(kAIPort.kAIConnexion lConnexion, kAIBehaviourEditorWindowDX lEditor)
         {

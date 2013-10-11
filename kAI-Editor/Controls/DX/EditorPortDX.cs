@@ -9,6 +9,7 @@ using SlimDX;
 
 using kAI.Core;
 using SlimDX.Direct3D11;
+using kAI.Editor.Controls.DX.Coordinates;
 
 namespace kAI.Editor.Controls.DX
 {
@@ -46,7 +47,7 @@ namespace kAI.Editor.Controls.DX
         /// <summary>
         /// Absolute position of the node.
         /// </summary>
-        public NodeCoordinate Position
+        public AbsolutePosition Position
         {
             get;
             private set;
@@ -63,7 +64,7 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lPort">The port being represented. </param>
         /// <param name="lPosition">The position of the port. </param>
         /// <param name="lEditorWindow">The editor window this node belongs to. </param>
-        public kAIEditorPortDX(kAIPort lPort, NodeCoordinate lPosition, kAIBehaviourEditorWindowDX lEditorWindow)
+        public kAIEditorPortDX(kAIPort lPort, AbsolutePosition lPosition, kAIBehaviourEditorWindowDX lEditorWindow)
         {
             Port = lPort;
             Position = lPosition;
@@ -72,7 +73,7 @@ namespace kAI.Editor.Controls.DX
 
             mEditorWindow = lEditorWindow;
 
-            mAddedRectangle = new Rectangle(Position.GetPositionFixed(), new Size((int)sPortSize.X, (int)sPortSize.Y));
+            mAddedRectangle = new Rectangle(Position.mPoint, new Size((int)sPortSize.X, (int)sPortSize.Y));
 
             mEditorWindow.InputManager.AddClickListenArea(mAddedRectangle, 
                 new kAIMouseEventResponders{ OnMouseHover = OnHover, OnMouseLeave = OnLeave, RectangleId = Port.OwningNodeID + ":" + Port.PortID},
@@ -91,6 +92,29 @@ namespace kAI.Editor.Controls.DX
         }
 
         /// <summary>
+        /// Gets the absolute position that connexion lines should be drawn to/from for this port. 
+        /// </summary>
+        /// <returns>An absolute position of where the connexion line should run to/from. </returns>
+        public AbsolutePosition GetConnexionPoint()
+        {
+            AbsolutePosition lConnexionPoint = Position;
+            int lXTranslation;
+
+            if (Port.PortDirection == kAIPort.ePortDirection.PortDirection_In)
+            {
+                lXTranslation = 0;
+            }
+            else // PortDirection == PortDirection_Out
+            {
+                lXTranslation = (int)sPortSize.X;
+            }
+            
+            lConnexionPoint = lConnexionPoint.Translate(lXTranslation, (int)(sPortSize.Y * 0.5f));
+
+            return lConnexionPoint;
+        }
+
+        /// <summary>
         /// Used to move the port in the event of the attached node moving
         /// or the editor being resized.
         /// </summary>
@@ -98,9 +122,7 @@ namespace kAI.Editor.Controls.DX
         /// <param name="ldY">The change in y position. </param>
         public void UpdatePosition(int ldX, int ldY)
         {
-            //mPosition.Translate(ldX, ldY);
-            Point lOldPoint = Position.GetPositionFixed();
-            Position = new NodeCoordinate(lOldPoint.X - ldX, lOldPoint.Y - ldY);
+            Position = Position.Translate(ldX, ldY);
         }
 
         /// <summary>
@@ -110,7 +132,7 @@ namespace kAI.Editor.Controls.DX
         {
             kAIMouseEventResponders lResponder = mEditorWindow.InputManager.RemoveClickListenArea(mAddedRectangle, Port.OwningNode == null);
 
-            mAddedRectangle = new Rectangle(Position.GetPositionFixed(), new Size((int)sPortSize.X, (int)sPortSize.Y));
+            mAddedRectangle = new Rectangle(Position.mPoint, new Size((int)sPortSize.X, (int)sPortSize.Y));
 
             mEditorWindow.InputManager.AddClickListenArea(mAddedRectangle,
                 lResponder,
@@ -125,18 +147,7 @@ namespace kAI.Editor.Controls.DX
         {
             ShaderResourceView lTexture;
 
-            Point lFormPosition;
-
-            if (Port.OwningNode != null)
-            {
-                // If we are an external node, we move with our parent node and hence the camera
-                lFormPosition = Position.GetFormPosition(lContainerEditor.ParentControl, lContainerEditor.CameraPosition);
-            }
-            else
-            {
-                // Otherwise we are an internal node so we stay fixed to the edge of the screen
-                lFormPosition = Position.GetPositionFixed();
-            }
+            RelativePosition lFormPosition = new RelativePosition(Position, lContainerEditor.CameraPosition);
 
             Vector2 lLabelPosition;
             Vector2 lStringSize = lContainerEditor.TextRenderer.MeasureString(Port.PortID.ToString()).Size;
@@ -163,9 +174,9 @@ namespace kAI.Editor.Controls.DX
                 }
 
                 // Position    =           Location of the port + the offset determined above to shift it to left or right of the port
-                lLabelPosition = new Vector2(lFormPosition.X + lXPosition,
+                lLabelPosition = new Vector2(lFormPosition.mPoint.X + lXPosition,
                     //Location of the port + half the port (to get to the middle) - half the hight of the text (to align the middle of the text)
-                    lFormPosition.Y + (0.5f * sPortSize.Y) - (0.5f * lStringSize.Y));
+                    lFormPosition.mPoint.Y + (0.5f * sPortSize.Y) - (0.5f * lStringSize.Y));
             }
             else // PortDirection == PortDirection_Out
             {
@@ -191,12 +202,12 @@ namespace kAI.Editor.Controls.DX
                 }
 
                 // Position    =           Location of the port + the offset determined above to shift it to left or right of the port
-                lLabelPosition = new Vector2(lFormPosition.X + lXPosition, 
+                lLabelPosition = new Vector2(lFormPosition.mPoint.X + lXPosition, 
                     //Location of the port + half the port (to get to the middle) - half the hight of the text (to align the middle of the text)
-                    lFormPosition.Y + (0.5f * sPortSize.Y) - (0.5f * lStringSize.Y));
+                    lFormPosition.mPoint.Y + (0.5f * sPortSize.Y) - (0.5f * lStringSize.Y));
             }
 
-            lContainerEditor.SpriteRenderer.Draw(lTexture, new Vector2(lFormPosition.X, lFormPosition.Y) , sPortSize, SpriteTextRenderer.CoordinateType.Absolute);
+            lContainerEditor.SpriteRenderer.Draw(lTexture, new Vector2(lFormPosition.mPoint.X, lFormPosition.mPoint.Y), sPortSize, SpriteTextRenderer.CoordinateType.Absolute);
             lContainerEditor.TextRenderer.DrawString(Port.PortID, lLabelPosition, new Color4(Color.White));
 
             foreach (kAIEditorConnexionDX lConnexion in mConnexions)
@@ -205,12 +216,35 @@ namespace kAI.Editor.Controls.DX
             }
         }
 
+        /// <summary>
+        /// Perform the line render on this port (essentially render all of its connexions). 
+        /// </summary>
         public void LineRender()
         {
             foreach (kAIEditorConnexionDX lConnexion in mConnexions)
             {
                 lConnexion.LineRender();
             }
+        }
+
+        /// <summary>
+        /// Update all the routes all the connexions out of this port are taking.
+        /// </summary>
+        public void InvalidateConnexionPositions()
+        {
+            foreach (kAIEditorConnexionDX lEditorPort in mConnexions)
+            {
+                lEditorPort.InvalidatePath();
+            }
+        }
+
+        /// <summary>
+        /// Is the port represented here an internal port or an external port. 
+        /// </summary>
+        /// <returns>True if the port is an internal port (e.g. has now owning node). </returns>
+        private bool IsInternalPort()
+        {
+            return Port.OwningNode == null;
         }
 
         void lUnderlyingControl_MouseLeave(object sender, EventArgs e)
@@ -232,5 +266,8 @@ namespace kAI.Editor.Controls.DX
         {
             mIsHovering = false;
         }
+
+        
+
     }
 }

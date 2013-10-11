@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 
 using kAI.Core;
+using kAI.Editor.Controls.DX.Coordinates;
 
 using SlimDX;
 using SpriteTextRenderer;
@@ -55,7 +56,7 @@ namespace kAI.Editor.Controls.DX
         /// <summary>
         /// The position of the node in absolute pixels. 
         /// </summary>
-        public NodeCoordinate Position
+        public AbsolutePosition Position
         {
             get;
             private set;
@@ -65,7 +66,7 @@ namespace kAI.Editor.Controls.DX
         /// <summary>
         /// The size of the node in absolute pixels. 
         /// </summary>
-        public Size Size
+        public AbsoluteSize Size
         {
             get;
             private set;
@@ -78,7 +79,7 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lPoint">The location of the node in absolute pixels. </param>
         /// <param name="lSize">The size of the node in absolute pixels. </param>
         /// <param name="lEditorWindow">The editor window this node belongs to. </param>
-        public kAIEditorNodeDX(kAINode lNode, NodeCoordinate lPoint, Size lSize, kAIBehaviourEditorWindowDX lEditorWindow)
+        public kAIEditorNodeDX(kAINode lNode, AbsolutePosition lPoint, AbsoluteSize lSize, kAIBehaviourEditorWindowDX lEditorWindow)
         {
             Position = lPoint;
             Size = lSize;
@@ -87,7 +88,7 @@ namespace kAI.Editor.Controls.DX
 
             mEditorWindow = lEditorWindow;
 
-            kOutPortStartPosition = new Point(lSize.Width, 30);
+            kOutPortStartPosition = new Point(lSize.mSize.Width, 30);
 
             mCurrentInPosition = kInPortStartPosition;
             mCurrentOutPosition = kOutPortStartPosition;
@@ -99,7 +100,7 @@ namespace kAI.Editor.Controls.DX
                 AddExternalPort(lExternalPort);
             }
 
-            lAddedRectangle = new Rectangle(Position.GetPositionFixed(), Size);
+            lAddedRectangle = new Rectangle(Position.mPoint, Size.mSize);
 
             lEditorWindow.InputManager.AddClickListenArea(lAddedRectangle,
                 new kAIMouseEventResponders { OnMouseDown = OnMouseDown , RectangleId = Node.NodeID },
@@ -112,20 +113,21 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lVertexStream">The vertex stream to fill with vertices. </param>
         /// <param name="lParentControl">The control the nodes are within. </param>
         /// <param name="lCameraPos">The position of the camera. </param>
-        public void Render(DataStream lVertexStream, Control lParentControl, NodeCoordinate lCameraPos)
+        public void Render(DataStream lVertexStream, Control lParentControl, AbsolutePosition lCameraPos)
         {
             // Get a vector3 of where this position is in normalised space ([-1, 1] x [-1, 1])
-            Vector3 lNodePositionNormalised = Position.GetNormalisedPositionV3(lParentControl, lCameraPos);
+            NormalisedPosition lNodePositionNormalised = new NormalisedPosition(Position, lCameraPos, lParentControl);
+            
 
             // Get a vector3 representing what the width and height are in normalised space ([-1, 1] x [-1, 1]
-            Vector3 lNodeSizeNormalised = Size.GetNormalisedSizeFromSizeV3(lParentControl);
+            NormalisedSize lNodeSizeNormalised = new NormalisedSize(Size, lParentControl);
 
             Vector3 lTopLeft, lTopRight, lBottomLeft, lBottomRight;
 
-            lTopLeft = lNodePositionNormalised;
-            lTopRight = lNodePositionNormalised + Vector3.Modulate(Vector3.UnitX, lNodeSizeNormalised);
-            lBottomRight = lNodePositionNormalised + lNodeSizeNormalised;
-            lBottomLeft = lNodePositionNormalised + Vector3.Modulate(Vector3.UnitY, lNodeSizeNormalised);
+            lTopLeft = lNodePositionNormalised.GetAsV3();
+            lTopRight = lNodePositionNormalised.GetAsV3() + Vector3.Modulate(Vector3.UnitX, lNodeSizeNormalised.GetAsV3());
+            lBottomRight = lNodePositionNormalised.GetAsV3() + lNodeSizeNormalised.GetAsV3();
+            lBottomLeft = lNodePositionNormalised.GetAsV3() + Vector3.Modulate(Vector3.UnitY, lNodeSizeNormalised.GetAsV3());
 
             // We are a triangle strip so we can draw the quad using only 4 vertices
             lVertexStream.Write(lTopLeft);
@@ -141,13 +143,15 @@ namespace kAI.Editor.Controls.DX
         public void Render2D(kAIBehaviourEditorWindowDX lEditorWindow)
         {
             // Get the position for the square 
-            Point lFormPosition = Position.GetFormPosition(lEditorWindow.ParentControl, lEditorWindow.CameraPosition);
+            // Point lFormPosition = Position.GetFormPosition(lEditorWindow.ParentControl, lEditorWindow.CameraPosition);
+            RelativePosition lFormPosition = new RelativePosition(Position, lEditorWindow.CameraPosition);
+            RelativeSize lFormSize = new RelativeSize(Size);
 
             // Render the box for the node
-            lEditorWindow.SpriteRenderer.Draw(lEditorWindow.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.NodeTexture), new Vector2(lFormPosition.X, lFormPosition.Y), new Vector2(Size.Width, Size.Height), CoordinateType.Absolute);
+            lEditorWindow.SpriteRenderer.Draw(lEditorWindow.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.NodeTexture), new Vector2(lFormPosition.mPoint.X, lFormPosition.mPoint.Y), new Vector2(lFormSize.mSize.Width, lFormSize.mSize.Height), CoordinateType.Absolute);
 
             // Render the node label.
-            lEditorWindow.TextRenderer.DrawString(Node.NodeID.ToString(), new Vector2(lFormPosition.X + kNodeNamePosition.X, lFormPosition.Y + kNodeNamePosition.Y), new Color4(Color.White));
+            lEditorWindow.TextRenderer.DrawString(Node.NodeID.ToString(), new Vector2(lFormPosition.mPoint.X + kNodeNamePosition.X, lFormPosition.mPoint.Y + kNodeNamePosition.Y), new Color4(Color.White));
 
             foreach (kAIEditorPortDX lEditorPort in mExternalPorts)
             {
@@ -171,15 +175,15 @@ namespace kAI.Editor.Controls.DX
         {
             kAIObject.Assert(null, lPort.OwningNode == Node, "Tried to set as an external port a port which is not related to this node");
 
-            NodeCoordinate lPositionForPort;
+            AbsolutePosition lPositionForPort;
             if (lPort.PortDirection == kAIPort.ePortDirection.PortDirection_In)
             {
-                lPositionForPort = Position + mCurrentInPosition;
+                lPositionForPort = Position.Add(new AbsolutePosition(mCurrentInPosition.X, mCurrentInPosition.Y, false));
                 mCurrentInPosition.Offset(0, kPortDeltaY);
             }
             else
             {
-                lPositionForPort = Position + mCurrentOutPosition;
+                lPositionForPort = Position.Add(new AbsolutePosition(mCurrentOutPosition.X, mCurrentOutPosition.Y, false));
                 mCurrentOutPosition.Offset(0, kPortDeltaY);
             }
             kAIEditorPortDX lEditorPort = new kAIEditorPortDX(lPort, lPositionForPort, mEditorWindow);
@@ -209,10 +213,6 @@ namespace kAI.Editor.Controls.DX
                 mEditorWindow.InputManager.OnMouseMove += new EventHandler<MouseEventArgs>(InputManager_OnMouseMove);
                 mEditorWindow.InputManager.OnMouseUp += new EventHandler<MouseEventArgs>(InputManager_OnMouseUp);
 
-                /*kAIObject.LogMessage(mNode, "MouseDown", 
-                    new KeyValuePair<string, object>("Node", mNode.NodeID),
-                    new KeyValuePair<string, object>("Position", lAddedRectangle));*/
-
                 mBeingDragged = true;
             }
         }
@@ -225,16 +225,12 @@ namespace kAI.Editor.Controls.DX
             mEditorWindow.InputManager.OnMouseMove -= InputManager_OnMouseMove;
             mEditorWindow.InputManager.OnMouseUp -= InputManager_OnMouseUp;
 
-            /*kAIObject.LogMessage(mNode, "MouseUp", 
-                new KeyValuePair<string, object>("Node", mNode.NodeID),
-                new KeyValuePair<string, object>("Position", new Rectangle(Position.GetPositionFixed(), Size)));*/
-
             // Remove the old rectangle. 
             kAIMouseEventResponders lResponder = mEditorWindow.InputManager.RemoveClickListenArea(lAddedRectangle, false);
             kAIObject.Assert(null, lResponder, "Could not find node!");
 
             // Create and add the new rectangle. 
-            lAddedRectangle = new Rectangle(Position.GetPositionFixed(), Size);
+            lAddedRectangle = new Rectangle(Position.mPoint, Size.mSize);
             mEditorWindow.InputManager.AddClickListenArea(lAddedRectangle, lResponder, false);
 
             // Tell the ports we are done moving (so they can remove their old rectangles and add the new ones). 
@@ -243,20 +239,24 @@ namespace kAI.Editor.Controls.DX
                 lExternalPort.FinalisePosition();
             }
 
+            // Since we have moved some ports we may need to recalculate the lines used to represent the connexions. 
+            mEditorWindow.InvalidateConnexionPositions();
+
             mBeingDragged = false;
         }
 
         void InputManager_OnMouseMove(object sender, MouseEventArgs e)
         {
             // We store the old position
-            Point lOldPoint = Position.GetPositionFixed();
+            Point lOldPoint = Position.mPoint;
 
-            // Update the positon to the location of the mouse
-            Position = new NodeCoordinate(e.Location, mEditorWindow.ParentControl, mEditorWindow.CameraPosition);
+            // Update the position to the location of the mouse
+            RelativePosition lRelativePosition = new RelativePosition(e.Location);
+            Position = new AbsolutePosition(lRelativePosition, mEditorWindow.CameraPosition, false);
 
             // Work out the delta between the two points
-            int lDX = lOldPoint.X - Position.GetPositionFixed().X;
-            int lDY = lOldPoint.Y - Position.GetPositionFixed().Y;
+            int lDX = Position.mPoint.X - lOldPoint.X;
+            int lDY = Position.mPoint.Y - lOldPoint.Y;
             
             // And use these to move the ports accordingly. 
             foreach (kAIEditorPortDX lExternalPort in mExternalPorts)

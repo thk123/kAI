@@ -5,6 +5,7 @@ using System.Text;
 using System.Drawing;
 
 using kAI.Core;
+using kAI.Editor.Core.Util;
 
 namespace kAI.Editor.Controls.DX
 {

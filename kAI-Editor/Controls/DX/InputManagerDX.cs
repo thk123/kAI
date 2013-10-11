@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Windows.Forms;
 
 using SlimDX.RawInput;
+using kAI.Editor.Controls.DX.Coordinates;
 
 namespace kAI.Editor.Controls.DX
 {
@@ -194,15 +195,15 @@ namespace kAI.Editor.Controls.DX
 
         void lParentControl_MouseMove(object sender, MouseEventArgs e)
         {
-            Point lRelativePoint= new Point(e.X, e.Y); // the actual position of the mouse
+            RelativePosition lRelativePoint= new RelativePosition(e.Location); // the actual position of the mouse
 
             // the position of the mouse in absolute space (i.e. translated for the camera)
-            NodeCoordinate lAbsolutePoint = new NodeCoordinate(lRelativePoint, mEditorWindow.ParentControl, mEditorWindow.CameraPosition);
+            AbsolutePosition lAbsolutePoint = new AbsolutePosition(lRelativePoint, mEditorWindow.CameraPosition, false);
 
             MouseOnSomething = false;
 
-            HandleTree(mMovingMouseEventListeners, lAbsolutePoint.GetPositionFixed(), sender, e);
-            HandleTree(mFixedMouseEventListeners, lRelativePoint, sender, e);
+            HandleTree(mMovingMouseEventListeners, lAbsolutePoint.mPoint, sender, e);
+            HandleTree(mFixedMouseEventListeners, lRelativePoint.mPoint, sender, e);
             if (OnMouseMove != null)
             {
                 OnMouseMove(sender, e);
