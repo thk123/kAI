@@ -72,6 +72,8 @@ namespace kAI.Editor.Controls.DX
         kAIAbsolutePosition mCameraPosition;
         Point mLastMousePoint;
 
+        bool mIsDragging;
+
         // GUI points for laying out new ports (not readonly as depends on dynamic data). 
         Point mInPortStartPosition;
 
@@ -112,10 +114,22 @@ namespace kAI.Editor.Controls.DX
             private set;
         }
 
+        public kAIBehaviourEditorWindow Editor
+        {
+            get;
+            private set;
+        }
+
         /// <summary>
         /// The input manager for this editor. 
         /// </summary>
         public kAIInputManagerDX InputManager
+        {
+            get;
+            private set;
+        }
+
+        public kAIPortConnexionCreator ConnexionCreator
         {
             get;
             private set;
@@ -146,15 +160,18 @@ namespace kAI.Editor.Controls.DX
         /// Set up the editor window within a given control. 
         /// </summary>
         /// <param name="lParentControl">The control to embed the editor in to. </param>
-        public void Init(Control lParentControl)
+        public void Init(Control lParentControl, kAIBehaviourEditorWindow lWindow)
         {
             ParentControl = lParentControl;
+            Editor = lWindow;
 
             int lHalfWidth = ParentControl.Width / 2;
             int lHalfHeight = ParentControl.Height / 2;
             mCameraPosition = new kAIAbsolutePosition(-lHalfWidth, -lHalfHeight, false);
 
             InputManager = new kAIInputManagerDX(lParentControl, this);
+
+            ConnexionCreator = new kAIPortConnexionCreator(Editor);
 
             InputManager.OnMouseDown += new EventHandler<MouseEventArgs>(InputManager_OnMouseDown);
 
@@ -280,12 +297,20 @@ namespace kAI.Editor.Controls.DX
             return mTextures[lTexIdInt];
         }
 
+        /// <summary>
+        /// Tells all the connexions to recalculate their path. 
+        /// </summary>
         public void InvalidateConnexionPositions()
         {
             foreach (kAIEditorPortDX lInternalPort in mPorts.FindAll((lPort) => 
                 { return lPort.Port.PortDirection == kAIPort.ePortDirection.PortDirection_Out; }))
             {
                 lInternalPort.InvalidateConnexionPositions();
+            }
+
+            foreach (kAIEditorNodeDX lNode in mNodes)
+            {
+                lNode.InvalidateConnexionPositions();
             }
         }
 
@@ -308,7 +333,39 @@ namespace kAI.Editor.Controls.DX
             return lPoints;
         }
 
-        
+        public bool CanConnect()
+        {
+            return CanDrag();
+        }
+
+        /// <summary>
+        /// Can a node begin dragging now.
+        /// </summary>
+        /// <returns>True if the node is allowed to drag. </returns>
+        public bool CanDrag()
+        {
+            bool lCanDrag = true;
+            lCanDrag &= !mIsDragging; // Can't already be dragging a node
+            lCanDrag &= !ConnexionCreator.CreatingLink; // Can't be making a link
+
+            return lCanDrag;
+        }
+
+        /// <summary>
+        /// Inform the editor that a node is being dragged (eg to stop other nodes being dragged). 
+        /// </summary>
+        public void StartDrag()
+        {
+            mIsDragging = true;
+        }
+
+        /// <summary>
+        /// Inform the editor the dragging is complete. 
+        /// </summary>
+        public void StopDrag()
+        {
+            mIsDragging = false;
+        }
 
         /// <summary>
         /// Unload the behaviour from the editor (eg delete all nodes, ports and connexions). 
@@ -346,6 +403,7 @@ namespace kAI.Editor.Controls.DX
                 lConnexion.StartPort : lConnexion.EndPort;
 
             kAIEditorPortDX lStartEditorPort = GetPort(lOutPort);
+            lStartEditorPort.UpdateConnexions();
             //lStartEditorPort
         }
 

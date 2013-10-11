@@ -16,6 +16,15 @@ namespace kAI.Editor.Controls.DX
     class kAIInputManagerDX
     {
         /// <summary>
+        /// Represents the state of a rectangle.
+        /// </summary>
+        struct RectangleState
+        {
+            public bool Hovered;
+            public bool Clicked;
+        }
+
+        /// <summary>
         /// Triggered whenever the mouse moves. 
         /// </summary>
         public event EventHandler<MouseEventArgs> OnMouseMove;
@@ -111,6 +120,7 @@ namespace kAI.Editor.Controls.DX
             }
         }
 
+       
         /// <summary>
         /// Processes a specific tree for the mouse input. 
         /// </summary>
@@ -122,12 +132,13 @@ namespace kAI.Editor.Controls.DX
         {
             // First we find all the elements so we can see which elements were under the mouse before and now aren't. 
             IEnumerable<kAIMouseEventResponders> lAllControls = lTree.GetAllContents();
-            List<bool> lControlState = new List<bool>();
+            List<RectangleState> lControlState = new List<RectangleState>();
 
             foreach (kAIMouseEventResponders lResponder in lAllControls)
             {
-                lControlState.Add(lResponder.Hovered);
+                lControlState.Add(new RectangleState { Hovered = lResponder.Hovered, Clicked = lResponder.Clicked });
                 lResponder.Hovered = false;
+                lResponder.Clicked = false;
                 //lResponder.JustPressed = false;
             }
 
@@ -150,6 +161,7 @@ namespace kAI.Editor.Controls.DX
                 {
                     // We trigger the on mouse down event. 
                     lResponder.CallAction(lResponder.OnMouseDown, lSender, lEventArgs);
+                    lResponder.Clicked = true;
                 }
 
                 // The mouse is on something. 
@@ -166,11 +178,26 @@ namespace kAI.Editor.Controls.DX
                 {
                     // is now now hovered
 
-                    if (lControlStateEnumerator.Current)
+                    if (lControlStateEnumerator.Current.Hovered)
                     {
                         // Was hovered before, therefore the mouse just moved off it
                         lControlEnumerator.Current.CallAction(lControlEnumerator.Current.OnMouseLeave, lSender, lEventArgs);
                     }
+                }
+
+                if(!lControlEnumerator.Current.Clicked)
+                {
+                    // if the mouse is up and we were clicking then we just released
+                    // if the mouse is now down, well then we just left whilst holding the mouse
+                    if(!mMouseDown && lControlStateEnumerator.Current.Clicked)
+                    {
+                        lControlEnumerator.Current.CallAction(lControlEnumerator.Current.OnMouseUp, lSender, lEventArgs);
+                    }
+                }
+                else
+                {
+                    // TODO: a click event, rename click to pressed
+                    // not pressed, maybe just clicked?
                 }
             }
         }

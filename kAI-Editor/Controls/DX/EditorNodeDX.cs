@@ -26,8 +26,6 @@ namespace kAI.Editor.Controls.DX
         readonly Point kOutPortStartPosition;
         readonly int kPortDeltaY = (int)kAIEditorPortDX.sPortSize.Y + 5;
 
-        
-
         // The set of ports this node has
         List<kAIEditorPortDX> mExternalPorts;
 
@@ -159,6 +157,10 @@ namespace kAI.Editor.Controls.DX
             }
         }
 
+
+        /// <summary>
+        /// Perform the line render pass (currently just connexions). 
+        /// </summary>
         public void LineRender()
         {
             foreach (kAIEditorPortDX lPort in mExternalPorts)
@@ -166,6 +168,17 @@ namespace kAI.Editor.Controls.DX
                 lPort.LineRender();
             }
         }
+
+        /// <summary>
+        /// Inform all connexions that their path may be invalid. 
+        /// </summary>
+        public void InvalidateConnexionPositions()
+        {
+            foreach(kAIEditorPortDX lPort in mExternalPorts.Where((lPort) => { return lPort.Port.PortDirection == kAIPort.ePortDirection.PortDirection_Out; }))
+            {
+                lPort.InvalidateConnexionPositions();
+            }
+        }        
 
         /// <summary>
         /// Add an external port to this node. 
@@ -191,6 +204,11 @@ namespace kAI.Editor.Controls.DX
             mExternalPorts.Add(lEditorPort);
         }
 
+        /// <summary>
+        /// Get the EditorPort for a specific port. 
+        /// </summary>
+        /// <param name="lPort">The port to retrieve.</param>
+        /// <returns>The EditorPort (visual representation) of the specified port. </returns>
         public kAIEditorPortDX GetExternalPort(kAIPort lPort)
         {
             foreach (kAIEditorPortDX lEditorPort in mExternalPorts)
@@ -207,8 +225,10 @@ namespace kAI.Editor.Controls.DX
 
         void OnMouseDown(object sender, MouseEventArgs e)
         {
-            if (!mBeingDragged)
+            if (!mBeingDragged && mEditorWindow.CanDrag())
             {
+                mEditorWindow.StartDrag();
+
                 // We start dragging so we now listen to these events. 
                 mEditorWindow.InputManager.OnMouseMove += new EventHandler<MouseEventArgs>(InputManager_OnMouseMove);
                 mEditorWindow.InputManager.OnMouseUp += new EventHandler<MouseEventArgs>(InputManager_OnMouseUp);
@@ -243,6 +263,8 @@ namespace kAI.Editor.Controls.DX
             mEditorWindow.InvalidateConnexionPositions();
 
             mBeingDragged = false;
+
+            mEditorWindow.StopDrag();
         }
 
         void InputManager_OnMouseMove(object sender, MouseEventArgs e)

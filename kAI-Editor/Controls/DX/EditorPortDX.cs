@@ -76,7 +76,12 @@ namespace kAI.Editor.Controls.DX
             mAddedRectangle = new Rectangle(Position.mPoint, new Size((int)sPortSize.X, (int)sPortSize.Y));
 
             mEditorWindow.InputManager.AddClickListenArea(mAddedRectangle, 
-                new kAIMouseEventResponders{ OnMouseHover = OnHover, OnMouseLeave = OnLeave, RectangleId = Port.OwningNodeID + ":" + Port.PortID},
+                new kAIMouseEventResponders{ 
+                    OnMouseHover = OnHover, 
+                    OnMouseLeave = OnLeave, 
+                    OnMouseDown = OnMouseDown, 
+                    OnMouseUp = OnMouseUp,
+                    RectangleId = Port.OwningNodeID + ":" + Port.PortID},
                 Port.OwningNode == null); // if the port is an internal node (ie no owning node) then it doesn't move with the camera
 
             mConnexions = new List<kAIEditorConnexionDX>();
@@ -123,6 +128,22 @@ namespace kAI.Editor.Controls.DX
         public void UpdatePosition(int ldX, int ldY)
         {
             Position = Position.Translate(ldX, ldY);
+        }
+
+        /// <summary>
+        /// Rescan the node for additional ports.
+        /// TODO: This feels nasty, maybe the Port could have an event?
+        /// </summary>
+        public void UpdateConnexions()
+        {
+            mConnexions.Clear();
+            if (Port.PortDirection == kAIPort.ePortDirection.PortDirection_Out)
+            {
+                foreach (kAIPort.kAIConnexion lConnexion in Port.Connexions)
+                {
+                    mConnexions.Add(new kAIEditorConnexionDX(lConnexion, mEditorWindow));
+                }
+            }
         }
 
         /// <summary>
@@ -267,7 +288,14 @@ namespace kAI.Editor.Controls.DX
             mIsHovering = false;
         }
 
-        
+        void OnMouseDown(object sender, MouseEventArgs e)
+        {
+            mEditorWindow.ConnexionCreator.PortDown(Port);
+        }
 
+        void OnMouseUp(object sender, MouseEventArgs e)
+        {
+            mEditorWindow.ConnexionCreator.PortUp(Port);
+        }
     }
 }

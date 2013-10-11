@@ -61,7 +61,7 @@ namespace kAI.Editor.Controls
             UnloadBehaviour();
         }
 
-        public void Init(Control lParent)
+        public void Init(Control lParent, kAIBehaviourEditorWindow lEditor)
         {
             lParent.Controls.Add(this);
             Dock = DockStyle.Fill;
@@ -157,6 +157,11 @@ namespace kAI.Editor.Controls
             kAIObject.Assert(null, lControlPort, "Could not find port");
 
             return lControlPort;
+        }
+
+        public bool CanConnect()
+        {
+            throw new NotImplementedException();
         }
 
         /// <summary>

@@ -23,7 +23,7 @@ namespace kAI.Editor.Controls.GLEE
 
         //Dictionary<kAINodeID, Tuple<kAINode, GleeNode>> mNodes;
 
-        public void Init(System.Windows.Forms.Control lParentControl)
+        public void Init(System.Windows.Forms.Control lParentControl, kAIBehaviourEditorWindow lEditor)
         {
             mGraphViewer = new GViewer();
             lParentControl.Controls.Add(mGraphViewer);
@@ -54,6 +54,11 @@ namespace kAI.Editor.Controls.GLEE
 
             //mNodes.Add(lNode.NodeID, new Tuple<kAINode, GleeNode>(lNode, lGleeNode));
 
+        }
+
+        public bool CanConnect()
+        {
+            throw new NotImplementedException();
         }
 
         public void RemoveNode(kAI.Core.kAINode lNode)

@@ -12,7 +12,7 @@ namespace kAI.Editor.Controls
 {
     interface kAIIBehaviourEditorGraphicalImplementator
     {
-        void Init(Control lParentControl);
+        void Init(Control lParentControl, kAIBehaviourEditorWindow lWindow);
         void UnloadBehaviour();
 
         void EditorUpdate();
@@ -30,8 +30,7 @@ namespace kAI.Editor.Controls
         void AddExternalPort(kAINode lParentNode, kAIPort lPort);
         void RemoveExternalPort(kAINode lParentNode, kAIPort lPort);
 
-        event Action<kAIPort, kAIPort> OnConnexion;
-
+        bool CanConnect();
     }
 
     class kAIBehaviourEditorWindow
@@ -51,21 +50,26 @@ namespace kAI.Editor.Controls
         public kAIBehaviourEditorWindow(kAIProject lProject, kAIIBehaviourEditorGraphicalImplementator lEditorImpl)
         {
             mProject = lProject;
+                       
 
             mEditorImpl = lEditorImpl;
-
-            mEditorImpl.OnConnexion += new Action<kAIPort, kAIPort>(mEditorImpl_OnConnexion);
 
             UnloadBehaviour();
         }
 
-        void mEditorImpl_OnConnexion(kAIPort arg1, kAIPort arg2)
+        public void Init(Control lContainer)
+        {
+            mEditorImpl.Init(lContainer, this);
+        }
+
+
+        public void AddConnexion(kAIPort lStartPort, kAIPort lEndPort)
         {
             kAIObject.Assert(null, mBehaviour, "No loaded behaviour");
 
-            mBehaviour.AddConnexion(arg1, arg2);
+            mBehaviour.AddConnexion(lStartPort, lEndPort);
 
-            mEditorImpl.AddConnexion(new kAIPort.kAIConnexion(arg1, arg2));
+            mEditorImpl.AddConnexion(new kAIPort.kAIConnexion(lStartPort, lEndPort));
         }
 
         /// <summary>
@@ -79,10 +83,15 @@ namespace kAI.Editor.Controls
                 UnloadBehaviour();
             }
 
+            kAIPort lFirst = lBehaviour.InternalPorts.First();
+            lBehaviour.AddConnexion(lFirst, lBehaviour.InternalPorts.First((p) => { return p.PortID != lFirst.PortID; }));
+
             foreach (kAIPort lGlobalPort in lBehaviour.InternalPorts)
             {
                 AddInternalPort(lGlobalPort);
             }
+
+            
 
             foreach (kAINode lInternalNode in lBehaviour.InternalNodes)
             {
@@ -92,6 +101,8 @@ namespace kAI.Editor.Controls
             // TODO: load connexions
 
             mBehaviour = lBehaviour;
+
+            
         }
 
         public void AddInternalPort(kAIPort lInternalPort)
@@ -141,6 +152,12 @@ namespace kAI.Editor.Controls
         {
             mEditorImpl.Destroy();
         }
+
+        public bool CanConnect()
+        {
+            return mEditorImpl.CanConnect();
+        }
+
     }
 
     
