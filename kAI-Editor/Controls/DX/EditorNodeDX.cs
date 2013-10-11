@@ -56,7 +56,7 @@ namespace kAI.Editor.Controls.DX
         /// <summary>
         /// The position of the node in absolute pixels. 
         /// </summary>
-        public AbsolutePosition Position
+        public kAIAbsolutePosition Position
         {
             get;
             private set;
@@ -66,7 +66,7 @@ namespace kAI.Editor.Controls.DX
         /// <summary>
         /// The size of the node in absolute pixels. 
         /// </summary>
-        public AbsoluteSize Size
+        public kAIAbsoluteSize Size
         {
             get;
             private set;
@@ -79,7 +79,7 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lPoint">The location of the node in absolute pixels. </param>
         /// <param name="lSize">The size of the node in absolute pixels. </param>
         /// <param name="lEditorWindow">The editor window this node belongs to. </param>
-        public kAIEditorNodeDX(kAINode lNode, AbsolutePosition lPoint, AbsoluteSize lSize, kAIBehaviourEditorWindowDX lEditorWindow)
+        public kAIEditorNodeDX(kAINode lNode, kAIAbsolutePosition lPoint, kAIAbsoluteSize lSize, kAIBehaviourEditorWindowDX lEditorWindow)
         {
             Position = lPoint;
             Size = lSize;
@@ -113,14 +113,14 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lVertexStream">The vertex stream to fill with vertices. </param>
         /// <param name="lParentControl">The control the nodes are within. </param>
         /// <param name="lCameraPos">The position of the camera. </param>
-        public void Render(DataStream lVertexStream, Control lParentControl, AbsolutePosition lCameraPos)
+        public void Render(DataStream lVertexStream, Control lParentControl, kAIAbsolutePosition lCameraPos)
         {
             // Get a vector3 of where this position is in normalised space ([-1, 1] x [-1, 1])
-            NormalisedPosition lNodePositionNormalised = new NormalisedPosition(Position, lCameraPos, lParentControl);
+            kAINormalisedPosition lNodePositionNormalised = new kAINormalisedPosition(Position, lCameraPos, lParentControl);
             
 
             // Get a vector3 representing what the width and height are in normalised space ([-1, 1] x [-1, 1]
-            NormalisedSize lNodeSizeNormalised = new NormalisedSize(Size, lParentControl);
+            kAINormalisedSize lNodeSizeNormalised = new kAINormalisedSize(Size, lParentControl);
 
             Vector3 lTopLeft, lTopRight, lBottomLeft, lBottomRight;
 
@@ -144,8 +144,8 @@ namespace kAI.Editor.Controls.DX
         {
             // Get the position for the square 
             // Point lFormPosition = Position.GetFormPosition(lEditorWindow.ParentControl, lEditorWindow.CameraPosition);
-            RelativePosition lFormPosition = new RelativePosition(Position, lEditorWindow.CameraPosition);
-            RelativeSize lFormSize = new RelativeSize(Size);
+            kAIRelativePosition lFormPosition = new kAIRelativePosition(Position, lEditorWindow.CameraPosition);
+            kAIRelativeSize lFormSize = new kAIRelativeSize(Size);
 
             // Render the box for the node
             lEditorWindow.SpriteRenderer.Draw(lEditorWindow.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.NodeTexture), new Vector2(lFormPosition.mPoint.X, lFormPosition.mPoint.Y), new Vector2(lFormSize.mSize.Width, lFormSize.mSize.Height), CoordinateType.Absolute);
@@ -175,15 +175,15 @@ namespace kAI.Editor.Controls.DX
         {
             kAIObject.Assert(null, lPort.OwningNode == Node, "Tried to set as an external port a port which is not related to this node");
 
-            AbsolutePosition lPositionForPort;
+            kAIAbsolutePosition lPositionForPort;
             if (lPort.PortDirection == kAIPort.ePortDirection.PortDirection_In)
             {
-                lPositionForPort = Position.Add(new AbsolutePosition(mCurrentInPosition.X, mCurrentInPosition.Y, false));
+                lPositionForPort = Position.Add(new kAIAbsolutePosition(mCurrentInPosition.X, mCurrentInPosition.Y, false));
                 mCurrentInPosition.Offset(0, kPortDeltaY);
             }
             else
             {
-                lPositionForPort = Position.Add(new AbsolutePosition(mCurrentOutPosition.X, mCurrentOutPosition.Y, false));
+                lPositionForPort = Position.Add(new kAIAbsolutePosition(mCurrentOutPosition.X, mCurrentOutPosition.Y, false));
                 mCurrentOutPosition.Offset(0, kPortDeltaY);
             }
             kAIEditorPortDX lEditorPort = new kAIEditorPortDX(lPort, lPositionForPort, mEditorWindow);
@@ -251,8 +251,8 @@ namespace kAI.Editor.Controls.DX
             Point lOldPoint = Position.mPoint;
 
             // Update the position to the location of the mouse
-            RelativePosition lRelativePosition = new RelativePosition(e.Location);
-            Position = new AbsolutePosition(lRelativePosition, mEditorWindow.CameraPosition, false);
+            kAIRelativePosition lRelativePosition = new kAIRelativePosition(e.Location);
+            Position = new kAIAbsolutePosition(lRelativePosition, mEditorWindow.CameraPosition, false);
 
             // Work out the delta between the two points
             int lDX = Position.mPoint.X - lOldPoint.X;

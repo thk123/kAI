@@ -47,7 +47,7 @@ namespace kAI.Editor.Controls.DX
         /// <summary>
         /// Absolute position of the node.
         /// </summary>
-        public AbsolutePosition Position
+        public kAIAbsolutePosition Position
         {
             get;
             private set;
@@ -64,7 +64,7 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lPort">The port being represented. </param>
         /// <param name="lPosition">The position of the port. </param>
         /// <param name="lEditorWindow">The editor window this node belongs to. </param>
-        public kAIEditorPortDX(kAIPort lPort, AbsolutePosition lPosition, kAIBehaviourEditorWindowDX lEditorWindow)
+        public kAIEditorPortDX(kAIPort lPort, kAIAbsolutePosition lPosition, kAIBehaviourEditorWindowDX lEditorWindow)
         {
             Port = lPort;
             Position = lPosition;
@@ -95,9 +95,9 @@ namespace kAI.Editor.Controls.DX
         /// Gets the absolute position that connexion lines should be drawn to/from for this port. 
         /// </summary>
         /// <returns>An absolute position of where the connexion line should run to/from. </returns>
-        public AbsolutePosition GetConnexionPoint()
+        public kAIAbsolutePosition GetConnexionPoint()
         {
-            AbsolutePosition lConnexionPoint = Position;
+            kAIAbsolutePosition lConnexionPoint = Position;
             int lXTranslation;
 
             if (Port.PortDirection == kAIPort.ePortDirection.PortDirection_In)
@@ -147,7 +147,7 @@ namespace kAI.Editor.Controls.DX
         {
             ShaderResourceView lTexture;
 
-            RelativePosition lFormPosition = new RelativePosition(Position, lContainerEditor.CameraPosition);
+            kAIRelativePosition lFormPosition = new kAIRelativePosition(Position, lContainerEditor.CameraPosition);
 
             Vector2 lLabelPosition;
             Vector2 lStringSize = lContainerEditor.TextRenderer.MeasureString(Port.PortID.ToString()).Size;

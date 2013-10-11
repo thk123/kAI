@@ -195,10 +195,10 @@ namespace kAI.Editor.Controls.DX
 
         void lParentControl_MouseMove(object sender, MouseEventArgs e)
         {
-            RelativePosition lRelativePoint= new RelativePosition(e.Location); // the actual position of the mouse
+            kAIRelativePosition lRelativePoint= new kAIRelativePosition(e.Location); // the actual position of the mouse
 
             // the position of the mouse in absolute space (i.e. translated for the camera)
-            AbsolutePosition lAbsolutePoint = new AbsolutePosition(lRelativePoint, mEditorWindow.CameraPosition, false);
+            kAIAbsolutePosition lAbsolutePoint = new kAIAbsolutePosition(lRelativePoint, mEditorWindow.CameraPosition, false);
 
             MouseOnSomething = false;
 

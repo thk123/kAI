@@ -14,7 +14,7 @@ namespace kAI.Editor.Controls.DX
         kAIPort.kAIConnexion mConnexion;
         kAIBehaviourEditorWindowDX mEditor;
 
-        List<AbsolutePosition> mPath;
+        List<kAIAbsolutePosition> mPath;
 
         public kAIEditorConnexionDX(kAIPort.kAIConnexion lConnexion, kAIBehaviourEditorWindowDX lEditor)
         {

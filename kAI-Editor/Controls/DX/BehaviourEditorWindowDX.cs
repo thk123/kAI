@@ -69,7 +69,7 @@ namespace kAI.Editor.Controls.DX
 
         // Location of the camera.
         // TODO: abstract the camera stuff
-        AbsolutePosition mCameraPosition;
+        kAIAbsolutePosition mCameraPosition;
         Point mLastMousePoint;
 
         // GUI points for laying out new ports (not readonly as depends on dynamic data). 
@@ -125,7 +125,7 @@ namespace kAI.Editor.Controls.DX
         /// The location in absolute space of the camera. 
         /// TODO: Not sure why this needs to be a property or whatever...?
         /// </summary>
-        public AbsolutePosition CameraPosition
+        public kAIAbsolutePosition CameraPosition
         {
             get
             {
@@ -152,7 +152,7 @@ namespace kAI.Editor.Controls.DX
 
             int lHalfWidth = ParentControl.Width / 2;
             int lHalfHeight = ParentControl.Height / 2;
-            mCameraPosition = new AbsolutePosition(-lHalfWidth, -lHalfHeight, false);
+            mCameraPosition = new kAIAbsolutePosition(-lHalfWidth, -lHalfHeight, false);
 
             InputManager = new kAIInputManagerDX(lParentControl, this);
 
@@ -295,9 +295,9 @@ namespace kAI.Editor.Controls.DX
         /// </summary>
         /// <param name="lConnexion">The connexion to create a path between</param>
         /// <returns>A list of absolute points to connect. </returns>
-        public List<AbsolutePosition> GetPointPath(kAIPort.kAIConnexion lConnexion)
+        public List<kAIAbsolutePosition> GetPointPath(kAIPort.kAIConnexion lConnexion)
         {
-            List<AbsolutePosition> lPoints = new List<AbsolutePosition>();
+            List<kAIAbsolutePosition> lPoints = new List<kAIAbsolutePosition>();
 
             kAIEditorPortDX lStart = GetPort(lConnexion.StartPort);
             lPoints.Add(lStart.GetConnexionPoint());
@@ -324,7 +324,7 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lNode">The node to render.  </param>
         public void AddNode(kAI.Core.kAINode lNode)
         {
-            mNodes.Add(new kAIEditorNodeDX(lNode, new AbsolutePosition(-250 + sRandom.Next(500), -250 + sRandom.Next(500), false), new AbsoluteSize(200, 100), this));
+            mNodes.Add(new kAIEditorNodeDX(lNode, new kAIAbsolutePosition(-250 + sRandom.Next(500), -250 + sRandom.Next(500), false), new kAIAbsoluteSize(200, 100), this));
         }
 
         /// <summary>
@@ -364,15 +364,15 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lPort">The internal port to render. </param>
         public void AddInternalPort(kAI.Core.kAIPort lPort)
         {
-            AbsolutePosition lPos;
+            kAIAbsolutePosition lPos;
             if (lPort.PortDirection == kAIPort.ePortDirection.PortDirection_In)
             {
-                lPos = new AbsolutePosition(mCurrentInPosition.X, mCurrentInPosition.Y, true);
+                lPos = new kAIAbsolutePosition(mCurrentInPosition.X, mCurrentInPosition.Y, true);
                 mCurrentInPosition.Offset(0, kPortDeltaY);
             }
             else
             {
-                lPos = new AbsolutePosition(mCurrentOutPosition.X, mCurrentOutPosition.Y, true);
+                lPos = new kAIAbsolutePosition(mCurrentOutPosition.X, mCurrentOutPosition.Y, true);
                 mCurrentOutPosition.Offset(0, kPortDeltaY);
             }
 
@@ -474,15 +474,15 @@ namespace kAI.Editor.Controls.DX
             }
         }
 
-        public void RenderLine(List<AbsolutePosition> lPoints)
+        public void RenderLine(List<kAIAbsolutePosition> lPoints)
         {
             // TODO: move the line renderer in to own class then can cause exception if function called at the wrong time
             DataStream lVertices = new DataStream(12 * (lPoints.Count), true, true);
 
-            foreach (AbsolutePosition lPoint in lPoints)
+            foreach (kAIAbsolutePosition lPoint in lPoints)
             {
                 // TODO: These points aren't correct
-                NormalisedPosition lNormalised = new NormalisedPosition(lPoint, CameraPosition, ParentControl);
+                kAINormalisedPosition lNormalised = new kAINormalisedPosition(lPoint, CameraPosition, ParentControl);
                 lVertices.Write(lNormalised.GetAsV3());
             }
 
