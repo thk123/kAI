@@ -1,6 +1,6 @@
 ﻿namespace kAI.Editor.Controls
 {
-    partial class BehaviourEditorWindow
+    partial class BehaviourEditorWindowWinForms
     {
         /// <summary> 
         /// Required designer variable.

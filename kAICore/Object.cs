@@ -9,7 +9,7 @@ namespace kAI.Core
     /// <summary>
     /// The root class all kAI.Core Objects inherit from. Provides functions for logging messages and error
     /// </summary>
-    [DataContract()]    
+    [DataContract()]
     public abstract class kAIObject
     {
         /// <summary>
@@ -18,7 +18,7 @@ namespace kAI.Core
         /// <param name="lException">The exception that was thrown. </param>
         /// <param name="lSender">The object that threw the exception. </param>
         public delegate void ExceptionHandle(Exception lException, kAIObject lSender);
-               
+
         /// <summary>
         /// The global logger to be used by all classes. If the instance logger is set, 
         /// this will be used instead. 
@@ -250,7 +250,7 @@ namespace kAI.Core
         /// </summary>
         /// <param name="lMessage"></param>
         public AssertFailedException(string lMessage = null)
-            :base(lMessage)
-        {}
+            : base(lMessage)
+        { }
     }
 }

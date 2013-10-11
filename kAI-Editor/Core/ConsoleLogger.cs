@@ -26,6 +26,13 @@ namespace kAI.Editor.Core
             Console.ResetColor();
         }
 
+        private void LogKeys(KeyValuePair<string, object>[] lDetails, ConsoleColor lColor)
+        {
+            foreach (KeyValuePair<string, object> lDetail in lDetails)
+            {
+                WriteString("\t" + lDetail.Key + " - " + lDetail.Value.ToString());
+            }
+        }
 
         public static ConsoleLogger Get()
         {
@@ -40,28 +47,22 @@ namespace kAI.Editor.Core
         public void LogMessage(string lMessage, params KeyValuePair<string, object>[] lDetails)
         {
             WriteString(lMessage);
-            foreach (KeyValuePair<string, object> lDetail in lDetails)
-            {
-                WriteString(lDetail.Key + " - " + lDetail.Value.ToString());
-            }
+            LogKeys(lDetails, ConsoleColor.White);
+            
         }
+
+        
 
         public void LogWarning(string lWarning, params KeyValuePair<string, object>[] lDetails)
         {
             WriteString(lWarning, ConsoleColor.Yellow);
-            foreach (KeyValuePair<string, object> lDetail in lDetails)
-            {
-                WriteString(lDetail.Key + " - " + lDetail.Value.ToString(), ConsoleColor.Yellow);
-            }
+            LogKeys(lDetails, ConsoleColor.Yellow);
         }
 
         public void LogError(string lError, params KeyValuePair<string, object>[] lDetails)
         {
             WriteString(lError, ConsoleColor.Red);
-            foreach (KeyValuePair<string, object> lDetail in lDetails)
-            {
-                WriteString(lDetail.Key + " - " + lDetail.Value.ToString(), ConsoleColor.Red);
-            }
+            LogKeys(lDetails, ConsoleColor.Red);
         }
 
         public void LogCriticalError(string lError, params KeyValuePair<string, object>[] lDetails)

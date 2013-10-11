@@ -1,29 +1,42 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.ComponentModel;
-using System.Drawing;
-using System.Data;
 using System.Linq;
 using System.Text;
-using System.Windows.Forms;
-using System.Runtime.Serialization;
-using System.Xml;
 using System.IO;
+using System.Windows.Forms;
 
 using kAI.Core;
 using kAI.Editor.Core;
-using kAI.Editor.Core.Util;
-using kAI.Editor.Forms;
-using kAI.Editor.Forms.ProjectProperties;
-using kAI.Editor.Controls;
 
 namespace kAI.Editor.Controls
 {
-    /// <summary>
-    /// The control that handles editing behaviours. 
-    /// </summary>
-    partial class BehaviourEditorWindow : UserControl
+    interface kAIIBehaviourEditorGraphicalImplementator
     {
+        void Init(Control lParentControl);
+        void UnloadBehaviour();
+
+        void EditorUpdate();
+        void Destroy();
+
+        void AddNode(kAINode lNode);
+        void RemoveNode(kAINode lNode);
+
+        void AddConnexion(kAIPort.kAIConnexion lConnexion);
+        void RemoveConnexion(kAIPort.kAIConnexion lConnexion);
+
+        void AddInternalPort(kAIPort lPort);
+        void RemoveInternalPort(kAIPort lPort);
+
+        void AddExternalPort(kAINode lParentNode, kAIPort lPort);
+        void RemoveExternalPort(kAINode lParentNode, kAIPort lPort);
+
+        event Action<kAIPort, kAIPort> OnConnexion;
+
+    }
+
+    class kAIBehaviourEditorWindow
+    {
+        kAIIBehaviourEditorGraphicalImplementator mEditorImpl; 
         /// <summary>
         /// The behaviour currently being shown in this editor. 
         /// </summary>
@@ -33,83 +46,26 @@ namespace kAI.Editor.Controls
 
         kAIProject mProject;
 
-        List<kAIEditorNode> mNodes;
+        
 
-        /// <summary>
-        /// Stores the last point of the mouse, used when dragging to create a delta. 
-        /// </summary>
-        Point mLastPosition;
-
-        /// <summary>
-        /// The next vertical position of a in port. 
-        /// </summary>
-        int mNextInPortY;
-
-        /// <summary>
-        /// The next vertical position of an out port. 
-        /// </summary>
-        int mNextOutPortY;
-
-        /// <summary>
-        /// The vertical distance between ports. 
-        /// </summary>
-        const int kPortVerticalSeperation = 10;
-
-        bool mIsMakingConnexion;
-        kAIEditorPort mStartingPort;
-
-        /// <summary>
-        /// Create a new editor pane for a XML behaviour
-        /// </summary>
-        public BehaviourEditorWindow(kAIProject lProject)
+        public kAIBehaviourEditorWindow(kAIProject lProject, kAIIBehaviourEditorGraphicalImplementator lEditorImpl)
         {
-            InitializeComponent();
-
-            ClearBehaviour();
-
             mProject = lProject;
+
+            mEditorImpl = lEditorImpl;
+
+            mEditorImpl.OnConnexion += new Action<kAIPort, kAIPort>(mEditorImpl_OnConnexion);
+
+            UnloadBehaviour();
         }
 
-        /// <summary>
-        /// Add a new behaviour to the editor window. 
-        /// </summary>
-        /// <param name="lBehaviour">The behaviour to add. </param>
-        public void AddBehaviour(kAIBehaviour lBehaviour)
-        {         
-            kAINode lBehaviourNode = new kAINode("Node", lBehaviour);
-            kAIEditorNode lNewNode = new kAIEditorNode(lBehaviourNode);
-
-            Controls.Add(lNewNode);
-
-            mBehaviour.AddNode(lBehaviourNode);
-
-            mNodes.Add(lNewNode);
-        }
-
-        public void AddNode(kAINode lNode)
+        void mEditorImpl_OnConnexion(kAIPort arg1, kAIPort arg2)
         {
-            kAIEditorNode lEditorNode = new kAIEditorNode(lNode);
-            Controls.Add(lEditorNode);
+            kAIObject.Assert(null, mBehaviour, "No loaded behaviour");
 
-            mNodes.Add(lEditorNode);
+            mBehaviour.AddConnexion(arg1, arg2);
 
-            lEditorNode.OnPortClicked += new kAIEditorNode.PortClicked(lEditorNode_OnPortClicked);
-        }
-
-        /// <summary>
-        /// Create a new behaviour and load it in to the editor. 
-        /// </summary>
-        /// <returns>The new XML behaviour that was created.</returns>
-        public kAIXmlBehaviour NewBehaviour(kAIBehaviourID lBehaviourID, FileInfo lFile)
-        {
-            //TEMP: Need to get the name from some dialog box or something. 
-            kAIXmlBehaviour lBehaviour = new kAIXmlBehaviour(lBehaviourID, lFile);
-
-            mBehaviourLocation = lFile;
-
-            LoadBehaviour(lBehaviour);
-
-            return lBehaviour;
+            mEditorImpl.AddConnexion(new kAIPort.kAIConnexion(arg1, arg2));
         }
 
         /// <summary>
@@ -120,7 +76,7 @@ namespace kAI.Editor.Controls
         {
             if (mBehaviour != null)
             {
-                ClearBehaviour();
+                UnloadBehaviour();
             }
 
             foreach (kAIPort lGlobalPort in lBehaviour.InternalPorts)
@@ -132,137 +88,60 @@ namespace kAI.Editor.Controls
             {
                 AddNode(lInternalNode);
             }
+
+            // TODO: load connexions
+
             mBehaviour = lBehaviour;
         }
 
-        /// <summary>
-        /// Save the behaviour.
-        /// </summary>
-        public void SaveBehaviour()
+        public void AddInternalPort(kAIPort lInternalPort)
         {
-            mBehaviour.Save();
+            mEditorImpl.AddInternalPort(lInternalPort);
         }
 
-        /// <summary>
-        /// Unloads the currently unloaded behaviour. 
-        /// </summary>
-        public void ClearBehaviour()
+        public void AddNode(kAINode lNode)
+        {
+            // TODO: work out if needed?
+            // TODO: come back when done generic classes for other controls
+            // Maybe should be in the impl any way
+            //mNodes.Add(lNode);
+
+            mEditorImpl.AddNode(lNode);
+        }
+
+        public void SaveBehaviour()
+        {
+            // Not sure if this needs to be here
+            if (mBehaviour != null)
+            {
+                mBehaviour.Save();
+            }
+        }
+
+        public void UnloadBehaviour()
         {
             if (mBehaviour != null)
             {
                 mBehaviour.Save();
             }
 
-            mNextInPortY = 5;
-            mNextOutPortY = 5;
+            mEditorImpl.UnloadBehaviour();
 
             mBehaviour = null;
             mBehaviourLocation = null;
 
-            mIsMakingConnexion = false;
-            mStartingPort = null;
-
-            mNodes = new List<kAIEditorNode>();
-
-            Controls.Clear();
         }
 
-        private void AddInternalPort(kAIPort lNewPort)
+        public void Update()
         {
-            kAIEditorPort lNewEditorPort = new kAIEditorPort(lNewPort);
-            if (lNewPort.PortDirection == kAIPort.ePortDirection.PortDirection_Out)
-            {
-                Point lNewLocation = new Point();
-                lNewLocation.Y = mNextInPortY;
-                lNewLocation.X = 0;
-
-                lNewEditorPort.Location = lNewLocation;
-                mNextInPortY += lNewEditorPort.Height + kPortVerticalSeperation;
-            }
-            else
-            {
-                Point lNewLocation = new Point();
-                lNewLocation.Y = mNextOutPortY;
-                lNewLocation.X = Width - lNewEditorPort.Width;
-
-                lNewEditorPort.Location = lNewLocation;
-                mNextOutPortY += lNewEditorPort.Height + kPortVerticalSeperation;
-            }
-
-            lNewEditorPort.Click += new EventHandler(lNewEditorPort_Click);
-
-            Controls.Add(lNewEditorPort);
+            mEditorImpl.EditorUpdate();
         }
 
-        void lNewEditorPort_Click(object sender, EventArgs e)
+        public void Destroy()
         {
-            kAIEditorPort lPortClicked = sender as kAIEditorPort;
-            if(lPortClicked != null)
-            {
-                if (mIsMakingConnexion)
-                {
-                    // Assert mOtherPort != null
-                    EndDrag(lPortClicked);
-                }
-                else
-                {
-                    mIsMakingConnexion = true;
-                    mStartingPort = lPortClicked;
-                }
-            }
-            else
-            {
-                System.Diagnostics.Debugger.Break();
-            }
-        }
-
-        void lEditorNode_OnPortClicked(kAIEditorPort lPortClicked, kAINode lOwningNode)
-        {
-            if (mIsMakingConnexion)
-            {
-                EndDrag(lPortClicked);
-            }
-            else
-            {
-                mIsMakingConnexion = true;
-                mStartingPort = lPortClicked;
-            }
-        }
-
-        void EndDrag(kAIEditorPort lEndPort)
-        {
-            FormConnexion(mStartingPort, lEndPort);
-            lEndPort = null;
-            mIsMakingConnexion = false;
-        }
-
-        void FormConnexion(kAIEditorPort lStartPort, kAIEditorPort lEndPort)
-        {
-            mBehaviour.AddConnexion(lStartPort.Port, lEndPort.Port);
-
-            Graphics lG = Graphics.FromHwnd(Handle);
-            lG.DrawCurve(new Pen(Color.Black), new Point[] { lStartPort.GetControlPosition(this), lEndPort.GetControlPosition(this) });
-        }
-
-        private void BehaviourEditorWindow_MouseDown(object sender, MouseEventArgs e)
-        {
-            mLastPosition = e.Location;
-        }
-
-        private void BehaviourEditorWindow_MouseMove(object sender, MouseEventArgs e)
-        {
-            if (e.Button == MouseButtons.Left)
-            {
-                Point lDeltaPos = Util.SubtractPoints(e.Location, mLastPosition);
-
-                // Update each nodes position. 
-                foreach (kAIEditorNode lNode in mNodes)
-                {
-                    lNode.SetViewPosition(lDeltaPos);
-                }
-
-                mLastPosition = e.Location;
-            }
+            mEditorImpl.Destroy();
         }
     }
+
+    
 }

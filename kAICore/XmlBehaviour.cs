@@ -372,24 +372,38 @@ namespace kAI.Core
         /// <returns>An instantiated behaviour based on the provided XML. </returns>
         public static kAIXmlBehaviour Load(kAIINodeSerialObject lSerialObject, GetAssemblyByName lAssemblyGetter)
         {
-            SerialObject lRealSerial = lSerialObject as SerialObject;
-            if (lRealSerial != null)
-            {
-                XmlObjectSerializer lProjectDeserialiser = new DataContractSerializer(typeof(InternalXml), kAINode.NodeSerialTypes);
+            kAIObject.Assert(null, lSerialObject, "Null entity has been passed in to load ");
 
+            SerialObject lRealSerial = lSerialObject as SerialObject;
+            kAIObject.Assert(null, lRealSerial, "Tried to load an XML Behaviour from a inappropriate serial object - " + lSerialObject.GetType());
+
+            XmlObjectSerializer lProjectDeserialiser = new DataContractSerializer(typeof(InternalXml), kAINode.NodeSerialTypes);
+            try
+            {
                 Stream lXmlStream = lRealSerial.XmlBehaviourFile.OpenRead();
 
                 InternalXml lXmlFile = (InternalXml)lProjectDeserialiser.ReadObject(lXmlStream);
+
+                Assert(null, lXmlFile);
 
                 lXmlStream.Close();
 
                 return new kAIXmlBehaviour(lXmlFile, lAssemblyGetter, lRealSerial.XmlBehaviourFile);
             }
-            else
+            catch (System.UnauthorizedAccessException)
             {
-                //TODO: Error!
-                return null;
+                //TODO: Error - have you forgot to check the file out of source control?
             }
+            catch (System.IO.DirectoryNotFoundException)
+            {
+                //TODO: Error - Directory not found, ensure file still exists
+            }
+            catch(System.IO.IOException)
+            {
+                // TODOO: Error - File is already open elsewhere. 
+            }
+
+            return null;
         }
 
         /// <summary>
