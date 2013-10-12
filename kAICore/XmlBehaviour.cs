@@ -234,6 +234,16 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// Find out if a node with a given ID is already contained within this behaviour. 
+        /// </summary>
+        /// <param name="lNodeID">The NodeID to check. </param>
+        /// <returns>True if the NodeID is already used. </returns>
+        public bool ContainsNodeID(kAINodeID lNodeID)
+        {
+            return mInternalNodes.ContainsKey(lNodeID);
+        }
+
+        /// <summary>
         /// Add a internal connexion within this behaviour. 
         /// </summary>
         /// <param name="lStartPort">The starting port of this connexion. </param>

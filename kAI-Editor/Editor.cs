@@ -172,8 +172,8 @@ namespace kAI.Editor
                 BehaviourChooser lChooser = new BehaviourChooser(mLoadedProject);
                 if (lChooser.ShowDialog() == DialogResult.OK)
                 {
-                    // TODO: Add a behaviour to the behaviour editor DX
-                    //mBehaviourEditor.AddBehaviour(lChooser.GetSelectedBehaviour());
+                    kAIINodeObject lSelectedNode = lChooser.GetSelectedBehaviour();
+                    mBehaviourEditor.AddNode(new kAINode(mBehaviourEditor.GetNodeName(lSelectedNode), lSelectedNode));
                 }
             }
         }

@@ -85,14 +85,12 @@ namespace kAI.Editor.Controls
 
             foreach (kAIPort lGlobalPort in lBehaviour.InternalPorts)
             {
-                AddInternalPort(lGlobalPort);
-            }
-
-            
+                mEditorImpl.AddInternalPort(lGlobalPort);
+            }            
 
             foreach (kAINode lInternalNode in lBehaviour.InternalNodes)
             {
-                AddNode(lInternalNode);
+                mEditorImpl.AddNode(lInternalNode);
             }
 
             // TODO: load connexions
@@ -104,6 +102,10 @@ namespace kAI.Editor.Controls
 
         public void AddInternalPort(kAIPort lInternalPort)
         {
+            // TODO: This is confusing...
+            mBehaviour.AddExternalPort(lInternalPort);
+
+
             mEditorImpl.AddInternalPort(lInternalPort);
         }
 
@@ -113,6 +115,7 @@ namespace kAI.Editor.Controls
             // TODO: come back when done generic classes for other controls
             // Maybe should be in the impl any way
             //mNodes.Add(lNode);
+            mBehaviour.AddNode(lNode);
 
             mEditorImpl.AddNode(lNode);
         }
@@ -153,6 +156,22 @@ namespace kAI.Editor.Controls
         public bool CanConnect()
         {
             return mEditorImpl.CanConnect();
+        }
+
+        public kAINodeID GetNodeName(kAIINodeObject lNodeObject)
+        {
+            kAIObject.Assert(null, mBehaviour, "No behaviour to generate name from");
+            string lTemplateName = lNodeObject.GetNameTemplate();
+            string lModifiedName = lTemplateName;
+
+            int i = 0;
+            while (mBehaviour.ContainsNodeID(lModifiedName))
+            {
+                lModifiedName = lTemplateName + i;
+                ++i;
+            }
+
+            return lModifiedName;
         }
 
     }

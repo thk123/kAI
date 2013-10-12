@@ -219,16 +219,6 @@ namespace kAI.Editor.Controls.DX
             using (var bytecode = ShaderBytecode.CompileFromFile(@"E:\dev\C#\kAI\kAI-Editor\Assets\triangle.fx", "PShader", "ps_4_0", ShaderFlags.None, EffectFlags.None))
                 pixelShader = new PixelShader(device, bytecode);
 
-            // TODO: maybe this doesn't go here...?
-
-            // create the vertex layout and buffer
-            var elements = new[] { new InputElement("POSITION", 0, Format.R32G32B32_Float, 0) };
-            var layout = new InputLayout(device, inputSignature, elements);
-            // configure the Input Assembler portion of the pipeline with the vertex data
-
-            mContext.InputAssembler.InputLayout = layout;
-            mContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.TriangleStrip;
-
             // set the shaders
             mContext.VertexShader.Set(vertexShader);
             mContext.PixelShader.Set(pixelShader);
@@ -271,7 +261,7 @@ namespace kAI.Editor.Controls.DX
             };
 
             // Create text rendering stuff
-            SpriteRenderer = new SpriteRenderer(device);
+            SpriteRenderer = new SpriteRenderer(device, 7001);
             TextRenderer = new TextBlockRenderer(SpriteRenderer, "Arial", FontWeight.Normal, SlimDX.DirectWrite.FontStyle.Normal, FontStretch.Normal, 12.0f);
 
             // Create the shader resources for each of the textures
@@ -396,7 +386,7 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lNode">The node to stop rendering. </param>
         public void RemoveNode(kAI.Core.kAINode lNode)
         {
-            //throw new NotImplementedException();
+            mNodes.Remove(GetNode(lNode));
         }
 
         /// <summary>
@@ -410,7 +400,6 @@ namespace kAI.Editor.Controls.DX
 
             kAIEditorPortDX lStartEditorPort = GetPort(lOutPort);
             lStartEditorPort.UpdateConnexions();
-            //lStartEditorPort
         }
 
         /// <summary>
@@ -419,7 +408,11 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lConnexion">The connexion to stop rendering. </param>
         public void RemoveConnexion(kAI.Core.kAIPort.kAIConnexion lConnexion)
         {
-           // throw new NotImplementedException();
+            kAIPort lOutPort = lConnexion.StartPort.PortDirection == kAIPort.ePortDirection.PortDirection_Out ?
+                lConnexion.StartPort : lConnexion.EndPort;
+
+            kAIEditorPortDX lStartEditorPort = GetPort(lOutPort);
+            lStartEditorPort.UpdateConnexions();
         }
 
         /// <summary>
@@ -503,8 +496,13 @@ namespace kAI.Editor.Controls.DX
 
             for (eTextureID lTexture = (eTextureID)0; lTexture < eTextureID.TextureCount; ++lTexture)
             {
+                mTextures[(int)lTexture].Resource.Dispose();
                 mTextures[(int)lTexture].Dispose();
             }
+            mRenderTarget.Dispose();
+
+            vertexShader.Dispose();
+            pixelShader.Dispose();
 
             mContext.Device.Dispose();
             mSwapChain.Dispose();
@@ -536,6 +534,8 @@ namespace kAI.Editor.Controls.DX
             {
                 lNode.LineRender();
             }
+
+            layout.Dispose();
         }
 
         public void RenderLine(List<kAIAbsolutePosition> lPoints)

@@ -25,5 +25,11 @@ namespace kAI.Core
         /// </summary>
         /// <returns>The type of the serial object is. </returns>
         Type GetDataContractType();
+
+        /// <summary>
+        /// Gets the example name for this node object (to be modified if a match already exists). 
+        /// </summary>
+        /// <returns>A template string for the name.</returns>
+        string GetNameTemplate();
     }
 }

@@ -211,6 +211,16 @@ namespace kAI.Core
         /// </summary>
         /// <returns>The type of the serialiable used in this behaviour.</returns>
         public abstract Type GetDataContractType();
+
+        /// <summary>
+        /// Gets the name nodes should be based off. 
+        /// </summary>
+        /// <returns>The behaviour id. </returns>
+        public string GetNameTemplate()
+        {
+            return BehaviourID;
+        }
+
     }
 
 
