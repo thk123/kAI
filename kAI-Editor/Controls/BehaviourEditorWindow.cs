@@ -53,13 +53,13 @@ namespace kAI.Editor.Controls
                        
 
             mEditorImpl = lEditorImpl;
-
-            UnloadBehaviour();
         }
 
         public void Init(Control lContainer)
         {
             mEditorImpl.Init(lContainer, this);
+
+            UnloadBehaviour();
         }
 
 

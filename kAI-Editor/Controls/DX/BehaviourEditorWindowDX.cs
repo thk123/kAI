@@ -372,7 +372,13 @@ namespace kAI.Editor.Controls.DX
         /// </summary>
         public void UnloadBehaviour()
         {
-            //throw new NotImplementedException();
+            mPorts.Clear();
+            mNodes.Clear();
+
+            InputManager.ClearInputRectangles();
+
+            mCurrentInPosition = mInPortStartPosition;
+            mCurrentOutPosition = kOutPortStartPosition;
         }
 
         /// <summary>

@@ -120,6 +120,15 @@ namespace kAI.Editor.Controls.DX
             }
         }
 
+        /// <summary>
+        /// Clears the input rectangles stored in this input manager. 
+        /// </summary>
+        public void ClearInputRectangles()
+        {
+            mFixedMouseEventListeners.Clear();
+            mMovingMouseEventListeners.Clear();
+        }
+
        
         /// <summary>
         /// Processes a specific tree for the mouse input. 
