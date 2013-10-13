@@ -150,7 +150,7 @@ namespace kAI.Editor
                 //kAIIBehaviourEditorGraphicalImplementator lImpl = new BehaviourEditorWindowWinForms();
                 kAIIBehaviourEditorGraphicalImplementator lImpl = new kAIBehaviourEditorWindowDX();
 
-                mBehaviourEditor = new kAIBehaviourEditorWindow(mLoadedProject, lImpl);
+                mBehaviourEditor = new kAIBehaviourEditorWindow(mLoadedProject, lImpl, this);
                 mBehaviourEditor.Init(MainEditor.Panel2);
             }
         }
@@ -169,12 +169,23 @@ namespace kAI.Editor
         {
             if(mIsProjectLoaded)
             {
-                BehaviourChooser lChooser = new BehaviourChooser(mLoadedProject);
-                if (lChooser.ShowDialog() == DialogResult.OK)
-                {
-                    kAIINodeObject lSelectedNode = lChooser.GetSelectedBehaviour();
-                    mBehaviourEditor.AddNode(new kAINode(mBehaviourEditor.GetNodeName(lSelectedNode), lSelectedNode));
-                }
+
+                kAIINodeObject lSelectedNode = SelectNode();
+                mBehaviourEditor.AddNode(new kAINode(mBehaviourEditor.GetNodeName(lSelectedNode), lSelectedNode), mBehaviourEditor.GetPositionForNode());
+            }
+        }
+
+        public kAIINodeObject SelectNode()
+        {
+            kAIObject.Assert(null, mIsProjectLoaded, "No loaded project to choose from");
+            kAINodeChooser lChooser = new kAINodeChooser(mLoadedProject);
+            if (lChooser.ShowDialog() == DialogResult.OK)
+            {
+                return lChooser.GetSelectedBehaviour();
+            }
+            else
+            {
+                return null;
             }
         }
 

@@ -7,6 +7,8 @@ using System.Windows.Forms;
 
 using kAI.Core;
 using kAI.Editor.Core;
+using System.Drawing;
+using kAI.Editor.Controls.DX.Coordinates;
 
 namespace kAI.Editor.Controls
 {
@@ -18,7 +20,8 @@ namespace kAI.Editor.Controls
         void EditorUpdate();
         void Destroy();
 
-        void AddNode(kAINode lNode);
+        void AddNode(kAINode lNode, Point lPoint);
+        void AddNode(kAINode lNode, kAIAbsolutePosition lPoint);
         void RemoveNode(kAINode lNode);
 
         void AddConnexion(kAIPort.kAIConnexion lConnexion);
@@ -45,16 +48,46 @@ namespace kAI.Editor.Controls
 
         kAIProject mProject;
 
-        
+        Point mMousePositionOnContext;
 
-        public kAIBehaviourEditorWindow(kAIProject lProject, kAIIBehaviourEditorGraphicalImplementator lEditorImpl)
+        Editor mEditor;
+
+        static Random sRandom = new Random();
+
+        public ContextMenu GlobalContextMenu
         {
-            mProject = lProject;
-                       
+            get;
+            private set;
 
-            mEditorImpl = lEditorImpl;
         }
 
+        /// <summary>
+        /// Creates a behaviour editor window using the specified implementation
+        /// </summary>
+        /// <param name="lProject">The project we are loading.</param>
+        /// <param name="lEditorImpl">The implementation to use as the renderer. </param>
+        /// <param name="lEditor">The editor that owns this behaviour editor. </param>
+        public kAIBehaviourEditorWindow(kAIProject lProject, kAIIBehaviourEditorGraphicalImplementator lEditorImpl, Editor lEditor)
+        {
+            mProject = lProject;
+
+            mEditor = lEditor;
+            mEditorImpl = lEditorImpl;
+
+            MenuItem lAddNodeMenuItem = new MenuItem("Add Node...");
+            lAddNodeMenuItem.Click += new EventHandler(lAddNodeMenuItem_Click);            
+
+            GlobalContextMenu = new ContextMenu(new MenuItem[] {
+                lAddNodeMenuItem
+            });
+
+            GlobalContextMenu.Popup += new EventHandler(GlobalContextMenu_Popup);
+        }
+
+        /// <summary>
+        /// Initalise the behaviour composer inside the given control. 
+        /// </summary>
+        /// <param name="lContainer"></param>
         public void Init(Control lContainer)
         {
             mEditorImpl.Init(lContainer, this);
@@ -62,7 +95,11 @@ namespace kAI.Editor.Controls
             UnloadBehaviour();
         }
 
-
+        /// <summary>
+        /// Add a connexion to the loaded behaviour. 
+        /// </summary>
+        /// <param name="lStartPort">The start port of the connexion. </param>
+        /// <param name="lEndPort">The end port of the connexion. </param>
         public void AddConnexion(kAIPort lStartPort, kAIPort lEndPort)
         {
             kAIObject.Assert(null, mBehaviour, "No loaded behaviour");
@@ -90,36 +127,75 @@ namespace kAI.Editor.Controls
 
             foreach (kAINode lInternalNode in lBehaviour.InternalNodes)
             {
-                mEditorImpl.AddNode(lInternalNode);
+                mEditorImpl.AddNode(lInternalNode, GetPositionForNode());
             }
 
             // TODO: load connexions
 
             mBehaviour = lBehaviour;
-
-            
         }
 
+        /// <summary>
+        /// Generate a position for the next node to be added if not specified. 
+        /// </summary>
+        /// <returns>An absolute position for the node to start at. </returns>
+        public kAIAbsolutePosition GetPositionForNode()
+        {
+            return new kAIAbsolutePosition(-250 + sRandom.Next(500), -250 + sRandom.Next(500), false);
+        }
+
+        /// <summary>
+        /// Add an internal port to this node. 
+        /// </summary>
+        /// <param name="lInternalPort"></param>
         public void AddInternalPort(kAIPort lInternalPort)
         {
             // TODO: This is confusing...
-            mBehaviour.AddExternalPort(lInternalPort);
+            kAIObject.Assert(null, mBehaviour, "No loaded behaviour");
 
+            mBehaviour.AddExternalPort(lInternalPort);
 
             mEditorImpl.AddInternalPort(lInternalPort);
         }
 
-        public void AddNode(kAINode lNode)
+        /// <summary>
+        /// Add a node to the loaded behaviour. 
+        /// </summary>
+        /// <param name="lNode">The node to add. </param>
+        /// <param name="lPoint">The absolute position to add the point to. </param>
+        public void AddNode(kAINode lNode, kAIAbsolutePosition lPoint)
         {
             // TODO: work out if needed?
             // TODO: come back when done generic classes for other controls
             // Maybe should be in the impl any way
             //mNodes.Add(lNode);
+
+            kAIObject.Assert(null, mBehaviour, "No loaded behaviour");
+
             mBehaviour.AddNode(lNode);
 
-            mEditorImpl.AddNode(lNode);
+            mEditorImpl.AddNode(lNode, lPoint);
         }
 
+        /// <summary>
+        /// Add a node to the loaded behaviour. 
+        /// </summary>
+        /// <param name="lNode">The node to add. </param>
+        /// <param name="lPoint">The point (relative to the form) to add the node at. </param>
+        public void AddNode(kAINode lNode, Point lPoint)
+        {
+            kAIObject.Assert(null, mBehaviour, "No loaded behaviour");
+
+            mBehaviour.AddNode(lNode);
+
+
+
+            mEditorImpl.AddNode(lNode, lPoint);
+        }
+
+        /// <summary>
+        /// Save the behaviour. 
+        /// </summary>
         public void SaveBehaviour()
         {
             // Not sure if this needs to be here
@@ -129,6 +205,9 @@ namespace kAI.Editor.Controls
             }
         }
 
+        /// <summary>
+        /// Unload the behaviour. 
+        /// </summary>
         public void UnloadBehaviour()
         {
             if (mBehaviour != null)
@@ -143,21 +222,36 @@ namespace kAI.Editor.Controls
 
         }
 
+        /// <summary>
+        /// Update the editor (eg for DirectX). 
+        /// </summary>
         public void Update()
         {
             mEditorImpl.EditorUpdate();
         }
 
+        /// <summary>
+        /// Destroy the editor, freeing any resources. 
+        /// </summary>
         public void Destroy()
         {
             mEditorImpl.Destroy();
         }
 
+        /// <summary>
+        /// Can the editor currently form a connexion. 
+        /// </summary>
+        /// <returns>True if the editor can make a connect. </returns>
         public bool CanConnect()
         {
             return mEditorImpl.CanConnect();
         }
 
+        /// <summary>
+        /// Generate a node name for a given node object. 
+        /// </summary>
+        /// <param name="lNodeObject">The node object to generate a name for. </param>
+        /// <returns>A unique (to this behaviour) NodeID based on the object. </returns>
         public kAINodeID GetNodeName(kAIINodeObject lNodeObject)
         {
             kAIObject.Assert(null, mBehaviour, "No behaviour to generate name from");
@@ -174,7 +268,27 @@ namespace kAI.Editor.Controls
             return lModifiedName;
         }
 
-    }
+        /// <summary>
+        /// Remvoe a node from the loaded behaviour. 
+        /// </summary>
+        /// <param name="lNode">The node to remove. </param>
+        public void RemoveNode(kAINode lNode)
+        {
+            kAIObject.Assert(null, mBehaviour, "No loaded behaviour");
+            mBehaviour.RemoveNode(lNode);
+            mEditorImpl.RemoveNode(lNode);
+        }
 
-    
+        void GlobalContextMenu_Popup(object sender, EventArgs e)
+        {
+            // We store the position relative to the top left of the control
+            mMousePositionOnContext = new Point(Control.MousePosition.X - GlobalContextMenu.SourceControl.Location.X, Control.MousePosition.Y - GlobalContextMenu.SourceControl.Location.Y);
+        }
+
+        void lAddNodeMenuItem_Click(object sender, EventArgs e)
+        {
+            kAIINodeObject lSelectedNode = mEditor.SelectNode();
+            AddNode(new kAINode(GetNodeName(lSelectedNode), lSelectedNode), mMousePositionOnContext);
+        }
+    }    
 }

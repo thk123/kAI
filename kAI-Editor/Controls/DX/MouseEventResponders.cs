@@ -31,6 +31,11 @@ namespace kAI.Editor.Controls.DX
         public EventHandler<MouseEventArgs> OnMouseUp;
 
         /// <summary>
+        /// The context menu that is applicable within this rectangle. 
+        /// </summary>
+        public ContextMenu ContextMenu;
+
+        /// <summary>
         /// Is the rectangle associated with this currently hovered. 
         /// </summary>
         public bool Hovered = false;

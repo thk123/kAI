@@ -46,8 +46,6 @@ namespace kAI.Editor.Controls.DX
         readonly Point kOutPortStartPosition = new Point(0, 5);
         readonly int kPortDeltaY = (int)kAIEditorPortDX.sPortSize.Y + 5;
 
-        static Random sRandom = new Random();
-
         /// <summary>
         /// When two ports have been connected. 
         /// </summary>
@@ -375,9 +373,14 @@ namespace kAI.Editor.Controls.DX
         /// Add a node to the render of the behaviour. 
         /// </summary>
         /// <param name="lNode">The node to render.  </param>
-        public void AddNode(kAI.Core.kAINode lNode)
+        public void AddNode(kAI.Core.kAINode lNode, kAIAbsolutePosition lPoint)
         {
-            mNodes.Add(new kAIEditorNodeDX(lNode, new kAIAbsolutePosition(-250 + sRandom.Next(500), -250 + sRandom.Next(500), false), new kAIAbsoluteSize(200, 100), this));
+            mNodes.Add(new kAIEditorNodeDX(lNode, lPoint, new kAIAbsoluteSize(200, 100), this));
+        }
+
+        public void AddNode(kAI.Core.kAINode lNode, Point lPoint)
+        {
+            AddNode(lNode, new kAIAbsolutePosition(new kAIRelativePosition(lPoint), mCameraPosition, false));
         }
 
         /// <summary>

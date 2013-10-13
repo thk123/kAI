@@ -98,12 +98,22 @@ namespace kAI.Editor.Controls.DX
                 AddExternalPort(lExternalPort);
             }
 
+            MenuItem lDeleteNode = new MenuItem("Delete Node");
+            lDeleteNode.Click += new EventHandler(lDeleteNode_Click);
+
             lAddedRectangle = new Rectangle(Position.mPoint, Size.mSize);
 
             lEditorWindow.InputManager.AddClickListenArea(lAddedRectangle,
-                new kAIMouseEventResponders { OnMouseDown = OnMouseDown , RectangleId = Node.NodeID },
+                new kAIMouseEventResponders
+                {
+                    OnMouseDown = OnMouseDown,
+                    ContextMenu = new ContextMenu(new MenuItem[] { lDeleteNode }),
+                    RectangleId = Node.NodeID
+                },
                 false);
         }
+
+        
 
         /// <summary>
         /// Deprecated: 3D render using vertices to create a quad representing the node. 
@@ -285,6 +295,11 @@ namespace kAI.Editor.Controls.DX
             {
                 lExternalPort.UpdatePosition(lDX, lDY);
             }
+        }
+
+        void lDeleteNode_Click(object sender, EventArgs e)
+        {
+            mEditorWindow.Editor.RemoveNode(Node);
         }
     }
 }

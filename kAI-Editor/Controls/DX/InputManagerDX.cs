@@ -163,6 +163,8 @@ namespace kAI.Editor.Controls.DX
                     // We trigger the hover action
                     lResponder.CallAction(lResponder.OnMouseHover, lSender, lEventArgs);
                     lResponder.Hovered = true;
+
+                    mEditorWindow.ParentControl.ContextMenu = lResponder.ContextMenu;
                 }
 
                 // If the mouse button is down
@@ -208,6 +210,11 @@ namespace kAI.Editor.Controls.DX
                     // TODO: a click event, rename click to pressed
                     // not pressed, maybe just clicked?
                 }
+            }
+
+            if (!MouseOnSomething)
+            {
+                mEditorWindow.ParentControl.ContextMenu = mEditorWindow.Editor.GlobalContextMenu;
             }
         }
 

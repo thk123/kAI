@@ -16,6 +16,7 @@ using kAI.Editor.Core.Util;
 using kAI.Editor.Forms;
 using kAI.Editor.Forms.ProjectProperties;
 using kAI.Editor.Controls;
+using kAI.Editor.Controls.DX.Coordinates;
 
 namespace kAI.Editor.Controls
 {
@@ -87,15 +88,22 @@ namespace kAI.Editor.Controls
         /// Add a control representing a given node within the behaviour.
         /// </summary>
         /// <param name="lNode">The node that is being added. </param>
-        public void AddNode(kAINode lNode)
+        public void AddNode(kAINode lNode, Point lPoint)
         {
             kAIEditorNode lEditorNode = new kAIEditorNode(lNode);
+            lEditorNode.Location = lPoint;
             Controls.Add(lEditorNode);
 
             mNodes.Add(lEditorNode);
 
             lEditorNode.OnPortClicked += new kAIEditorNode.PortClicked(lEditorNode_OnPortClicked);
         }
+
+        public void AddNode(kAINode lNode, kAIAbsolutePosition lPoint)
+        {
+            AddNode(lNode, lPoint.mPoint);
+        }
+
 
         /// <summary>
         /// Remove a given node control from within the behaviour. 

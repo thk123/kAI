@@ -73,15 +73,23 @@ namespace kAI.Editor.Controls.DX
 
             mEditorWindow = lEditorWindow;
 
+            MenuItem lRemoveConnexion = new MenuItem("Remove connexion...");
+            MenuItem lRemoveAllConnexions = new MenuItem("Remove all connexions");
+            MenuItem lSeperator = new MenuItem("-");
+            MenuItem lAddConnexion = new MenuItem("Add connexion...");
+
             mAddedRectangle = new Rectangle(Position.mPoint, new Size((int)sPortSize.X, (int)sPortSize.Y));
 
-            mEditorWindow.InputManager.AddClickListenArea(mAddedRectangle, 
-                new kAIMouseEventResponders{ 
-                    OnMouseHover = OnHover, 
-                    OnMouseLeave = OnLeave, 
-                    OnMouseDown = OnMouseDown, 
+            mEditorWindow.InputManager.AddClickListenArea(mAddedRectangle,
+                new kAIMouseEventResponders
+                {
+                    OnMouseHover = OnHover,
+                    OnMouseLeave = OnLeave,
+                    OnMouseDown = OnMouseDown,
                     OnMouseUp = OnMouseUp,
-                    RectangleId = Port.OwningNodeID + ":" + Port.PortID},
+                    ContextMenu = new ContextMenu(new MenuItem[] { lRemoveConnexion, lRemoveAllConnexions, lSeperator, lAddConnexion }),
+                    RectangleId = Port.OwningNodeID + ":" + Port.PortID
+                },
                 Port.OwningNode == null); // if the port is an internal node (ie no owning node) then it doesn't move with the camera
 
             mConnexions = new List<kAIEditorConnexionDX>();
