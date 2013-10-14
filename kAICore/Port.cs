@@ -104,6 +104,8 @@ namespace kAI.Core
         /// </summary>
         kAINode mOwningNode;
 
+        bool mHasBeenTriggered;
+
         /// <summary>
         /// Get and sets the owning node of this port (maybe hide and just have the ID).
         /// You can only assign the owning node once and this must be done before connecting
@@ -272,6 +274,8 @@ namespace kAI.Core
             DataType = lDataType;
 
             OwningNode = null;
+
+            mHasBeenTriggered = false;
         }
 
         /// <summary>
@@ -279,6 +283,13 @@ namespace kAI.Core
         /// </summary>
         public void Trigger()
         {
+
+            if (!CheckState())
+            {
+                throw new Exception("Currently releasing a port, cannot trigger more");
+            }
+            
+
             if (DataType == kAIPortType.TriggerType)
             {
                 if (PortDirection == ePortDirection.PortDirection_Out)
@@ -288,10 +299,24 @@ namespace kAI.Core
                         lConnectedPorts.Trigger();
                     }
                 }
-                else
+
+                mHasBeenTriggered = true;
+            }
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public void Release()
+        {
+            if (mHasBeenTriggered)
+            {
+                // TODO: it is vital this does not trigger more ports
+                if (OnTriggered != null)
                 {
                     OnTriggered(this);
                 }
+                mHasBeenTriggered = false;
             }
         }
 
@@ -371,6 +396,27 @@ namespace kAI.Core
             {
                 return OwningNode.NodeID + ":" + PortID;
             }
+        }
+
+        /// <summary>
+        /// Check the the state is not in a release of another port (if we are, we cannot trigger aditional ports). 
+        /// </summary>
+        /// <returns>True if the state is valid for triggering a port. </returns>
+        private bool CheckState()
+        {
+            // TODO: We should check via a static or something.
+
+            string lStackTrace = Environment.StackTrace;
+            string[] lLines = lStackTrace.Split('\r', '\n');
+            foreach (string lLine in lLines)
+            {
+                if (lLine.Contains("Release"))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
 
@@ -534,6 +580,62 @@ namespace kAI.Core
         public static implicit operator kAIPortType(Type lType)
         {
             return new kAIPortType(lType);
+        }
+
+        /// <summary>
+        /// Checks equality of two port types. 
+        /// </summary>
+        /// <param name="lPortTypeA">The first port type. </param>
+        /// <param name="lPortTypeB">The second port type. </param>
+        /// <returns>True if theu are equal. </returns>
+        public static bool operator ==(kAIPortType lPortTypeA, kAIPortType lPortTypeB)
+        {
+            return lPortTypeA.Equals(lPortTypeB);
+        }
+
+        /// <summary>
+        /// Checks inequality of two port types. 
+        /// </summary>
+        /// <param name="lPortTypeA">The first port type. </param>
+        /// <param name="lPortTypeB">The second port type. </param>
+        /// <returns>True if theu are inequal. </returns>
+        public static bool operator !=(kAIPortType lPortTypeA, kAIPortType lPortTypeB)
+        {
+            return !lPortTypeA.Equals(lPortTypeB);
+        }
+    
+
+        /// <summary>
+        /// Check whether two data types are equal. 
+        /// </summary>
+        /// <param name="obj">The other obejct. </param>
+        /// <returns>True if the data types are equivalent. </returns>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+                return true;
+
+            if (((object)obj == null))
+                return false;
+
+            kAIPortType lDataType = obj as kAIPortType;
+            if (((object)lDataType != null))
+            {
+                return lDataType.DataType == DataType;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Generate a hash code based on the type. 
+        /// </summary>
+        /// <returns>The hash code the type would return. </returns>
+        public override int GetHashCode()
+        {
+            return DataType.GetHashCode();
         }
     }
 

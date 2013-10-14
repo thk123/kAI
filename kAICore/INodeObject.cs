@@ -31,5 +31,11 @@ namespace kAI.Core
         /// </summary>
         /// <returns>A template string for the name.</returns>
         string GetNameTemplate();
+
+        /// <summary>
+        /// Update the node. 
+        /// </summary>
+        /// <param name="lDeltaTime">The time passed since last update. </param>
+        void Update(float lDeltaTime);
     }
 }

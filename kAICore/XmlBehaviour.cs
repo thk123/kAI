@@ -234,6 +234,15 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// Remove a node from within this behaviour. 
+        /// </summary>
+        /// <param name="lNode">The node to remove. </param>
+        public void RemoveNode(kAINode lNode)
+        {
+            mInternalNodes.Remove(lNode.NodeID);
+        }
+
+        /// <summary>
         /// Find out if a node with a given ID is already contained within this behaviour. 
         /// </summary>
         /// <param name="lNodeID">The NodeID to check. </param>
@@ -290,6 +299,30 @@ namespace kAI.Core
         /// <param name="lDeltaTime">The time passed since last update. </param>
         public override void Update(float lDeltaTime)
         {
+            ReleasePorts();
+
+            foreach (kAINode lNode in mInternalNodes.Values)
+            {
+                
+                lNode.NodeContents.Update(lDeltaTime);
+            }
+        }
+
+        private void ReleasePorts()
+        {
+            foreach (InternalPort lInternalPort in mInternalPorts.Values)
+            {
+                kAIPort lPort = lInternalPort.Port;
+                lPort.Release();
+            }
+
+            foreach (kAINode lNode in mInternalNodes.Values)
+            {
+                foreach (kAIPort lPort in lNode.GetExternalPorts())
+                {
+                    lPort.Release();
+                }
+            }
         }
 
         /// <summary>
@@ -430,5 +463,7 @@ namespace kAI.Core
         {
             Deactivate();
         }
+
+        
     }
 }
