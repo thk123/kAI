@@ -163,11 +163,19 @@ namespace kAI.Core
             return GlobalPorts;
         }
 
+        public void Update(float lDeltaTime)
+        {
+            if (Active)
+            {
+                InternalUpdate(lDeltaTime);
+            }
+        }
+
         /// <summary>
         /// Update this behaviour. Depends on the behaviors implementation as to what happens here. 
         /// </summary>
         /// <param name="lDeltaTime">The time in seconds between the last update and this. </param>
-        public abstract void Update(float lDeltaTime);
+        protected abstract void InternalUpdate(float lDeltaTime);
 
         /// <summary>
         /// Deactivate this behaviour. 

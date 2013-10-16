@@ -297,13 +297,14 @@ namespace kAI.Core
         /// Update this behaviour, updating an active nodes and processing any events. 
         /// </summary>
         /// <param name="lDeltaTime">The time passed since last update. </param>
-        public override void Update(float lDeltaTime)
+        public override void InternalUpdate(float lDeltaTime)
         {
             ReleasePorts();
 
             foreach (kAINode lNode in mInternalNodes.Values)
             {
-                
+                // This calls the update on the node contents (if this is a behaviour, this will only happen if the behaviour 
+                // is active). 
                 lNode.NodeContents.Update(lDeltaTime);
             }
         }
