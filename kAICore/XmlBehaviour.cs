@@ -274,6 +274,54 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// Get all the ports that are either connected from or to this port.
+        /// For outbound ports, that is just lPort.Connexions. However, for 
+        /// in bound ports this must be computed by checking all internal nodes
+        /// and ports for things that are connected to it. 
+        /// </summary>
+        /// <param name="lPort">The port to find what is connected to it. </param>
+        /// <returns>A list of ports that are either conected to or from the specified port. </returns>
+        public IEnumerable<kAIPort.kAIConnexion> GetConnectedPorts(kAIPort lPort)
+        {
+            if (lPort.PortDirection == kAIPort.ePortDirection.PortDirection_Out)
+            {
+                return lPort.Connexions;
+            }
+            else
+            {
+                List<kAIPort.kAIConnexion> lConnexions = new List<kAIPort.kAIConnexion>();
+
+                foreach (InternalPort lInternalPortWrapper in mInternalPorts.Values)
+                {
+                    kAIPort lInternalPort = lInternalPortWrapper.Port;
+                    if (lInternalPort.PortDirection == kAIPort.ePortDirection.PortDirection_Out)
+                    {
+                        if (lInternalPort.IsConnectedTo(lPort))
+                        {
+                            lConnexions.Add(new kAIPort.kAIConnexion(lInternalPort, lPort));
+                        }
+                    }
+                }
+
+                foreach (kAINode lInternalNode in mInternalNodes.Values)
+                {
+                    foreach (kAIPort lInternalNodePort in lInternalNode.GetExternalPorts())
+                    {
+                        if (lInternalNodePort.PortDirection == kAIPort.ePortDirection.PortDirection_Out)
+                        {
+                            if (lInternalNodePort.IsConnectedTo(lPort))
+                            {
+                                lConnexions.Add(new kAIPort.kAIConnexion(lInternalNodePort, lPort));
+                            }
+                        }
+                    }
+                }
+
+                return lConnexions;
+            }
+        }
+
+        /// <summary>
         /// Save this XML behaviour in to an XML file. 
         /// </summary>
         public void Save()

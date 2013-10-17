@@ -39,10 +39,7 @@ namespace kAI.Editor.Controls
     class kAIBehaviourEditorWindow
     {
         kAIIBehaviourEditorGraphicalImplementator mEditorImpl; 
-        /// <summary>
-        /// The behaviour currently being shown in this editor. 
-        /// </summary>
-        kAIXmlBehaviour mBehaviour;
+        
 
         FileInfo mBehaviourLocation;
 
@@ -58,7 +55,15 @@ namespace kAI.Editor.Controls
         {
             get;
             private set;
+        }
 
+        /// <summary>
+        /// The behaviour currently being shown in this editor. 
+        /// </summary>
+        public kAIXmlBehaviour Behaviour
+        {
+            get;
+            private set;
         }
 
         /// <summary>
@@ -102,11 +107,20 @@ namespace kAI.Editor.Controls
         /// <param name="lEndPort">The end port of the connexion. </param>
         public void AddConnexion(kAIPort lStartPort, kAIPort lEndPort)
         {
-            kAIObject.Assert(null, mBehaviour, "No loaded behaviour");
+            kAIObject.Assert(null, Behaviour, "No loaded behaviour");
 
-            mBehaviour.AddConnexion(lStartPort, lEndPort);
+            Behaviour.AddConnexion(lStartPort, lEndPort);
 
             mEditorImpl.AddConnexion(new kAIPort.kAIConnexion(lStartPort, lEndPort));
+        }
+
+        public void RemoveConnexion(kAIPort lStartPort, kAIPort lEndPort)
+        {
+            kAIObject.Assert(null, Behaviour, "No loaded behaviour");
+
+            lStartPort.BreakConnexion(lEndPort);
+
+            mEditorImpl.RemoveConnexion(new kAIPort.kAIConnexion(lStartPort, lEndPort));
         }
 
         /// <summary>
@@ -115,7 +129,7 @@ namespace kAI.Editor.Controls
         /// <param name="lBehaviour">The XML behaviour to load. </param>
         public void LoadBehaviour(kAIXmlBehaviour lBehaviour)
         {
-            if (mBehaviour != null)
+            if (Behaviour != null)
             {
                 UnloadBehaviour();
             }
@@ -132,7 +146,7 @@ namespace kAI.Editor.Controls
 
             // TODO: load connexions
 
-            mBehaviour = lBehaviour;
+            Behaviour = lBehaviour;
         }
 
         /// <summary>
@@ -151,9 +165,9 @@ namespace kAI.Editor.Controls
         public void AddInternalPort(kAIPort lInternalPort)
         {
             // TODO: This is confusing...
-            kAIObject.Assert(null, mBehaviour, "No loaded behaviour");
+            kAIObject.Assert(null, Behaviour, "No loaded behaviour");
 
-            mBehaviour.AddExternalPort(lInternalPort);
+            Behaviour.AddExternalPort(lInternalPort);
 
             mEditorImpl.AddInternalPort(lInternalPort);
         }
@@ -170,9 +184,9 @@ namespace kAI.Editor.Controls
             // Maybe should be in the impl any way
             //mNodes.Add(lNode);
 
-            kAIObject.Assert(null, mBehaviour, "No loaded behaviour");
+            kAIObject.Assert(null, Behaviour, "No loaded behaviour");
 
-            mBehaviour.AddNode(lNode);
+            Behaviour.AddNode(lNode);
 
             mEditorImpl.AddNode(lNode, lPoint);
         }
@@ -184,9 +198,9 @@ namespace kAI.Editor.Controls
         /// <param name="lPoint">The point (relative to the form) to add the node at. </param>
         public void AddNode(kAINode lNode, Point lPoint)
         {
-            kAIObject.Assert(null, mBehaviour, "No loaded behaviour");
+            kAIObject.Assert(null, Behaviour, "No loaded behaviour");
 
-            mBehaviour.AddNode(lNode);
+            Behaviour.AddNode(lNode);
 
 
 
@@ -199,9 +213,9 @@ namespace kAI.Editor.Controls
         public void SaveBehaviour()
         {
             // Not sure if this needs to be here
-            if (mBehaviour != null)
+            if (Behaviour != null)
             {
-                mBehaviour.Save();
+                Behaviour.Save();
             }
         }
 
@@ -210,14 +224,14 @@ namespace kAI.Editor.Controls
         /// </summary>
         public void UnloadBehaviour()
         {
-            if (mBehaviour != null)
+            if (Behaviour != null)
             {
-                mBehaviour.Save();
+                Behaviour.Save();
             }
 
             mEditorImpl.UnloadBehaviour();
 
-            mBehaviour = null;
+            Behaviour = null;
             mBehaviourLocation = null;
 
         }
@@ -254,12 +268,12 @@ namespace kAI.Editor.Controls
         /// <returns>A unique (to this behaviour) NodeID based on the object. </returns>
         public kAINodeID GetNodeName(kAIINodeObject lNodeObject)
         {
-            kAIObject.Assert(null, mBehaviour, "No behaviour to generate name from");
+            kAIObject.Assert(null, Behaviour, "No behaviour to generate name from");
             string lTemplateName = lNodeObject.GetNameTemplate();
             string lModifiedName = lTemplateName;
 
             int i = 0;
-            while (mBehaviour.ContainsNodeID(lModifiedName))
+            while (Behaviour.ContainsNodeID(lModifiedName))
             {
                 lModifiedName = lTemplateName + i;
                 ++i;
@@ -274,8 +288,8 @@ namespace kAI.Editor.Controls
         /// <param name="lNode">The node to remove. </param>
         public void RemoveNode(kAINode lNode)
         {
-            kAIObject.Assert(null, mBehaviour, "No loaded behaviour");
-            mBehaviour.RemoveNode(lNode);
+            kAIObject.Assert(null, Behaviour, "No loaded behaviour");
+            Behaviour.RemoveNode(lNode);
             mEditorImpl.RemoveNode(lNode);
         }
 

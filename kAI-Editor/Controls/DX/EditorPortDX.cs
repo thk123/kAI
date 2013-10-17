@@ -75,6 +75,7 @@ namespace kAI.Editor.Controls.DX
 
             MenuItem lRemoveConnexion = new MenuItem("Remove connexion...");
             MenuItem lRemoveAllConnexions = new MenuItem("Remove all connexions");
+            lRemoveAllConnexions.Click += new EventHandler(lRemoveAllConnexions_Click);
             MenuItem lSeperator = new MenuItem("-");
             MenuItem lAddConnexion = new MenuItem("Add connexion...");
 
@@ -102,6 +103,23 @@ namespace kAI.Editor.Controls.DX
                 }
             }
 
+        }
+
+        void lRemoveAllConnexions_Click(object sender, EventArgs e)
+        {
+            // Must store and then do otherwise we modify the collection inside the behaviour as we iterate.
+            List<kAIPort> lPortsToDisconnect = new List<kAIPort>();
+            foreach (kAIPort.kAIConnexion lConnexion in mEditorWindow.Editor.Behaviour.GetConnectedPorts(Port))
+            {
+                kAIPort lOtherEnd = lConnexion.EndPort.PortID == Port.PortID ? lConnexion.StartPort : lConnexion.EndPort;
+                lPortsToDisconnect.Add(lOtherEnd);
+                
+            }
+
+            foreach (kAIPort lPortToDisconnect in lPortsToDisconnect)
+            {
+                mEditorWindow.Editor.RemoveConnexion(Port, lPortToDisconnect);
+            }
         }
 
         /// <summary>
