@@ -163,6 +163,10 @@ namespace kAI.Core
             return GlobalPorts;
         }
 
+        /// <summary>
+        /// Update this behaviour (if active). 
+        /// </summary>
+        /// <param name="lDeltaTime">The time in seconds that has passed since the last frame. </param>
         public void Update(float lDeltaTime)
         {
             if (Active)

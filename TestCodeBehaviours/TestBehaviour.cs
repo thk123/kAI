@@ -16,9 +16,17 @@ namespace TestCodeBehaviours
 
         }
 
-        public override void Update(float lDeltaTime)
+        int i = 0;
+
+        protected override void InternalUpdate(float lDeltaTime)
         {
-            
+            LogMessage("Hello World!");
+            ++i;
+
+            if (i > 50)
+            {
+                Deactivate();
+            }
         }
     }
 }

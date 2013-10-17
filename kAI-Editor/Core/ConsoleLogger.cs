@@ -22,7 +22,7 @@ namespace kAI.Editor.Core
         private void WriteString(string lText, ConsoleColor lColour = ConsoleColor.Gray)
         {
             Console.ForegroundColor = lColour;
-            Console.WriteLine(DateTime.Now.ToString("hh:mm:ss") + ": " + lText);
+            Console.WriteLine(DateTime.Now.ToString("HH:mm:ss") + ": " + lText);
             Console.ResetColor();
         }
 
@@ -30,7 +30,18 @@ namespace kAI.Editor.Core
         {
             foreach (KeyValuePair<string, object> lDetail in lDetails)
             {
-                WriteString("\t" + lDetail.Key + " - " + lDetail.Value.ToString());
+                string lValue;
+                if (lDetail.Value != null)
+                {
+                    lValue = lDetail.Value.ToString();
+                }
+                else
+                {
+                    lValue = "{ }";
+                }
+                string lString = "\t" + lDetail.Key + " - " + lValue;
+
+                WriteString(lString, lColor);
             }
         }
 

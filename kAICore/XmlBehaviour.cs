@@ -297,7 +297,7 @@ namespace kAI.Core
         /// Update this behaviour, updating an active nodes and processing any events. 
         /// </summary>
         /// <param name="lDeltaTime">The time passed since last update. </param>
-        public override void InternalUpdate(float lDeltaTime)
+        protected override void InternalUpdate(float lDeltaTime)
         {
             ReleasePorts();
 

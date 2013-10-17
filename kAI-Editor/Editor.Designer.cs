@@ -42,6 +42,7 @@
             this.behavioursToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.createNewXmlBehaviourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addBehaviourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.runCommandToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.MainEditor)).BeginInit();
             this.MainEditor.SuspendLayout();
             this.menuStrip1.SuspendLayout();
@@ -143,7 +144,8 @@
             // 
             this.behavioursToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.createNewXmlBehaviourToolStripMenuItem,
-            this.addBehaviourToolStripMenuItem});
+            this.addBehaviourToolStripMenuItem,
+            this.runCommandToolStripMenuItem});
             this.behavioursToolStripMenuItem.Name = "behavioursToolStripMenuItem";
             this.behavioursToolStripMenuItem.Size = new System.Drawing.Size(77, 20);
             this.behavioursToolStripMenuItem.Text = "Behaviours";
@@ -161,6 +163,13 @@
             this.addBehaviourToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
             this.addBehaviourToolStripMenuItem.Text = "Add Behaviour";
             this.addBehaviourToolStripMenuItem.Click += new System.EventHandler(this.addBehaviourToolStripMenuItem_Click);
+            // 
+            // runCommandToolStripMenuItem
+            // 
+            this.runCommandToolStripMenuItem.Name = "runCommandToolStripMenuItem";
+            this.runCommandToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.runCommandToolStripMenuItem.Text = "Run command...";
+            this.runCommandToolStripMenuItem.Click += new System.EventHandler(this.runCommandToolStripMenuItem_Click);
             // 
             // Editor
             // 
@@ -198,6 +207,7 @@
         private System.Windows.Forms.ToolStripMenuItem saveToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveProjectToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem runCommandToolStripMenuItem;
 
     }
 }

@@ -112,6 +112,8 @@ namespace kAI.Editor
             CreateBehaviourEditorWindow();
             mBehaviourEditor.LoadBehaviour(lBehaviour);
             SetEnabledSetControls(mBehaviourLoadedControls, true);
+
+            kAIInteractionTerminal.Init(lBehaviour);
         }
 
         /// <summary>
@@ -305,6 +307,17 @@ namespace kAI.Editor
         private void Editor_FormClosed(object sender, FormClosedEventArgs e)
         {
             DestroyBehaviourEditorWindow();
+        }
+
+        private void runCommandToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool lResult;
+            do 
+            {
+                lResult = kAIInteractionTerminal.RunCommand(Console.ReadLine());
+
+            } while (!lResult);
+            
         }
     }
 }
