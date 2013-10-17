@@ -81,6 +81,7 @@ namespace kAI.Editor.Core
                                 try
                                 {
                                     int lValue = Int32.Parse(lMatch.Groups[lCount + 1].Value);
+                                    lParamValues[lCount] = lValue;
                                 }
                                 catch (FormatException ex)
                                 {

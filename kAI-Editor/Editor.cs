@@ -243,14 +243,19 @@ namespace kAI.Editor
                 //kAIXmlBehaviour lBehaviour = 
                 
                 kAIXmlBehaviour lBehaviour = new kAIXmlBehaviour(lCreator.BehaviourID, lCreator.BehaviourPath);
+
+                mLoadedProject.AddXmlBehaviour(lBehaviour.GetDataContractClass());
+
+                mBehaviourTree.UpdateTree(mLoadedProject);
+
                 LoadBehaviour(lBehaviour);
+
+                
 
 
                 /*kAIXmlBehaviour lBehaviour = mBehaviourEditor.NewBehaviour();
 
-                mLoadedProject.AddXmlBehaviour(lBehaviour.GetDataContractClass());
-
-                mBehaviourTree.UpdateTree(mLoadedProject);*/
+                ;*/
             }
         }
 

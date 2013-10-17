@@ -40,7 +40,7 @@ namespace kAI.Editor.Controls.DX
         bool mBeingDragged;
 
         // The rectangle we were at, so we can remove it. 
-        Rectangle lAddedRectangle;
+        Rectangle mAddedRectangle;
 
         /// <summary>
         /// The node that is being represented.  
@@ -101,9 +101,9 @@ namespace kAI.Editor.Controls.DX
             MenuItem lDeleteNode = new MenuItem("Delete Node");
             lDeleteNode.Click += new EventHandler(lDeleteNode_Click);
 
-            lAddedRectangle = new Rectangle(Position.mPoint, Size.mSize);
+            mAddedRectangle = new Rectangle(Position.mPoint, Size.mSize);
 
-            lEditorWindow.InputManager.AddClickListenArea(lAddedRectangle,
+            lEditorWindow.InputManager.AddClickListenArea(mAddedRectangle,
                 new kAIMouseEventResponders
                 {
                     OnMouseDown = OnMouseDown,
@@ -256,12 +256,12 @@ namespace kAI.Editor.Controls.DX
             mEditorWindow.InputManager.OnMouseUp -= InputManager_OnMouseUp;
 
             // Remove the old rectangle. 
-            kAIMouseEventResponders lResponder = mEditorWindow.InputManager.RemoveClickListenArea(lAddedRectangle, false);
+            kAIMouseEventResponders lResponder = mEditorWindow.InputManager.RemoveClickListenArea(mAddedRectangle, false);
             kAIObject.Assert(null, lResponder, "Could not find node!");
 
             // Create and add the new rectangle. 
-            lAddedRectangle = new Rectangle(Position.mPoint, Size.mSize);
-            mEditorWindow.InputManager.AddClickListenArea(lAddedRectangle, lResponder, false);
+            mAddedRectangle = new Rectangle(Position.mPoint, Size.mSize);
+            mEditorWindow.InputManager.AddClickListenArea(mAddedRectangle, lResponder, false);
 
             // Tell the ports we are done moving (so they can remove their old rectangles and add the new ones). 
             foreach (kAIEditorPortDX lExternalPort in mExternalPorts)
@@ -299,6 +299,7 @@ namespace kAI.Editor.Controls.DX
 
         void lDeleteNode_Click(object sender, EventArgs e)
         {
+            mEditorWindow.InputManager.RemoveClickListenArea(mAddedRectangle, false);
             mEditorWindow.Editor.RemoveNode(Node);
         }
     }

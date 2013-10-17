@@ -149,9 +149,9 @@ namespace kAI.Editor.Controls
                 mEditorImpl.AddNode(lInternalNode, GetPositionForNode());
             }
 
-            // TODO: load connexions
-
             Behaviour = lBehaviour;
+
+            Behaviour.ForceActivation();
         }
 
         /// <summary>
@@ -231,6 +231,7 @@ namespace kAI.Editor.Controls
         {
             if (Behaviour != null)
             {
+                Behaviour.ForceDeactivate();
                 Behaviour.Save();
             }
 

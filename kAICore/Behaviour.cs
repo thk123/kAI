@@ -155,6 +155,26 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// Gets the external port of this behaviour to activate it. 
+        /// </summary>
+        /// <returns>The external port to activate this behaviour. </returns>
+        public void ForceActivation()
+        {
+            mExternalPorts[kActivatePortID].Trigger();
+            mExternalPorts[kActivatePortID].Release();
+        }
+
+        /// <summary>
+        /// Gets the external port of this behaviour to deactivate it. 
+        /// </summary>
+        /// <returns>The external port to deactivate this behaviour. </returns>
+        public void ForceDeactivate()
+        {
+            mExternalPorts[kDeactivatePortID].Trigger();
+            mExternalPorts[kDeactivatePortID].Release();
+        }
+
+        /// <summary>
         /// The list of externally connectible ports. 
         /// </summary>
         /// <returns>A list of ports that can be connected to externally. </returns>
@@ -208,6 +228,7 @@ namespace kAI.Core
         /// </summary>
         protected void Activate()
         {
+            LogMessage("Behaviour has been activated", new KeyValuePair<string, object>("Behaviour", BehaviourID));
             Active = true;
             OnActivate();
         }
