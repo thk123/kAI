@@ -177,6 +177,10 @@ namespace kAI.Editor
             }
         }
 
+        /// <summary>
+        /// Presents a dialog for the user to choose what kind of node to create. 
+        /// </summary>
+        /// <returns>A node object that the user wants to instantiate into a node. </returns>
         public kAIINodeObject SelectNode()
         {
             kAIObject.Assert(null, mIsProjectLoaded, "No loaded project to choose from");

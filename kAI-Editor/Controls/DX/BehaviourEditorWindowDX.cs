@@ -158,6 +158,7 @@ namespace kAI.Editor.Controls.DX
         /// Set up the editor window within a given control. 
         /// </summary>
         /// <param name="lParentControl">The control to embed the editor in to. </param>
+        /// <param name="lWindow">The editor that is controlling the implementation. </param>
         public void Init(Control lParentControl, kAIBehaviourEditorWindow lWindow)
         {
             ParentControl = lParentControl;
@@ -372,7 +373,8 @@ namespace kAI.Editor.Controls.DX
         /// <summary>
         /// Add a node to the render of the behaviour. 
         /// </summary>
-        /// <param name="lNode">The node to render.  </param>
+        /// <param name="lNode">The node to render. </param>
+        /// <param param name="lPoint">The position relateive to the form for where to add this node. </param>
         public void AddNode(kAI.Core.kAINode lNode, kAIAbsolutePosition lPoint)
         {
             mNodes.Add(new kAIEditorNodeDX(lNode, lPoint, new kAIAbsoluteSize(200, 100), this));

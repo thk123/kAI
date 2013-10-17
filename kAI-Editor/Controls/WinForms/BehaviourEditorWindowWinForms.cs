@@ -88,6 +88,7 @@ namespace kAI.Editor.Controls
         /// Add a control representing a given node within the behaviour.
         /// </summary>
         /// <param name="lNode">The node that is being added. </param>
+        /// <param name="lPoint">The point relative to the control where to add the node. </param>
         public void AddNode(kAINode lNode, Point lPoint)
         {
             kAIEditorNode lEditorNode = new kAIEditorNode(lNode);

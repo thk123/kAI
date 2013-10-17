@@ -141,7 +141,7 @@ namespace kAI.Editor.Core
                 lPort.Trigger();
                 return true;
             }
-            catch(InvalidOperationException ex)
+            catch(InvalidOperationException)
             {
                 kAIObject.LogWarning(null, "Could not find port of specified name", new KeyValuePair<string, object>("Port name given", lPortName));
                 return false;
