@@ -123,6 +123,11 @@ namespace kAI.Editor.Controls
             mEditorImpl.RemoveConnexion(new kAIPort.kAIConnexion(lStartPort, lEndPort));
         }
 
+        public void RemoveConnexion(kAIPort.kAIConnexion lConnexion)
+        {
+            RemoveConnexion(lConnexion.StartPort, lConnexion.EndPort);
+        }
+
         /// <summary>
         /// Load an existing XML behaviour in to the editor. 
         /// </summary>

@@ -10,6 +10,7 @@ using SlimDX;
 using kAI.Core;
 using SlimDX.Direct3D11;
 using kAI.Editor.Controls.DX.Coordinates;
+using kAI.Editor.Controls.WinForms;
 
 namespace kAI.Editor.Controls.DX
 {
@@ -74,10 +75,10 @@ namespace kAI.Editor.Controls.DX
             mEditorWindow = lEditorWindow;
 
             MenuItem lRemoveConnexion = new MenuItem("Remove connexion...");
+            lRemoveConnexion.Click += new EventHandler(lRemoveConnexion_Click);
+
             MenuItem lRemoveAllConnexions = new MenuItem("Remove all connexions");
             lRemoveAllConnexions.Click += new EventHandler(lRemoveAllConnexions_Click);
-            MenuItem lSeperator = new MenuItem("-");
-            MenuItem lAddConnexion = new MenuItem("Add connexion...");
 
             mAddedRectangle = new Rectangle(Position.mPoint, new Size((int)sPortSize.X, (int)sPortSize.Y));
 
@@ -88,7 +89,7 @@ namespace kAI.Editor.Controls.DX
                     OnMouseLeave = OnLeave,
                     OnMouseDown = OnMouseDown,
                     OnMouseUp = OnMouseUp,
-                    ContextMenu = new ContextMenu(new MenuItem[] { lRemoveConnexion, lRemoveAllConnexions, lSeperator, lAddConnexion }),
+                    ContextMenu = new ContextMenu(new MenuItem[] { lRemoveConnexion, lRemoveAllConnexions }),
                     RectangleId = Port.OwningNodeID + ":" + Port.PortID
                 },
                 Port.OwningNode == null); // if the port is an internal node (ie no owning node) then it doesn't move with the camera
@@ -103,6 +104,21 @@ namespace kAI.Editor.Controls.DX
                 }
             }
 
+        }
+
+        void lRemoveConnexion_Click(object sender, EventArgs e)
+        {
+            SelectConnexionDialogue lConnexionSelector = new SelectConnexionDialogue(Port, mEditorWindow.Editor.Behaviour.GetConnectedPorts(Port));
+
+            DialogResult lResult = lConnexionSelector.ShowDialog();
+
+            if (lResult == DialogResult.OK)
+            {
+                foreach (kAIPort.kAIConnexion lConnexion in lConnexionSelector.GetPortsToDisconnect())
+                {
+                    mEditorWindow.Editor.RemoveConnexion(lConnexion);
+                }
+            }
         }
 
         void lRemoveAllConnexions_Click(object sender, EventArgs e)
