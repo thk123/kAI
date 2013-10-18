@@ -155,6 +155,18 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// Should be used if this behaviour is not contained within another behaviour as 
+        /// these can behave a little differently. 
+        /// </summary>
+        public void SetGlobal()
+        {
+            foreach (kAIPort lExternalPort in mExternalPorts.Values)
+            {
+                lExternalPort.OwningBehaviour = null;
+            }
+        }
+
+        /// <summary>
         /// Gets the external port of this behaviour to activate it. 
         /// </summary>
         /// <returns>The external port to activate this behaviour. </returns>
