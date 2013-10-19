@@ -85,7 +85,7 @@ namespace kAI.Editor.Controls.DX
             mEditorWindow.InputManager.AddClickListenArea(mAddedRectangle,
                 new kAIMouseEventResponders
                 {
-                    OnMouseHover = OnHover,
+                    OnMouseEnter = OnHover,
                     OnMouseLeave = OnLeave,
                     OnMouseDown = OnMouseDown,
                     OnMouseUp = OnMouseUp,
