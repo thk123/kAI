@@ -95,6 +95,12 @@
     <Compile Include="Controls\WinForms\SelectConnexionDialogue.Designer.cs">
       <DependentUpon>SelectConnexionDialogue.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\WinForms\UILogger.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\WinForms\UILogger.Designer.cs">
+      <DependentUpon>UILogger.cs</DependentUpon>
+    </Compile>
     <Compile Include="Core\ConsoleLogger.cs" />
     <Compile Include="Core\InteractionTerminal.cs" />
     <Compile Include="Windows\BehaviourChooser.cs">
@@ -158,6 +164,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\WinForms\SelectConnexionDialogue.resx">
       <DependentUpon>SelectConnexionDialogue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WinForms\UILogger.resx">
+      <DependentUpon>UILogger.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\BehaviourChooser.resx">
       <DependentUpon>BehaviourChooser.cs</DependentUpon>

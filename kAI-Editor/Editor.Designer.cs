@@ -29,6 +29,7 @@
         private void InitializeComponent()
         {
             this.MainEditor = new System.Windows.Forms.SplitContainer();
+            this.splitContainer1 = new System.Windows.Forms.SplitContainer();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -43,8 +44,13 @@
             this.createNewXmlBehaviourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addBehaviourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runCommandToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.uiLogger1 = new kAI.Editor.Controls.WinForms.UILogger();
             ((System.ComponentModel.ISupportInitialize)(this.MainEditor)).BeginInit();
+            this.MainEditor.Panel2.SuspendLayout();
             this.MainEditor.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
+            this.splitContainer1.Panel2.SuspendLayout();
+            this.splitContainer1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -53,9 +59,35 @@
             this.MainEditor.Dock = System.Windows.Forms.DockStyle.Fill;
             this.MainEditor.Location = new System.Drawing.Point(0, 24);
             this.MainEditor.Name = "MainEditor";
+            // 
+            // MainEditor.Panel1
+            // 
+            this.MainEditor.Panel1.BackColor = System.Drawing.Color.Gray;
+            // 
+            // MainEditor.Panel2
+            // 
+            this.MainEditor.Panel2.Controls.Add(this.splitContainer1);
             this.MainEditor.Size = new System.Drawing.Size(1226, 616);
             this.MainEditor.SplitterDistance = 249;
             this.MainEditor.TabIndex = 1;
+            // 
+            // splitContainer1
+            // 
+            this.splitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer1.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer1.Name = "splitContainer1";
+            this.splitContainer1.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer1.Panel1
+            // 
+            this.splitContainer1.Panel1.BackColor = System.Drawing.Color.Gray;
+            // 
+            // splitContainer1.Panel2
+            // 
+            this.splitContainer1.Panel2.Controls.Add(this.uiLogger1);
+            this.splitContainer1.Size = new System.Drawing.Size(973, 616);
+            this.splitContainer1.SplitterDistance = 429;
+            this.splitContainer1.TabIndex = 0;
             // 
             // fileToolStripMenuItem
             // 
@@ -65,6 +97,7 @@
             this.saveToolStripMenuItem,
             this.loadToolStripMenuItem,
             this.saveProjectToolStripMenuItem});
+            this.fileToolStripMenuItem.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.fileToolStripMenuItem.Name = "fileToolStripMenuItem";
             this.fileToolStripMenuItem.Size = new System.Drawing.Size(37, 20);
             this.fileToolStripMenuItem.Text = "File";
@@ -72,35 +105,35 @@
             // newProjectToolStripMenuItem
             // 
             this.newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
-            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.newProjectToolStripMenuItem.Text = "New Project...";
             this.newProjectToolStripMenuItem.Click += new System.EventHandler(this.newProjectToolStripMenuItem_Click);
             // 
             // openProjectToolStripMenuItem
             // 
             this.openProjectToolStripMenuItem.Name = "openProjectToolStripMenuItem";
-            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.openProjectToolStripMenuItem.Text = "Open Project";
             this.openProjectToolStripMenuItem.Click += new System.EventHandler(this.openProjectToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.loadToolStripMenuItem.Text = "Load";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
             // saveProjectToolStripMenuItem
             // 
             this.saveProjectToolStripMenuItem.Name = "saveProjectToolStripMenuItem";
-            this.saveProjectToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
+            this.saveProjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
             this.saveProjectToolStripMenuItem.Text = "Save Project";
             this.saveProjectToolStripMenuItem.Click += new System.EventHandler(this.saveProjectToolStripMenuItem_Click);
             // 
@@ -171,19 +204,35 @@
             this.runCommandToolStripMenuItem.Text = "Run command...";
             this.runCommandToolStripMenuItem.Click += new System.EventHandler(this.runCommandToolStripMenuItem_Click);
             // 
+            // uiLogger1
+            // 
+            this.uiLogger1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.uiLogger1.BackColor = System.Drawing.Color.Gray;
+            this.uiLogger1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.uiLogger1.Location = new System.Drawing.Point(0, 0);
+            this.uiLogger1.Name = "uiLogger1";
+            this.uiLogger1.Size = new System.Drawing.Size(973, 183);
+            this.uiLogger1.TabIndex = 0;
+            // 
             // Editor
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
+            this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.ClientSize = new System.Drawing.Size(1226, 640);
             this.Controls.Add(this.MainEditor);
             this.Controls.Add(this.menuStrip1);
+            this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Editor";
             this.Text = "kAI Editor";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Editor_FormClosed);
+            this.MainEditor.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.MainEditor)).EndInit();
             this.MainEditor.ResumeLayout(false);
+            this.splitContainer1.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).EndInit();
+            this.splitContainer1.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -208,6 +257,8 @@
         private System.Windows.Forms.ToolStripMenuItem loadToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem saveProjectToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem runCommandToolStripMenuItem;
+        private System.Windows.Forms.SplitContainer splitContainer1;
+        private Controls.WinForms.UILogger uiLogger1;
 
     }
 }

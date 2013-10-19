@@ -58,12 +58,16 @@ namespace kAI.Editor
             mBehaviourLoadedControls = new List<PropertyControllerBase<bool>>();
             mBehaviourLoadedControls.Add(PropertyController.CreateForEnabledToolStrip(addBehaviourToolStripMenuItem));
             mBehaviourLoadedControls.Add(PropertyController.CreateForEnabledToolStrip(saveToolStripMenuItem));
+            mBehaviourLoadedControls.Add(PropertyController.CreateForEnabledControl(uiLogger1.mCmdTextbox));
 
             // Disable all the project specific controls);
             SetEnabledSetControls(mProjectLoadedControls, false);
             SetEnabledSetControls(mBehaviourLoadedControls, false);
 
             mBehaviourEditor = null;
+
+            kAIObject.GlobalLogger = uiLogger1;
+            kAIObject.GlobalLogger.LogMessage("kAI Editor loaded");
         }
 
         /// <summary>
@@ -153,7 +157,8 @@ namespace kAI.Editor
                 kAIIBehaviourEditorGraphicalImplementator lImpl = new kAIBehaviourEditorWindowDX();
 
                 mBehaviourEditor = new kAIBehaviourEditorWindow(mLoadedProject, lImpl, this);
-                mBehaviourEditor.Init(MainEditor.Panel2);
+
+                mBehaviourEditor.Init(splitContainer1.Panel1);
             }
         }
 

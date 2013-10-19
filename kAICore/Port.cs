@@ -109,6 +109,12 @@ namespace kAI.Core
         /// </summary>
         kAINode mOwningNode;
 
+        /// <summary>
+        /// The XML behaviour this port is embedded in. 
+        /// Can be null if it is an external node to a behaviour and that behaviour is at the root
+        /// </summary>
+        kAIXmlBehaviour mOwningBehaviour;
+
         bool mHasBeenTriggered;
 
         /// <summary>

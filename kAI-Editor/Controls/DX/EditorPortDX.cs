@@ -213,6 +213,7 @@ namespace kAI.Editor.Controls.DX
             kAIRelativePosition lFormPosition = new kAIRelativePosition(Position, lContainerEditor.CameraPosition);
 
             Vector2 lLabelPosition;
+            Color lLabelColour;
             Vector2 lStringSize = lContainerEditor.TextRenderer.MeasureString(Port.PortID.ToString()).Size;
             if (Port.PortDirection == kAIPort.ePortDirection.PortDirection_In)
             {
@@ -228,12 +229,14 @@ namespace kAI.Editor.Controls.DX
                     // Is a internal port going in, so on the right hand side
                     // => text is on the left of the port
                     lXPosition = -(lStringSize.X + 3);
+                    lLabelColour = Color.FromArgb(64, 64, 64);
                 }
                 else // OwningNode is not null
                 {
                     // Is an external port going in, so on the left hand side
                     // => text is on the right of the port
                     lXPosition = sPortSize.X + 3;
+                    lLabelColour = Color.White;
                 }
 
                 // Position    =           Location of the port + the offset determined above to shift it to left or right of the port
@@ -255,13 +258,14 @@ namespace kAI.Editor.Controls.DX
                     // Is a internal port going out, so on the right hand side
                     // => text is on the right of the port
                     lXPosition = sPortSize.X + 3;
-                    
+                    lLabelColour = Color.FromArgb(64, 64, 64);
                 }
                 else // OwningNode is not null
                 {
                     // Is an external port going out, so on the right hand side
                     // => text is on the left of the port
                     lXPosition = -(lStringSize.X + 3);
+                    lLabelColour = Color.White;
                 }
 
                 // Position    =           Location of the port + the offset determined above to shift it to left or right of the port
@@ -271,7 +275,7 @@ namespace kAI.Editor.Controls.DX
             }
 
             lContainerEditor.SpriteRenderer.Draw(lTexture, new Vector2(lFormPosition.mPoint.X, lFormPosition.mPoint.Y), sPortSize, SpriteTextRenderer.CoordinateType.Absolute);
-            lContainerEditor.TextRenderer.DrawString(Port.PortID, lLabelPosition, new Color4(Color.White));
+            lContainerEditor.TextRenderer.DrawString(Port.PortID, lLabelPosition, new Color4(lLabelColour));
 
             foreach (kAIEditorConnexionDX lConnexion in mConnexions)
             {
