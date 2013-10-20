@@ -20,10 +20,9 @@ TraceAndTestImpact.testsettings
 Local.testsettings
 kAIPM_2/*
 DirectXkAI*
-kAI-Example/*
-kAI-Example/*
 kAI-Editor/kAI-Editor.csproj.orig
 SpriteTextRenderer/_UpgradeReport_Fil*
 SpriteTextRenderer/SpriteTextRenderer/bin/*
 SpriteTextRenderer/SpriteTextRenderer/obj/*
 SpriteTextRenderer/UpgradeLog.*
+kAI-Example/*

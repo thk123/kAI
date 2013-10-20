@@ -36,6 +36,7 @@ namespace kAI.Core
         /// Update the node. 
         /// </summary>
         /// <param name="lDeltaTime">The time passed since last update. </param>
-        void Update(float lDeltaTime);
+        /// <param name="lUserData">The user data.</param>
+        void Update(float lDeltaTime, object lUserData);
     }
 }

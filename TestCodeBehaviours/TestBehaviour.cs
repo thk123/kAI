@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 
 using kAI.Core;
+using UnityEngine;
 
 namespace TestCodeBehaviours
 {
@@ -27,14 +28,19 @@ namespace TestCodeBehaviours
 
         int i = 0;
 
-        protected override void InternalUpdate(float lDeltaTime)
+        protected override void InternalUpdate(float lDeltaTime, object lUserData)
         {
+            MonoBehaviour lBehaviour = lUserData as MonoBehaviour;
+            if (lBehaviour != null)
+            {
+                lBehaviour.transform.Translate(10.0f, 10.0f, 0.0f);
+            }
             LogMessage("Hello World!");
             ++i;
 
             if (i > 50)
             {
-                Deactivate();
+            //    Deactivate();
             }
         }
     }

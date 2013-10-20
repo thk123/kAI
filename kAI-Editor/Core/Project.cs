@@ -319,7 +319,7 @@ namespace kAI.Editor.Core
         /// <returns>The assmebly if it is found somewhere. </returns>
         public Assembly GetAssemblyByName(string lAssemblyName)
         {
-            if (lAssemblyName == Assembly.GetExecutingAssembly().FullName)
+            if (lAssemblyName == Assembly.GetExecutingAssembly().GetName().Name)
             {
                 return Assembly.GetExecutingAssembly();
             }
@@ -327,7 +327,7 @@ namespace kAI.Editor.Core
             {
                 foreach (AssemblyName lRefdAssemblyName in Assembly.GetExecutingAssembly().GetReferencedAssemblies())
                 {
-                    if (lRefdAssemblyName.FullName == lAssemblyName)
+                    if (lRefdAssemblyName.Name == lAssemblyName)
                     {
                         Assembly lAssembly = Assembly.Load(lRefdAssemblyName);
                         if (lAssembly != null)
@@ -340,7 +340,7 @@ namespace kAI.Editor.Core
 
                 return ProjectDLLs.Find((lAssembly) =>
                 {
-                    return lAssembly.FullName == lAssemblyName;
+                    return lAssembly.GetName().Name == lAssemblyName;
                 });
             }
         }

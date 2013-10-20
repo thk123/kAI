@@ -199,11 +199,12 @@ namespace kAI.Core
         /// Update this behaviour (if active). 
         /// </summary>
         /// <param name="lDeltaTime">The time in seconds that has passed since the last frame. </param>
-        public void Update(float lDeltaTime)
+        /// <param name="lUserData">The user data. </param>
+        public void Update(float lDeltaTime, object lUserData)
         {
             if (Active)
             {
-                InternalUpdate(lDeltaTime);
+                InternalUpdate(lDeltaTime, lUserData);
             }
         }
 
@@ -211,7 +212,8 @@ namespace kAI.Core
         /// Update this behaviour. Depends on the behaviors implementation as to what happens here. 
         /// </summary>
         /// <param name="lDeltaTime">The time in seconds between the last update and this. </param>
-        protected abstract void InternalUpdate(float lDeltaTime);
+        /// <param name="lUserData">The user data. </param>
+        protected abstract void InternalUpdate(float lDeltaTime, object lUserData);
 
         /// <summary>
         /// Deactivate this behaviour. 

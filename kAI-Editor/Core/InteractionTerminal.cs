@@ -154,7 +154,7 @@ namespace kAI.Editor.Core
         {
             for(int i = 0; i < count; ++i)
             {
-                mBehaviour.Update(1.0f / 60.0f);
+                mBehaviour.Update(1.0f / 60.0f, null);
             }
 
             return true;

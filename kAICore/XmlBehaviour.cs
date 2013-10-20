@@ -376,7 +376,8 @@ namespace kAI.Core
         /// Update this behaviour, updating an active nodes and processing any events. 
         /// </summary>
         /// <param name="lDeltaTime">The time passed since last update. </param>
-        protected override void InternalUpdate(float lDeltaTime)
+        /// <param name="lUserData">The user data. </param>
+        protected override void InternalUpdate(float lDeltaTime, object lUserData)
         {
             ReleasePorts();
 
@@ -384,7 +385,7 @@ namespace kAI.Core
             {
                 // This calls the update on the node contents (if this is a behaviour, this will only happen if the behaviour 
                 // is active). 
-                lNode.NodeContents.Update(lDeltaTime);
+                lNode.NodeContents.Update(lDeltaTime, lUserData);
             }
         }
 
@@ -486,6 +487,43 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// Load an XML behaviour from its file. 
+        /// </summary>
+        /// <param name="lPath">Path to the xml behaviour</param>
+        /// <param name="lAssemblyGetter">The method to get assemblies.</param>
+        /// <returns>The behaviour, read for use. </returns>
+        public static kAIXmlBehaviour LoadFromFile(FileInfo lPath, GetAssemblyByName lAssemblyGetter)
+        {
+            XmlObjectSerializer lProjectDeserialiser = new DataContractSerializer(typeof(InternalXml), kAINode.NodeSerialTypes);
+            try
+            {
+                Stream lXmlStream = lPath.OpenRead();
+
+                InternalXml lXmlFile = (InternalXml)lProjectDeserialiser.ReadObject(lXmlStream);
+
+                Assert(null, lXmlFile);
+
+                lXmlStream.Close();
+
+                return new kAIXmlBehaviour(lXmlFile, lAssemblyGetter, lPath);
+            }
+            catch (System.UnauthorizedAccessException)
+            {
+                //TODO: Error - have you forgot to check the file out of source control?
+            }
+            catch (System.IO.DirectoryNotFoundException)
+            {
+                //TODO: Error - Directory not found, ensure file still exists
+            }
+            catch (System.IO.IOException)
+            {
+                // TODOO: Error - File is already open elsewhere. 
+            }
+
+            return null;
+        }
+
+        /// <summary>
         /// Load an XML Behaviour from a file. 
         /// </summary>
         /// <param name="lSerialObject">the serialised version of this XML behaviour.</param>
@@ -517,7 +555,7 @@ namespace kAI.Core
             }
             catch (System.IO.DirectoryNotFoundException)
             {
-                //TODO: Error - Directory not found, ensure file still exists
+                kAIObject.GlobalLogger.LogError("Could not find file", new KeyValuePair<string, object>("Path:", lRealSerial.XmlBehaviourFile.FullName));
             }
             catch(System.IO.IOException)
             {
