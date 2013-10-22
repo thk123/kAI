@@ -7,6 +7,8 @@ using System.Xml;
 using System.Runtime.Serialization;
 using System.Reflection;
 
+using System.Windows.Forms;
+
 using kAI.Core;
 using kAI.Editor.Core.Util;
 
@@ -52,6 +54,10 @@ namespace kAI.Editor.Core
             get;
             private set;
         }
+
+        [OptionalField(VersionAdded = 2)]
+        [DataMember(Name="AdditionalDLLPaths")]
+        Dictionary<string, FileInfo> mAdditionalDllPaths;
 
         /// <summary>
         /// The directory that contains all the XML behaviors. 
@@ -132,6 +138,8 @@ namespace kAI.Editor.Core
             NodeObjects = new Dictionary<string, kAIINodeSerialObject>();
             ProjectTypes = new List<Type>();
 
+            mAdditionalDllPaths = new Dictionary<string, FileInfo>();
+
             // We also initialise all the types that wouldn't have come from the XML
             // We pass null as there is no file (yet). 
             Init(null);
@@ -209,6 +217,7 @@ namespace kAI.Editor.Core
         {
             mFile = lSouceFile;
             ProjectDLLs = new List<Assembly>();
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
         }
 
         /// <summary>
@@ -235,16 +244,73 @@ namespace kAI.Editor.Core
         /// </summary>
         /// <param name="lDLLPath">The path of the DLL to load. </param>
         private Assembly LoadDLL(FileInfo lDLLPath)
-        {
+        {           
+
             FileStream lDLLStream = lDLLPath.OpenRead();
             byte[] lDLLArray = new byte[lDLLStream.Length];
             lDLLStream.Read(lDLLArray, 0, (int)lDLLStream.Length);
             
             Assembly lAssembly = Assembly.Load(lDLLArray);
 
+            // Force the loading of the dll
+            lAssembly.GetExportedTypes();
             ProjectDLLs.Add(lAssembly);
 
             return lAssembly;
+        }
+
+        Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
+        {
+            // see if it is one our our referenced dlls
+            foreach (Assembly lLoadedAssembly in ProjectDLLs)
+            {
+                if (lLoadedAssembly.FullName == args.Name)
+                {
+                    return lLoadedAssembly;
+                }
+            }
+
+            if (mAdditionalDllPaths.ContainsKey(args.Name))
+            {
+                FileStream lDLLStream = mAdditionalDllPaths[args.Name].OpenRead();
+                byte[] lDLLArray = new byte[lDLLStream.Length];
+                lDLLStream.Read(lDLLArray, 0, (int)lDLLStream.Length);
+                lDLLStream.Close();
+                return Assembly.Load(lDLLArray);
+            }
+            else
+            {
+                FileInfo lDllPath;
+                Assembly lLoadedAssembly = HandleMissingDll(args.Name, out lDllPath);
+                if (lLoadedAssembly != null)
+                {
+                    kAIObject.Assert(null, lDllPath, "Got an assembly but no corresponding path it was loaded from. ");
+                    mAdditionalDllPaths.Add(args.Name, lDllPath);
+                }
+
+                return lLoadedAssembly;
+            }
+        }
+
+        private Assembly HandleMissingDll(string lAssemblyFullName, out FileInfo lDllPath)
+        {
+            OpenFileDialog lOFD = new OpenFileDialog();
+            lOFD.Title = "Find missing DLL: " + lAssemblyFullName;
+            if (lOFD.ShowDialog() == DialogResult.OK)
+            {
+
+                lDllPath = new FileInfo(lOFD.FileName);
+                FileStream lDLLStream = lDllPath.OpenRead();
+                byte[] lDLLArray = new byte[lDLLStream.Length];
+                lDLLStream.Read(lDLLArray, 0, (int)lDLLStream.Length);
+                lDLLStream.Close();
+                return Assembly.Load(lDLLArray);
+            }
+            else
+            {
+                lDllPath = null;
+                return null;
+            }
         }
 
         /// <summary>
@@ -311,7 +377,7 @@ namespace kAI.Editor.Core
             lWriter.Close();
         }
 
-        //TODO: Change this string to AssemblyName
+        //TODO: Change this string to AssemblyName, maybe not, seemed to cause problems 
         /// <summary>
         /// Resolve an assembly name to an assembly (either loaded or referenced by the kAIProject. 
         /// </summary>
@@ -343,6 +409,12 @@ namespace kAI.Editor.Core
                     return lAssembly.GetName().Name == lAssemblyName;
                 });
             }
+        }
+
+        [OnDeserializing]
+        private void SetDefaultDllPaths(StreamingContext lStreamContext)
+        {
+            mAdditionalDllPaths = new Dictionary<string, FileInfo>();
         }
     }
 }
