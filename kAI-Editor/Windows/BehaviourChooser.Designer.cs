@@ -1,6 +1,6 @@
 ﻿namespace kAI.Editor
 {
-    partial class BehaviourChooser
+    partial class kAINodeChooser
     {
         /// <summary>
         /// Required designer variable.

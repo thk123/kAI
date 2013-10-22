@@ -6,6 +6,7 @@ using System.Drawing;
 using System.Windows.Forms;
 
 using SlimDX.RawInput;
+using kAI.Editor.Controls.DX.Coordinates;
 
 namespace kAI.Editor.Controls.DX
 {
@@ -14,6 +15,15 @@ namespace kAI.Editor.Controls.DX
     /// </summary>
     class kAIInputManagerDX
     {
+        /// <summary>
+        /// Represents the state of a rectangle.
+        /// </summary>
+        struct RectangleState
+        {
+            public bool Hovered;
+            public bool Clicked;
+        }
+
         /// <summary>
         /// Triggered whenever the mouse moves. 
         /// </summary>
@@ -111,6 +121,16 @@ namespace kAI.Editor.Controls.DX
         }
 
         /// <summary>
+        /// Clears the input rectangles stored in this input manager. 
+        /// </summary>
+        public void ClearInputRectangles()
+        {
+            mFixedMouseEventListeners.Clear();
+            mMovingMouseEventListeners.Clear();
+        }
+
+       
+        /// <summary>
         /// Processes a specific tree for the mouse input. 
         /// </summary>
         /// <param name="lTree">The tree (either fixed or moving) to process. </param>
@@ -121,12 +141,13 @@ namespace kAI.Editor.Controls.DX
         {
             // First we find all the elements so we can see which elements were under the mouse before and now aren't. 
             IEnumerable<kAIMouseEventResponders> lAllControls = lTree.GetAllContents();
-            List<bool> lControlState = new List<bool>();
+            List<RectangleState> lControlState = new List<RectangleState>();
 
             foreach (kAIMouseEventResponders lResponder in lAllControls)
             {
-                lControlState.Add(lResponder.Hovered);
+                lControlState.Add(new RectangleState { Hovered = lResponder.Hovered, Clicked = lResponder.Clicked });
                 lResponder.Hovered = false;
+                lResponder.Clicked = false;
                 //lResponder.JustPressed = false;
             }
 
@@ -142,6 +163,8 @@ namespace kAI.Editor.Controls.DX
                     // We trigger the hover action
                     lResponder.CallAction(lResponder.OnMouseHover, lSender, lEventArgs);
                     lResponder.Hovered = true;
+
+                    mEditorWindow.ParentControl.ContextMenu = lResponder.ContextMenu;
                 }
 
                 // If the mouse button is down
@@ -149,6 +172,7 @@ namespace kAI.Editor.Controls.DX
                 {
                     // We trigger the on mouse down event. 
                     lResponder.CallAction(lResponder.OnMouseDown, lSender, lEventArgs);
+                    lResponder.Clicked = true;
                 }
 
                 // The mouse is on something. 
@@ -165,12 +189,32 @@ namespace kAI.Editor.Controls.DX
                 {
                     // is now now hovered
 
-                    if (lControlStateEnumerator.Current)
+                    if (lControlStateEnumerator.Current.Hovered)
                     {
                         // Was hovered before, therefore the mouse just moved off it
                         lControlEnumerator.Current.CallAction(lControlEnumerator.Current.OnMouseLeave, lSender, lEventArgs);
                     }
                 }
+
+                if(!lControlEnumerator.Current.Clicked)
+                {
+                    // if the mouse is up and we were clicking then we just released
+                    // if the mouse is now down, well then we just left whilst holding the mouse
+                    if(!mMouseDown && lControlStateEnumerator.Current.Clicked)
+                    {
+                        lControlEnumerator.Current.CallAction(lControlEnumerator.Current.OnMouseUp, lSender, lEventArgs);
+                    }
+                }
+                else
+                {
+                    // TODO: a click event, rename click to pressed
+                    // not pressed, maybe just clicked?
+                }
+            }
+
+            if (!MouseOnSomething)
+            {
+                mEditorWindow.ParentControl.ContextMenu = mEditorWindow.Editor.GlobalContextMenu;
             }
         }
 
@@ -194,15 +238,15 @@ namespace kAI.Editor.Controls.DX
 
         void lParentControl_MouseMove(object sender, MouseEventArgs e)
         {
-            Point lRelativePoint= new Point(e.X, e.Y); // the actual position of the mouse
+            kAIRelativePosition lRelativePoint= new kAIRelativePosition(e.Location); // the actual position of the mouse
 
             // the position of the mouse in absolute space (i.e. translated for the camera)
-            NodeCoordinate lAbsolutePoint = new NodeCoordinate(lRelativePoint, mEditorWindow.ParentControl, mEditorWindow.CameraPosition);
+            kAIAbsolutePosition lAbsolutePoint = new kAIAbsolutePosition(lRelativePoint, mEditorWindow.CameraPosition, false);
 
             MouseOnSomething = false;
 
-            HandleTree(mMovingMouseEventListeners, lAbsolutePoint.GetPositionFixed(), sender, e);
-            HandleTree(mFixedMouseEventListeners, lRelativePoint, sender, e);
+            HandleTree(mMovingMouseEventListeners, lAbsolutePoint.mPoint, sender, e);
+            HandleTree(mFixedMouseEventListeners, lRelativePoint.mPoint, sender, e);
             if (OnMouseMove != null)
             {
                 OnMouseMove(sender, e);

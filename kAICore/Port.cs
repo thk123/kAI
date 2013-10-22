@@ -14,7 +14,7 @@ namespace kAI.Core
         /// <summary>
         /// Represents a connexion between two ports. 
         /// </summary>
-        public class kAIConnexion
+        public class kAIConnexion : kAIObject
         {
             /// <summary>
             /// The start port of this connexion. 
@@ -37,10 +37,15 @@ namespace kAI.Core
             /// <summary>
             /// Create a standard connexion between two ports. 
             /// </summary>
-            /// <param name="lStartPort">The start port of the connexion. </param>
-            /// <param name="lEndPort">The end point of the connexion. </param>
-            public kAIConnexion(kAIPort lStartPort, kAIPort lEndPort)
+            /// <param name="lPortA">The start port of the connexion. </param>
+            /// <param name="lPortB">The end point of the connexion. </param>
+            /// <param name="lLogger">Optionally, the logger the component should use. </param>
+            public kAIConnexion(kAIPort lPortA, kAIPort lPortB, kAIILogger lLogger = null)
+                :base(lLogger)
             {
+                kAIPort lStartPort, lEndPort;
+                OrderPorts(lPortA, lPortB, out lStartPort, out lEndPort);
+
                 StartPort = lStartPort;
                 EndPort = lEndPort;
             }
@@ -97,12 +102,14 @@ namespace kAI.Core
         /// <summary>
         /// The set of ports this port connects to (not is connected from).
         /// </summary>
-        List<kAIPort> mConnectingPorts;
+        Dictionary<kAIPortID, kAIPort> mConnectingPorts;
 
         /// <summary>
         /// The node that this port belongs to (null if global). 
         /// </summary>
         kAINode mOwningNode;
+
+        bool mHasBeenTriggered;
 
         /// <summary>
         /// Get and sets the owning node of this port (maybe hide and just have the ID).
@@ -249,7 +256,7 @@ namespace kAI.Core
             get
             {
                 Assert(PortDirection == ePortDirection.PortDirection_Out);;
-                foreach (kAIPort lPort in mConnectingPorts)
+                foreach (kAIPort lPort in mConnectingPorts.Values)
                 {
                     yield return new kAIConnexion(this, lPort);
                 }
@@ -266,12 +273,14 @@ namespace kAI.Core
         public kAIPort(kAIPortID lPortID, ePortDirection lPortDirection, kAIPortType lDataType, kAIILogger lLogger = null)
             : base(lLogger)
         {
-            mConnectingPorts = new List<kAIPort>();
+            mConnectingPorts = new Dictionary<kAIPortID, kAIPort>();
             PortID = lPortID;
             PortDirection = lPortDirection;
             DataType = lDataType;
 
             OwningNode = null;
+
+            mHasBeenTriggered = false;
         }
 
         /// <summary>
@@ -279,27 +288,59 @@ namespace kAI.Core
         /// </summary>
         public void Trigger()
         {
+            if (!CheckState())
+            {
+                throw new Exception("Currently releasing a port, cannot trigger more");
+            }
+            
+
             if (DataType == kAIPortType.TriggerType)
             {
                 if (PortDirection == ePortDirection.PortDirection_Out)
                 {
-                    foreach (kAIPort lConnectedPorts in mConnectingPorts)
+                    foreach (kAIPort lConnectedPorts in mConnectingPorts.Values)
                     {
                         lConnectedPorts.Trigger();
                     }
                 }
-                else
+
+                mHasBeenTriggered = true;
+            }
+        }
+
+        /// <summary>
+        /// Release this port (first stage of the drill down update). 
+        /// </summary>
+        public void Release()
+        {
+            if (mHasBeenTriggered)
+            {
+                // TODO: it is vital this does not trigger more ports
+                if (OnTriggered != null)
                 {
                     OnTriggered(this);
                 }
+                mHasBeenTriggered = false;
             }
+        }
+
+        /// <summary>
+        /// Determine if this port is connected to another specified port. 
+        /// This port must be an outbound port. 
+        /// </summary>
+        /// <param name="lPort">The port to check against. </param>
+        /// <returns>True if there is a connexion from this port to the other port. </returns>
+        public bool IsConnectedTo(kAIPort lPort)
+        {
+            Assert(PortDirection == ePortDirection.PortDirection_Out, "In ports are not connected to things, things connect to them.");
+            return mConnectingPorts.ContainsKey(lPort.PortID);
         }
 
         /// <summary>
         /// Break a connexion between this port and another port connected to it. 
         /// </summary>
         /// <param name="lOtherEnd">The other port. </param>
-        internal void BreakConnexion(kAIPort lOtherEnd)
+        public void BreakConnexion(kAIPort lOtherEnd)
         {
             kAIPort.DisconnectPorts(this, lOtherEnd);
         }
@@ -307,9 +348,10 @@ namespace kAI.Core
         /// <summary>
         /// Break all the connexions between this port and all connected ports. 
         /// </summary>
-        internal void BreakAllConnexions()
+        public void BreakAllConnexions()
         {
-            foreach (kAIPort lPort in mConnectingPorts)
+            Assert(PortDirection == ePortDirection.PortDirection_Out, "In ports are not connected to things, things connect to them.");
+            foreach (kAIPort lPort in mConnectingPorts.Values)
             {
                 BreakConnexion(lPort);
             }
@@ -322,7 +364,11 @@ namespace kAI.Core
         /// <returns>A result indicating how the connexion went. </returns>
         private ePortConnexionResult Connect(kAIPort lOtherEnd)
         {
-            mConnectingPorts.Add(lOtherEnd);
+            if (PortDirection == ePortDirection.PortDirection_Out)
+            {
+                mConnectingPorts.Add(lOtherEnd.PortID, lOtherEnd);
+            }
+
             OnConnect(lOtherEnd);
             return ePortConnexionResult.PortConnexionResult_OK;
         }
@@ -343,7 +389,14 @@ namespace kAI.Core
         /// <param name="lOtherEnd">The other port. </param>
         private void Disconnect(kAIPort lOtherEnd)
         {
-            mConnectingPorts.Remove(lOtherEnd);
+            // If we are the outbound port, we are storing what we are connected to, so we remove it
+            if(PortDirection == ePortDirection.PortDirection_Out)
+            {
+                mConnectingPorts.Remove(lOtherEnd.PortID);
+                
+            }
+
+            // Either way, we dirgger the event. 
             OnDisconnect(lOtherEnd);
         }
 
@@ -352,7 +405,10 @@ namespace kAI.Core
         /// </summary>
         protected virtual void OnDisconnect(kAIPort lOtherEnd)
         {
-            OnDisconnected(this, lOtherEnd);
+            if (OnDisconnected != null)
+            {
+                OnDisconnected(this, lOtherEnd);
+            }
         }
 
         /// <summary>
@@ -371,6 +427,27 @@ namespace kAI.Core
             {
                 return OwningNode.NodeID + ":" + PortID;
             }
+        }
+
+        /// <summary>
+        /// Check the the state is not in a release of another port (if we are, we cannot trigger aditional ports). 
+        /// </summary>
+        /// <returns>True if the state is valid for triggering a port. </returns>
+        private bool CheckState()
+        {
+            // TODO: We should check via a static or something.
+
+            string lStackTrace = Environment.StackTrace;
+            string[] lLines = lStackTrace.Split('\r', '\n');
+            foreach (string lLine in lLines)
+            {
+                if (lLine.Contains("Release"))
+                {
+                    return false;
+                }
+            }
+
+            return true;
         }
 
 
@@ -414,17 +491,7 @@ namespace kAI.Core
                 // We can connect so the ports are opposite directions
                 // So we now connect from the outward bound port to the inward bound port
                 kAIPort lStartPort, lEndPort;
-
-                if (lPortA.PortDirection == ePortDirection.PortDirection_Out)
-                {
-                    lStartPort = lPortA;
-                    lEndPort = lPortB;
-                }
-                else
-                {
-                    lStartPort = lPortB;
-                    lEndPort = lPortA;
-                }
+                OrderPorts(lPortA, lPortB, out lStartPort, out lEndPort);
 
                 return lStartPort.Connect(lEndPort);
             }
@@ -440,9 +507,13 @@ namespace kAI.Core
         /// <returns>A boolean indicating if the two elements are connected. </returns>
         internal static bool ArePortsConnected(kAIPort lPortA, kAIPort lPortB)
         {
-            foreach (kAIPort lOtherEnd in lPortA.mConnectingPorts)
+            kAIPort lEndPort; 
+            kAIPort lStarPort;
+            OrderPorts(lPortA, lPortB, out lStarPort, out lEndPort);
+
+            foreach (kAIPort lOtherEnd in lStarPort.mConnectingPorts.Values)
             {
-                if (lOtherEnd == lPortB)
+                if (lEndPort.PortID == lOtherEnd.PortID)
                 {
                     return true;
                 }
@@ -464,6 +535,17 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// Disconnect two ports. 
+        /// </summary>
+        /// <param name="lConnexion">The connexion to break. </param>
+        internal static void DisconnectPorts(kAIConnexion lConnexion)
+        {
+            Assert(null, ArePortsConnected(lConnexion.StartPort, lConnexion.EndPort), "Attempted to disconnect two ports that aren't disconnected. ");
+            lConnexion.StartPort.Disconnect(lConnexion.EndPort);
+            lConnexion.EndPort.Disconnect(lConnexion.StartPort);
+        }
+
+        /// <summary>
         /// Checks to see if two directions are opposite. 
         /// </summary>
         /// <param name="lDirectionA">The first direction.</param>
@@ -473,6 +555,20 @@ namespace kAI.Core
         {
             return (lDirectionA == kAIPort.ePortDirection.PortDirection_In && lDirectionB == kAIPort.ePortDirection.PortDirection_Out) ||
                     (lDirectionA == kAIPort.ePortDirection.PortDirection_Out && lDirectionB == kAIPort.ePortDirection.PortDirection_In);
+        }
+
+        /// <summary>
+        /// Order two arbitary points in to the start port and the end port. 
+        /// </summary>
+        /// <param name="lPortA">One of the ports. </param>
+        /// <param name="lPortB">The other port. </param>
+        /// <param name="lStartPort">The out direction port. </param>
+        /// <param name="lEndPort">The in direction port. </param>
+        private static void OrderPorts(kAIPort lPortA, kAIPort lPortB, out kAIPort lStartPort, out kAIPort lEndPort)
+        {
+            Assert(null, IsDirectionOpposite(lPortA.PortDirection, lPortB.PortDirection), "Both ports are the same direction so can't order them. ");
+            lStartPort = lPortA.PortDirection == ePortDirection.PortDirection_Out ? lPortA : lPortB;
+            lEndPort = lPortA.PortDirection == ePortDirection.PortDirection_In ? lPortA : lPortB;
         }
 
         /// <summary>
@@ -534,6 +630,62 @@ namespace kAI.Core
         public static implicit operator kAIPortType(Type lType)
         {
             return new kAIPortType(lType);
+        }
+
+        /// <summary>
+        /// Checks equality of two port types. 
+        /// </summary>
+        /// <param name="lPortTypeA">The first port type. </param>
+        /// <param name="lPortTypeB">The second port type. </param>
+        /// <returns>True if theu are equal. </returns>
+        public static bool operator ==(kAIPortType lPortTypeA, kAIPortType lPortTypeB)
+        {
+            return lPortTypeA.Equals(lPortTypeB);
+        }
+
+        /// <summary>
+        /// Checks inequality of two port types. 
+        /// </summary>
+        /// <param name="lPortTypeA">The first port type. </param>
+        /// <param name="lPortTypeB">The second port type. </param>
+        /// <returns>True if theu are inequal. </returns>
+        public static bool operator !=(kAIPortType lPortTypeA, kAIPortType lPortTypeB)
+        {
+            return !lPortTypeA.Equals(lPortTypeB);
+        }
+    
+
+        /// <summary>
+        /// Check whether two data types are equal. 
+        /// </summary>
+        /// <param name="obj">The other obejct. </param>
+        /// <returns>True if the data types are equivalent. </returns>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+                return true;
+
+            if (((object)obj == null))
+                return false;
+
+            kAIPortType lDataType = obj as kAIPortType;
+            if (((object)lDataType != null))
+            {
+                return lDataType.DataType == DataType;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Generate a hash code based on the type. 
+        /// </summary>
+        /// <returns>The hash code the type would return. </returns>
+        public override int GetHashCode()
+        {
+            return DataType.GetHashCode();
         }
     }
 

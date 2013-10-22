@@ -30,7 +30,18 @@ namespace kAI.Editor.Core
         {
             foreach (KeyValuePair<string, object> lDetail in lDetails)
             {
-                WriteString("\t" + lDetail.Key + " - " + lDetail.Value.ToString());
+                string lValue;
+                if (lDetail.Value != null)
+                {
+                    lValue = lDetail.Value.ToString();
+                }
+                else
+                {
+                    lValue = "{ }";
+                }
+                string lString = "\t" + lDetail.Key + " - " + lValue;
+
+                WriteString(lString, lColor);
             }
         }
 

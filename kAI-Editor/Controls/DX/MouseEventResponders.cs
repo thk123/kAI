@@ -26,9 +26,22 @@ namespace kAI.Editor.Controls.DX
         public EventHandler<MouseEventArgs> OnMouseDown;
 
         /// <summary>
+        /// Triggered when the mouse if lifted on an object.  
+        /// </summary>
+        public EventHandler<MouseEventArgs> OnMouseUp;
+
+        /// <summary>
+        /// The context menu that is applicable within this rectangle. 
+        /// </summary>
+        public ContextMenu ContextMenu;
+
+        /// <summary>
         /// Is the rectangle associated with this currently hovered. 
         /// </summary>
         public bool Hovered = false;
+
+        // TODO: Remove these in to the state struct.
+        public bool Clicked = false;
 
         /// <summary>
         /// Debug: a sting used to identify this rectangle. 

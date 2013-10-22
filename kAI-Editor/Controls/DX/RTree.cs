@@ -5,6 +5,7 @@ using System.Text;
 using System.Drawing;
 
 using kAI.Core;
+using kAI.Editor.Core.Util;
 
 namespace kAI.Editor.Controls.DX
 {
@@ -89,6 +90,7 @@ namespace kAI.Editor.Controls.DX
             }
         }
 
+        
 
         /// <summary>
         /// Add a new entry to the tree. 
@@ -241,6 +243,35 @@ namespace kAI.Editor.Controls.DX
         }
 
         /// <summary>
+        /// Clears out this tree of rectangles.
+        /// </summary>
+        public void Clear()
+        {
+            mRootNodes = new kAIRTree<T>[kPageSize];
+            mNumberOfNodes = 0;
+
+            Rectangle = Rectangle.Empty;
+            Contents = null;
+            lDataEntries = 0;
+        }
+
+        /// <summary>
+        /// Returns a string representing this (sub)tree. 
+        /// </summary>
+        /// <returns>A string with the rectangle of this node and its contents (if it has any). </returns>
+        public override string ToString()
+        {
+            if (Contents != null)
+            {
+                return Rectangle.ToString() + "[ " + Contents.ToString() + " ]";
+            }
+            else
+            {
+                return Rectangle.ToString() + "[ - ]";
+            }
+        }
+
+        /// <summary>
         /// A heuristic for choosing a rectangle from a list.
         /// We choose the rectangle that will create the smallest possible
         /// increase in area of the rectangle. 
@@ -301,23 +332,5 @@ namespace kAI.Editor.Controls.DX
 
             return lBestIndex;
         }
-
-        /// <summary>
-        /// Returns a string representing this (sub)tree. 
-        /// </summary>
-        /// <returns>A string with the rectangle of this node and its contents (if it has any). </returns>
-        public override string ToString()
-        {
-            if (Contents != null)
-            {
-                return Rectangle.ToString() + "[ " + Contents.ToString() + " ]";
-            }
-            else
-            {
-                return Rectangle.ToString() + "[ - ]";
-            }
-        }
     }
-
-
 }

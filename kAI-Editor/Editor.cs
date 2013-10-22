@@ -102,10 +102,18 @@ namespace kAI.Editor
             // If it was a kAI-Behaviour, we load it.
             if (lObject.GetNodeFlavour() == eNodeFlavour.BehaviourXml)
             {
-                CreateBehaviourEditorWindow();
-                mBehaviourEditor.LoadBehaviour(kAIXmlBehaviour.Load(lObject, mLoadedProject.GetAssemblyByName));
+                LoadBehaviour(kAIXmlBehaviour.Load(lObject, mLoadedProject.GetAssemblyByName));
             }
             
+        }
+
+        private void LoadBehaviour(kAIXmlBehaviour lBehaviour)
+        {
+            CreateBehaviourEditorWindow();
+            mBehaviourEditor.LoadBehaviour(lBehaviour);
+            SetEnabledSetControls(mBehaviourLoadedControls, true);
+
+            kAIInteractionTerminal.Init(lBehaviour);
         }
 
         /// <summary>
@@ -119,6 +127,7 @@ namespace kAI.Editor
 
             mLoadedProject = null;
 
+            SetEnabledSetControls(mBehaviourLoadedControls, false);
             SetEnabledSetControls(mProjectLoadedControls, false);
         }
 
@@ -142,10 +151,9 @@ namespace kAI.Editor
                 // Here we chose our implemenation for the editor. 
                 //kAIIBehaviourEditorGraphicalImplementator lImpl = new BehaviourEditorWindowWinForms();
                 kAIIBehaviourEditorGraphicalImplementator lImpl = new kAIBehaviourEditorWindowDX();
-                
-                lImpl.Init(MainEditor.Panel2);
 
-                mBehaviourEditor = new kAIBehaviourEditorWindow(mLoadedProject, lImpl);
+                mBehaviourEditor = new kAIBehaviourEditorWindow(mLoadedProject, lImpl, this);
+                mBehaviourEditor.Init(MainEditor.Panel2);
             }
         }
 
@@ -155,18 +163,35 @@ namespace kAI.Editor
             {
                 mBehaviourEditor.Destroy();
             }
+
+            SetEnabledSetControls(mBehaviourLoadedControls, false);
         }
 
         void addBehaviourToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if(mIsProjectLoaded)
             {
-                BehaviourChooser lChooser = new BehaviourChooser(mLoadedProject);
-                if (lChooser.ShowDialog() == DialogResult.OK)
-                {
-                    // TODO: Add a behaviour to the behaviour editor DX
-                    //mBehaviourEditor.AddBehaviour(lChooser.GetSelectedBehaviour());
-                }
+
+                kAIINodeObject lSelectedNode = SelectNode();
+                mBehaviourEditor.AddNode(new kAINode(mBehaviourEditor.GetNodeName(lSelectedNode), lSelectedNode), mBehaviourEditor.GetPositionForNode());
+            }
+        }
+
+        /// <summary>
+        /// Presents a dialog for the user to choose what kind of node to create. 
+        /// </summary>
+        /// <returns>A node object that the user wants to instantiate into a node. </returns>
+        public kAIINodeObject SelectNode()
+        {
+            kAIObject.Assert(null, mIsProjectLoaded, "No loaded project to choose from");
+            kAINodeChooser lChooser = new kAINodeChooser(mLoadedProject);
+            if (lChooser.ShowDialog() == DialogResult.OK)
+            {
+                return lChooser.GetSelectedBehaviour();
+            }
+            else
+            {
+                return null;
             }
         }
 
@@ -216,9 +241,9 @@ namespace kAI.Editor
                 CreateBehaviourEditorWindow();
 
                 //kAIXmlBehaviour lBehaviour = 
-
+                
                 kAIXmlBehaviour lBehaviour = new kAIXmlBehaviour(lCreator.BehaviourID, lCreator.BehaviourPath);
-                mBehaviourEditor.LoadBehaviour(lBehaviour);
+                LoadBehaviour(lBehaviour);
 
 
                 /*kAIXmlBehaviour lBehaviour = mBehaviourEditor.NewBehaviour();
@@ -231,7 +256,7 @@ namespace kAI.Editor
 
         private void saveToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            //mBehaviourEditor.SaveBehaviour();
+            mBehaviourEditor.SaveBehaviour();
         }
 
         private void loadToolStripMenuItem_Click(object sender, EventArgs e)
@@ -286,6 +311,17 @@ namespace kAI.Editor
         private void Editor_FormClosed(object sender, FormClosedEventArgs e)
         {
             DestroyBehaviourEditorWindow();
+        }
+
+        private void runCommandToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            bool lResult;
+            do 
+            {
+                lResult = kAIInteractionTerminal.RunCommand(Console.ReadLine());
+
+            } while (!lResult);
+            
         }
     }
 }

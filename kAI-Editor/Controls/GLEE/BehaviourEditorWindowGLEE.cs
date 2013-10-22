@@ -13,6 +13,7 @@ using GleeNode = Microsoft.Glee.Drawing.Node;
 
 using kAI.Core;
 using kAI.Editor.Controls;
+using kAI.Editor.Controls.DX.Coordinates;
 
 namespace kAI.Editor.Controls.GLEE
 {
@@ -23,7 +24,7 @@ namespace kAI.Editor.Controls.GLEE
 
         //Dictionary<kAINodeID, Tuple<kAINode, GleeNode>> mNodes;
 
-        public void Init(System.Windows.Forms.Control lParentControl)
+        public void Init(System.Windows.Forms.Control lParentControl, kAIBehaviourEditorWindow lEditor)
         {
             mGraphViewer = new GViewer();
             lParentControl.Controls.Add(mGraphViewer);
@@ -47,13 +48,23 @@ namespace kAI.Editor.Controls.GLEE
             throw new NotImplementedException();
         }
 
-        public void AddNode(kAI.Core.kAINode lNode)
+        public void AddNode(kAI.Core.kAINode lNode, kAIAbsolutePosition lPoint)
         {
             GleeNode lGleeNode = mBehaviourGraph.AddNode(lNode.NodeID);
             lGleeNode.UserData = lNode;
 
             //mNodes.Add(lNode.NodeID, new Tuple<kAINode, GleeNode>(lNode, lGleeNode));
 
+        }
+
+        public void AddNode(kAI.Core.kAINode lNode, System.Drawing.Point lPoint)
+        {
+            AddNode(lNode, lPoint);
+        }
+
+        public bool CanConnect()
+        {
+            throw new NotImplementedException();
         }
 
         public void RemoveNode(kAI.Core.kAINode lNode)

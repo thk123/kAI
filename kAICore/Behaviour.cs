@@ -164,10 +164,22 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// Update this behaviour (if active). 
+        /// </summary>
+        /// <param name="lDeltaTime">The time in seconds that has passed since the last frame. </param>
+        public void Update(float lDeltaTime)
+        {
+            if (Active)
+            {
+                InternalUpdate(lDeltaTime);
+            }
+        }
+
+        /// <summary>
         /// Update this behaviour. Depends on the behaviors implementation as to what happens here. 
         /// </summary>
         /// <param name="lDeltaTime">The time in seconds between the last update and this. </param>
-        public abstract void Update(float lDeltaTime);
+        protected abstract void InternalUpdate(float lDeltaTime);
 
         /// <summary>
         /// Deactivate this behaviour. 
@@ -211,6 +223,16 @@ namespace kAI.Core
         /// </summary>
         /// <returns>The type of the serialiable used in this behaviour.</returns>
         public abstract Type GetDataContractType();
+
+        /// <summary>
+        /// Gets the name nodes should be based off. 
+        /// </summary>
+        /// <returns>The behaviour id. </returns>
+        public string GetNameTemplate()
+        {
+            return BehaviourID;
+        }
+
     }
 
 

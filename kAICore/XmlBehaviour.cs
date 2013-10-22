@@ -234,6 +234,25 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// Remove a node from within this behaviour. 
+        /// </summary>
+        /// <param name="lNode">The node to remove. </param>
+        public void RemoveNode(kAINode lNode)
+        {
+            mInternalNodes.Remove(lNode.NodeID);
+        }
+
+        /// <summary>
+        /// Find out if a node with a given ID is already contained within this behaviour. 
+        /// </summary>
+        /// <param name="lNodeID">The NodeID to check. </param>
+        /// <returns>True if the NodeID is already used. </returns>
+        public bool ContainsNodeID(kAINodeID lNodeID)
+        {
+            return mInternalNodes.ContainsKey(lNodeID);
+        }
+
+        /// <summary>
         /// Add a internal connexion within this behaviour. 
         /// </summary>
         /// <param name="lStartPort">The starting port of this connexion. </param>
@@ -252,6 +271,54 @@ namespace kAI.Core
             // (Trade off: expensive for an in port to remove all of its connexions)
 
             kAIPort.ConnectPorts(lStartPort, lEndPort);
+        }
+
+        /// <summary>
+        /// Get all the ports that are either connected from or to this port.
+        /// For outbound ports, that is just lPort.Connexions. However, for 
+        /// in bound ports this must be computed by checking all internal nodes
+        /// and ports for things that are connected to it. 
+        /// </summary>
+        /// <param name="lPort">The port to find what is connected to it. </param>
+        /// <returns>A list of ports that are either conected to or from the specified port. </returns>
+        public IEnumerable<kAIPort.kAIConnexion> GetConnectedPorts(kAIPort lPort)
+        {
+            if (lPort.PortDirection == kAIPort.ePortDirection.PortDirection_Out)
+            {
+                return lPort.Connexions;
+            }
+            else
+            {
+                List<kAIPort.kAIConnexion> lConnexions = new List<kAIPort.kAIConnexion>();
+
+                foreach (InternalPort lInternalPortWrapper in mInternalPorts.Values)
+                {
+                    kAIPort lInternalPort = lInternalPortWrapper.Port;
+                    if (lInternalPort.PortDirection == kAIPort.ePortDirection.PortDirection_Out)
+                    {
+                        if (lInternalPort.IsConnectedTo(lPort))
+                        {
+                            lConnexions.Add(new kAIPort.kAIConnexion(lInternalPort, lPort));
+                        }
+                    }
+                }
+
+                foreach (kAINode lInternalNode in mInternalNodes.Values)
+                {
+                    foreach (kAIPort lInternalNodePort in lInternalNode.GetExternalPorts())
+                    {
+                        if (lInternalNodePort.PortDirection == kAIPort.ePortDirection.PortDirection_Out)
+                        {
+                            if (lInternalNodePort.IsConnectedTo(lPort))
+                            {
+                                lConnexions.Add(new kAIPort.kAIConnexion(lInternalNodePort, lPort));
+                            }
+                        }
+                    }
+                }
+
+                return lConnexions;
+            }
         }
 
         /// <summary>
@@ -278,8 +345,33 @@ namespace kAI.Core
         /// Update this behaviour, updating an active nodes and processing any events. 
         /// </summary>
         /// <param name="lDeltaTime">The time passed since last update. </param>
-        public override void Update(float lDeltaTime)
+        protected override void InternalUpdate(float lDeltaTime)
         {
+            ReleasePorts();
+
+            foreach (kAINode lNode in mInternalNodes.Values)
+            {
+                // This calls the update on the node contents (if this is a behaviour, this will only happen if the behaviour 
+                // is active). 
+                lNode.NodeContents.Update(lDeltaTime);
+            }
+        }
+
+        private void ReleasePorts()
+        {
+            foreach (InternalPort lInternalPort in mInternalPorts.Values)
+            {
+                kAIPort lPort = lInternalPort.Port;
+                lPort.Release();
+            }
+
+            foreach (kAINode lNode in mInternalNodes.Values)
+            {
+                foreach (kAIPort lPort in lNode.GetExternalPorts())
+                {
+                    lPort.Release();
+                }
+            }
         }
 
         /// <summary>
@@ -420,5 +512,7 @@ namespace kAI.Core
         {
             Deactivate();
         }
+
+        
     }
 }

@@ -21,7 +21,7 @@ namespace kAI.Editor
     /// <summary>
     /// A form for choosing from a list of behaviours a specific behaviour. 
     /// </summary>
-    partial class BehaviourChooser : Form
+    partial class kAINodeChooser : Form
     {
         /// <summary>
         /// The behaviour that is to be made. 
@@ -33,7 +33,7 @@ namespace kAI.Editor
         /// <summary>
         /// Create a new behaviour chooser form.
         /// </summary>
-        public BehaviourChooser(kAIProject lProject)
+        public kAINodeChooser(kAIProject lProject)
         {
             InitializeComponent();
 

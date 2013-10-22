@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 
 using kAI.Core;
+using kAI.Editor.Controls.DX.Coordinates;
 
 using SlimDX;
 using SpriteTextRenderer;
@@ -25,9 +26,6 @@ namespace kAI.Editor.Controls.DX
         readonly Point kOutPortStartPosition;
         readonly int kPortDeltaY = (int)kAIEditorPortDX.sPortSize.Y + 5;
 
-        // The node that is being represented. 
-        kAINode mNode;
-
         // The set of ports this node has
         List<kAIEditorPortDX> mExternalPorts;
 
@@ -45,9 +43,18 @@ namespace kAI.Editor.Controls.DX
         Rectangle lAddedRectangle;
 
         /// <summary>
+        /// The node that is being represented.  
+        /// </summary>
+        public kAINode Node
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
         /// The position of the node in absolute pixels. 
         /// </summary>
-        public NodeCoordinate Position
+        public kAIAbsolutePosition Position
         {
             get;
             private set;
@@ -57,7 +64,7 @@ namespace kAI.Editor.Controls.DX
         /// <summary>
         /// The size of the node in absolute pixels. 
         /// </summary>
-        public Size Size
+        public kAIAbsoluteSize Size
         {
             get;
             private set;
@@ -70,16 +77,16 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lPoint">The location of the node in absolute pixels. </param>
         /// <param name="lSize">The size of the node in absolute pixels. </param>
         /// <param name="lEditorWindow">The editor window this node belongs to. </param>
-        public kAIEditorNodeDX(kAINode lNode, NodeCoordinate lPoint, Size lSize, kAIBehaviourEditorWindowDX lEditorWindow)
+        public kAIEditorNodeDX(kAINode lNode, kAIAbsolutePosition lPoint, kAIAbsoluteSize lSize, kAIBehaviourEditorWindowDX lEditorWindow)
         {
             Position = lPoint;
             Size = lSize;
-            mNode = lNode;
+            Node = lNode;
             mBeingDragged = false;
 
             mEditorWindow = lEditorWindow;
 
-            kOutPortStartPosition = new Point(lSize.Width, 30);
+            kOutPortStartPosition = new Point(lSize.mSize.Width, 30);
 
             mCurrentInPosition = kInPortStartPosition;
             mCurrentOutPosition = kOutPortStartPosition;
@@ -91,12 +98,22 @@ namespace kAI.Editor.Controls.DX
                 AddExternalPort(lExternalPort);
             }
 
-            lAddedRectangle = new Rectangle(Position.GetPositionFixed(), Size);
+            MenuItem lDeleteNode = new MenuItem("Delete Node");
+            lDeleteNode.Click += new EventHandler(lDeleteNode_Click);
+
+            lAddedRectangle = new Rectangle(Position.mPoint, Size.mSize);
 
             lEditorWindow.InputManager.AddClickListenArea(lAddedRectangle,
-                new kAIMouseEventResponders { OnMouseDown = OnMouseDown , RectangleId = mNode.NodeID },
+                new kAIMouseEventResponders
+                {
+                    OnMouseDown = OnMouseDown,
+                    ContextMenu = new ContextMenu(new MenuItem[] { lDeleteNode }),
+                    RectangleId = Node.NodeID
+                },
                 false);
         }
+
+        
 
         /// <summary>
         /// Deprecated: 3D render using vertices to create a quad representing the node. 
@@ -104,20 +121,21 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lVertexStream">The vertex stream to fill with vertices. </param>
         /// <param name="lParentControl">The control the nodes are within. </param>
         /// <param name="lCameraPos">The position of the camera. </param>
-        public void Render(DataStream lVertexStream, Control lParentControl, NodeCoordinate lCameraPos)
+        public void Render(DataStream lVertexStream, Control lParentControl, kAIAbsolutePosition lCameraPos)
         {
             // Get a vector3 of where this position is in normalised space ([-1, 1] x [-1, 1])
-            Vector3 lNodePositionNormalised = Position.GetNormalisedPositionV3(lParentControl, lCameraPos);
+            kAINormalisedPosition lNodePositionNormalised = new kAINormalisedPosition(Position, lCameraPos, lParentControl);
+            
 
             // Get a vector3 representing what the width and height are in normalised space ([-1, 1] x [-1, 1]
-            Vector3 lNodeSizeNormalised = Size.GetNormalisedSizeFromSizeV3(lParentControl);
+            kAINormalisedSize lNodeSizeNormalised = new kAINormalisedSize(Size, lParentControl);
 
             Vector3 lTopLeft, lTopRight, lBottomLeft, lBottomRight;
 
-            lTopLeft = lNodePositionNormalised;
-            lTopRight = lNodePositionNormalised + Vector3.Modulate(Vector3.UnitX, lNodeSizeNormalised);
-            lBottomRight = lNodePositionNormalised + lNodeSizeNormalised;
-            lBottomLeft = lNodePositionNormalised + Vector3.Modulate(Vector3.UnitY, lNodeSizeNormalised);
+            lTopLeft = lNodePositionNormalised.GetAsV3();
+            lTopRight = lNodePositionNormalised.GetAsV3() + Vector3.Modulate(Vector3.UnitX, lNodeSizeNormalised.GetAsV3());
+            lBottomRight = lNodePositionNormalised.GetAsV3() + lNodeSizeNormalised.GetAsV3();
+            lBottomLeft = lNodePositionNormalised.GetAsV3() + Vector3.Modulate(Vector3.UnitY, lNodeSizeNormalised.GetAsV3());
 
             // We are a triangle strip so we can draw the quad using only 4 vertices
             lVertexStream.Write(lTopLeft);
@@ -133,13 +151,15 @@ namespace kAI.Editor.Controls.DX
         public void Render2D(kAIBehaviourEditorWindowDX lEditorWindow)
         {
             // Get the position for the square 
-            Point lFormPosition = Position.GetFormPosition(lEditorWindow.ParentControl, lEditorWindow.CameraPosition);
+            // Point lFormPosition = Position.GetFormPosition(lEditorWindow.ParentControl, lEditorWindow.CameraPosition);
+            kAIRelativePosition lFormPosition = new kAIRelativePosition(Position, lEditorWindow.CameraPosition);
+            kAIRelativeSize lFormSize = new kAIRelativeSize(Size);
 
             // Render the box for the node
-            lEditorWindow.SpriteRenderer.Draw(lEditorWindow.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.NodeTexture), new Vector2(lFormPosition.X, lFormPosition.Y), new Vector2(Size.Width, Size.Height), CoordinateType.Absolute);
+            lEditorWindow.SpriteRenderer.Draw(lEditorWindow.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.NodeTexture), new Vector2(lFormPosition.mPoint.X, lFormPosition.mPoint.Y), new Vector2(lFormSize.mSize.Width, lFormSize.mSize.Height), CoordinateType.Absolute);
 
             // Render the node label.
-            lEditorWindow.TextRenderer.DrawString(mNode.NodeID.ToString(), new Vector2(lFormPosition.X + kNodeNamePosition.X, lFormPosition.Y + kNodeNamePosition.Y), new Color4(Color.White));
+            lEditorWindow.TextRenderer.DrawString(Node.NodeID.ToString(), new Vector2(lFormPosition.mPoint.X + kNodeNamePosition.X, lFormPosition.mPoint.Y + kNodeNamePosition.Y), new Color4(Color.White));
 
             foreach (kAIEditorPortDX lEditorPort in mExternalPorts)
             {
@@ -147,23 +167,46 @@ namespace kAI.Editor.Controls.DX
             }
         }
 
+
+        /// <summary>
+        /// Perform the line render pass (currently just connexions). 
+        /// </summary>
+        public void LineRender()
+        {
+            foreach (kAIEditorPortDX lPort in mExternalPorts)
+            {
+                lPort.LineRender();
+            }
+        }
+
+        /// <summary>
+        /// Inform all connexions that their path may be invalid. 
+        /// </summary>
+        public void InvalidateConnexionPositions()
+        {
+            foreach(kAIEditorPortDX lPort in mExternalPorts.Where((lPort) => { return lPort.Port.PortDirection == kAIPort.ePortDirection.PortDirection_Out; }))
+            {
+                lPort.InvalidateConnexionPositions();
+            }
+        }        
+
         /// <summary>
         /// Add an external port to this node. 
         /// </summary>
         /// <param name="lPort"></param>
         void AddExternalPort(kAIPort lPort)
         {
-            kAIObject.Assert(null, lPort.OwningNode == mNode, "Tried to set as an external port a port which is not related to this node");
+            kAIObject.Assert(null, lPort.OwningNode == Node, "Tried to set as an external port a port which is not related to this node");
 
-            NodeCoordinate lPositionForPort;
+            kAIAbsolutePosition lPositionForPort;
             if (lPort.PortDirection == kAIPort.ePortDirection.PortDirection_In)
             {
-                lPositionForPort = Position + mCurrentInPosition;
+                lPositionForPort = Position.Add(new kAIAbsolutePosition(mCurrentInPosition.X, mCurrentInPosition.Y, false));
                 mCurrentInPosition.Offset(0, kPortDeltaY);
             }
             else
             {
-                lPositionForPort = Position + mCurrentOutPosition;
+                lPositionForPort = Position.Add(new kAIAbsolutePosition(mCurrentOutPosition.X, mCurrentOutPosition.Y, false));
                 mCurrentOutPosition.Offset(0, kPortDeltaY);
             }
             kAIEditorPortDX lEditorPort = new kAIEditorPortDX(lPort, lPositionForPort, mEditorWindow);
@@ -171,17 +214,34 @@ namespace kAI.Editor.Controls.DX
             mExternalPorts.Add(lEditorPort);
         }
 
+        /// <summary>
+        /// Get the EditorPort for a specific port. 
+        /// </summary>
+        /// <param name="lPort">The port to retrieve.</param>
+        /// <returns>The EditorPort (visual representation) of the specified port. </returns>
+        public kAIEditorPortDX GetExternalPort(kAIPort lPort)
+        {
+            foreach (kAIEditorPortDX lEditorPort in mExternalPorts)
+            {
+                if (lEditorPort.Port.PortID == lPort.PortID)
+                {
+                    return lEditorPort;
+                }
+            }
+
+            kAIObject.Assert(null, false, "Could not find specified external port on this node.");
+            return null;
+        }
+
         void OnMouseDown(object sender, MouseEventArgs e)
         {
-            if (!mBeingDragged)
+            if (!mBeingDragged && mEditorWindow.CanDrag())
             {
+                mEditorWindow.StartDrag();
+
                 // We start dragging so we now listen to these events. 
                 mEditorWindow.InputManager.OnMouseMove += new EventHandler<MouseEventArgs>(InputManager_OnMouseMove);
                 mEditorWindow.InputManager.OnMouseUp += new EventHandler<MouseEventArgs>(InputManager_OnMouseUp);
-
-                /*kAIObject.LogMessage(mNode, "MouseDown", 
-                    new KeyValuePair<string, object>("Node", mNode.NodeID),
-                    new KeyValuePair<string, object>("Position", lAddedRectangle));*/
 
                 mBeingDragged = true;
             }
@@ -195,16 +255,12 @@ namespace kAI.Editor.Controls.DX
             mEditorWindow.InputManager.OnMouseMove -= InputManager_OnMouseMove;
             mEditorWindow.InputManager.OnMouseUp -= InputManager_OnMouseUp;
 
-            /*kAIObject.LogMessage(mNode, "MouseUp", 
-                new KeyValuePair<string, object>("Node", mNode.NodeID),
-                new KeyValuePair<string, object>("Position", new Rectangle(Position.GetPositionFixed(), Size)));*/
-
             // Remove the old rectangle. 
             kAIMouseEventResponders lResponder = mEditorWindow.InputManager.RemoveClickListenArea(lAddedRectangle, false);
             kAIObject.Assert(null, lResponder, "Could not find node!");
 
             // Create and add the new rectangle. 
-            lAddedRectangle = new Rectangle(Position.GetPositionFixed(), Size);
+            lAddedRectangle = new Rectangle(Position.mPoint, Size.mSize);
             mEditorWindow.InputManager.AddClickListenArea(lAddedRectangle, lResponder, false);
 
             // Tell the ports we are done moving (so they can remove their old rectangles and add the new ones). 
@@ -213,26 +269,37 @@ namespace kAI.Editor.Controls.DX
                 lExternalPort.FinalisePosition();
             }
 
+            // Since we have moved some ports we may need to recalculate the lines used to represent the connexions. 
+            mEditorWindow.InvalidateConnexionPositions();
+
             mBeingDragged = false;
+
+            mEditorWindow.StopDrag();
         }
 
         void InputManager_OnMouseMove(object sender, MouseEventArgs e)
         {
             // We store the old position
-            Point lOldPoint = Position.GetPositionFixed();
+            Point lOldPoint = Position.mPoint;
 
-            // Update the positon to the location of the mouse
-            Position = new NodeCoordinate(e.Location, mEditorWindow.ParentControl, mEditorWindow.CameraPosition);
+            // Update the position to the location of the mouse
+            kAIRelativePosition lRelativePosition = new kAIRelativePosition(e.Location);
+            Position = new kAIAbsolutePosition(lRelativePosition, mEditorWindow.CameraPosition, false);
 
             // Work out the delta between the two points
-            int lDX = lOldPoint.X - Position.GetPositionFixed().X;
-            int lDY = lOldPoint.Y - Position.GetPositionFixed().Y;
+            int lDX = Position.mPoint.X - lOldPoint.X;
+            int lDY = Position.mPoint.Y - lOldPoint.Y;
             
             // And use these to move the ports accordingly. 
             foreach (kAIEditorPortDX lExternalPort in mExternalPorts)
             {
                 lExternalPort.UpdatePosition(lDX, lDY);
             }
+        }
+
+        void lDeleteNode_Click(object sender, EventArgs e)
+        {
+            mEditorWindow.Editor.RemoveNode(Node);
         }
     }
 }
