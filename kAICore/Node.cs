@@ -129,7 +129,8 @@ namespace kAI.Core
         /// </summary>
         /// <param name="lNodeID">The ID of the node. </param>
         /// <param name="lContents">The contents of the node. </param>
-        public kAINode(kAINodeID lNodeID, kAIINodeObject lContents)
+        /// <param name="lNodeOwner">The behaviour this node resides in. </param>
+        public kAINode(kAINodeID lNodeID, kAIINodeObject lContents, kAIXmlBehaviour lNodeOwner)
         {
             NodeID = lNodeID;
 
@@ -140,10 +141,9 @@ namespace kAI.Core
             {
                 foreach (kAIPort lPort in lContents.GetExternalPorts())
                 {
-                    // Set the ID of the port so it can be connected. 
-                    lPort.OwningNode = this;
+                    
 
-                    AddGlobalPort(lPort);
+                    AddGlobalPort(lPort, lNodeOwner);
                 }
             }
         }
@@ -195,9 +195,14 @@ namespace kAI.Core
         /// <summary>
         /// Add a externally accessible port to the node. 
         /// </summary>
-        /// <param name="lNewPort"></param>
-        protected virtual void AddGlobalPort(kAIPort lNewPort)
+        /// <param name="lNewPort">The global port to add to this node. </param>
+        /// <param name="lNodeOwner">The behaviour this node resides in. </param>
+        protected virtual void AddGlobalPort(kAIPort lNewPort, kAIXmlBehaviour lNodeOwner)
         {
+            // Set the ID of the port so it can be connected. 
+            lNewPort.OwningNode = this;
+            lNewPort.OwningBehaviour = lNodeOwner;
+
             mExternalPorts.Add(lNewPort.PortID, lNewPort);
         }
     }

@@ -33,7 +33,10 @@
             // 
             // BehaviourTree_Tree
             // 
+            this.BehaviourTree_Tree.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.BehaviourTree_Tree.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.BehaviourTree_Tree.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
+            this.BehaviourTree_Tree.LineColor = System.Drawing.Color.FromArgb(((int)(((byte)(64)))), ((int)(((byte)(64)))), ((int)(((byte)(64)))));
             this.BehaviourTree_Tree.Location = new System.Drawing.Point(0, 0);
             this.BehaviourTree_Tree.Name = "BehaviourTree_Tree";
             this.BehaviourTree_Tree.Size = new System.Drawing.Size(330, 516);

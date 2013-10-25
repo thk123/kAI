@@ -81,6 +81,7 @@ namespace kAI.Editor.Core
                                 try
                                 {
                                     int lValue = Int32.Parse(lMatch.Groups[lCount + 1].Value);
+                                    lParamValues[lCount] = lValue;
                                 }
                                 catch (FormatException ex)
                                 {
@@ -153,7 +154,7 @@ namespace kAI.Editor.Core
         {
             for(int i = 0; i < count; ++i)
             {
-                mBehaviour.Update(1.0f / 60.0f);
+                mBehaviour.Update(1.0f / 60.0f, null);
             }
 
             return true;

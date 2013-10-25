@@ -20,7 +20,7 @@ namespace kAI.Editor
         [STAThread]
         static void Main()
         {
-            kAIObject.GlobalLogger = ConsoleLogger.Get();
+            //kAIObject.GlobalLogger = ConsoleLogger.Get();
             ConsoleLogger.Get().LogMessage("kAI Editor starting");
 
             Application.EnableVisualStyles();

@@ -13,7 +13,7 @@ namespace kAI.Editor.Controls.DX
         /// <summary>
         /// Triggered when the mouse first hovers over an element.
         /// </summary>
-        public EventHandler<MouseEventArgs> OnMouseHover;
+        public EventHandler<MouseEventArgs> OnMouseEnter;
 
         /// <summary>
         /// Triggered when the mouse first leaves an element.
@@ -31,17 +31,14 @@ namespace kAI.Editor.Controls.DX
         public EventHandler<MouseEventArgs> OnMouseUp;
 
         /// <summary>
+        /// Triggered when the mouse is pressed and released on the object. 
+        /// </summary>
+        public EventHandler<MouseEventArgs> OnMouseClick;
+
+        /// <summary>
         /// The context menu that is applicable within this rectangle. 
         /// </summary>
         public ContextMenu ContextMenu;
-
-        /// <summary>
-        /// Is the rectangle associated with this currently hovered. 
-        /// </summary>
-        public bool Hovered = false;
-
-        // TODO: Remove these in to the state struct.
-        public bool Clicked = false;
 
         /// <summary>
         /// Debug: a sting used to identify this rectangle. 

@@ -123,6 +123,11 @@ namespace kAI.Editor.Controls
             mEditorImpl.RemoveConnexion(new kAIPort.kAIConnexion(lStartPort, lEndPort));
         }
 
+        public void RemoveConnexion(kAIPort.kAIConnexion lConnexion)
+        {
+            RemoveConnexion(lConnexion.StartPort, lConnexion.EndPort);
+        }
+
         /// <summary>
         /// Load an existing XML behaviour in to the editor. 
         /// </summary>
@@ -144,9 +149,10 @@ namespace kAI.Editor.Controls
                 mEditorImpl.AddNode(lInternalNode, GetPositionForNode());
             }
 
-            // TODO: load connexions
-
             Behaviour = lBehaviour;
+
+            Behaviour.SetGlobal();
+            Behaviour.ForceActivation();
         }
 
         /// <summary>
@@ -177,7 +183,7 @@ namespace kAI.Editor.Controls
         /// </summary>
         /// <param name="lNode">The node to add. </param>
         /// <param name="lPoint">The absolute position to add the point to. </param>
-        public void AddNode(kAINode lNode, kAIAbsolutePosition lPoint)
+        public void AddNode(kAIINodeObject lNodeContents, kAIAbsolutePosition lPoint)
         {
             // TODO: work out if needed?
             // TODO: come back when done generic classes for other controls
@@ -186,9 +192,11 @@ namespace kAI.Editor.Controls
 
             kAIObject.Assert(null, Behaviour, "No loaded behaviour");
 
-            Behaviour.AddNode(lNode);
+            kAINode lNewNode = new kAINode(GetNodeName(lNodeContents), lNodeContents, Behaviour);
 
-            mEditorImpl.AddNode(lNode, lPoint);
+            Behaviour.AddNode(lNewNode);
+
+            mEditorImpl.AddNode(lNewNode, lPoint);
         }
 
         /// <summary>
@@ -196,15 +204,15 @@ namespace kAI.Editor.Controls
         /// </summary>
         /// <param name="lNode">The node to add. </param>
         /// <param name="lPoint">The point (relative to the form) to add the node at. </param>
-        public void AddNode(kAINode lNode, Point lPoint)
+        public void AddNode(kAIINodeObject lNodeContents, Point lPoint)
         {
             kAIObject.Assert(null, Behaviour, "No loaded behaviour");
+            kAINode lNewNode = new kAINode(GetNodeName(lNodeContents), lNodeContents, Behaviour);
+            Behaviour.AddNode(lNewNode);
 
-            Behaviour.AddNode(lNode);
 
 
-
-            mEditorImpl.AddNode(lNode, lPoint);
+            mEditorImpl.AddNode(lNewNode, lPoint);
         }
 
         /// <summary>
@@ -226,6 +234,7 @@ namespace kAI.Editor.Controls
         {
             if (Behaviour != null)
             {
+                Behaviour.ForceDeactivate();
                 Behaviour.Save();
             }
 
@@ -302,7 +311,7 @@ namespace kAI.Editor.Controls
         void lAddNodeMenuItem_Click(object sender, EventArgs e)
         {
             kAIINodeObject lSelectedNode = mEditor.SelectNode();
-            AddNode(new kAINode(GetNodeName(lSelectedNode), lSelectedNode), mMousePositionOnContext);
+            AddNode(lSelectedNode, mMousePositionOnContext);
         }
     }    
 }

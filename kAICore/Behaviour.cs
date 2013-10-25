@@ -155,6 +155,38 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// Should be used if this behaviour is not contained within another behaviour as 
+        /// these can behave a little differently. 
+        /// </summary>
+        public void SetGlobal()
+        {
+            foreach (kAIPort lExternalPort in mExternalPorts.Values)
+            {
+                lExternalPort.OwningBehaviour = null;
+            }
+        }
+
+        /// <summary>
+        /// Gets the external port of this behaviour to activate it. 
+        /// </summary>
+        /// <returns>The external port to activate this behaviour. </returns>
+        public void ForceActivation()
+        {
+            mExternalPorts[kActivatePortID].Trigger();
+            mExternalPorts[kActivatePortID].Release();
+        }
+
+        /// <summary>
+        /// Gets the external port of this behaviour to deactivate it. 
+        /// </summary>
+        /// <returns>The external port to deactivate this behaviour. </returns>
+        public void ForceDeactivate()
+        {
+            mExternalPorts[kDeactivatePortID].Trigger();
+            mExternalPorts[kDeactivatePortID].Release();
+        }
+
+        /// <summary>
         /// The list of externally connectible ports. 
         /// </summary>
         /// <returns>A list of ports that can be connected to externally. </returns>
@@ -167,11 +199,12 @@ namespace kAI.Core
         /// Update this behaviour (if active). 
         /// </summary>
         /// <param name="lDeltaTime">The time in seconds that has passed since the last frame. </param>
-        public void Update(float lDeltaTime)
+        /// <param name="lUserData">The user data. </param>
+        public void Update(float lDeltaTime, object lUserData)
         {
             if (Active)
             {
-                InternalUpdate(lDeltaTime);
+                InternalUpdate(lDeltaTime, lUserData);
             }
         }
 
@@ -179,7 +212,8 @@ namespace kAI.Core
         /// Update this behaviour. Depends on the behaviors implementation as to what happens here. 
         /// </summary>
         /// <param name="lDeltaTime">The time in seconds between the last update and this. </param>
-        protected abstract void InternalUpdate(float lDeltaTime);
+        /// <param name="lUserData">The user data. </param>
+        protected abstract void InternalUpdate(float lDeltaTime, object lUserData);
 
         /// <summary>
         /// Deactivate this behaviour. 
@@ -208,6 +242,7 @@ namespace kAI.Core
         /// </summary>
         protected void Activate()
         {
+            LogMessage("Behaviour has been activated", new KeyValuePair<string, object>("Behaviour", BehaviourID));
             Active = true;
             OnActivate();
         }

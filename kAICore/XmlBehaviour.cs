@@ -123,6 +123,17 @@ namespace kAI.Core
         private readonly kAIPortID kDeactivatePortID = "Deactivate";
 
         /// <summary>
+        /// Nodes within this XML behaviour. 
+        /// </summary>
+        Dictionary<kAINodeID, kAINode> mInternalNodes;
+
+        /// <summary>
+        /// Ports within this XML behaviour.
+        /// </summary>
+        Dictionary<kAIPortID, InternalPort> mInternalPorts;
+
+
+        /// <summary>
         /// The location of the XML file.
         /// </summary>
         public FileInfo XmlLocation
@@ -130,8 +141,15 @@ namespace kAI.Core
             get;
             private set;
         }
-            
 
+        /// <summary>
+        /// Is this behaviour currently releasing ports (which means other ports inside it cannot be triggered). 
+        /// </summary>
+        public bool InReleasePhase
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// The nodes within the XML behaviour. 
@@ -158,16 +176,17 @@ namespace kAI.Core
             }
         }
 
-
         /// <summary>
-        /// Nodes within this XML behaviour. 
+        /// Base constructor, not to be used, just makes dictionaries for internal ports and nodes. 
         /// </summary>
-        Dictionary<kAINodeID, kAINode> mInternalNodes;
-
-        /// <summary>
-        /// Ports within this XML behaviour.
-        /// </summary>
-        Dictionary<kAIPortID, InternalPort> mInternalPorts;
+        /// <param name="lBehaviourID">The name of the new behaviour. </param>
+        /// <param name="lLogger">Optionally, the logger this behaviour should use. </param>
+        private kAIXmlBehaviour(kAIBehaviourID lBehaviourID, kAIILogger lLogger = null)
+            : base(lBehaviourID, lLogger)
+        {
+            mInternalNodes = new Dictionary<kAINodeID, kAINode>();
+            mInternalPorts = new Dictionary<kAIPortID, InternalPort>();
+        }
 
         /// <summary>
         /// Create a new XML behaviour 
@@ -201,7 +220,7 @@ namespace kAI.Core
         {
             XmlLocation = lSourceFile;
 
-            foreach (kAINode lNode in lSource.GetInternalNodes(lAssemblyGetter))
+            foreach (kAINode lNode in lSource.GetInternalNodes(lAssemblyGetter, this))
             {
                 AddNode(lNode);
             }
@@ -217,13 +236,7 @@ namespace kAI.Core
             }
         }
 
-        private kAIXmlBehaviour(kAIBehaviourID lBehaviourID, kAIILogger lLogger = null)
-            : base(lBehaviourID, lLogger)
-        {
-            mInternalNodes = new Dictionary<kAINodeID, kAINode>();
-            mInternalPorts = new Dictionary<kAIPortID, InternalPort>();
-        }
-
+        
         /// <summary>
         /// Add a node inside this behaviour. 
         /// </summary>
@@ -337,28 +350,12 @@ namespace kAI.Core
             // Create the writer and write the file. 
             XmlWriter lWriter = XmlWriter.Create(XmlLocation.FullName, lSettings);
             lProjectSerialiser.WriteObject(lWriter, lSaveableBehaviour);
-            lWriter.Close();
-            
-        }
-
-        /// <summary>
-        /// Update this behaviour, updating an active nodes and processing any events. 
-        /// </summary>
-        /// <param name="lDeltaTime">The time passed since last update. </param>
-        protected override void InternalUpdate(float lDeltaTime)
-        {
-            ReleasePorts();
-
-            foreach (kAINode lNode in mInternalNodes.Values)
-            {
-                // This calls the update on the node contents (if this is a behaviour, this will only happen if the behaviour 
-                // is active). 
-                lNode.NodeContents.Update(lDeltaTime);
-            }
+            lWriter.Close();   
         }
 
         private void ReleasePorts()
         {
+            InReleasePhase = true;
             foreach (InternalPort lInternalPort in mInternalPorts.Values)
             {
                 kAIPort lPort = lInternalPort.Port;
@@ -372,7 +369,27 @@ namespace kAI.Core
                     lPort.Release();
                 }
             }
+            InReleasePhase = false;
         }
+
+        /// <summary>
+        /// Update this behaviour, updating an active nodes and processing any events. 
+        /// </summary>
+        /// <param name="lDeltaTime">The time passed since last update. </param>
+        /// <param name="lUserData">The user data. </param>
+        protected override void InternalUpdate(float lDeltaTime, object lUserData)
+        {
+            ReleasePorts();
+
+            foreach (kAINode lNode in mInternalNodes.Values)
+            {
+                // This calls the update on the node contents (if this is a behaviour, this will only happen if the behaviour 
+                // is active). 
+                lNode.NodeContents.Update(lDeltaTime, lUserData);
+            }
+        }
+
+        
 
         /// <summary>
         /// Gets the <see cref="kAIINodeSerialObject"/>of this XML Behaviour. 
@@ -406,6 +423,7 @@ namespace kAI.Core
         private void AddInternalPort(InternalPort lInternalPort)
         {
             kAIPort lPortToAdd = lInternalPort.Port;
+            lPortToAdd.OwningBehaviour = this;
             if (mInternalPorts.ContainsKey(lInternalPort.Port.PortID))
             {
                 throw new kAIBehaviourPortAlreadyExistsException(this, mInternalPorts[lInternalPort.Port.PortID].Port, lPortToAdd);
@@ -456,6 +474,55 @@ namespace kAI.Core
             }
         }
 
+        private bool ContainsPort(kAIPort lPort)
+        {
+            if (lPort.OwningNode == null)
+            {
+                return mInternalPorts.ContainsKey(lPort.PortID);
+            }
+            else
+            {
+                return mInternalNodes.ContainsKey(lPort.OwningNodeID);
+            }
+        }
+
+        /// <summary>
+        /// Load an XML behaviour from its file. 
+        /// </summary>
+        /// <param name="lPath">Path to the xml behaviour</param>
+        /// <param name="lAssemblyGetter">The method to get assemblies.</param>
+        /// <returns>The behaviour, read for use. </returns>
+        public static kAIXmlBehaviour LoadFromFile(FileInfo lPath, GetAssemblyByName lAssemblyGetter)
+        {
+            XmlObjectSerializer lProjectDeserialiser = new DataContractSerializer(typeof(InternalXml), kAINode.NodeSerialTypes);
+            try
+            {
+                Stream lXmlStream = lPath.OpenRead();
+
+                InternalXml lXmlFile = (InternalXml)lProjectDeserialiser.ReadObject(lXmlStream);
+
+                Assert(null, lXmlFile);
+
+                lXmlStream.Close();
+
+                return new kAIXmlBehaviour(lXmlFile, lAssemblyGetter, lPath);
+            }
+            catch (System.UnauthorizedAccessException)
+            {
+                //TODO: Error - have you forgot to check the file out of source control?
+            }
+            catch (System.IO.DirectoryNotFoundException)
+            {
+                //TODO: Error - Directory not found, ensure file still exists
+            }
+            catch (System.IO.IOException)
+            {
+                // TODOO: Error - File is already open elsewhere. 
+            }
+
+            return null;
+        }
+
         /// <summary>
         /// Load an XML Behaviour from a file. 
         /// </summary>
@@ -488,7 +555,7 @@ namespace kAI.Core
             }
             catch (System.IO.DirectoryNotFoundException)
             {
-                //TODO: Error - Directory not found, ensure file still exists
+                kAIObject.GlobalLogger.LogError("Could not find file", new KeyValuePair<string, object>("Path:", lRealSerial.XmlBehaviourFile.FullName));
             }
             catch(System.IO.IOException)
             {
@@ -496,15 +563,24 @@ namespace kAI.Core
             }
 
             return null;
-        }
+        }        
 
         /// <summary>
         /// Called once this behaviour gets activated. 
         /// </summary>
         protected override void OnActivate()
         {
+            base.OnActivate();
             // Trigger the activate port. 
             mInternalPorts[kOnActivatePortID].Port.Trigger();
+        }
+
+        /// <summary>
+        /// Called once the behaviour gets deactivated
+        /// </summary>
+        protected override void OnDeactivate()
+        {
+            base.OnDeactivate();
         }
 
         // The deactivate port was triggered => this behaviour wants to be deactivated. 

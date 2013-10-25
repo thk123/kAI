@@ -10,6 +10,7 @@ using SlimDX;
 using kAI.Core;
 using SlimDX.Direct3D11;
 using kAI.Editor.Controls.DX.Coordinates;
+using kAI.Editor.Controls.WinForms;
 
 namespace kAI.Editor.Controls.DX
 {
@@ -74,21 +75,21 @@ namespace kAI.Editor.Controls.DX
             mEditorWindow = lEditorWindow;
 
             MenuItem lRemoveConnexion = new MenuItem("Remove connexion...");
+            lRemoveConnexion.Click += new EventHandler(lRemoveConnexion_Click);
+
             MenuItem lRemoveAllConnexions = new MenuItem("Remove all connexions");
             lRemoveAllConnexions.Click += new EventHandler(lRemoveAllConnexions_Click);
-            MenuItem lSeperator = new MenuItem("-");
-            MenuItem lAddConnexion = new MenuItem("Add connexion...");
 
             mAddedRectangle = new Rectangle(Position.mPoint, new Size((int)sPortSize.X, (int)sPortSize.Y));
 
             mEditorWindow.InputManager.AddClickListenArea(mAddedRectangle,
                 new kAIMouseEventResponders
                 {
-                    OnMouseHover = OnHover,
+                    OnMouseEnter = OnHover,
                     OnMouseLeave = OnLeave,
                     OnMouseDown = OnMouseDown,
                     OnMouseUp = OnMouseUp,
-                    ContextMenu = new ContextMenu(new MenuItem[] { lRemoveConnexion, lRemoveAllConnexions, lSeperator, lAddConnexion }),
+                    ContextMenu = new ContextMenu(new MenuItem[] { lRemoveConnexion, lRemoveAllConnexions }),
                     RectangleId = Port.OwningNodeID + ":" + Port.PortID
                 },
                 Port.OwningNode == null); // if the port is an internal node (ie no owning node) then it doesn't move with the camera
@@ -103,6 +104,21 @@ namespace kAI.Editor.Controls.DX
                 }
             }
 
+        }
+
+        void lRemoveConnexion_Click(object sender, EventArgs e)
+        {
+            SelectConnexionDialogue lConnexionSelector = new SelectConnexionDialogue(Port, mEditorWindow.Editor.Behaviour.GetConnectedPorts(Port));
+
+            DialogResult lResult = lConnexionSelector.ShowDialog();
+
+            if (lResult == DialogResult.OK)
+            {
+                foreach (kAIPort.kAIConnexion lConnexion in lConnexionSelector.GetPortsToDisconnect())
+                {
+                    mEditorWindow.Editor.RemoveConnexion(lConnexion);
+                }
+            }
         }
 
         void lRemoveAllConnexions_Click(object sender, EventArgs e)
@@ -197,6 +213,7 @@ namespace kAI.Editor.Controls.DX
             kAIRelativePosition lFormPosition = new kAIRelativePosition(Position, lContainerEditor.CameraPosition);
 
             Vector2 lLabelPosition;
+            Color lLabelColour;
             Vector2 lStringSize = lContainerEditor.TextRenderer.MeasureString(Port.PortID.ToString()).Size;
             if (Port.PortDirection == kAIPort.ePortDirection.PortDirection_In)
             {
@@ -212,12 +229,14 @@ namespace kAI.Editor.Controls.DX
                     // Is a internal port going in, so on the right hand side
                     // => text is on the left of the port
                     lXPosition = -(lStringSize.X + 3);
+                    lLabelColour = Color.FromArgb(64, 64, 64);
                 }
                 else // OwningNode is not null
                 {
                     // Is an external port going in, so on the left hand side
                     // => text is on the right of the port
                     lXPosition = sPortSize.X + 3;
+                    lLabelColour = Color.White;
                 }
 
                 // Position    =           Location of the port + the offset determined above to shift it to left or right of the port
@@ -239,13 +258,14 @@ namespace kAI.Editor.Controls.DX
                     // Is a internal port going out, so on the right hand side
                     // => text is on the right of the port
                     lXPosition = sPortSize.X + 3;
-                    
+                    lLabelColour = Color.FromArgb(64, 64, 64);
                 }
                 else // OwningNode is not null
                 {
                     // Is an external port going out, so on the right hand side
                     // => text is on the left of the port
                     lXPosition = -(lStringSize.X + 3);
+                    lLabelColour = Color.White;
                 }
 
                 // Position    =           Location of the port + the offset determined above to shift it to left or right of the port
@@ -255,7 +275,7 @@ namespace kAI.Editor.Controls.DX
             }
 
             lContainerEditor.SpriteRenderer.Draw(lTexture, new Vector2(lFormPosition.mPoint.X, lFormPosition.mPoint.Y), sPortSize, SpriteTextRenderer.CoordinateType.Absolute);
-            lContainerEditor.TextRenderer.DrawString(Port.PortID, lLabelPosition, new Color4(Color.White));
+            lContainerEditor.TextRenderer.DrawString(Port.PortID, lLabelPosition, new Color4(lLabelColour));
 
             foreach (kAIEditorConnexionDX lConnexion in mConnexions)
             {

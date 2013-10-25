@@ -197,8 +197,9 @@ namespace kAI.Core
             /// Get each of the internal nodes saved within this serial object. 
             /// </summary>
             /// <param name="lAssemblyGetter">The method to use to get assemblies to resolve types. </param>
+            /// <param name="lOwningBehaviour">The XML behaviour these nodes reside in. </param>
             /// <returns>A list of nodes this serial object represents. </returns>
-            public IEnumerable<kAINode> GetInternalNodes(GetAssemblyByName lAssemblyGetter)
+            public IEnumerable<kAINode> GetInternalNodes(GetAssemblyByName lAssemblyGetter, kAIXmlBehaviour lOwningBehaviour)
             {
                 foreach (SerialNode lInternalNode in InternalNodes)
                 {
@@ -217,7 +218,7 @@ namespace kAI.Core
 
                     object lNodeContents = lLoader.Invoke(null, new object[] { lData, lAssemblyGetter });
 
-                    kAINode lNewNode = new kAINode(lInternalNode.NodeID, (kAIINodeObject)lNodeContents);
+                    kAINode lNewNode = new kAINode(lInternalNode.NodeID, (kAIINodeObject)lNodeContents, lOwningBehaviour);
 
                     yield return lNewNode;
                 }

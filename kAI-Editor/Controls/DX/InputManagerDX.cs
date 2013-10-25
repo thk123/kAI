@@ -18,10 +18,11 @@ namespace kAI.Editor.Controls.DX
         /// <summary>
         /// Represents the state of a rectangle.
         /// </summary>
-        struct RectangleState
+        class RectangleState
         {
-            public bool Hovered;
-            public bool Clicked;
+            public bool WasHovered = false;
+            public bool Hovered = false;
+            public bool MousePressStartHere = false;
         }
 
         /// <summary>
@@ -43,13 +44,14 @@ namespace kAI.Editor.Controls.DX
         kAIBehaviourEditorWindowDX mEditorWindow;
 
         // Stores the elements that move with the camera
-        kAIRTree<kAIMouseEventResponders> mMovingMouseEventListeners;
+        kAIRTree<Tuple<kAIMouseEventResponders, RectangleState>> mMovingMouseEventListeners;
 
         // Stores the elements that are fixed independent of the camera. 
-        kAIRTree<kAIMouseEventResponders> mFixedMouseEventListeners;
+        kAIRTree<Tuple<kAIMouseEventResponders, RectangleState>> mFixedMouseEventListeners;
 
         // Is the mouse currently down. 
         bool mMouseDown;
+        bool mWasMouseDown;
 
         /// <summary>
         /// Is the mouse on some element or not. 
@@ -74,11 +76,12 @@ namespace kAI.Editor.Controls.DX
 
             // These trees represent the various rectangles that respond to mouse events
             // The moving elements are things that move as the user drags the camera around
-            mMovingMouseEventListeners = new kAIRTree<kAIMouseEventResponders>();
+            mMovingMouseEventListeners = new kAIRTree<Tuple<kAIMouseEventResponders, RectangleState>>();
             // The fixed elements are the ones that are in a fixed position irrespective of where the camera is. 
-            mFixedMouseEventListeners = new kAIRTree<kAIMouseEventResponders>();
+            mFixedMouseEventListeners = new kAIRTree<Tuple<kAIMouseEventResponders, RectangleState>>();
             mEditorWindow = lEditorWindow;
             mMouseDown = false;
+            mWasMouseDown = false;
             MouseOnSomething = false;
         }
 
@@ -93,11 +96,11 @@ namespace kAI.Editor.Controls.DX
         {
             if (lFixed)
             {
-                mFixedMouseEventListeners.AddRectangle(lArea, lOnClickResponder);
+                mFixedMouseEventListeners.AddRectangle(lArea, new Tuple<kAIMouseEventResponders, RectangleState>(lOnClickResponder, new RectangleState()));
             }
             else
             {
-                mMovingMouseEventListeners.AddRectangle(lArea, lOnClickResponder);
+                mMovingMouseEventListeners.AddRectangle(lArea, new Tuple<kAIMouseEventResponders, RectangleState>(lOnClickResponder, new RectangleState()));
             }
         }
 
@@ -112,11 +115,27 @@ namespace kAI.Editor.Controls.DX
         {
             if (lFixed)
             {
-                return mFixedMouseEventListeners.RemoveRectangle(lArea);
+                var lRectData = mFixedMouseEventListeners.RemoveRectangle(lArea);
+                if (lRectData != null)
+                {
+                    return lRectData.Item1;
+                }
+                else
+                {
+                    return null;
+                }
             }
             else
             {
-                return mMovingMouseEventListeners.RemoveRectangle(lArea);
+                var lRectData = mMovingMouseEventListeners.RemoveRectangle(lArea);
+                if (lRectData != null)
+                {
+                    return lRectData.Item1;
+                }
+                else
+                {
+                    return null;
+                }
             }
         }
 
@@ -137,78 +156,79 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lPointToCheck">The point to actually check for collisions with. </param>
         /// <param name="lSender">The sender (used for calling events). </param>
         /// <param name="lEventArgs">The event args (used for calling events). </param>
-        void HandleTree(kAIRTree<kAIMouseEventResponders> lTree, Point lPointToCheck, object lSender, MouseEventArgs lEventArgs)
+        void HandleTree(kAIRTree<Tuple<kAIMouseEventResponders, RectangleState>> lTree, Point lPointToCheck, object lSender, MouseEventArgs lEventArgs)
         {
             // First we find all the elements so we can see which elements were under the mouse before and now aren't. 
-            IEnumerable<kAIMouseEventResponders> lAllControls = lTree.GetAllContents();
-            List<RectangleState> lControlState = new List<RectangleState>();
-
-            foreach (kAIMouseEventResponders lResponder in lAllControls)
+            IEnumerable<Tuple<kAIMouseEventResponders, RectangleState>> lAllControls = lTree.GetAllContents();
+            //List<RectangleState> lControlState = new List<RectangleState>();
+            
+            foreach (Tuple<kAIMouseEventResponders, RectangleState> lResponder in lAllControls)
             {
-                lControlState.Add(new RectangleState { Hovered = lResponder.Hovered, Clicked = lResponder.Clicked });
-                lResponder.Hovered = false;
-                lResponder.Clicked = false;
-                //lResponder.JustPressed = false;
+                // We store whether the mouse was over the item
+                lResponder.Item2.WasHovered = lResponder.Item2.Hovered;
+
+                // We assume not hovered at this stage
+                lResponder.Item2.Hovered = false;
+
+                // The mouse press only started here if the mouse press started here and the mouse is still down
+                lResponder.Item2.MousePressStartHere = lResponder.Item2.MousePressStartHere && mWasMouseDown;
             }
 
             // Using the tree, get the elements under the mouse point. 
-            IEnumerable<kAIMouseEventResponders> lUnderControls = lTree.GetRectsContainingPoint(lPointToCheck);
+            IEnumerable<Tuple<kAIMouseEventResponders, RectangleState>> lUnderControls = lTree.GetRectsContainingPoint(lPointToCheck);
 
             // Go through the elements, firing events accordingly. 
-            foreach (kAIMouseEventResponders lResponder in lUnderControls)
+            foreach (Tuple<kAIMouseEventResponders, RectangleState> lResponder in lUnderControls)
             {
+                // All of the things that are under the mouse have hovered as true
+                lResponder.Item2.Hovered = true;
+
+                // We don't set pressed as this indicates that the mouse was pressed on them
+
+                mEditorWindow.ParentControl.ContextMenu = lResponder.Item1.ContextMenu;
+
                 // If we weren't previously hovered
-                if (!lResponder.Hovered)
+                if (!lResponder.Item2.WasHovered)
                 {
                     // We trigger the hover action
-                    lResponder.CallAction(lResponder.OnMouseHover, lSender, lEventArgs);
-                    lResponder.Hovered = true;
-
-                    mEditorWindow.ParentControl.ContextMenu = lResponder.ContextMenu;
+                    lResponder.Item1.CallAction(lResponder.Item1.OnMouseEnter, lSender, lEventArgs);
+                    // This is triggererd after clicking on a node since we move the node. 
                 }
 
-                // If the mouse button is down
-                if (mMouseDown)
+                // If the mouse button is down and was up last frame then the mouse has just been pressed
+                if (mMouseDown && !mWasMouseDown)
                 {
                     // We trigger the on mouse down event. 
-                    lResponder.CallAction(lResponder.OnMouseDown, lSender, lEventArgs);
-                    lResponder.Clicked = true;
+                    lResponder.Item1.CallAction(lResponder.Item1.OnMouseDown, lSender, lEventArgs);
+
+                    // And we store that the mouse started off being pressed on this object
+                    lResponder.Item2.MousePressStartHere = true;
                 }
+                else if (!mMouseDown && mWasMouseDown) // the mouse has just been released this frame
+                {
+                    // if the mouse was initially pressed on this object  so this is a click action
+                    if (lResponder.Item2.MousePressStartHere)
+                    {
+                        lResponder.Item1.CallAction(lResponder.Item1.OnMouseClick, lSender, lEventArgs);
+                    }
+                    else // else the mouse was pressed down somewhere else so is a MouseUp event
+                    {
+                        lResponder.Item1.CallAction(lResponder.Item1.OnMouseUp, lSender, lEventArgs);
+                    }
+
+                    lResponder.Item2.MousePressStartHere = false;                    
+                }
+                
 
                 // The mouse is on something. 
                 MouseOnSomething = true;
             }
 
-            // We loop through all the controls and compare their current hover state with their previous hover state. 
-            var lControlEnumerator = lAllControls.GetEnumerator();
-            var lControlStateEnumerator = lControlState.GetEnumerator();
-
-            while (lControlEnumerator.MoveNext() && lControlStateEnumerator.MoveNext())
+            foreach (Tuple<kAIMouseEventResponders, RectangleState> lControlState in lAllControls)
             {
-                if (!lControlEnumerator.Current.Hovered)
+                if (lControlState.Item2.WasHovered && !lControlState.Item2.Hovered)
                 {
-                    // is now now hovered
-
-                    if (lControlStateEnumerator.Current.Hovered)
-                    {
-                        // Was hovered before, therefore the mouse just moved off it
-                        lControlEnumerator.Current.CallAction(lControlEnumerator.Current.OnMouseLeave, lSender, lEventArgs);
-                    }
-                }
-
-                if(!lControlEnumerator.Current.Clicked)
-                {
-                    // if the mouse is up and we were clicking then we just released
-                    // if the mouse is now down, well then we just left whilst holding the mouse
-                    if(!mMouseDown && lControlStateEnumerator.Current.Clicked)
-                    {
-                        lControlEnumerator.Current.CallAction(lControlEnumerator.Current.OnMouseUp, lSender, lEventArgs);
-                    }
-                }
-                else
-                {
-                    // TODO: a click event, rename click to pressed
-                    // not pressed, maybe just clicked?
+                    lControlState.Item1.CallAction(lControlState.Item1.OnMouseLeave, lSender, lEventArgs);
                 }
             }
 
@@ -216,11 +236,33 @@ namespace kAI.Editor.Controls.DX
             {
                 mEditorWindow.ParentControl.ContextMenu = mEditorWindow.Editor.GlobalContextMenu;
             }
+
+            
+
+        }
+
+        private void UpdateTrees(kAIRelativePosition lRelativePoint, kAIAbsolutePosition lAbsolutePoint, object sender, MouseEventArgs e)
+        {
+            MouseOnSomething = false;
+
+            HandleTree(mMovingMouseEventListeners, lAbsolutePoint.mPoint, sender, e);
+            HandleTree(mFixedMouseEventListeners, lRelativePoint.mPoint, sender, e);
+
+            mWasMouseDown = mMouseDown;
         }
 
         void lParentControl_MouseUp(object sender, MouseEventArgs e)
         {
+            mWasMouseDown = mMouseDown;
             mMouseDown = false;
+
+            kAIRelativePosition lRelativePoint = new kAIRelativePosition(e.Location); // the actual position of the mouse
+
+            // the position of the mouse in absolute space (i.e. translated for the camera)
+            kAIAbsolutePosition lAbsolutePoint = new kAIAbsolutePosition(lRelativePoint, mEditorWindow.CameraPosition, false);
+
+            UpdateTrees(lRelativePoint, lAbsolutePoint, sender, e);
+
             if (OnMouseUp != null)
             {
                 OnMouseUp(sender, e);
@@ -229,7 +271,16 @@ namespace kAI.Editor.Controls.DX
 
         void lParentControl_MouseDown(object sender, MouseEventArgs e)
         {
+            mWasMouseDown = mMouseDown;
             mMouseDown = true;
+
+            kAIRelativePosition lRelativePoint = new kAIRelativePosition(e.Location); // the actual position of the mouse
+
+            // the position of the mouse in absolute space (i.e. translated for the camera)
+            kAIAbsolutePosition lAbsolutePoint = new kAIAbsolutePosition(lRelativePoint, mEditorWindow.CameraPosition, false);
+
+            UpdateTrees(lRelativePoint, lAbsolutePoint, sender, e);
+
             if (OnMouseDown != null)
             {
                 OnMouseDown(sender, e);
@@ -243,10 +294,10 @@ namespace kAI.Editor.Controls.DX
             // the position of the mouse in absolute space (i.e. translated for the camera)
             kAIAbsolutePosition lAbsolutePoint = new kAIAbsolutePosition(lRelativePoint, mEditorWindow.CameraPosition, false);
 
-            MouseOnSomething = false;
+            
 
-            HandleTree(mMovingMouseEventListeners, lAbsolutePoint.mPoint, sender, e);
-            HandleTree(mFixedMouseEventListeners, lRelativePoint.mPoint, sender, e);
+            UpdateTrees(lRelativePoint, lAbsolutePoint, sender, e);
+
             if (OnMouseMove != null)
             {
                 OnMouseMove(sender, e);

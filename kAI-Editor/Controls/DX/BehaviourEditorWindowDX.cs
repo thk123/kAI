@@ -479,7 +479,7 @@ namespace kAI.Editor.Controls.DX
         public void EditorUpdate()
         {
             // clear the render target to a stylish grey
-            mContext.ClearRenderTargetView(mRenderTarget, Color.DarkGray);
+            mContext.ClearRenderTargetView(mRenderTarget, Color.LightGray);
 
             // 3D render with vertices (abandoned)
             //Render();

@@ -109,6 +109,12 @@ namespace kAI.Core
         /// </summary>
         kAINode mOwningNode;
 
+        /// <summary>
+        /// The XML behaviour this port is embedded in. 
+        /// Can be null if it is an external node to a behaviour and that behaviour is at the root
+        /// </summary>
+        kAIXmlBehaviour mOwningBehaviour;
+
         bool mHasBeenTriggered;
 
         /// <summary>
@@ -128,6 +134,28 @@ namespace kAI.Core
                 Assert(mConnectingPorts.Count == 0, "This port is already connected to things, so cannot change the parent node of the port");
 
                 mOwningNode = value;
+            }
+        }
+
+        bool mOwningBehaviourSet = false;
+
+        /// <summary>
+        /// Get and sets the owning behaviour
+        /// You can only assign the owning node once and this must be done before triggering
+        /// or releasing the port.
+        /// </summary>
+        public kAIXmlBehaviour OwningBehaviour
+        {
+            get
+            {
+                return mOwningBehaviour;
+            }
+            internal set
+            {
+                Assert(!mOwningBehaviourSet, "Cannot change the assigned owning behaviour");
+
+                mOwningBehaviour = value;
+                mOwningBehaviourSet = true;
             }
         }
 
@@ -159,6 +187,7 @@ namespace kAI.Core
                 }
             }
         }
+
 
         /// <summary>
         /// An enum representing the direction of a port.
@@ -288,6 +317,8 @@ namespace kAI.Core
         /// </summary>
         public void Trigger()
         {
+            Assert(mOwningBehaviourSet, "A port has not been told what XML behaviour it belongs to: " + PortID.ToString());
+            LogMessage("Port triggered", new KeyValuePair<string, object>("Port", PortID));
             if (!CheckState())
             {
                 throw new Exception("Currently releasing a port, cannot trigger more");
@@ -308,14 +339,18 @@ namespace kAI.Core
             }
         }
 
+        
+        
         /// <summary>
         /// Release this port (first stage of the drill down update). 
         /// </summary>
         public void Release()
         {
+            Assert(mOwningBehaviourSet, "A port has not been told what XML behaviour it belongs to: " + PortID.ToString());
             if (mHasBeenTriggered)
             {
-                // TODO: it is vital this does not trigger more ports
+                LogMessage("Port released", new KeyValuePair<string, object>("Port", PortID));
+                // TODO: it is vital this does not trigger more ports within the same behaviour
                 if (OnTriggered != null)
                 {
                     OnTriggered(this);
@@ -430,24 +465,21 @@ namespace kAI.Core
         }
 
         /// <summary>
-        /// Check the the state is not in a release of another port (if we are, we cannot trigger aditional ports). 
+        /// Check the the state is not in a release of another port (if we are, we cannot trigger additional ports). 
         /// </summary>
         /// <returns>True if the state is valid for triggering a port. </returns>
         private bool CheckState()
         {
-            // TODO: We should check via a static or something.
-
-            string lStackTrace = Environment.StackTrace;
-            string[] lLines = lStackTrace.Split('\r', '\n');
-            foreach (string lLine in lLines)
+            if (mOwningBehaviour == null)
             {
-                if (lLine.Contains("Release"))
-                {
-                    return false;
-                }
+                // This is only true when we are an external port of a behaviour that is at the root#
+                // i.e. not embedded in some other behaviour. This means there is no release phase 
+                 return true;
             }
-
-            return true;
+            else
+            {
+                return !mOwningBehaviour.InReleasePhase;
+            }
         }
 
 
