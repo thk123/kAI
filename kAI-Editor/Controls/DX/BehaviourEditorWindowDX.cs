@@ -161,6 +161,8 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lWindow">The editor that is controlling the implementation. </param>
         public void Init(Control lParentControl, kAIBehaviourEditorWindow lWindow)
         {
+            const string lAssetsFolder = @"C:\Users\Thomas\VS Projects\C#\kAI\kAI-Editor\Assets\";
+            
             ParentControl = lParentControl;
             Editor = lWindow;
 
@@ -195,7 +197,7 @@ namespace kAI.Editor.Controls.DX
                 SwapEffect = SwapEffect.Discard
             };
 
-            Device.CreateWithSwapChain(DriverType.Hardware, DeviceCreationFlags.Debug, description, out device, out mSwapChain);
+            Device.CreateWithSwapChain(DriverType.Hardware, DeviceCreationFlags.None, description, out device, out mSwapChain);
 
             // create a view of our render target, which is the backbuffer of the swap chain we just created
             using (var resource = Resource.FromSwapChain<Texture2D>(mSwapChain, 0))
@@ -208,14 +210,14 @@ namespace kAI.Editor.Controls.DX
             mContext.Rasterizer.SetViewports(viewport);
 
             // load and compile the vertex shader, TODO: Relative paths...
-            using (var bytecode = ShaderBytecode.CompileFromFile(@"E:\dev\C#\kAI\kAI-Editor\Assets\triangle.fx", "VShader", "vs_4_0", ShaderFlags.None, EffectFlags.None))
+            using (var bytecode = ShaderBytecode.CompileFromFile(lAssetsFolder + "triangle.fx", "VShader", "vs_4_0", ShaderFlags.None, EffectFlags.None))
             {
                 inputSignature = ShaderSignature.GetInputSignature(bytecode);
                 vertexShader = new VertexShader(device, bytecode);
             }
 
             // load and compile the pixel shader
-            using (var bytecode = ShaderBytecode.CompileFromFile(@"E:\dev\C#\kAI\kAI-Editor\Assets\triangle.fx", "PShader", "ps_4_0", ShaderFlags.None, EffectFlags.None))
+            using (var bytecode = ShaderBytecode.CompileFromFile(lAssetsFolder + "triangle.fx", "PShader", "ps_4_0", ShaderFlags.None, EffectFlags.None))
                 pixelShader = new PixelShader(device, bytecode);
 
             // set the shaders
@@ -265,11 +267,11 @@ namespace kAI.Editor.Controls.DX
 
             // Create the shader resources for each of the textures
             mTextures = new ShaderResourceView[(int)eTextureID.TextureCount];
-            mTextures[(int)eTextureID.NodeTexture] = new ShaderResourceView(device, Texture2D.FromFile(device, @"E:\dev\C#\kAI\kAI-Editor\Assets\Node.png"));
-            mTextures[(int)eTextureID.InPort] = new ShaderResourceView(device, Texture2D.FromFile(device, @"E:\dev\C#\kAI\kAI-Editor\Assets\InPort.png"));
-            mTextures[(int)eTextureID.InPort_Hover] = new ShaderResourceView(device, Texture2D.FromFile(device, @"E:\dev\C#\kAI\kAI-Editor\Assets\InPort_Hover.png"));
-            mTextures[(int)eTextureID.OutPort] = new ShaderResourceView(device, Texture2D.FromFile(device, @"E:\dev\C#\kAI\kAI-Editor\Assets\OutPort.png"));
-            mTextures[(int)eTextureID.OutPort_Hover] = new ShaderResourceView(device, Texture2D.FromFile(device, @"E:\dev\C#\kAI\kAI-Editor\Assets\OutPort_Hover.png"));
+            mTextures[(int)eTextureID.NodeTexture] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "Node.png"));
+            mTextures[(int)eTextureID.InPort] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "InPort.png"));
+            mTextures[(int)eTextureID.InPort_Hover] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "InPort_Hover.png"));
+            mTextures[(int)eTextureID.OutPort] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "OutPort.png"));
+            mTextures[(int)eTextureID.OutPort_Hover] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "OutPort_Hover.png"));
 
         }
 

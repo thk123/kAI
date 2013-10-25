@@ -76,7 +76,7 @@
     <Compile Include="Controls\DX\EditorNodeDX.cs" />
     <Compile Include="Controls\PortConnexionCreator.cs" />
     <Compile Include="Controls\DX\RTree.cs" />
-    <Compile Include="Controls\GLEE\BehaviourEditorWindowGLEE.cs" />
+    <None Include="Controls\GLEE\BehaviourEditorWindowGLEE.cs" />
     <Compile Include="Controls\WinForms\BehaviourTree.cs">
       <SubType>UserControl</SubType>
     </Compile>
