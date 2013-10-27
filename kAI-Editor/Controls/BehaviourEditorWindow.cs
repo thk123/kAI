@@ -167,10 +167,9 @@ namespace kAI.Editor.Controls
         /// <param name="lInternalPort"></param>
         public void AddInternalPort(kAIPort lInternalPort)
         {
-            // TODO: This is confusing...
             kAIObject.Assert(null, Behaviour, "No loaded behaviour");
 
-            Behaviour.AddExternalPort(lInternalPort);
+            Behaviour.AddInternalPort(lInternalPort, true);
 
             mEditorImpl.AddInternalPort(lInternalPort);
         }

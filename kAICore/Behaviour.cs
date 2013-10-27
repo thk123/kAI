@@ -38,6 +38,8 @@ namespace kAI.Core
 
         bool mActive;
 
+        bool mWasActive;
+
         /// <summary>
         /// The unique (in this behaviour) name of this behaviour instance.
         /// </summary>
@@ -71,6 +73,7 @@ namespace kAI.Core
             {
                 if (mActive != value)
                 {
+                    mWasActive = mActive;
                     mActive = value;
 
                     //TODO: Notifications to derived classes and methods for them to deactivate the whole system.
@@ -113,6 +116,9 @@ namespace kAI.Core
             // External port for when the contents of this node wants to deactivate this node. 
             kAIPort lOnDeactivatedPort = new kAIPort(kOnDeactivatePortID, kAIPort.ePortDirection.PortDirection_Out, kAIPortType.TriggerType);
             AddExternalPort(lOnDeactivatedPort);
+
+            mActive = false;
+            mWasActive = false;
         }
 
         void lActivatePort_OnTriggered(kAIPort lSender)
@@ -132,7 +138,7 @@ namespace kAI.Core
         /// <exception cref="kAIBehaviourPortAlreadyExistsException">
         /// If a port with the same PortID already exists in this behaviour.
         /// </exception>
-        public void AddExternalPort(kAIPort lNewPort)
+        protected void AddExternalPort(kAIPort lNewPort)
         {
             if (!mExternalPorts.ContainsKey(lNewPort.PortID))
             {
@@ -173,7 +179,7 @@ namespace kAI.Core
         public void ForceActivation()
         {
             mExternalPorts[kActivatePortID].Trigger();
-            mExternalPorts[kActivatePortID].Release();
+            //mExternalPorts[kActivatePortID].Release();
         }
 
         /// <summary>
@@ -183,7 +189,7 @@ namespace kAI.Core
         public void ForceDeactivate()
         {
             mExternalPorts[kDeactivatePortID].Trigger();
-            mExternalPorts[kDeactivatePortID].Release();
+            //mExternalPorts[kDeactivatePortID].Release();
         }
 
         /// <summary>
@@ -204,7 +210,20 @@ namespace kAI.Core
         {
             if (Active)
             {
-                InternalUpdate(lDeltaTime, lUserData);
+                try
+                {
+                    InternalUpdate(lDeltaTime, lUserData);
+                }
+                catch (System.Exception)
+                {
+                    LogMessage("Failed to update code behaviour " + BehaviourID);
+                }
+                
+            }
+            else if (mWasActive) // just been deactivated so we trigger the OnDeactivated Port
+            {
+                GetPort(kOnDeactivatePortID).Trigger();
+                mWasActive = false;
             }
         }
 
@@ -222,7 +241,7 @@ namespace kAI.Core
         {
             Active = false;
             OnDeactivate();
-            GetPort(kOnDeactivatePortID).Trigger();
+            // TODO: this is called from XML behaviour if its inner Deactivate port is triggered, this could trigger the OnDeactivated without risk
         }
 
         /// <summary>

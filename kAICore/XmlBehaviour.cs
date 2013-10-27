@@ -465,7 +465,7 @@ namespace kAI.Core
         /// </summary>
         /// <param name="lNewPort">The new port to add. </param>
         /// <param name="lExpose">Should this port have a corresponding externally accesible port. </param>
-        private void AddInternalPort(kAIPort lNewPort, bool lExpose = false)
+        public void AddInternalPort(kAIPort lNewPort, bool lExpose = false)
         {
             AddInternalPort(new InternalPort { Port = lNewPort, IsGloballyAccesible = lExpose });
         }
@@ -501,8 +501,9 @@ namespace kAI.Core
                                 GetPort(lSender.PortID).Trigger();
                             };
                     }
-                }
 
+                    AddExternalPort(lExternalPort);
+                }
             }
         }
 

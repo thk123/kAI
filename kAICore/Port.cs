@@ -337,6 +337,14 @@ namespace kAI.Core
 
                 mHasBeenTriggered = true;
             }
+
+            // If we are a global port (i.e. not inside any XML behaviour) we will never be released so we just release instantly. 
+            // TODO: Prove this is ok
+            if (mOwningBehaviour == null)
+            {
+                LogMessage("Releasing global port", new KeyValuePair<string, object>("Port", PortID));
+                Release();
+            }
         }
 
         
@@ -454,13 +462,22 @@ namespace kAI.Core
         /// <returns>The URP of this port. </returns>
         public override string ToString()
         {
-            if (OwningNode == null)
+            string lInsideBehaviour;
+            if (mOwningBehaviour == null)
             {
-                return ":" + PortID;
+                lInsideBehaviour = "GLOBAL";
             }
             else
             {
-                return OwningNode.NodeID + ":" + PortID;
+                lInsideBehaviour = mOwningBehaviour.BehaviourID;
+            }
+            if (OwningNode == null)
+            {
+                return ":" + PortID + " [" + lInsideBehaviour + "]";
+            }
+            else
+            {
+                return OwningNode.NodeID + ":" + PortID + " [" + lInsideBehaviour + "]";
             }
         }
 

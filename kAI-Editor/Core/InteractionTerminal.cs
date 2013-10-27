@@ -15,11 +15,12 @@ namespace kAI.Editor.Core
 
         static List<Tuple<Regex, MethodInfo>> mCommands;
 
-        [AttributeUsage(AttributeTargets.All)]
+        [AttributeUsage(AttributeTargets.Method)]
         public class TerminalCommand : Attribute
         {
             public TerminalCommand()
-            {}
+            {              
+            }
         }
 
         public static void Init(kAIXmlBehaviour lBehaviour)
@@ -157,6 +158,13 @@ namespace kAI.Editor.Core
                 mBehaviour.Update(1.0f / 60.0f, null);
             }
 
+            return true;
+        }
+
+        [TerminalCommand()]
+        public static bool AddTriggerPort(string lPortID, string lPortDirection)
+        {
+            mBehaviour.AddInternalPort(new kAIPort(lPortID, (kAIPort.ePortDirection)Enum.Parse(typeof(kAIPort.ePortDirection), lPortDirection), kAIPortType.TriggerType), true);
             return true;
         }
 
