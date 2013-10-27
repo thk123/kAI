@@ -247,9 +247,10 @@ namespace kAI.Editor
 
                 //kAIXmlBehaviour lBehaviour = 
                 
-                kAIXmlBehaviour lBehaviour = new kAIXmlBehaviour(lCreator.BehaviourID, lCreator.BehaviourPath);
+                kAIRelativePath lNewBehPath = new kAIRelativePath(lCreator.BehaviourPath, mLoadedProject.XmlBehaviourRoot.GetDirectory(), kAIProject.kBehaviourRootID);
+                kAIXmlBehaviour lBehaviour = new kAIXmlBehaviour(lCreator.BehaviourID, lNewBehPath);
 
-                mLoadedProject.AddXmlBehaviour(lBehaviour.GetDataContractClass());
+                mLoadedProject.AddXmlBehaviour(lBehaviour.GetDataContractClass(null));
 
                 mBehaviourTree.UpdateTree(mLoadedProject);
 

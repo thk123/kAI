@@ -4,7 +4,7 @@ using System.Collections.Generic;
 namespace kAI.Core
 {
     /// <summary>
-    /// AN object that can be put inside a node in an XML Behaviour. 
+    /// An object that can be put inside a node in an XML Behaviour. 
     /// </summary>
     public interface kAIINodeObject
     {
@@ -17,8 +17,12 @@ namespace kAI.Core
         /// <summary>
         /// Data that can be used to serialise and deserialise this object
         /// </summary>
+        /// <param name="lOwningBehaviour">
+        /// The XML behaviour this node is to be embedded into. 
+        /// Can be null if we are serialising for the project.
+        /// </param>
         /// <returns>An object that has the DataContractAttribute that will be used to store this arary. </returns>
-        kAIINodeSerialObject GetDataContractClass();
+        kAIINodeSerialObject GetDataContractClass(kAIXmlBehaviour lOwningBehaviour);
 
         /// <summary>
         /// Get the type of the serialisable object within the node type. 

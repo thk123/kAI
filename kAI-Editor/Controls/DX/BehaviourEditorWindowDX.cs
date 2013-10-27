@@ -374,7 +374,7 @@ namespace kAI.Editor.Controls.DX
         /// Add a node to the render of the behaviour. 
         /// </summary>
         /// <param name="lNode">The node to render. </param>
-        /// <param param name="lPoint">The position relateive to the form for where to add this node. </param>
+        /// <param name="lPoint">The position relateive to the form for where to add this node. </param>
         public void AddNode(kAI.Core.kAINode lNode, kAIAbsolutePosition lPoint)
         {
             mNodes.Add(new kAIEditorNodeDX(lNode, lPoint, new kAIAbsoluteSize(200, 100), this));

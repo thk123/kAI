@@ -39,9 +39,6 @@ namespace kAI.Editor.Controls
     class kAIBehaviourEditorWindow
     {
         kAIIBehaviourEditorGraphicalImplementator mEditorImpl; 
-        
-
-        FileInfo mBehaviourLocation;
 
         kAIProject mProject;
 
@@ -181,7 +178,7 @@ namespace kAI.Editor.Controls
         /// <summary>
         /// Add a node to the loaded behaviour. 
         /// </summary>
-        /// <param name="lNode">The node to add. </param>
+        /// <param name="lNodeContents">The node to add. </param>
         /// <param name="lPoint">The absolute position to add the point to. </param>
         public void AddNode(kAIINodeObject lNodeContents, kAIAbsolutePosition lPoint)
         {
@@ -202,7 +199,7 @@ namespace kAI.Editor.Controls
         /// <summary>
         /// Add a node to the loaded behaviour. 
         /// </summary>
-        /// <param name="lNode">The node to add. </param>
+        /// <param name="lNodeContents">The node to add. </param>
         /// <param name="lPoint">The point (relative to the form) to add the node at. </param>
         public void AddNode(kAIINodeObject lNodeContents, Point lPoint)
         {
@@ -241,8 +238,6 @@ namespace kAI.Editor.Controls
             mEditorImpl.UnloadBehaviour();
 
             Behaviour = null;
-            mBehaviourLocation = null;
-
         }
 
         /// <summary>

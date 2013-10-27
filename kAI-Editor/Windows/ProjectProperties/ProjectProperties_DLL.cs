@@ -46,7 +46,7 @@ namespace kAI.Editor.Forms.ProjectProperties
         {
             OpenFileDialog lFolderBrowser = new OpenFileDialog();
             lFolderBrowser.Filter = "DLL Files (*.dll)|*.dll";
-            lFolderBrowser.InitialDirectory = Project.XmlBehaviourRoot.FullName;
+            lFolderBrowser.InitialDirectory = Project.XmlBehaviourRoot.GetDirectory().FullName;
 
             DialogResult lResult = lFolderBrowser.ShowDialog();
             if (lResult == DialogResult.OK)

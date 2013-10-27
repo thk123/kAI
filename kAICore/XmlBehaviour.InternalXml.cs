@@ -46,15 +46,21 @@ namespace kAI.Core
                 [DataMember()]
                 public object NodeContents;
 
-                public SerialNode(kAINode lNode)
+                public SerialNode(kAINode lNode, kAIXmlBehaviour lOwningBehaviour)
                 {
                     NodeID = lNode.NodeID;
                     NodeType = lNode.GetNodeContentsType().FullName;
-                    NodeTypeAssembly = lNode.GetNodeContentsType().Assembly.FullName;
+                    NodeTypeAssembly = lNode.GetNodeContentsType().Assembly.GetName().Name;
 
                     NodeSerialType = lNode.GetNodeSerialableContentType().FullName;
-                    NodeSerialAssembly = lNode.GetNodeSerialableContentType().Assembly.FullName;
-                    NodeContents = lNode.GetNodeSerialisableContent();
+                    NodeSerialAssembly = lNode.GetNodeSerialableContentType().Assembly.GetName().Name;
+                    NodeContents = lNode.GetNodeSerialisableContent(lOwningBehaviour);
+
+                    // Validity checks 
+                    Type lContentType = lNode.GetNodeSerialableContentType();
+                    object lContent = lNode.GetNodeSerialisableContent(lOwningBehaviour);
+
+                    lOwningBehaviour.Assert(lContentType == lContent.GetType(), "The content returned from the node does not match the reported type...");
                 }
             }
 
@@ -81,7 +87,7 @@ namespace kAI.Core
                     PortID = lPort.Port.PortID;
                     PortDirection = lPort.Port.PortDirection;
                     PortDataType = lPort.Port.DataType.DataType.FullName;
-                    PortDataTypeAssembly = lPort.Port.DataType.DataType.Assembly.FullName;
+                    PortDataTypeAssembly = lPort.Port.DataType.DataType.Assembly.GetName().Name;
                     IsGloballyAccesible = lPort.IsGloballyAccesible;
                 }
             }
@@ -155,12 +161,7 @@ namespace kAI.Core
 
                 foreach (kAINode lNodeBase in lBehaviour.InternalNodes)
                 {
-                    Type lContentType = lNodeBase.GetNodeSerialableContentType();
-                    object lContent = lNodeBase.GetNodeSerialisableContent();
-
-                    lBehaviour.Assert(lContentType == lContent.GetType(), "The content returned from the node does not match the reported type...");
-
-                    InternalNodes.Add(new SerialNode(lNodeBase));
+                    InternalNodes.Add(new SerialNode(lNodeBase, lBehaviour));
 
                     foreach (kAIPort lPort in lNodeBase.GetExternalPorts())
                     {

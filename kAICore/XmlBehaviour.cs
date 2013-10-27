@@ -32,18 +32,25 @@ namespace kAI.Core
             /// The location of the XML file that stores this behaviour.
             /// </summary>
             [DataMember()]
-            public FileInfo XmlBehaviourFile;
+            public kAIRelativePath XmlBehaviourFile;
 
             /// <summary>
             /// Create the serialisable object that is used to embed this behaviour into a node. 
             /// </summary>
             /// <param name="lXmlBehaviour">The XML Behaviour to base this off. </param>
-            public SerialObject(kAIXmlBehaviour lXmlBehaviour)
+            /// <param name="lOwningBehaviour"></param>
+            public SerialObject(kAIXmlBehaviour lXmlBehaviour, kAIXmlBehaviour lOwningBehaviour)
             {
                 BehaviourID = lXmlBehaviour.BehaviourID;
-                XmlBehaviourFile = lXmlBehaviour.XmlLocation;
-
-
+                if (lOwningBehaviour == null)
+                {
+                    // in this instance, we are just serialising the behaviour for the project, so we don't need to make relative
+                    XmlBehaviourFile = lXmlBehaviour.XmlLocation;
+                }
+                else
+                {
+                    XmlBehaviourFile = new kAIRelativePath(lXmlBehaviour.XmlLocation.GetFile(), lOwningBehaviour.XmlLocation.GetFile().Directory, lOwningBehaviour.XmlLocationID);
+                }
                 lXmlBehaviour.Assert(XmlBehaviourFile != null, "Attempted to add a file that hasn't been saved.");
             }
 
@@ -136,10 +143,21 @@ namespace kAI.Core
         /// <summary>
         /// The location of the XML file.
         /// </summary>
-        public FileInfo XmlLocation
+        public kAIRelativePath XmlLocation
         {
             get;
             private set;
+        }
+
+        /// <summary>
+        /// The ID of the directory for this behaviour (for <see cref="kAIRelativeObject"/>) so we know what to store sub behaviours with. 
+        /// </summary>
+        public string XmlLocationID
+        {
+            get 
+            {
+                return "Behaviour:" + BehaviourID;
+            }
         }
 
         /// <summary>
@@ -194,10 +212,12 @@ namespace kAI.Core
         /// <param name="lBehaviourID">The name of the new behaviour. </param>
         /// <param name="lFile">Where this behaviour should be saved. </param>
         /// <param name="lLogger">Optionally, the logger this behaviour should use. </param>
-        public kAIXmlBehaviour(kAIBehaviourID lBehaviourID, FileInfo lFile, kAIILogger lLogger = null)
+        public kAIXmlBehaviour(kAIBehaviourID lBehaviourID, kAIRelativePath lFile, kAIILogger lLogger = null)
             : this(lBehaviourID, lLogger)
         {
+            //kAIRelativePath lRelativePath = new kAIRelativePath(lFile, )
             XmlLocation = lFile;
+            kAIRelativeObject.AddPathID(XmlLocationID, XmlLocation.GetFile().Directory);
 
             // Create the internal ports 
             kAIPort lOnActivatePort = new kAIPort(kOnActivatePortID, kAIPort.ePortDirection.PortDirection_Out, kAIPortType.TriggerType, lLogger);
@@ -213,29 +233,36 @@ namespace kAI.Core
         /// </summary>
         /// <param name="lSource">The loaded XML file. </param>
         /// <param name="lAssemblyGetter">The method to use to resolve assembly names to get types. </param>
-        /// <param name="lSourceFile">The source file this behaviour is loaded from. </param>
+        /// <param name="lFile">The source file this behaviour is loaded from. </param>
         /// <param name="lLogger">Optionally, the logger this behaviour should use. </param>
-        private kAIXmlBehaviour(InternalXml lSource, GetAssemblyByName lAssemblyGetter, FileInfo lSourceFile, kAIILogger lLogger = null)
+        private kAIXmlBehaviour(InternalXml lSource, GetAssemblyByName lAssemblyGetter, kAIRelativePath lFile, kAIILogger lLogger = null)
             : this(lSource.BehaviourID, lLogger)
         {
-            XmlLocation = lSourceFile;
-
-            foreach (kAINode lNode in lSource.GetInternalNodes(lAssemblyGetter, this))
+            XmlLocation = lFile;
+            if (lFile != null) // if we are null, then we are loading the behaviour without the project so we don't know where we are relative to anything. 
             {
-                AddNode(lNode);
+                kAIRelativeObject.AddPathID(XmlLocationID, XmlLocation.GetFile().Directory);
             }
 
-            foreach (InternalPort lPort in lSource.GetInternalPorts(lAssemblyGetter))
-            {
-                AddInternalPort(lPort);
-            }
-
-            foreach (kAIPort.kAIConnexion lConnexion in lSource.GetInternalConnexions(this))
-            {
-                AddConnexion(lConnexion.StartPort, lConnexion.EndPort);
-            }
+            ConstructFromInternalXml(lSource, lAssemblyGetter);
         }
 
+        /// <summary>
+        /// Create a kAIXMLBehaviour based off a loaded save file for it. 
+        /// </summary>
+        /// <param name="lSource">The loaded XML file. </param>
+        /// <param name="lAssemblyGetter">The method to use to resolve assembly names to get types. </param>
+        /// <param name="lFile">The source file this behaviour is loaded from. </param>
+        /// <param name="lLogger">Optionally, the logger this behaviour should use. </param>
+        private kAIXmlBehaviour(InternalXml lSource, GetAssemblyByName lAssemblyGetter, FileInfo lFile, kAIILogger lLogger = null)
+            : this(lSource.BehaviourID, lLogger)
+        {
+            // We are loading directly from a file, so we don't know our path relative to the project
+            XmlLocation = null;
+            kAIRelativeObject.AddPathID(XmlLocationID, lFile.Directory);
+
+            ConstructFromInternalXml(lSource, lAssemblyGetter);
+        }
         
         /// <summary>
         /// Add a node inside this behaviour. 
@@ -348,9 +375,32 @@ namespace kAI.Core
             lSettings.Indent = true;
 
             // Create the writer and write the file. 
-            XmlWriter lWriter = XmlWriter.Create(XmlLocation.FullName, lSettings);
+            XmlWriter lWriter = XmlWriter.Create(XmlLocation.GetFile().FullName, lSettings);
             lProjectSerialiser.WriteObject(lWriter, lSaveableBehaviour);
             lWriter.Close();   
+        }
+
+        /// <summary>
+        /// Go through the internal XML and create the XML behaviour from it.
+        /// </summary>
+        /// <param name="lSource">The loaded XML file. </param>
+        /// <param name="lAssemblyGetter">The method to use to resolve assembly names to get types. </param>
+        private void ConstructFromInternalXml(InternalXml lSource, GetAssemblyByName lAssemblyGetter)
+        {
+            foreach (kAINode lNode in lSource.GetInternalNodes(lAssemblyGetter, this))
+            {
+                AddNode(lNode);
+            }
+
+            foreach (InternalPort lPort in lSource.GetInternalPorts(lAssemblyGetter))
+            {
+                AddInternalPort(lPort);
+            }
+
+            foreach (kAIPort.kAIConnexion lConnexion in lSource.GetInternalConnexions(this))
+            {
+                AddConnexion(lConnexion.StartPort, lConnexion.EndPort);
+            }
         }
 
         private void ReleasePorts()
@@ -395,9 +445,9 @@ namespace kAI.Core
         /// Gets the <see cref="kAIINodeSerialObject"/>of this XML Behaviour. 
         /// </summary>
         /// <returns>The serial object representing this XML behaviour. </returns>
-        public override kAIINodeSerialObject GetDataContractClass()
+        public override kAIINodeSerialObject GetDataContractClass(kAIXmlBehaviour lOwningBehaviour)
         {
-            return new SerialObject(this);
+            return new SerialObject(this, lOwningBehaviour);
         }
 
         /// <summary>
@@ -461,16 +511,30 @@ namespace kAI.Core
             // Is the start node ID a real node.
             if (lNodeID == kAINodeID.InvalidNodeID)
             {
-                return mInternalPorts[lPortID].Port;
+                if (mInternalPorts.ContainsKey(lPortID))
+                {
+                    return mInternalPorts[lPortID].Port;
+                }
+                else
+                {
+                    throw new Exception("Could not find internal port " + lPortID);
+                }
             }
             else // The start node is invalid, so is a global port. 
             {
-                kAINode lStartNode = mInternalNodes[lNodeID];
+                if (mInternalNodes.ContainsKey(lNodeID))
+                {
+                    kAINode lStartNode = mInternalNodes[lNodeID];
 
-                Assert(lStartNode);
+                    Assert(lStartNode);
 
-                // TODO: Need a method to just get a port from the dictionary
-                return lStartNode.GetExternalPorts().First((lPort) => { return lPort.PortID == lPortID; });
+                    // TODO: Need a method to just get a port from the dictionary
+                    return lStartNode.GetExternalPorts().First((lPort) => { return lPort.PortID == lPortID; });
+                }
+                else
+                {
+                    throw new Exception("Could not find node " + lNodeID);
+                }
             }
         }
 
@@ -539,7 +603,7 @@ namespace kAI.Core
             XmlObjectSerializer lProjectDeserialiser = new DataContractSerializer(typeof(InternalXml), kAINode.NodeSerialTypes);
             try
             {
-                Stream lXmlStream = lRealSerial.XmlBehaviourFile.OpenRead();
+                Stream lXmlStream = lRealSerial.XmlBehaviourFile.GetFile().OpenRead();
 
                 InternalXml lXmlFile = (InternalXml)lProjectDeserialiser.ReadObject(lXmlStream);
 
@@ -555,7 +619,7 @@ namespace kAI.Core
             }
             catch (System.IO.DirectoryNotFoundException)
             {
-                kAIObject.GlobalLogger.LogError("Could not find file", new KeyValuePair<string, object>("Path:", lRealSerial.XmlBehaviourFile.FullName));
+                kAIObject.GlobalLogger.LogError("Could not find file", new KeyValuePair<string, object>("Path:", lRealSerial.XmlBehaviourFile.GetFile().FullName));
             }
             catch(System.IO.IOException)
             {

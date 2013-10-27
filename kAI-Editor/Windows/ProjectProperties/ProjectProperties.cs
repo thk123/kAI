@@ -101,9 +101,9 @@ namespace kAI.Editor.Forms.ProjectProperties
                     }
                 }
 
-                if (!Project.XmlBehaviourRoot.Exists)
+                if (!Project.XmlBehaviourRoot.GetDirectory().Exists)
                 {
-                    Project.XmlBehaviourRoot.Create();
+                    Project.XmlBehaviourRoot.GetDirectory().Create();
                 }
             }
 

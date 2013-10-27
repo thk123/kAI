@@ -178,10 +178,14 @@ namespace kAI.Core
         /// <summary>
         /// Get the object to be serialised. 
         /// </summary>
+        /// <param name="lOwningBehaviour">
+        /// The XML behaviour this node is to be embedded into. 
+        /// Can be null if we are serialising for the project.
+        /// </param>
         /// <returns>A DataContract object to serialse when embedding the content of this node. </returns>
-        public kAIINodeSerialObject GetNodeSerialisableContent()
+        public kAIINodeSerialObject GetNodeSerialisableContent(kAIXmlBehaviour lOwningBehaviour)
         {
-            kAIINodeSerialObject lSerialData = NodeContents.GetDataContractClass();
+            kAIINodeSerialObject lSerialData = NodeContents.GetDataContractClass(lOwningBehaviour);
 
             // Check the type actually matches the reported type
             Assert(NodeContents.GetDataContractType() == lSerialData.GetType());

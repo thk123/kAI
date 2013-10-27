@@ -250,8 +250,12 @@ namespace kAI.Core
         /// <summary>
         /// Get the data required to turn this object into an XML structure. 
         /// </summary>
-        /// <returns></returns>
-        public abstract kAIINodeSerialObject GetDataContractClass();
+        /// <param name="lOwningBehaviour">
+        /// The XML Behaviour this node serial object is in. 
+        /// Can be null if we are serialising the node for the project.
+        /// </param>
+        /// <returns>The serialised version of this object, wrt being inside lOwningBehaviour</returns>
+        public abstract kAIINodeSerialObject GetDataContractClass(kAIXmlBehaviour lOwningBehaviour);
 
         /// <summary>
         /// Gets the type of object returned in <see cref="GetDataContractClass"/>.
@@ -331,7 +335,7 @@ namespace kAI.Core
 
                 BehaviourID = lCodeBehaviourType.Name;
                 BehaviourType = lCodeBehaviourType.FullName;
-                BehaviourAssembly = lCodeBehaviourType.Assembly.FullName;
+                BehaviourAssembly = lCodeBehaviourType.Assembly.GetName().Name;
             }
 
             /// <summary>
@@ -375,8 +379,9 @@ namespace kAI.Core
         /// <summary>
         /// Get the serialisable object to save when this behaviour of a child node. 
         /// </summary>
+        /// <param name="lOwningBehaviour">The XML behaviour this behaviour is a node in. </param>
         /// <returns>The object to serialise using a DataContract serialiser. </returns>
-        public override kAIINodeSerialObject GetDataContractClass()
+        public override kAIINodeSerialObject GetDataContractClass(kAIXmlBehaviour lOwningBehaviour)
         {
             return new SerialObject(this);
         }
@@ -385,11 +390,11 @@ namespace kAI.Core
         /// Gets the type of the serialisable object. 
         /// </summary>
         /// <note>
-        /// This is probably not required, since is literlly 
+        /// This is probably not required, since is literally 
         /// GetDataContractClass.GetType() and I can't see why you would need 
         /// the type and not the object itself?? (Maybe when loading?)
         /// </note>
-        /// <returns></returns>
+        /// <returns>The type of the serial object. </returns>
         public override Type GetDataContractType()
         {
             return typeof(SerialObject);
