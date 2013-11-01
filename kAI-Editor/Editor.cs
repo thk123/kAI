@@ -162,7 +162,7 @@ namespace kAI.Editor
 
                 mBehaviourEditor = new kAIBehaviourEditorWindow(mLoadedProject, lImpl, this);
 
-                mBehaviourEditor.ObjectSelected += new Action<object>(mBehaviourEditor_ObjectSelected);
+                mBehaviourEditor.ObjectSelected += new Action<kAI.Editor.ObjectProperties.kAIIPropertyEntry>(mBehaviourEditor_ObjectSelected);
 
                 mBehaviourEditor.Init(splitContainer1.Panel1);
 
@@ -173,9 +173,9 @@ namespace kAI.Editor
             }
         }
 
-        void mBehaviourEditor_ObjectSelected(object obj)
+        void mBehaviourEditor_ObjectSelected(kAI.Editor.ObjectProperties.kAIIPropertyEntry lSelectedObject)
         {
-            mPropertiesWindow.SelectObject(obj);
+            mPropertiesWindow.SelectObject(lSelectedObject);
         }
 
         private void DestroyBehaviourEditorWindow()

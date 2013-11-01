@@ -15,7 +15,7 @@ namespace kAI.Editor.Controls.WinForms
     /// <summary>
     /// Represents the floating properties window. 
     /// </summary>
-    public partial class PropertiesWindow : Form
+    partial class PropertiesWindow : Form
     {
         /// <summary>
         /// Create a new properties window. 
@@ -34,7 +34,7 @@ namespace kAI.Editor.Controls.WinForms
         /// Select a given object. 
         /// </summary>
         /// <param name="lSelectedObject">The object to select</param>
-        public void SelectObject(object lSelectedObject)
+        public void SelectObject(kAIIPropertyEntry lSelectedObject)
         {
             mPropertiesGrid.SelectedObject = lSelectedObject;
         }

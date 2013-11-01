@@ -35,7 +35,7 @@ namespace kAI.Editor.Controls
 
         bool CanConnect();
 
-        event Action<object> ObjectSelected;
+        event Action<kAI.Editor.ObjectProperties.kAIIPropertyEntry> ObjectSelected;
     }
 
     class kAIBehaviourEditorWindow
@@ -68,7 +68,7 @@ namespace kAI.Editor.Controls
         /// <summary>
         /// Happens when something is selected within the behaviour editor. 
         /// </summary>
-        public event Action<object> ObjectSelected;
+        public event Action<kAI.Editor.ObjectProperties.kAIIPropertyEntry> ObjectSelected;
 
         /// <summary>
         /// Creates a behaviour editor window using the specified implementation

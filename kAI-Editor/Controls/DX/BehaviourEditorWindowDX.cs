@@ -54,7 +54,7 @@ namespace kAI.Editor.Controls.DX
         /// <summary>
         /// When an object is selected. 
         /// </summary>
-        public event Action<object> ObjectSelected;
+        public event Action<kAI.Editor.ObjectProperties.kAIIPropertyEntry> ObjectSelected;
 
         // DX stuff:
         DeviceContext mContext;

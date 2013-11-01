@@ -73,7 +73,7 @@ namespace kAI.Editor.Controls.DX
         /// <summary>
         /// Triggered when this object is selected. 
         /// </summary>
-        public event Action<object> OnSelected;
+        public event Action<kAI.Editor.ObjectProperties.kAIIPropertyEntry> OnSelected;
 
         /// <summary>
         /// Create a new node for rendering. 
