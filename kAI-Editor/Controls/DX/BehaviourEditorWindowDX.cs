@@ -51,6 +51,11 @@ namespace kAI.Editor.Controls.DX
         /// </summary>
         public event Action<kAI.Core.kAIPort, kAI.Core.kAIPort> OnConnexion;
 
+        /// <summary>
+        /// When an object is selected. 
+        /// </summary>
+        public event Action<object> ObjectSelected;
+
         // DX stuff:
         DeviceContext mContext;
         SwapChain mSwapChain;
@@ -377,7 +382,15 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lPoint">The position relateive to the form for where to add this node. </param>
         public void AddNode(kAI.Core.kAINode lNode, kAIAbsolutePosition lPoint)
         {
-            mNodes.Add(new kAIEditorNodeDX(lNode, lPoint, new kAIAbsoluteSize(200, 100), this));
+            kAIEditorNodeDX lNewNode = new kAIEditorNodeDX(lNode, lPoint, new kAIAbsoluteSize(200, 100), this);
+            lNewNode.OnSelected += (lNodeContents) =>
+            {
+                if (ObjectSelected != null)
+                {
+                    ObjectSelected(lNodeContents);
+                }
+            };
+            mNodes.Add(lNewNode);
         }
 
         public void AddNode(kAI.Core.kAINode lNode, Point lPoint)

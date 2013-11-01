@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 
 using kAI.Core;
+using kAI.Editor.ObjectProperties;
 using kAI.Editor.Controls.DX.Coordinates;
 
 using SlimDX;
@@ -58,7 +59,6 @@ namespace kAI.Editor.Controls.DX
         {
             get;
             private set;
-
         }
 
         /// <summary>
@@ -68,7 +68,12 @@ namespace kAI.Editor.Controls.DX
         {
             get;
             private set;
-        }                
+        }
+
+        /// <summary>
+        /// Triggered when this object is selected. 
+        /// </summary>
+        public event Action<object> OnSelected;
 
         /// <summary>
         /// Create a new node for rendering. 
@@ -107,6 +112,7 @@ namespace kAI.Editor.Controls.DX
                 new kAIMouseEventResponders
                 {
                     OnMouseDown = OnMouseDown,
+                    OnMouseClick = OnMouseClick,
                     ContextMenu = new ContextMenu(new MenuItem[] { lDeleteNode }),
                     RectangleId = Node.NodeID
                 },
@@ -246,6 +252,15 @@ namespace kAI.Editor.Controls.DX
                 mBeingDragged = true;
             }
         }
+
+        void OnMouseClick(object sender, MouseEventArgs e)
+        {
+            if (OnSelected != null)
+            {
+                OnSelected(new kAINodeProperties(Node));
+            }
+        }
+
 
         void InputManager_OnMouseUp(object sender, MouseEventArgs e)
         {

@@ -90,6 +90,14 @@ namespace kAI.Core
         public delegate void ActivationChangedEvent(kAINode lSender, bool lNewState);
 
         /// <summary>
+        /// When the NodeID changes on this node. 
+        /// </summary>
+        /// <param name="lOldNodeID">The old node ID. </param>
+        /// <param name="lNewNodeID">The new node ID. </param>
+        /// <param name="lNode">The node whose name is changing. </param>
+        public delegate void NodeIDChanged(kAINodeID lOldNodeID, kAINodeID lNewNodeID, kAINode lNode);
+
+        /// <summary>
         /// Get the serial objects of the types that can be embedded within a node. 
         /// </summary>
         public static IEnumerable<Type> NodeSerialTypes
@@ -115,14 +123,33 @@ namespace kAI.Core
             private set;
         }
 
+        kAINodeID mNodeID;
+
+        kAIXmlBehaviour mOwningBehaviour;
+
         /// <summary>
         /// The unique ID(to the containing behaviour) for this node. 
         /// </summary>
         public kAINodeID NodeID
         {
-            get;
-            private set;
+            get
+            {
+                return mNodeID;
+            }
+            internal set
+            {
+                if (OnNodeIDChanged != null)
+                {
+                    OnNodeIDChanged(mNodeID, value, this);
+                }
+                mNodeID = value;
+            }
         }
+
+        /// <summary>
+        /// Triggered when the ID of the node is changed. 
+        /// </summary>
+        public event NodeIDChanged OnNodeIDChanged;
 
         /// <summary>
         /// Create a new node containing an object of type T. 
@@ -141,11 +168,11 @@ namespace kAI.Core
             {
                 foreach (kAIPort lPort in lContents.GetExternalPorts())
                 {
-                    
-
                     AddGlobalPort(lPort, lNodeOwner);
                 }
             }
+
+            mOwningBehaviour = lNodeOwner;
         }
 
         /// <summary>
@@ -208,6 +235,15 @@ namespace kAI.Core
             lNewPort.OwningBehaviour = lNodeOwner;
 
             mExternalPorts.Add(lNewPort.PortID, lNewPort);
+        }
+
+        /// <summary>
+        /// Returns a string representation of this node. 
+        /// </summary>
+        /// <returns>The NodeID and what behaviour this node resides in. </returns>
+        public override string ToString()
+        {
+            return NodeID + "[" + mOwningBehaviour.BehaviourID + "]";
         }
     }
 }

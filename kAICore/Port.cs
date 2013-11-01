@@ -736,6 +736,22 @@ namespace kAI.Core
         {
             return DataType.GetHashCode();
         }
+
+        /// <summary>
+        /// Gets a string representation of this type. 
+        /// </summary>
+        /// <returns>Trigger if a trigger port, the data type otherwise. </returns>
+        public override string ToString()
+        {
+            if (this == TriggerType)
+            {
+                return "Trigger";
+            }
+            else
+            {
+                return "Data: " + DataType.Name;
+            }
+        }
     }
 
     /// <summary>

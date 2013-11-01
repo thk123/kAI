@@ -270,6 +270,11 @@ namespace kAI.Core
         /// <param name="lNode">The node to add. </param>
         public void AddNode(kAINode lNode)
         {
+            lNode.OnNodeIDChanged += (lOldNodeID, lNewNodeID, lNewNode) =>
+                {
+                    mInternalNodes.Remove(lOldNodeID);
+                    mInternalNodes.Add(lNewNodeID, lNewNode);
+                };
             mInternalNodes.Add(lNode.NodeID, lNode);
         }
 

@@ -76,7 +76,7 @@
     <Compile Include="Controls\DX\EditorNodeDX.cs" />
     <Compile Include="Controls\PortConnexionCreator.cs" />
     <Compile Include="Controls\DX\RTree.cs" />
-    <Compile Include="Controls\GLEE\BehaviourEditorWindowGLEE.cs" />
+    <None Include="Controls\GLEE\BehaviourEditorWindowGLEE.cs" />
     <Compile Include="Controls\WinForms\BehaviourTree.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -88,6 +88,12 @@
     </Compile>
     <Compile Include="Controls\WinForms\DLLEntry.Designer.cs">
       <DependentUpon>DLLEntry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WinForms\PropertiesWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\WinForms\PropertiesWindow.Designer.cs">
+      <DependentUpon>PropertiesWindow.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\WinForms\SelectConnexionDialogue.cs">
       <SubType>Form</SubType>
@@ -103,18 +109,24 @@
     </Compile>
     <Compile Include="Core\ConsoleLogger.cs" />
     <Compile Include="Core\InteractionTerminal.cs" />
+    <Compile Include="ObjectProperties\ConnexionProperties.cs" />
+    <Compile Include="ObjectProperties\IPropertyEntry.cs" />
+    <Compile Include="ObjectProperties\ListType.cs" />
+    <Compile Include="ObjectProperties\NodeProperties.cs" />
+    <Compile Include="ObjectProperties\PortProperties.cs" />
+    <Compile Include="ObjectProperties\SimpleConverter.cs" />
     <Compile Include="Windows\BehaviourChooser.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Windows\BehaviourChooser.Designer.cs">
       <DependentUpon>BehaviourChooser.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\WinForms\BehaviourEditorWindowWinForms.cs">
+    <None Include="Controls\WinForms\BehaviourEditorWindowWinForms.cs">
       <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\WinForms\BehaviourEditorWindowWinForms.Designer.cs">
+    </None>
+    <None Include="Controls\WinForms\BehaviourEditorWindowWinForms.Designer.cs">
       <DependentUpon>BehaviourEditorWindowWinForms.cs</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="Editor.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -162,6 +174,9 @@
     <EmbeddedResource Include="Controls\WinForms\DLLEntry.resx">
       <DependentUpon>DLLEntry.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WinForms\PropertiesWindow.resx">
+      <DependentUpon>PropertiesWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\WinForms\SelectConnexionDialogue.resx">
       <DependentUpon>SelectConnexionDialogue.cs</DependentUpon>
     </EmbeddedResource>
@@ -171,9 +186,9 @@
     <EmbeddedResource Include="Windows\BehaviourChooser.resx">
       <DependentUpon>BehaviourChooser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\WinForms\BehaviourEditorWindowWinForms.resx">
+    <None Include="Controls\WinForms\BehaviourEditorWindowWinForms.resx">
       <DependentUpon>BehaviourEditorWindowWinForms.cs</DependentUpon>
-    </EmbeddedResource>
+    </None>
     <EmbeddedResource Include="Editor.resx">
       <DependentUpon>Editor.cs</DependentUpon>
     </EmbeddedResource>
@@ -201,6 +216,7 @@
     </Compile>
     <Compile Include="Controls\DX\MouseEventResponders.cs" />
     <Content Include="Assets\beizure.fx" />
+    <Compile Include="ObjectProperties\SimpleClickableEntry.cs" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>

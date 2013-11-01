@@ -34,6 +34,8 @@ namespace kAI.Editor.Controls
         void RemoveExternalPort(kAINode lParentNode, kAIPort lPort);
 
         bool CanConnect();
+
+        event Action<object> ObjectSelected;
     }
 
     class kAIBehaviourEditorWindow
@@ -64,6 +66,11 @@ namespace kAI.Editor.Controls
         }
 
         /// <summary>
+        /// Happens when something is selected within the behaviour editor. 
+        /// </summary>
+        public event Action<object> ObjectSelected;
+
+        /// <summary>
         /// Creates a behaviour editor window using the specified implementation
         /// </summary>
         /// <param name="lProject">The project we are loading.</param>
@@ -84,15 +91,19 @@ namespace kAI.Editor.Controls
             });
 
             GlobalContextMenu.Popup += new EventHandler(GlobalContextMenu_Popup);
+
+            
         }
 
         /// <summary>
-        /// Initalise the behaviour composer inside the given control. 
+        /// Initialise the behaviour composer inside the given control. 
         /// </summary>
         /// <param name="lContainer"></param>
         public void Init(Control lContainer)
         {
             mEditorImpl.Init(lContainer, this);
+
+            mEditorImpl.ObjectSelected += ObjectSelected;
 
             UnloadBehaviour();
         }

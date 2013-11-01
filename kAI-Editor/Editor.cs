@@ -18,6 +18,7 @@ using kAI.Editor.Forms;
 using kAI.Editor.Forms.ProjectProperties;
 using kAI.Editor.Controls;
 using kAI.Editor.Controls.DX;
+using kAI.Editor.Controls.WinForms;
 
 
 
@@ -33,6 +34,8 @@ namespace kAI.Editor
         kAIProject mLoadedProject;
 
         BehaviourTree mBehaviourTree;
+
+        PropertiesWindow mPropertiesWindow;
 
         List<PropertyControllerBase<bool>> mProjectLoadedControls; // Controls that should only be enabled when a project is loaded.
         List<PropertyControllerBase<bool>> mBehaviourLoadedControls;
@@ -65,6 +68,7 @@ namespace kAI.Editor
             SetEnabledSetControls(mBehaviourLoadedControls, false);
 
             mBehaviourEditor = null;
+            mPropertiesWindow = null;
 
             kAIObject.GlobalLogger = uiLogger1;
             kAIObject.GlobalLogger.LogMessage("kAI Editor loaded");
@@ -158,8 +162,20 @@ namespace kAI.Editor
 
                 mBehaviourEditor = new kAIBehaviourEditorWindow(mLoadedProject, lImpl, this);
 
+                mBehaviourEditor.ObjectSelected += new Action<object>(mBehaviourEditor_ObjectSelected);
+
                 mBehaviourEditor.Init(splitContainer1.Panel1);
+
+                mPropertiesWindow = new PropertiesWindow();
+                mPropertiesWindow.Show(splitContainer1.Panel1);
+
+
             }
+        }
+
+        void mBehaviourEditor_ObjectSelected(object obj)
+        {
+            mPropertiesWindow.SelectObject(obj);
         }
 
         private void DestroyBehaviourEditorWindow()
