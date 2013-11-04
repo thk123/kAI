@@ -244,7 +244,7 @@ namespace kAI.Core
         public kAIPortID PortID
         {
             get;
-            private set;
+            internal set;
         }
 
         /// <summary>
@@ -253,7 +253,7 @@ namespace kAI.Core
         public ePortDirection PortDirection
         {
             get;
-            private set;
+            internal set;
         }
 
         /// <summary>
@@ -262,7 +262,7 @@ namespace kAI.Core
         public kAIPortType DataType
         {
             get;
-            private set;
+            internal set;
         }
 
         /// <summary>

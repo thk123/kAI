@@ -98,6 +98,13 @@ namespace kAI.Core
         public delegate void NodeIDChanged(kAINodeID lOldNodeID, kAINodeID lNewNodeID, kAINode lNode);
 
         /// <summary>
+        /// EventHandler for when an externally visible port is added to this node.
+        /// </summary>
+        /// <param name="lSender">The node that has been modified. </param>
+        /// <param name="lNewPort">The port that has been added. </param>
+        public delegate void ExternalPortAdded(kAINode lSender, kAIPort lNewPort);
+
+        /// <summary>
         /// Get the serial objects of the types that can be embedded within a node. 
         /// </summary>
         public static IEnumerable<Type> NodeSerialTypes
@@ -150,6 +157,11 @@ namespace kAI.Core
         /// Triggered when the ID of the node is changed. 
         /// </summary>
         public event NodeIDChanged OnNodeIDChanged;
+
+        /// <summary>
+        /// Triggered when an external port is added to this node. 
+        /// </summary>
+        public event ExternalPortAdded OnExternalPortAdded;
 
         /// <summary>
         /// Create a new node containing an object of type T. 
@@ -235,6 +247,11 @@ namespace kAI.Core
             lNewPort.OwningBehaviour = lNodeOwner;
 
             mExternalPorts.Add(lNewPort.PortID, lNewPort);
+
+            if (OnExternalPortAdded != null)
+            {
+                OnExternalPortAdded(this, lNewPort);
+            }
         }
 
         /// <summary>

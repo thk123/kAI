@@ -145,6 +145,7 @@ namespace kAI.Editor.Controls
             if (Behaviour != null)
             {
                 UnloadBehaviour();
+                Behaviour.OnInternalPortAdded -= Behaviour_OnInternalPortAdded;
             }
 
             foreach (kAIPort lGlobalPort in lBehaviour.InternalPorts)
@@ -158,6 +159,8 @@ namespace kAI.Editor.Controls
             }
 
             Behaviour = lBehaviour;
+
+            Behaviour.OnInternalPortAdded += new kAIXmlBehaviour.InternalPortAdded(Behaviour_OnInternalPortAdded);
 
             Behaviour.SetGlobal();
             Behaviour.ForceActivation();
@@ -305,6 +308,11 @@ namespace kAI.Editor.Controls
             kAIObject.Assert(null, Behaviour, "No loaded behaviour");
             Behaviour.RemoveNode(lNode);
             mEditorImpl.RemoveNode(lNode);
+        }
+
+        void Behaviour_OnInternalPortAdded(kAIXmlBehaviour lSender, kAIPort lNewPort)
+        {
+            mEditorImpl.AddInternalPort(lNewPort);
         }
 
         void GlobalContextMenu_Popup(object sender, EventArgs e)

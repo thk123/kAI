@@ -121,6 +121,13 @@ namespace kAI.Core
         public delegate Assembly GetAssemblyByName(string lFullName);
 
         /// <summary>
+        /// Event handler for when a new internal port is added to this XML behaviour. 
+        /// </summary>
+        /// <param name="lSender">The XML Behaviour that has had the internal port added to. </param>
+        /// <param name="lNewPort">The port that has been added. </param>
+        public delegate void InternalPortAdded(kAIXmlBehaviour lSender, kAIPort lNewPort);
+
+        /// <summary>
         /// Extension for XML behaviours. 
         /// </summary>
         public const string kAIXmlBehaviourExtension = "xml";
@@ -193,6 +200,11 @@ namespace kAI.Core
                 }
             }
         }
+
+        /// <summary>
+        /// Triggered when a new internal port is added to this behaviour.
+        /// </summary>
+        public event InternalPortAdded OnInternalPortAdded;
 
         /// <summary>
         /// Base constructor, not to be used, just makes dictionaries for internal ports and nodes. 
@@ -509,6 +521,11 @@ namespace kAI.Core
 
                     AddExternalPort(lExternalPort);
                 }
+
+                if (OnInternalPortAdded != null)
+                {
+                    OnInternalPortAdded(this, lPortToAdd);
+                }
             }
         }
 
@@ -544,6 +561,12 @@ namespace kAI.Core
             }
         }
 
+        /// <summary>
+        /// Checks whether a given behaviour contains a specific port either 
+        /// as an internal port or an external port on an internal node.
+        /// </summary>
+        /// <param name="lPort">The port to check. </param>
+        /// <returns>Returns true if either an internal port or belonging to internal node. </returns>
         private bool ContainsPort(kAIPort lPort)
         {
             if (lPort.OwningNode == null)

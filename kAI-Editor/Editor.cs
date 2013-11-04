@@ -166,7 +166,7 @@ namespace kAI.Editor
 
                 mBehaviourEditor.Init(splitContainer1.Panel1);
 
-                mPropertiesWindow = new PropertiesWindow();
+                mPropertiesWindow = new PropertiesWindow(mLoadedProject);
                 mPropertiesWindow.Show(splitContainer1.Panel1);
 
 
@@ -349,6 +349,13 @@ namespace kAI.Editor
 
             } while (!lResult);
             
+        }
+
+        private void behaviourPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            XmlBehaviourPropertiesEditor lPropertiesEditor = new XmlBehaviourPropertiesEditor(mLoadedProject, mBehaviourEditor.Behaviour);
+            DialogResult lResult = lPropertiesEditor.ShowDialog();
+
         }
     }
 }

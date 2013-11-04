@@ -117,9 +117,9 @@ namespace kAI.Editor.Controls.DX
                     RectangleId = Node.NodeID
                 },
                 false);
-        }
 
-        
+            lNode.OnExternalPortAdded += new kAINode.ExternalPortAdded(lNode_OnExternalPortAdded);
+        }     
 
         /// <summary>
         /// Deprecated: 3D render using vertices to create a quad representing the node. 
@@ -317,5 +317,11 @@ namespace kAI.Editor.Controls.DX
             mEditorWindow.InputManager.RemoveClickListenArea(mAddedRectangle, false);
             mEditorWindow.Editor.RemoveNode(Node);
         }
+
+
+        void lNode_OnExternalPortAdded(kAINode lSender, kAIPort lNewPort)
+        {
+            AddExternalPort(lNewPort);
+        }  
     }
 }

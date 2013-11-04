@@ -9,6 +9,7 @@ using System.Windows.Forms;
 using kAI.Editor.ObjectProperties;
 
 using kAI.Core;
+using kAI.Editor.Core;
 
 namespace kAI.Editor.Controls.WinForms
 {
@@ -17,12 +18,20 @@ namespace kAI.Editor.Controls.WinForms
     /// </summary>
     partial class PropertiesWindow : Form
     {
+        public static kAIProject Project
+        {
+            get;
+            private set;
+        }
+
         /// <summary>
         /// Create a new properties window. 
         /// </summary>
-        public PropertiesWindow()
+        public PropertiesWindow(kAIProject lProject)
         {
             InitializeComponent();
+
+            Project = lProject;
 
             mPropertiesGrid.Size = flowLayoutPanel1.Size;
 
