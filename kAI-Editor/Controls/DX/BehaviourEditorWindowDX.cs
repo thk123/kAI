@@ -166,7 +166,7 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lWindow">The editor that is controlling the implementation. </param>
         public void Init(Control lParentControl, kAIBehaviourEditorWindow lWindow)
         {
-            const string lAssetsFolder = @"C:\Users\Thomas\VS Projects\C#\kAI\kAI-Editor\Assets\";
+            const string lAssetsFolder = @"Assets\";
             
             ParentControl = lParentControl;
             Editor = lWindow;

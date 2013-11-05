@@ -242,7 +242,9 @@
       <DesignTime>True</DesignTime>
     </Compile>
     <Compile Include="Controls\DX\MouseEventResponders.cs" />
-    <Content Include="Assets\beizure.fx" />
+    <Content Include="Assets\beizure.fx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Compile Include="ObjectProperties\SimpleClickableEntry.cs" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -265,27 +267,43 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\InPort.png" />
+    <None Include="Assets\InPort.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\InPort_Hover.png" />
+    <None Include="Assets\InPort_Hover.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\OutPort.png" />
+    <None Include="Assets\OutPort.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\OutPort_Hover.png" />
+    <None Include="Assets\OutPort_Hover.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\Port.png" />
+    <None Include="Assets\Port.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
   <ItemGroup>
     <Folder Include="Core\Behaviour\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="Assets\kaiLogo.png" />
-    <Content Include="Assets\Node.png" />
-    <Content Include="Assets\triangle.fx" />
+    <None Include="Assets\kaiLogo.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </None>
+    <Content Include="Assets\Node.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\triangle.fx">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
