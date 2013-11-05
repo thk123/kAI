@@ -54,6 +54,7 @@
     <Compile Include="RelativePath.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="XmlBehaviour.cs" />
+    <Compile Include="XmlBehaviour.DebugInfo.cs" />
     <Compile Include="XmlBehaviour.InternalXml.cs" />
   </ItemGroup>
   <ItemGroup>

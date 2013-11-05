@@ -146,6 +146,8 @@ namespace kAI.Core
         /// </summary>
         Dictionary<kAIPortID, InternalPort> mInternalPorts;
 
+        kAIDebugInfo mDebugInfo;
+
 
         /// <summary>
         /// The location of the XML file.
@@ -201,6 +203,23 @@ namespace kAI.Core
             }
         }
 
+        
+        /// <summary>
+        /// Get the DebugInfo for this behaviour. 
+        /// </summary>
+        public kAIDebugInfo DebugInfo
+        {
+            get
+            {
+                if (mDebugInfo == null)
+                {
+                    mDebugInfo = new kAIDebugInfo(this);
+                }
+
+                return mDebugInfo;
+            }
+        }
+
         /// <summary>
         /// Triggered when a new internal port is added to this behaviour.
         /// </summary>
@@ -216,6 +235,7 @@ namespace kAI.Core
         {
             mInternalNodes = new Dictionary<kAINodeID, kAINode>();
             mInternalPorts = new Dictionary<kAIPortID, InternalPort>();
+            mDebugInfo = null;
         }
 
         /// <summary>
@@ -453,6 +473,11 @@ namespace kAI.Core
                 // This calls the update on the node contents (if this is a behaviour, this will only happen if the behaviour 
                 // is active). 
                 lNode.NodeContents.Update(lDeltaTime, lUserData);
+            }
+
+            if (mDebugInfo != null)
+            {
+                mDebugInfo.Update();
             }
         }
 
