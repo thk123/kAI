@@ -34,14 +34,13 @@ namespace kAI.Editor.Controls
         void RemoveExternalPort(kAINode lParentNode, kAIPort lPort);
 
         bool CanConnect();
+
+        event Action<kAI.Editor.ObjectProperties.kAIIPropertyEntry> ObjectSelected;
     }
 
     class kAIBehaviourEditorWindow
     {
         kAIIBehaviourEditorGraphicalImplementator mEditorImpl; 
-        
-
-        FileInfo mBehaviourLocation;
 
         kAIProject mProject;
 
@@ -67,6 +66,11 @@ namespace kAI.Editor.Controls
         }
 
         /// <summary>
+        /// Happens when something is selected within the behaviour editor. 
+        /// </summary>
+        public event Action<kAI.Editor.ObjectProperties.kAIIPropertyEntry> ObjectSelected;
+
+        /// <summary>
         /// Creates a behaviour editor window using the specified implementation
         /// </summary>
         /// <param name="lProject">The project we are loading.</param>
@@ -87,15 +91,19 @@ namespace kAI.Editor.Controls
             });
 
             GlobalContextMenu.Popup += new EventHandler(GlobalContextMenu_Popup);
+
+            
         }
 
         /// <summary>
-        /// Initalise the behaviour composer inside the given control. 
+        /// Initialise the behaviour composer inside the given control. 
         /// </summary>
         /// <param name="lContainer"></param>
         public void Init(Control lContainer)
         {
             mEditorImpl.Init(lContainer, this);
+
+            mEditorImpl.ObjectSelected += ObjectSelected;
 
             UnloadBehaviour();
         }
@@ -137,6 +145,7 @@ namespace kAI.Editor.Controls
             if (Behaviour != null)
             {
                 UnloadBehaviour();
+                Behaviour.OnInternalPortAdded -= Behaviour_OnInternalPortAdded;
             }
 
             foreach (kAIPort lGlobalPort in lBehaviour.InternalPorts)
@@ -150,6 +159,8 @@ namespace kAI.Editor.Controls
             }
 
             Behaviour = lBehaviour;
+
+            Behaviour.OnInternalPortAdded += new kAIXmlBehaviour.InternalPortAdded(Behaviour_OnInternalPortAdded);
 
             Behaviour.SetGlobal();
             Behaviour.ForceActivation();
@@ -170,10 +181,9 @@ namespace kAI.Editor.Controls
         /// <param name="lInternalPort"></param>
         public void AddInternalPort(kAIPort lInternalPort)
         {
-            // TODO: This is confusing...
             kAIObject.Assert(null, Behaviour, "No loaded behaviour");
 
-            Behaviour.AddExternalPort(lInternalPort);
+            Behaviour.AddInternalPort(lInternalPort, true);
 
             mEditorImpl.AddInternalPort(lInternalPort);
         }
@@ -181,7 +191,7 @@ namespace kAI.Editor.Controls
         /// <summary>
         /// Add a node to the loaded behaviour. 
         /// </summary>
-        /// <param name="lNode">The node to add. </param>
+        /// <param name="lNodeContents">The node to add. </param>
         /// <param name="lPoint">The absolute position to add the point to. </param>
         public void AddNode(kAIINodeObject lNodeContents, kAIAbsolutePosition lPoint)
         {
@@ -202,7 +212,7 @@ namespace kAI.Editor.Controls
         /// <summary>
         /// Add a node to the loaded behaviour. 
         /// </summary>
-        /// <param name="lNode">The node to add. </param>
+        /// <param name="lNodeContents">The node to add. </param>
         /// <param name="lPoint">The point (relative to the form) to add the node at. </param>
         public void AddNode(kAIINodeObject lNodeContents, Point lPoint)
         {
@@ -241,8 +251,6 @@ namespace kAI.Editor.Controls
             mEditorImpl.UnloadBehaviour();
 
             Behaviour = null;
-            mBehaviourLocation = null;
-
         }
 
         /// <summary>
@@ -300,6 +308,11 @@ namespace kAI.Editor.Controls
             kAIObject.Assert(null, Behaviour, "No loaded behaviour");
             Behaviour.RemoveNode(lNode);
             mEditorImpl.RemoveNode(lNode);
+        }
+
+        void Behaviour_OnInternalPortAdded(kAIXmlBehaviour lSender, kAIPort lNewPort)
+        {
+            mEditorImpl.AddInternalPort(lNewPort);
         }
 
         void GlobalContextMenu_Popup(object sender, EventArgs e)

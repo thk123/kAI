@@ -44,6 +44,7 @@
             this.createNewXmlBehaviourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.addBehaviourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runCommandToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.behaviourPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.uiLogger1 = new kAI.Editor.Controls.WinForms.UILogger();
             ((System.ComponentModel.ISupportInitialize)(this.MainEditor)).BeginInit();
             this.MainEditor.Panel2.SuspendLayout();
@@ -81,6 +82,8 @@
             // splitContainer1.Panel1
             // 
             this.splitContainer1.Panel1.BackColor = System.Drawing.Color.Gray;
+            this.splitContainer1.Panel1.BackgroundImage = global::kAI.Editor.Properties.Resources.kaiLogo;
+            this.splitContainer1.Panel1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Center;
             // 
             // splitContainer1.Panel2
             // 
@@ -105,35 +108,35 @@
             // newProjectToolStripMenuItem
             // 
             this.newProjectToolStripMenuItem.Name = "newProjectToolStripMenuItem";
-            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.newProjectToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.newProjectToolStripMenuItem.Text = "New Project...";
             this.newProjectToolStripMenuItem.Click += new System.EventHandler(this.newProjectToolStripMenuItem_Click);
             // 
             // openProjectToolStripMenuItem
             // 
             this.openProjectToolStripMenuItem.Name = "openProjectToolStripMenuItem";
-            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.openProjectToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.openProjectToolStripMenuItem.Text = "Open Project";
             this.openProjectToolStripMenuItem.Click += new System.EventHandler(this.openProjectToolStripMenuItem_Click);
             // 
             // saveToolStripMenuItem
             // 
             this.saveToolStripMenuItem.Name = "saveToolStripMenuItem";
-            this.saveToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.saveToolStripMenuItem.Text = "Save";
             this.saveToolStripMenuItem.Click += new System.EventHandler(this.saveToolStripMenuItem_Click);
             // 
             // loadToolStripMenuItem
             // 
             this.loadToolStripMenuItem.Name = "loadToolStripMenuItem";
-            this.loadToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.loadToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.loadToolStripMenuItem.Text = "Load";
             this.loadToolStripMenuItem.Click += new System.EventHandler(this.loadToolStripMenuItem_Click);
             // 
             // saveProjectToolStripMenuItem
             // 
             this.saveProjectToolStripMenuItem.Name = "saveProjectToolStripMenuItem";
-            this.saveProjectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.saveProjectToolStripMenuItem.Size = new System.Drawing.Size(147, 22);
             this.saveProjectToolStripMenuItem.Text = "Save Project";
             this.saveProjectToolStripMenuItem.Click += new System.EventHandler(this.saveProjectToolStripMenuItem_Click);
             // 
@@ -178,7 +181,8 @@
             this.behavioursToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.createNewXmlBehaviourToolStripMenuItem,
             this.addBehaviourToolStripMenuItem,
-            this.runCommandToolStripMenuItem});
+            this.runCommandToolStripMenuItem,
+            this.behaviourPropertiesToolStripMenuItem});
             this.behavioursToolStripMenuItem.Name = "behavioursToolStripMenuItem";
             this.behavioursToolStripMenuItem.Size = new System.Drawing.Size(77, 20);
             this.behavioursToolStripMenuItem.Text = "Behaviours";
@@ -204,6 +208,13 @@
             this.runCommandToolStripMenuItem.Text = "Run command...";
             this.runCommandToolStripMenuItem.Click += new System.EventHandler(this.runCommandToolStripMenuItem_Click);
             // 
+            // behaviourPropertiesToolStripMenuItem
+            // 
+            this.behaviourPropertiesToolStripMenuItem.Name = "behaviourPropertiesToolStripMenuItem";
+            this.behaviourPropertiesToolStripMenuItem.Size = new System.Drawing.Size(215, 22);
+            this.behaviourPropertiesToolStripMenuItem.Text = "Behaviour Properties";
+            this.behaviourPropertiesToolStripMenuItem.Click += new System.EventHandler(this.behaviourPropertiesToolStripMenuItem_Click);
+            // 
             // uiLogger1
             // 
             this.uiLogger1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
@@ -223,9 +234,12 @@
             this.Controls.Add(this.MainEditor);
             this.Controls.Add(this.menuStrip1);
             this.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
+            this.Location = new System.Drawing.Point(1280, 0);
             this.MainMenuStrip = this.menuStrip1;
             this.Name = "Editor";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.Manual;
             this.Text = "kAI Editor";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Editor_FormClosed);
             this.MainEditor.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.MainEditor)).EndInit();
@@ -259,6 +273,7 @@
         private System.Windows.Forms.ToolStripMenuItem runCommandToolStripMenuItem;
         private System.Windows.Forms.SplitContainer splitContainer1;
         private Controls.WinForms.UILogger uiLogger1;
+        private System.Windows.Forms.ToolStripMenuItem behaviourPropertiesToolStripMenuItem;
 
     }
 }

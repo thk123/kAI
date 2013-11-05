@@ -90,6 +90,21 @@ namespace kAI.Core
         public delegate void ActivationChangedEvent(kAINode lSender, bool lNewState);
 
         /// <summary>
+        /// When the NodeID changes on this node. 
+        /// </summary>
+        /// <param name="lOldNodeID">The old node ID. </param>
+        /// <param name="lNewNodeID">The new node ID. </param>
+        /// <param name="lNode">The node whose name is changing. </param>
+        public delegate void NodeIDChanged(kAINodeID lOldNodeID, kAINodeID lNewNodeID, kAINode lNode);
+
+        /// <summary>
+        /// EventHandler for when an externally visible port is added to this node.
+        /// </summary>
+        /// <param name="lSender">The node that has been modified. </param>
+        /// <param name="lNewPort">The port that has been added. </param>
+        public delegate void ExternalPortAdded(kAINode lSender, kAIPort lNewPort);
+
+        /// <summary>
         /// Get the serial objects of the types that can be embedded within a node. 
         /// </summary>
         public static IEnumerable<Type> NodeSerialTypes
@@ -115,14 +130,38 @@ namespace kAI.Core
             private set;
         }
 
+        kAINodeID mNodeID;
+
+        kAIXmlBehaviour mOwningBehaviour;
+
         /// <summary>
         /// The unique ID(to the containing behaviour) for this node. 
         /// </summary>
         public kAINodeID NodeID
         {
-            get;
-            private set;
+            get
+            {
+                return mNodeID;
+            }
+            internal set
+            {
+                if (OnNodeIDChanged != null)
+                {
+                    OnNodeIDChanged(mNodeID, value, this);
+                }
+                mNodeID = value;
+            }
         }
+
+        /// <summary>
+        /// Triggered when the ID of the node is changed. 
+        /// </summary>
+        public event NodeIDChanged OnNodeIDChanged;
+
+        /// <summary>
+        /// Triggered when an external port is added to this node. 
+        /// </summary>
+        public event ExternalPortAdded OnExternalPortAdded;
 
         /// <summary>
         /// Create a new node containing an object of type T. 
@@ -141,11 +180,11 @@ namespace kAI.Core
             {
                 foreach (kAIPort lPort in lContents.GetExternalPorts())
                 {
-                    
-
                     AddGlobalPort(lPort, lNodeOwner);
                 }
             }
+
+            mOwningBehaviour = lNodeOwner;
         }
 
         /// <summary>
@@ -178,10 +217,14 @@ namespace kAI.Core
         /// <summary>
         /// Get the object to be serialised. 
         /// </summary>
+        /// <param name="lOwningBehaviour">
+        /// The XML behaviour this node is to be embedded into. 
+        /// Can be null if we are serialising for the project.
+        /// </param>
         /// <returns>A DataContract object to serialse when embedding the content of this node. </returns>
-        public kAIINodeSerialObject GetNodeSerialisableContent()
+        public kAIINodeSerialObject GetNodeSerialisableContent(kAIXmlBehaviour lOwningBehaviour)
         {
-            kAIINodeSerialObject lSerialData = NodeContents.GetDataContractClass();
+            kAIINodeSerialObject lSerialData = NodeContents.GetDataContractClass(lOwningBehaviour);
 
             // Check the type actually matches the reported type
             Assert(NodeContents.GetDataContractType() == lSerialData.GetType());
@@ -204,6 +247,20 @@ namespace kAI.Core
             lNewPort.OwningBehaviour = lNodeOwner;
 
             mExternalPorts.Add(lNewPort.PortID, lNewPort);
+
+            if (OnExternalPortAdded != null)
+            {
+                OnExternalPortAdded(this, lNewPort);
+            }
+        }
+
+        /// <summary>
+        /// Returns a string representation of this node. 
+        /// </summary>
+        /// <returns>The NodeID and what behaviour this node resides in. </returns>
+        public override string ToString()
+        {
+            return NodeID + "[" + mOwningBehaviour.BehaviourID + "]";
         }
     }
 }

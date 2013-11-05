@@ -39,7 +39,7 @@ namespace kAI.Editor.Forms.ProjectProperties
             InitializeComponent();
             mProject = lProject;
             BehaviourID = lBehaviourName;
-            mContainingDirectory = lProject.XmlBehaviourRoot;
+            mContainingDirectory = lProject.XmlBehaviourRoot.GetDirectory();
 
             SetValuesFromData();
         }

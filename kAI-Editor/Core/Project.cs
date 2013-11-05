@@ -24,6 +24,9 @@ namespace kAI.Editor.Core
         /// </summary>
         public const string kProjectFileExtension = "kAIProj";
 
+        public const string kProjectRootID = "ProjectRoot";
+        public const string kBehaviourRootID = "BehaviourRoot";
+
         /// <summary>
         /// The name of the project. 
         /// </summary>
@@ -48,17 +51,17 @@ namespace kAI.Editor.Core
         /// A list of DLL's this project uses. 
         /// </summary>
         [DataMember()]
-        public List<FileInfo> ProjectDllPaths
+        public List<kAIRelativePath> ProjectDllPaths
         {
             get;
             private set;
         }
 
         /// <summary>
-        /// The directory that contains all the XML behaviors. 
+        /// The directory that contains all the XML behaviors.
         /// </summary>
         [DataMember()]
-        public DirectoryInfo XmlBehaviourRoot
+        public kAIRelativeDirectory XmlBehaviourRoot
         {
             get;
             set;
@@ -117,7 +120,7 @@ namespace kAI.Editor.Core
         /// </summary>
         [OptionalField(VersionAdded = 2)]
         [DataMember(Name = "AdditionalDLLPaths")]
-        Dictionary<string, FileInfo> mAdditionalDllPaths;
+        Dictionary<string, kAIRelativePath> mAdditionalDllPaths;
 
         /// <summary>
         /// The file backing up this project. 
@@ -131,13 +134,13 @@ namespace kAI.Editor.Core
         {
             ProjectName = "NewProject";
             ProjectRoot = new DirectoryInfo(Directory.GetCurrentDirectory() + "\\" + ProjectName);
-            XmlBehaviourRoot = new DirectoryInfo(ProjectRoot.FullName + "\\Behaviours\\");
+            XmlBehaviourRoot = new kAIRelativeDirectory("Behaviours", ProjectRoot, kProjectRootID);
 
-            ProjectDllPaths = new List<FileInfo>();
+            ProjectDllPaths = new List<kAIRelativePath>();
             NodeObjects = new Dictionary<string, kAIINodeSerialObject>();
             ProjectTypes = new List<Type>();
 
-            mAdditionalDllPaths = new Dictionary<string, FileInfo>();
+            mAdditionalDllPaths = new Dictionary<string, kAIRelativePath>();
 
             // We also initialise all the types that wouldn't have come from the XML
             // We pass null as there is no file (yet). 
@@ -169,8 +172,24 @@ namespace kAI.Editor.Core
         /// <param name="lDLLPath">The path to the DLL to load.</param>
         public void AddDLL(FileInfo lDLLPath)
         {
-            ProjectDllPaths.Add(lDLLPath);
-            Assembly lAssembly = LoadDLL(lDLLPath);
+            kAIRelativePath lDllPathRelative = new kAIRelativePath(lDLLPath, ProjectRoot, kProjectRootID);
+            if (lDllPathRelative.RelativePathType != kAIRelativeObject.eRelativePathType.InteriorPath)
+            {
+                DialogResult lResult = MessageBox.Show("This DLL is not located inside the path, would you like to copy it in?", "Exterior DLL Detected...", MessageBoxButtons.YesNo);
+                if (lResult == DialogResult.Yes)
+                {
+                    DirectoryInfo lDllDirectory = new DirectoryInfo(ProjectRoot.FullName + @"\" + "DLLs");
+                    if (!lDllDirectory.Exists)
+                    {
+                        lDllDirectory.Create();
+                    }
+
+                    FileInfo lNewPath = lDLLPath.CopyTo(lDllDirectory.FullName + @"\" + lDLLPath.Name);
+                    lDllPathRelative = new kAIRelativePath(lNewPath, ProjectRoot, kProjectRootID);
+                }
+            }
+            ProjectDllPaths.Add(lDllPathRelative);
+            Assembly lAssembly = LoadDLL(lDllPathRelative);
 
             //Extract behaviors
             foreach (Type lType in lAssembly.GetExportedTypes())
@@ -192,7 +211,7 @@ namespace kAI.Editor.Core
             // Remove the matching file
             ProjectDllPaths.RemoveAll((lFileInfo) =>
             {
-                return lFileInfo.FullName == lAssembly.Location;
+                return lFileInfo.GetFile().FullName == lAssembly.Location;
             });
 
             // And unload it from loaded DLLs
@@ -240,6 +259,8 @@ namespace kAI.Editor.Core
             mFile = lSouceFile;
             ProjectDLLs = new List<Assembly>();
             AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+
+            kAIRelativeObject.AddPathID(kBehaviourRootID, XmlBehaviourRoot.GetDirectory());
         }
 
         /// <summary>
@@ -247,7 +268,7 @@ namespace kAI.Editor.Core
         /// </summary>
         private void Load()
         {
-            foreach (FileInfo lDLLPath in ProjectDllPaths)
+            foreach (kAIRelativePath lDLLPath in ProjectDllPaths)
             {
                 LoadDLL(lDLLPath);
             }
@@ -265,7 +286,7 @@ namespace kAI.Editor.Core
         /// Load a specific DLL. 
         /// </summary>
         /// <param name="lDLLPath">The path of the DLL to load. </param>
-        private Assembly LoadDLL(FileInfo lDLLPath)
+        private Assembly LoadDLL(kAIRelativePath lDLLPath)
         {           
             Assembly lAssembly = LoadAssemblyFromFilePath(lDLLPath);            
             ProjectDLLs.Add(lAssembly);
@@ -310,6 +331,9 @@ namespace kAI.Editor.Core
         /// <returns>The Assembly (or null if we have still failed to find it -- this will throw an exception). </returns>
         Assembly CurrentDomain_AssemblyResolve(object sender, ResolveEventArgs args)
         {
+            if (args.Name.Contains(".resources"))
+                return null;
+
             // see if it is one our our referenced dlls
             foreach (Assembly lLoadedAssembly in ProjectDLLs)
             {
@@ -325,7 +349,7 @@ namespace kAI.Editor.Core
             }
             else
             {
-                FileInfo lDllPath;
+                kAIRelativePath lDllPath;
                 Assembly lLoadedAssembly = HandleMissingDll(args.Name, out lDllPath);
                 if (lLoadedAssembly != null)
                 {
@@ -343,13 +367,14 @@ namespace kAI.Editor.Core
         /// <param name="lAssemblyFullName">The full name of the assembly. </param>
         /// <param name="lDllPath">We will fill this with the path with the location of the assembly.</param>
         /// <returns>The loaded assembly if found, null if otherwise (e.g. the user clicks cancel). </returns>
-        private Assembly HandleMissingDll(string lAssemblyFullName, out FileInfo lDllPath)
+        private Assembly HandleMissingDll(string lAssemblyFullName, out kAIRelativePath lDllPath)
         {
             OpenFileDialog lOFD = new OpenFileDialog();
             lOFD.Title = "Find missing DLL: " + lAssemblyFullName;
             if (lOFD.ShowDialog() == DialogResult.OK)
             {
-                lDllPath = new FileInfo(lOFD.FileName);
+                FileInfo lDllPathUnRel = new FileInfo(lOFD.FileName);
+                lDllPath = new kAIRelativePath(lDllPathUnRel, ProjectRoot, kProjectRootID);
                 return LoadAssemblyFromFilePath(lDllPath);
                 
             }
@@ -365,9 +390,9 @@ namespace kAI.Editor.Core
         /// </summary>
         /// <param name="lDllPath">The path to the DLL. </param>
         /// <returns>The loaded assembly at that position. </returns>
-        private Assembly LoadAssemblyFromFilePath(FileInfo lDllPath)
+        private Assembly LoadAssemblyFromFilePath(kAIRelativePath lDllPath)
         {
-            FileStream lDLLStream = lDllPath.OpenRead();
+            FileStream lDLLStream = lDllPath.GetFile().OpenRead();
             byte[] lDLLArray = new byte[lDLLStream.Length];
             lDLLStream.Read(lDLLArray, 0, (int)lDLLStream.Length);
             lDLLStream.Close();
@@ -382,7 +407,8 @@ namespace kAI.Editor.Core
         [OnDeserializing]
         private void SetDefaultDllPaths(StreamingContext lStreamContext)
         {
-            mAdditionalDllPaths = new Dictionary<string, FileInfo>();
+            mAdditionalDllPaths = new Dictionary<string, kAIRelativePath>();
+            
         }
 
         /// <summary>
@@ -392,6 +418,8 @@ namespace kAI.Editor.Core
         /// <returns>An instantiated kAIProject with the relevant properties. </returns>
         public static kAIProject Load(FileInfo lProjectXml)
         {
+            kAIRelativeDirectory.AddPathID(kProjectRootID, lProjectXml.Directory);
+
             DataContractSerializer lDeserialiser = new DataContractSerializer(typeof(kAIProject), kAINode.NodeSerialTypes);
             FileStream lStream = lProjectXml.OpenRead();
             kAIProject lNewProject = (kAIProject)lDeserialiser.ReadObject(lStream);

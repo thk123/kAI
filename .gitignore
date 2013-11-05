@@ -26,3 +26,7 @@ SpriteTextRenderer/SpriteTextRenderer/bin/*
 SpriteTextRenderer/SpriteTextRenderer/obj/*
 SpriteTextRenderer/UpgradeLog.*
 kAI-Example/*
+*.pidb
+kAIBehaviourLoadTest/obj/*
+us.stackdump
+SpriteTextRenderer/Sample/obj/*

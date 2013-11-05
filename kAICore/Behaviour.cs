@@ -38,6 +38,8 @@ namespace kAI.Core
 
         bool mActive;
 
+        bool mWasActive;
+
         /// <summary>
         /// The unique (in this behaviour) name of this behaviour instance.
         /// </summary>
@@ -71,6 +73,7 @@ namespace kAI.Core
             {
                 if (mActive != value)
                 {
+                    mWasActive = mActive;
                     mActive = value;
 
                     //TODO: Notifications to derived classes and methods for them to deactivate the whole system.
@@ -113,6 +116,9 @@ namespace kAI.Core
             // External port for when the contents of this node wants to deactivate this node. 
             kAIPort lOnDeactivatedPort = new kAIPort(kOnDeactivatePortID, kAIPort.ePortDirection.PortDirection_Out, kAIPortType.TriggerType);
             AddExternalPort(lOnDeactivatedPort);
+
+            mActive = false;
+            mWasActive = false;
         }
 
         void lActivatePort_OnTriggered(kAIPort lSender)
@@ -132,7 +138,7 @@ namespace kAI.Core
         /// <exception cref="kAIBehaviourPortAlreadyExistsException">
         /// If a port with the same PortID already exists in this behaviour.
         /// </exception>
-        public void AddExternalPort(kAIPort lNewPort)
+        protected void AddExternalPort(kAIPort lNewPort)
         {
             if (!mExternalPorts.ContainsKey(lNewPort.PortID))
             {
@@ -173,7 +179,7 @@ namespace kAI.Core
         public void ForceActivation()
         {
             mExternalPorts[kActivatePortID].Trigger();
-            mExternalPorts[kActivatePortID].Release();
+            //mExternalPorts[kActivatePortID].Release();
         }
 
         /// <summary>
@@ -183,7 +189,7 @@ namespace kAI.Core
         public void ForceDeactivate()
         {
             mExternalPorts[kDeactivatePortID].Trigger();
-            mExternalPorts[kDeactivatePortID].Release();
+            //mExternalPorts[kDeactivatePortID].Release();
         }
 
         /// <summary>
@@ -204,7 +210,20 @@ namespace kAI.Core
         {
             if (Active)
             {
-                InternalUpdate(lDeltaTime, lUserData);
+                try
+                {
+                    InternalUpdate(lDeltaTime, lUserData);
+                }
+                catch (System.Exception)
+                {
+                    LogMessage("Failed to update code behaviour " + BehaviourID);
+                }
+                
+            }
+            else if (mWasActive) // just been deactivated so we trigger the OnDeactivated Port
+            {
+                GetPort(kOnDeactivatePortID).Trigger();
+                mWasActive = false;
             }
         }
 
@@ -222,7 +241,7 @@ namespace kAI.Core
         {
             Active = false;
             OnDeactivate();
-            GetPort(kOnDeactivatePortID).Trigger();
+            // TODO: this is called from XML behaviour if its inner Deactivate port is triggered, this could trigger the OnDeactivated without risk
         }
 
         /// <summary>
@@ -250,8 +269,12 @@ namespace kAI.Core
         /// <summary>
         /// Get the data required to turn this object into an XML structure. 
         /// </summary>
-        /// <returns></returns>
-        public abstract kAIINodeSerialObject GetDataContractClass();
+        /// <param name="lOwningBehaviour">
+        /// The XML Behaviour this node serial object is in. 
+        /// Can be null if we are serialising the node for the project.
+        /// </param>
+        /// <returns>The serialised version of this object, wrt being inside lOwningBehaviour</returns>
+        public abstract kAIINodeSerialObject GetDataContractClass(kAIXmlBehaviour lOwningBehaviour);
 
         /// <summary>
         /// Gets the type of object returned in <see cref="GetDataContractClass"/>.
@@ -331,7 +354,7 @@ namespace kAI.Core
 
                 BehaviourID = lCodeBehaviourType.Name;
                 BehaviourType = lCodeBehaviourType.FullName;
-                BehaviourAssembly = lCodeBehaviourType.Assembly.FullName;
+                BehaviourAssembly = lCodeBehaviourType.Assembly.GetName().Name;
             }
 
             /// <summary>
@@ -375,8 +398,9 @@ namespace kAI.Core
         /// <summary>
         /// Get the serialisable object to save when this behaviour of a child node. 
         /// </summary>
+        /// <param name="lOwningBehaviour">The XML behaviour this behaviour is a node in. </param>
         /// <returns>The object to serialise using a DataContract serialiser. </returns>
-        public override kAIINodeSerialObject GetDataContractClass()
+        public override kAIINodeSerialObject GetDataContractClass(kAIXmlBehaviour lOwningBehaviour)
         {
             return new SerialObject(this);
         }
@@ -385,11 +409,11 @@ namespace kAI.Core
         /// Gets the type of the serialisable object. 
         /// </summary>
         /// <note>
-        /// This is probably not required, since is literlly 
+        /// This is probably not required, since is literally 
         /// GetDataContractClass.GetType() and I can't see why you would need 
         /// the type and not the object itself?? (Maybe when loading?)
         /// </note>
-        /// <returns></returns>
+        /// <returns>The type of the serial object. </returns>
         public override Type GetDataContractType()
         {
             return typeof(SerialObject);

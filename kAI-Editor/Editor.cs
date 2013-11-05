@@ -18,6 +18,7 @@ using kAI.Editor.Forms;
 using kAI.Editor.Forms.ProjectProperties;
 using kAI.Editor.Controls;
 using kAI.Editor.Controls.DX;
+using kAI.Editor.Controls.WinForms;
 
 
 
@@ -33,6 +34,8 @@ namespace kAI.Editor
         kAIProject mLoadedProject;
 
         BehaviourTree mBehaviourTree;
+
+        PropertiesWindow mPropertiesWindow;
 
         List<PropertyControllerBase<bool>> mProjectLoadedControls; // Controls that should only be enabled when a project is loaded.
         List<PropertyControllerBase<bool>> mBehaviourLoadedControls;
@@ -65,6 +68,7 @@ namespace kAI.Editor
             SetEnabledSetControls(mBehaviourLoadedControls, false);
 
             mBehaviourEditor = null;
+            mPropertiesWindow = null;
 
             kAIObject.GlobalLogger = uiLogger1;
             kAIObject.GlobalLogger.LogMessage("kAI Editor loaded");
@@ -158,8 +162,20 @@ namespace kAI.Editor
 
                 mBehaviourEditor = new kAIBehaviourEditorWindow(mLoadedProject, lImpl, this);
 
+                mBehaviourEditor.ObjectSelected += new Action<kAI.Editor.ObjectProperties.kAIIPropertyEntry>(mBehaviourEditor_ObjectSelected);
+
                 mBehaviourEditor.Init(splitContainer1.Panel1);
+
+                mPropertiesWindow = new PropertiesWindow(mLoadedProject);
+                mPropertiesWindow.Show(splitContainer1.Panel1);
+
+
             }
+        }
+
+        void mBehaviourEditor_ObjectSelected(kAI.Editor.ObjectProperties.kAIIPropertyEntry lSelectedObject)
+        {
+            mPropertiesWindow.SelectObject(lSelectedObject);
         }
 
         private void DestroyBehaviourEditorWindow()
@@ -247,9 +263,10 @@ namespace kAI.Editor
 
                 //kAIXmlBehaviour lBehaviour = 
                 
-                kAIXmlBehaviour lBehaviour = new kAIXmlBehaviour(lCreator.BehaviourID, lCreator.BehaviourPath);
+                kAIRelativePath lNewBehPath = new kAIRelativePath(lCreator.BehaviourPath, mLoadedProject.XmlBehaviourRoot.GetDirectory(), kAIProject.kBehaviourRootID);
+                kAIXmlBehaviour lBehaviour = new kAIXmlBehaviour(lCreator.BehaviourID, lNewBehPath);
 
-                mLoadedProject.AddXmlBehaviour(lBehaviour.GetDataContractClass());
+                mLoadedProject.AddXmlBehaviour(lBehaviour.GetDataContractClass(null));
 
                 mBehaviourTree.UpdateTree(mLoadedProject);
 
@@ -332,6 +349,13 @@ namespace kAI.Editor
 
             } while (!lResult);
             
+        }
+
+        private void behaviourPropertiesToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            XmlBehaviourPropertiesEditor lPropertiesEditor = new XmlBehaviourPropertiesEditor(mLoadedProject, mBehaviourEditor.Behaviour);
+            DialogResult lResult = lPropertiesEditor.ShowDialog();
+
         }
     }
 }

@@ -6,6 +6,7 @@ using System.Text;
 using System.Windows.Forms;
 
 using kAI.Core;
+using kAI.Editor.ObjectProperties;
 using kAI.Editor.Controls.DX.Coordinates;
 
 using SlimDX;
@@ -58,7 +59,6 @@ namespace kAI.Editor.Controls.DX
         {
             get;
             private set;
-
         }
 
         /// <summary>
@@ -68,7 +68,12 @@ namespace kAI.Editor.Controls.DX
         {
             get;
             private set;
-        }                
+        }
+
+        /// <summary>
+        /// Triggered when this object is selected. 
+        /// </summary>
+        public event Action<kAI.Editor.ObjectProperties.kAIIPropertyEntry> OnSelected;
 
         /// <summary>
         /// Create a new node for rendering. 
@@ -107,13 +112,14 @@ namespace kAI.Editor.Controls.DX
                 new kAIMouseEventResponders
                 {
                     OnMouseDown = OnMouseDown,
+                    OnMouseClick = OnMouseClick,
                     ContextMenu = new ContextMenu(new MenuItem[] { lDeleteNode }),
                     RectangleId = Node.NodeID
                 },
                 false);
-        }
 
-        
+            lNode.OnExternalPortAdded += new kAINode.ExternalPortAdded(lNode_OnExternalPortAdded);
+        }     
 
         /// <summary>
         /// Deprecated: 3D render using vertices to create a quad representing the node. 
@@ -247,6 +253,15 @@ namespace kAI.Editor.Controls.DX
             }
         }
 
+        void OnMouseClick(object sender, MouseEventArgs e)
+        {
+            if (OnSelected != null)
+            {
+                OnSelected(new kAINodeProperties(Node));
+            }
+        }
+
+
         void InputManager_OnMouseUp(object sender, MouseEventArgs e)
         {
             kAIObject.Assert(null, mBeingDragged, "Stopping dragging an object that wasn't being dragged");
@@ -302,5 +317,11 @@ namespace kAI.Editor.Controls.DX
             mEditorWindow.InputManager.RemoveClickListenArea(mAddedRectangle, false);
             mEditorWindow.Editor.RemoveNode(Node);
         }
+
+
+        void lNode_OnExternalPortAdded(kAINode lSender, kAIPort lNewPort)
+        {
+            AddExternalPort(lNewPort);
+        }  
     }
 }

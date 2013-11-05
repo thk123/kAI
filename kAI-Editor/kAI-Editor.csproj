@@ -89,6 +89,24 @@
     <Compile Include="Controls\WinForms\DLLEntry.Designer.cs">
       <DependentUpon>DLLEntry.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\WinForms\PropertyEditor\PortListControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\WinForms\PropertyEditor\PortListControl.Designer.cs">
+      <DependentUpon>PortListControl.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WinForms\PropertyEditor\PortPropertiesEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\WinForms\PropertyEditor\PortPropertiesEditor.Designer.cs">
+      <DependentUpon>PortPropertiesEditor.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WinForms\PropertyEditor\PropertiesWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\WinForms\PropertyEditor\PropertiesWindow.Designer.cs">
+      <DependentUpon>PropertiesWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\WinForms\SelectConnexionDialogue.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -101,36 +119,48 @@
     <Compile Include="Controls\WinForms\UILogger.Designer.cs">
       <DependentUpon>UILogger.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\WinForms\PropertyEditor\XmlBehaviourPropertiesEditor.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\WinForms\PropertyEditor\XmlBehaviourPropertiesEditor.Designer.cs">
+      <DependentUpon>XmlBehaviourPropertiesEditor.cs</DependentUpon>
+    </Compile>
     <Compile Include="Core\ConsoleLogger.cs" />
     <Compile Include="Core\InteractionTerminal.cs" />
+    <Compile Include="ObjectProperties\ConnexionProperties.cs" />
+    <Compile Include="ObjectProperties\IPropertyEntry.cs" />
+    <Compile Include="ObjectProperties\ListType.cs" />
+    <Compile Include="ObjectProperties\NodeProperties.cs" />
+    <Compile Include="ObjectProperties\PortProperties.cs" />
+    <Compile Include="ObjectProperties\SimpleConverter.cs" />
     <Compile Include="Windows\BehaviourChooser.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Windows\BehaviourChooser.Designer.cs">
       <DependentUpon>BehaviourChooser.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\WinForms\BehaviourEditorWindowWinForms.cs">
+    <None Include="Controls\WinForms\BehaviourComposor\BehaviourEditorWindowWinForms.cs">
       <SubType>UserControl</SubType>
-    </Compile>
-    <Compile Include="Controls\WinForms\BehaviourEditorWindowWinForms.Designer.cs">
+    </None>
+    <None Include="Controls\WinForms\BehaviourComposor\BehaviourEditorWindowWinForms.Designer.cs">
       <DependentUpon>BehaviourEditorWindowWinForms.cs</DependentUpon>
-    </Compile>
+    </None>
     <Compile Include="Editor.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Editor.Designer.cs">
       <DependentUpon>Editor.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\WinForms\EditorNode.cs">
+    <Compile Include="Controls\WinForms\BehaviourComposor\EditorNode.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\WinForms\EditorNode.Designer.cs">
+    <Compile Include="Controls\WinForms\BehaviourComposor\EditorNode.Designer.cs">
       <DependentUpon>EditorNode.cs</DependentUpon>
     </Compile>
-    <Compile Include="Controls\WinForms\PortWinForms.cs">
+    <Compile Include="Controls\WinForms\BehaviourComposor\PortWinForms.cs">
       <SubType>UserControl</SubType>
     </Compile>
-    <Compile Include="Controls\WinForms\PortWinForms.Designer.cs">
+    <Compile Include="Controls\WinForms\BehaviourComposor\PortWinForms.Designer.cs">
       <DependentUpon>PortWinForms.cs</DependentUpon>
     </Compile>
     <Compile Include="Windows\ProjectProperties\ProjectProperties_DLL.cs">
@@ -162,25 +192,37 @@
     <EmbeddedResource Include="Controls\WinForms\DLLEntry.resx">
       <DependentUpon>DLLEntry.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WinForms\PropertyEditor\PortListControl.resx">
+      <DependentUpon>PortListControl.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WinForms\PropertyEditor\PortPropertiesEditor.resx">
+      <DependentUpon>PortPropertiesEditor.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WinForms\PropertyEditor\PropertiesWindow.resx">
+      <DependentUpon>PropertiesWindow.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\WinForms\SelectConnexionDialogue.resx">
       <DependentUpon>SelectConnexionDialogue.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\WinForms\UILogger.resx">
       <DependentUpon>UILogger.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WinForms\PropertyEditor\XmlBehaviourPropertiesEditor.resx">
+      <DependentUpon>XmlBehaviourPropertiesEditor.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Windows\BehaviourChooser.resx">
       <DependentUpon>BehaviourChooser.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\WinForms\BehaviourEditorWindowWinForms.resx">
+    <None Include="Controls\WinForms\BehaviourComposor\BehaviourEditorWindowWinForms.resx">
       <DependentUpon>BehaviourEditorWindowWinForms.cs</DependentUpon>
-    </EmbeddedResource>
+    </None>
     <EmbeddedResource Include="Editor.resx">
       <DependentUpon>Editor.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\WinForms\EditorNode.resx">
+    <EmbeddedResource Include="Controls\WinForms\BehaviourComposor\EditorNode.resx">
       <DependentUpon>EditorNode.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Controls\WinForms\PortWinForms.resx">
+    <EmbeddedResource Include="Controls\WinForms\BehaviourComposor\PortWinForms.resx">
       <DependentUpon>PortWinForms.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Windows\ProjectProperties\ProjectProperties.resx">
@@ -201,6 +243,7 @@
     </Compile>
     <Compile Include="Controls\DX\MouseEventResponders.cs" />
     <Content Include="Assets\beizure.fx" />
+    <Compile Include="ObjectProperties\SimpleClickableEntry.cs" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
       <LastGenOutput>Settings.Designer.cs</LastGenOutput>
@@ -240,6 +283,7 @@
     <Folder Include="Core\Behaviour\" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="Assets\kaiLogo.png" />
     <Content Include="Assets\Node.png" />
     <Content Include="Assets\triangle.fx" />
   </ItemGroup>
