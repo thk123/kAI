@@ -503,7 +503,8 @@ namespace kAI.Editor.Controls.DX
             LineRender();
 
             // Swap the back and front buffers
-            mSwapChain.Present(0, PresentFlags.None);            
+            mSwapChain.Present(0, PresentFlags.None);       
+    
         }
 
         /// <summary>

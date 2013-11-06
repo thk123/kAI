@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Runtime.Serialization;
+using System.Diagnostics;
 
 namespace kAI.Core
 {
@@ -318,10 +319,9 @@ namespace kAI.Core
         public void Trigger()
         {
             Assert(mOwningBehaviourSet, "A port has not been told what XML behaviour it belongs to: " + PortID.ToString());
-            LogMessage("Port triggered", new KeyValuePair<string, object>("Port", PortID));
             if (!CheckState())
             {
-                throw new Exception("Currently releasing a port, cannot trigger more");
+                throw new Exception("Currently releasing a port, cannot trigger more" + ToString());
             }
             
 
@@ -342,7 +342,6 @@ namespace kAI.Core
             // TODO: Prove this is ok
             if (mOwningBehaviour == null)
             {
-                LogMessage("Releasing global port", new KeyValuePair<string, object>("Port", PortID));
                 Release();
             }
         }
@@ -357,7 +356,6 @@ namespace kAI.Core
             Assert(mOwningBehaviourSet, "A port has not been told what XML behaviour it belongs to: " + PortID.ToString());
             if (mHasBeenTriggered)
             {
-                LogMessage("Port released", new KeyValuePair<string, object>("Port", PortID));
                 // TODO: it is vital this does not trigger more ports within the same behaviour
                 if (OnTriggered != null)
                 {
@@ -423,7 +421,9 @@ namespace kAI.Core
         protected virtual void OnConnect(kAIPort lOtherEnd)
         {
             if (OnConnected != null)
+            {
                 OnConnected(this, lOtherEnd);
+            }
         }
 
         /// <summary>

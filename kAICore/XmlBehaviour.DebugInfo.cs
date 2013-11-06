@@ -39,6 +39,8 @@ namespace kAI.Core
             internal kAIDebugInfo(kAIXmlBehaviour lBehaviour)
             {
                 mBehaviour = lBehaviour;
+                ActiveNodes = new List<string>();
+                ActiveBehaviours = new List<kAIDebugInfo>();
                 Update();
             }
 
@@ -47,6 +49,9 @@ namespace kAI.Core
             /// </summary>
             internal void Update()
             {
+                ActiveNodes.Clear();
+                ActiveBehaviours.Clear();
+
                 foreach (kAINode lNode in mBehaviour.InternalNodes)
                 {
                     if (lNode.NodeContents is kAIBehaviour)

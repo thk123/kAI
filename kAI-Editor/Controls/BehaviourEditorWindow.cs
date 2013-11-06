@@ -144,8 +144,8 @@ namespace kAI.Editor.Controls
         {
             if (Behaviour != null)
             {
-                UnloadBehaviour();
                 Behaviour.OnInternalPortAdded -= Behaviour_OnInternalPortAdded;
+                UnloadBehaviour();
             }
 
             foreach (kAIPort lGlobalPort in lBehaviour.InternalPorts)

@@ -190,16 +190,6 @@ namespace kAI.Editor.Core
             }
             ProjectDllPaths.Add(lDllPathRelative);
             Assembly lAssembly = LoadDLL(lDllPathRelative);
-
-            //Extract behaviors
-            foreach (Type lType in lAssembly.GetExportedTypes())
-            {
-                if (lType.DoesInherit(typeof(kAIBehaviour)))
-                {
-                    kAIINodeSerialObject lSerialObject = kAICodeBehaviour.CreateSerialObjectFromType(lType);
-                    NodeObjects.Add(lSerialObject.GetFriendlyName(), lSerialObject);
-                }
-            }
         }
 
         /// <summary>
@@ -290,6 +280,19 @@ namespace kAI.Editor.Core
         {           
             Assembly lAssembly = LoadAssemblyFromFilePath(lDLLPath);            
             ProjectDLLs.Add(lAssembly);
+
+            //Extract behaviors
+            foreach (Type lType in lAssembly.GetExportedTypes())
+            {
+                if (lType.DoesInherit(typeof(kAIBehaviour)))
+                {
+                    kAIINodeSerialObject lSerialObject = kAICodeBehaviour.CreateSerialObjectFromType(lType);
+                    if (!NodeObjects.ContainsKey(lSerialObject.GetFriendlyName()))
+                    {
+                        NodeObjects.Add(lSerialObject.GetFriendlyName(), lSerialObject);
+                    }
+                }
+            }
 
             return lAssembly;
         }
