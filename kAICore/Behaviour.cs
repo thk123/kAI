@@ -210,14 +210,15 @@ namespace kAI.Core
         {
             if (Active)
             {
-                try
+                InternalUpdate(lDeltaTime, lUserData);
+                /*try
                 {
-                    InternalUpdate(lDeltaTime, lUserData);
-                }
-                catch (System.Exception)
+                    
+                }*/
+                /*catch (System.Exception ex)
                 {
                     LogMessage("Failed to update code behaviour " + BehaviourID);
-                }
+                }*/
                 
             }
             else if (mWasActive) // just been deactivated so we trigger the OnDeactivated Port
@@ -239,9 +240,12 @@ namespace kAI.Core
         /// </summary>
         protected void Deactivate()
         {
-            Active = false;
-            OnDeactivate();
-            // TODO: this is called from XML behaviour if its inner Deactivate port is triggered, this could trigger the OnDeactivated without risk
+            if (Active)
+            {
+                Active = false;
+                OnDeactivate();
+                // TODO: this is called from XML behaviour if its inner Deactivate port is triggered, this could trigger the OnDeactivated without risk
+            }
         }
 
         /// <summary>
@@ -261,9 +265,12 @@ namespace kAI.Core
         /// </summary>
         protected void Activate()
         {
-            LogMessage("Behaviour has been activated", new KeyValuePair<string, object>("Behaviour", BehaviourID));
-            Active = true;
-            OnActivate();
+            if (!Active)
+            {
+                LogMessage("Behaviour has been activated", new KeyValuePair<string, object>("Behaviour", BehaviourID));
+                Active = true;
+                OnActivate();
+            }
         }
 
         /// <summary>
