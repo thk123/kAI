@@ -324,7 +324,10 @@ namespace kAI.Editor.Controls
         void lAddNodeMenuItem_Click(object sender, EventArgs e)
         {
             kAIINodeObject lSelectedNode = mEditor.SelectNode();
-            AddNode(lSelectedNode, mMousePositionOnContext);
+            if (lSelectedNode != null)
+            {
+                AddNode(lSelectedNode, mMousePositionOnContext);
+            }
         }
     }    
 }
