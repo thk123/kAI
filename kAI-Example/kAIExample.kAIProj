@@ -1,0 +1,130 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<kAIProject xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/kAI.Editor.Core">
+  <AdditionalDLLPaths xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+    <d2p1:KeyValueOfstringFilePathfz1EyZ2r>
+      <d2p1:Key>UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
+        <d4p1:Path>\UnityEngine.dll</d4p1:Path>
+        <d4p1:RootID>ProjectRoot</d4p1:RootID>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringFilePathfz1EyZ2r>
+  </AdditionalDLLPaths>
+  <NodeObjects xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>AssemblyCSharp.TestBehaviour</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAICodeBehaviour.SerialObject">
+        <d4p1:BehaviourAssembly>Assembly-CSharp</d4p1:BehaviourAssembly>
+        <d4p1:BehaviourID>TestBehaviour</d4p1:BehaviourID>
+        <d4p1:BehaviourType>AssemblyCSharp.TestBehaviour</d4p1:BehaviourType>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>BaseBehaviour</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAIXmlBehaviour.SerialObject">
+        <d4p1:BehaviourID>
+          <d4p1:BehaviourID>BaseBehaviour</d4p1:BehaviourID>
+        </d4p1:BehaviourID>
+        <d4p1:XmlBehaviourFile>
+          <d4p1:Path>\BaseBehaviour.xml</d4p1:Path>
+          <d4p1:RootID>BehaviourRoot</d4p1:RootID>
+        </d4p1:XmlBehaviourFile>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>SubBehaviour</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAIXmlBehaviour.SerialObject">
+        <d4p1:BehaviourID>
+          <d4p1:BehaviourID>SubBehaviour</d4p1:BehaviourID>
+        </d4p1:BehaviourID>
+        <d4p1:XmlBehaviourFile>
+          <d4p1:Path>\SubBehaviour.xml</d4p1:Path>
+          <d4p1:RootID>BehaviourRoot</d4p1:RootID>
+        </d4p1:XmlBehaviourFile>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>SimpleAIBase</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAIXmlBehaviour.SerialObject">
+        <d4p1:BehaviourID>
+          <d4p1:BehaviourID>SimpleAIBase</d4p1:BehaviourID>
+        </d4p1:BehaviourID>
+        <d4p1:XmlBehaviourFile>
+          <d4p1:Path>\SimpleAIBase.xml</d4p1:Path>
+          <d4p1:RootID>BehaviourRoot</d4p1:RootID>
+        </d4p1:XmlBehaviourFile>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>AIIdleBehaviour</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAIXmlBehaviour.SerialObject">
+        <d4p1:BehaviourID>
+          <d4p1:BehaviourID>AIIdleBehaviour</d4p1:BehaviourID>
+        </d4p1:BehaviourID>
+        <d4p1:XmlBehaviourFile>
+          <d4p1:Path>\AIIdleBehaviour.xml</d4p1:Path>
+          <d4p1:RootID>BehaviourRoot</d4p1:RootID>
+        </d4p1:XmlBehaviourFile>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>SwordSwingBehaviour</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAIXmlBehaviour.SerialObject">
+        <d4p1:BehaviourID>
+          <d4p1:BehaviourID>SwordSwingBehaviour</d4p1:BehaviourID>
+        </d4p1:BehaviourID>
+        <d4p1:XmlBehaviourFile>
+          <d4p1:Path>\SwordSwingBehaviour.xml</d4p1:Path>
+          <d4p1:RootID>BehaviourRoot</d4p1:RootID>
+        </d4p1:XmlBehaviourFile>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>SwordSwingAction</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAICodeBehaviour.SerialObject">
+        <d4p1:BehaviourAssembly>Assembly-CSharp</d4p1:BehaviourAssembly>
+        <d4p1:BehaviourID>SwordSwingAction</d4p1:BehaviourID>
+        <d4p1:BehaviourType>SwordSwingAction</d4p1:BehaviourType>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>AITriggerBase</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAIXmlBehaviour.SerialObject">
+        <d4p1:BehaviourID>
+          <d4p1:BehaviourID>AITriggerBase</d4p1:BehaviourID>
+        </d4p1:BehaviourID>
+        <d4p1:XmlBehaviourFile>
+          <d4p1:Path>\AITriggerBase.xml</d4p1:Path>
+          <d4p1:RootID>BehaviourRoot</d4p1:RootID>
+        </d4p1:XmlBehaviourFile>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>AIRunAwayBehaviour</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAIXmlBehaviour.SerialObject">
+        <d4p1:BehaviourID>
+          <d4p1:BehaviourID>AIRunAwayBehaviour</d4p1:BehaviourID>
+        </d4p1:BehaviourID>
+        <d4p1:XmlBehaviourFile>
+          <d4p1:Path>\AIRunAwayBehaviour.xml</d4p1:Path>
+          <d4p1:RootID>BehaviourRoot</d4p1:RootID>
+        </d4p1:XmlBehaviourFile>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+  </NodeObjects>
+  <ProjectDllPaths xmlns:d2p1="http://schemas.datacontract.org/2004/07/kAI.Core">
+    <d2p1:FilePath>
+      <d2p1:Path>\Library\ScriptAssemblies\Assembly-CSharp.dll</d2p1:Path>
+      <d2p1:RootID>ProjectRoot</d2p1:RootID>
+    </d2p1:FilePath>
+  </ProjectDllPaths>
+  <ProjectName>kAIExample</ProjectName>
+  <ProjectRoot xmlns:d2p1="http://schemas.datacontract.org/2004/07/System.IO">
+    <OriginalPath xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string" xmlns="">E:\dev\C#\kAI\kAI-Example</OriginalPath>
+    <FullPath xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string" xmlns="">E:\dev\C#\kAI\kAI-Example</FullPath>
+  </ProjectRoot>
+  <ProjectTypes xmlns:d2p1="http://schemas.datacontract.org/2004/07/System" />
+  <XmlBehaviourRoot xmlns:d2p1="http://schemas.datacontract.org/2004/07/kAI.Core">
+    <d2p1:Path>\kAIBehaviours</d2p1:Path>
+    <d2p1:RootID>ProjectRoot</d2p1:RootID>
+  </XmlBehaviourRoot>
+</kAIProject>

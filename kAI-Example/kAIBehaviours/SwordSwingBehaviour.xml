@@ -1,0 +1,44 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<kAIXmlBehaviour xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/kAI.Core">
+  <BehaviourID>SwordSwingBehaviour</BehaviourID>
+  <InternalConnexions>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>InvalidNode</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Deactivate</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>InvalidNode</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>SwordSwingFinished</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+  </InternalConnexions>
+  <InternalNodes />
+  <InternalPorts>
+    <kAIXmlBehaviour.InternalXml.SerialPort>
+      <IsGloballyAccesible>false</IsGloballyAccesible>
+      <PortDataType>System.Boolean</PortDataType>
+      <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
+      <PortDirection>PortDirection_Out</PortDirection>
+      <PortID>OnActivate</PortID>
+    </kAIXmlBehaviour.InternalXml.SerialPort>
+    <kAIXmlBehaviour.InternalXml.SerialPort>
+      <IsGloballyAccesible>false</IsGloballyAccesible>
+      <PortDataType>System.Boolean</PortDataType>
+      <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
+      <PortDirection>PortDirection_In</PortDirection>
+      <PortID>Deactivate</PortID>
+    </kAIXmlBehaviour.InternalXml.SerialPort>
+    <kAIXmlBehaviour.InternalXml.SerialPort>
+      <IsGloballyAccesible>true</IsGloballyAccesible>
+      <PortDataType>System.Boolean</PortDataType>
+      <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
+      <PortDirection>PortDirection_Out</PortDirection>
+      <PortID>SwordSwingFinished</PortID>
+    </kAIXmlBehaviour.InternalXml.SerialPort>
+  </InternalPorts>
+</kAIXmlBehaviour>
