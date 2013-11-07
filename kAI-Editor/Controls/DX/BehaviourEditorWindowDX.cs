@@ -385,15 +385,11 @@ namespace kAI.Editor.Controls.DX
         public void AddNode(kAI.Core.kAINode lNode, kAIAbsolutePosition lPoint)
         {
             kAIEditorNodeDX lNewNode = new kAIEditorNodeDX(lNode, lPoint, new kAIAbsoluteSize(200, 100), this);
-            lNewNode.OnSelected += (lNodeContents) =>
-            {
-                if (ObjectSelected != null)
-                {
-                    ObjectSelected(lNodeContents);
-                }
-            };
+            lNewNode.OnSelected += new Action<ObjectProperties.kAIIPropertyEntry>(lObject_OnSelected);
             mNodes.Add(lNewNode);
         }
+
+        
 
         public void AddNode(kAI.Core.kAINode lNode, Point lPoint)
         {
@@ -454,6 +450,7 @@ namespace kAI.Editor.Controls.DX
             }
 
             kAIEditorPortDX lEditorPort = new kAIEditorPortDX(lPort, lPos, this);
+            lEditorPort.OnSelected += lObject_OnSelected;
             mPorts.Add(lEditorPort);
         }
 
@@ -699,6 +696,14 @@ namespace kAI.Editor.Controls.DX
                 mLastMousePoint = e.Location;
                 InputManager.OnMouseMove += new EventHandler<MouseEventArgs>(InputManager_OnMouseMove);
                 InputManager.OnMouseUp += new EventHandler<MouseEventArgs>(InputManager_OnMouseUp);
+            }
+        }
+
+        void lObject_OnSelected(ObjectProperties.kAIIPropertyEntry obj)
+        {
+            if (ObjectSelected != null)
+            {
+                ObjectSelected(obj);
             }
         }
     }

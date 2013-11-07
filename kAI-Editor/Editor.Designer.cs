@@ -30,6 +30,7 @@
         {
             this.MainEditor = new System.Windows.Forms.SplitContainer();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.uiLogger1 = new kAI.Editor.Controls.WinForms.UILogger();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -45,7 +46,8 @@
             this.addBehaviourToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.runCommandToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.behaviourPropertiesToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.uiLogger1 = new kAI.Editor.Controls.WinForms.UILogger();
+            this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.showPropertiesGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             ((System.ComponentModel.ISupportInitialize)(this.MainEditor)).BeginInit();
             this.MainEditor.Panel2.SuspendLayout();
             this.MainEditor.SuspendLayout();
@@ -91,6 +93,16 @@
             this.splitContainer1.Size = new System.Drawing.Size(973, 616);
             this.splitContainer1.SplitterDistance = 429;
             this.splitContainer1.TabIndex = 0;
+            // 
+            // uiLogger1
+            // 
+            this.uiLogger1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.uiLogger1.BackColor = System.Drawing.Color.Gray;
+            this.uiLogger1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.uiLogger1.Location = new System.Drawing.Point(0, 0);
+            this.uiLogger1.Name = "uiLogger1";
+            this.uiLogger1.Size = new System.Drawing.Size(973, 183);
+            this.uiLogger1.TabIndex = 0;
             // 
             // fileToolStripMenuItem
             // 
@@ -145,7 +157,8 @@
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.fileToolStripMenuItem,
             this.projectToolStripMenuItem,
-            this.behavioursToolStripMenuItem});
+            this.behavioursToolStripMenuItem,
+            this.viewToolStripMenuItem});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Size = new System.Drawing.Size(1226, 24);
@@ -215,15 +228,20 @@
             this.behaviourPropertiesToolStripMenuItem.Text = "Behaviour Properties";
             this.behaviourPropertiesToolStripMenuItem.Click += new System.EventHandler(this.behaviourPropertiesToolStripMenuItem_Click);
             // 
-            // uiLogger1
+            // viewToolStripMenuItem
             // 
-            this.uiLogger1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.uiLogger1.BackColor = System.Drawing.Color.Gray;
-            this.uiLogger1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.uiLogger1.Location = new System.Drawing.Point(0, 0);
-            this.uiLogger1.Name = "uiLogger1";
-            this.uiLogger1.Size = new System.Drawing.Size(973, 183);
-            this.uiLogger1.TabIndex = 0;
+            this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.showPropertiesGridToolStripMenuItem});
+            this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
+            this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
+            this.viewToolStripMenuItem.Text = "View";
+            // 
+            // showPropertiesGridToolStripMenuItem
+            // 
+            this.showPropertiesGridToolStripMenuItem.Name = "showPropertiesGridToolStripMenuItem";
+            this.showPropertiesGridToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.showPropertiesGridToolStripMenuItem.Text = "Properties Grid";
+            this.showPropertiesGridToolStripMenuItem.Click += new System.EventHandler(this.showPropertiesGridToolStripMenuItem_Click);
             // 
             // Editor
             // 
@@ -274,6 +292,8 @@
         private System.Windows.Forms.SplitContainer splitContainer1;
         private Controls.WinForms.UILogger uiLogger1;
         private System.Windows.Forms.ToolStripMenuItem behaviourPropertiesToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem showPropertiesGridToolStripMenuItem;
 
     }
 }

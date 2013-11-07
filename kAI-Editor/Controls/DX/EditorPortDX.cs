@@ -11,6 +11,7 @@ using kAI.Core;
 using SlimDX.Direct3D11;
 using kAI.Editor.Controls.DX.Coordinates;
 using kAI.Editor.Controls.WinForms;
+using kAI.Editor.ObjectProperties;
 
 namespace kAI.Editor.Controls.DX
 {
@@ -54,6 +55,11 @@ namespace kAI.Editor.Controls.DX
             private set;
         }
 
+        /// <summary>
+        /// Triggered when this port is selected. 
+        /// </summary>
+        public event Action<kAI.Editor.ObjectProperties.kAIIPropertyEntry> OnSelected;
+
         static kAIEditorPortDX()
         {
             sPortSize = new Vector2(Properties.Resources.InPort.Width, Properties.Resources.InPort.Height);
@@ -89,6 +95,7 @@ namespace kAI.Editor.Controls.DX
                     OnMouseLeave = OnLeave,
                     OnMouseDown = OnMouseDown,
                     OnMouseUp = OnMouseUp,
+                    OnMouseClick = OnMouseClick,
                     ContextMenu = new ContextMenu(new MenuItem[] { lRemoveConnexion, lRemoveAllConnexions }),
                     RectangleId = Port.OwningNodeID + ":" + Port.PortID
                 },
@@ -342,6 +349,14 @@ namespace kAI.Editor.Controls.DX
         void OnMouseUp(object sender, MouseEventArgs e)
         {
             mEditorWindow.ConnexionCreator.PortUp(Port);
+        }
+
+        void OnMouseClick(object sender, MouseEventArgs e)
+        {
+            if (OnSelected != null)
+            {
+                OnSelected(new kAIPortProperties(Port));
+            }
         }
     }
 }

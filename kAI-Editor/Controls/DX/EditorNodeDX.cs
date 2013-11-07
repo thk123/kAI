@@ -216,8 +216,16 @@ namespace kAI.Editor.Controls.DX
                 mCurrentOutPosition.Offset(0, kPortDeltaY);
             }
             kAIEditorPortDX lEditorPort = new kAIEditorPortDX(lPort, lPositionForPort, mEditorWindow);
-
+            lEditorPort.OnSelected += new Action<kAIIPropertyEntry>(lEditorPort_OnSelected);
             mExternalPorts.Add(lEditorPort);
+        }
+
+        void lEditorPort_OnSelected(kAIIPropertyEntry obj)
+        {
+            if (OnSelected != null)
+            {
+                OnSelected(obj);
+            }
         }
 
         /// <summary>

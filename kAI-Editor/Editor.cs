@@ -57,6 +57,7 @@ namespace kAI.Editor
             mProjectLoadedControls.Add(PropertyController.CreateForEnabledToolStrip(closeProjectToolStripMenuItem));
             mProjectLoadedControls.Add(PropertyController.CreateForEnabledToolStrip(createNewXmlBehaviourToolStripMenuItem));
             mProjectLoadedControls.Add(PropertyController.CreateForEnabledToolStrip(saveProjectToolStripMenuItem));
+            mProjectLoadedControls.Add(PropertyController.CreateForEnabledToolStrip(showPropertiesGridToolStripMenuItem));
 
             mBehaviourLoadedControls = new List<PropertyControllerBase<bool>>();
             mBehaviourLoadedControls.Add(PropertyController.CreateForEnabledToolStrip(addBehaviourToolStripMenuItem));
@@ -165,17 +166,27 @@ namespace kAI.Editor
                 mBehaviourEditor.ObjectSelected += new Action<kAI.Editor.ObjectProperties.kAIIPropertyEntry>(mBehaviourEditor_ObjectSelected);
 
                 mBehaviourEditor.Init(splitContainer1.Panel1);
+                
+                CreatePropertiesWindow();
+            }
+        }
 
+        private void CreatePropertiesWindow()
+        {
+            if (mPropertiesWindow == null)
+            {
                 mPropertiesWindow = new PropertiesWindow(mLoadedProject);
                 mPropertiesWindow.Show(splitContainer1.Panel1);
-
-
+                mPropertiesWindow.Disposed += new EventHandler(mPropertiesWindow_Disposed);
             }
         }
 
         void mBehaviourEditor_ObjectSelected(kAI.Editor.ObjectProperties.kAIIPropertyEntry lSelectedObject)
         {
-            mPropertiesWindow.SelectObject(lSelectedObject);
+            if (mPropertiesWindow != null)
+            {
+                mPropertiesWindow.SelectObject(lSelectedObject);
+            }
         }
 
         private void DestroyBehaviourEditorWindow()
@@ -356,6 +367,17 @@ namespace kAI.Editor
             XmlBehaviourPropertiesEditor lPropertiesEditor = new XmlBehaviourPropertiesEditor(mLoadedProject, mBehaviourEditor.Behaviour);
             DialogResult lResult = lPropertiesEditor.ShowDialog();
 
+        }
+
+        private void showPropertiesGridToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            CreatePropertiesWindow();
+        }
+
+        void mPropertiesWindow_Disposed(object sender, EventArgs e)
+        {
+            mPropertiesWindow.Disposed -= mPropertiesWindow_Disposed;
+            mPropertiesWindow = null;
         }
     }
 }
