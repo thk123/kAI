@@ -554,7 +554,13 @@ namespace kAI.Core
             }
         }
 
-        private kAIPort GetInternalPort(kAIPortID lPortID, kAINodeID lNodeID)
+        /// <summary>
+        /// Gets an port belonging to this behaviour. 
+        /// </summary>
+        /// <param name="lPortID">The ID of the port. </param>
+        /// <param name="lNodeID">The node the port belongs to, invalid id if an internal port. </param>
+        /// <returns>The port matching lNodeID:lPortID</returns>
+        public kAIPort GetInternalPort(kAIPortID lPortID, kAINodeID lNodeID)
         {
             // Is the start node ID a real node.
             if (lNodeID == kAINodeID.InvalidNodeID)
