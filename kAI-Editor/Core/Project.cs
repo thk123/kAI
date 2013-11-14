@@ -337,31 +337,8 @@ namespace kAI.Editor.Core
             if (args.Name.Contains(".resources"))
                 return null;
 
-            // see if it is one our our referenced dlls
-            foreach (Assembly lLoadedAssembly in ProjectDLLs)
-            {
-                if (lLoadedAssembly.FullName == args.Name)
-                {
-                    return lLoadedAssembly;
-                }
-            }
-
-            if (mAdditionalDllPaths.ContainsKey(args.Name))
-            {
-                return LoadAssemblyFromFilePath(mAdditionalDllPaths[args.Name]);
-            }
-            else
-            {
-                kAIRelativePath lDllPath;
-                Assembly lLoadedAssembly = HandleMissingDll(args.Name, out lDllPath);
-                if (lLoadedAssembly != null)
-                {
-                    kAIObject.Assert(null, lDllPath, "Got an assembly but no corresponding path it was loaded from. ");
-                    mAdditionalDllPaths.Add(args.Name, lDllPath);
-                }
-
-                return lLoadedAssembly;
-            }
+            AssemblyName lName = new AssemblyName(args.Name);
+            return GetAssemblyByName(lName.Name);
         }
 
         /// <summary>
@@ -464,10 +441,36 @@ namespace kAI.Editor.Core
                 }
 
 
-                return ProjectDLLs.Find((lAssembly) =>
+                Assembly lFoundAssembly = ProjectDLLs.Find((lAssembly) =>
                 {
                     return lAssembly.GetName().Name == lAssemblyName;
                 });
+
+                if (lFoundAssembly != null)
+                {
+                    return lFoundAssembly;
+                }
+                else
+                {
+                    if (mAdditionalDllPaths.ContainsKey(lAssemblyName))
+                    {
+                        return LoadAssemblyFromFilePath(mAdditionalDllPaths[lAssemblyName]);
+                    }
+                    else
+                    {
+                        kAIRelativePath lDllPath;
+                        Assembly lLoadedAssembly = HandleMissingDll(lAssemblyName, out lDllPath);
+                        if (lLoadedAssembly != null)
+                        {
+                            kAIObject.Assert(null, lDllPath, "Got an assembly but no corresponding path it was loaded from. ");
+                            mAdditionalDllPaths.Add(lAssemblyName, lDllPath);
+                        }
+
+                        return lLoadedAssembly;
+                    }
+
+                    
+                }
             }
         }
 
