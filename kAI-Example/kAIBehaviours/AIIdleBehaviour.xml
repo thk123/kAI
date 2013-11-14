@@ -16,6 +16,20 @@
         <PortID>OnActivate</PortID>
       </StartPortID>
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>MoveTowardsPlayer</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Target</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>InvalidNode</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>Target</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
   </InternalConnexions>
   <InternalNodes>
     <kAIXmlBehaviour.InternalXml.SerialNode>
@@ -54,6 +68,13 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>PlayerBehind</PortID>
+    </kAIXmlBehaviour.InternalXml.SerialPort>
+    <kAIXmlBehaviour.InternalXml.SerialPort>
+      <IsGloballyAccesible>true</IsGloballyAccesible>
+      <PortDataType>UnityEngine.GameObject</PortDataType>
+      <PortDataTypeAssembly>UnityEngine</PortDataTypeAssembly>
+      <PortDirection>PortDirection_Out</PortDirection>
+      <PortID>Target</PortID>
     </kAIXmlBehaviour.InternalXml.SerialPort>
   </InternalPorts>
 </kAIXmlBehaviour>

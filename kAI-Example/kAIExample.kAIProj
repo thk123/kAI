@@ -2,7 +2,7 @@
 <kAIProject xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/kAI.Editor.Core">
   <AdditionalDLLPaths xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
     <d2p1:KeyValueOfstringFilePathfz1EyZ2r>
-      <d2p1:Key>UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</d2p1:Key>
+      <d2p1:Key>UnityEngine</d2p1:Key>
       <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
         <d4p1:Path>\UnityEngine.dll</d4p1:Path>
         <d4p1:RootID>ProjectRoot</d4p1:RootID>
@@ -108,6 +108,22 @@
           <d4p1:Path>\AIRunAwayBehaviour.xml</d4p1:Path>
           <d4p1:RootID>BehaviourRoot</d4p1:RootID>
         </d4p1:XmlBehaviourFile>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>MoveTowardsPlayer</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAICodeBehaviour.SerialObject">
+        <d4p1:BehaviourAssembly>Assembly-CSharp</d4p1:BehaviourAssembly>
+        <d4p1:BehaviourID>MoveTowardsPlayer</d4p1:BehaviourID>
+        <d4p1:BehaviourType>MoveTowardsPlayer</d4p1:BehaviourType>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>MoveAction</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAICodeBehaviour.SerialObject">
+        <d4p1:BehaviourAssembly>Assembly-CSharp</d4p1:BehaviourAssembly>
+        <d4p1:BehaviourID>MoveAction</d4p1:BehaviourID>
+        <d4p1:BehaviourType>MoveAction</d4p1:BehaviourType>
       </d2p1:Value>
     </d2p1:KeyValueOfstringanyType>
   </NodeObjects>
