@@ -1,20 +1,20 @@
 ﻿<Properties>
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Unity Behaviours\AIController.cs">
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Unity Behaviours\kAIUnityBehaviour.cs">
     <Files>
+      <File FileName="Assets\Unity Behaviours\AIController.cs" Line="30" Column="52" />
       <File FileName="Assets\kAIDebugBehaviour.cs" Line="24" Column="1" />
-      <File FileName="Assets\Unity Behaviours\kAIUnityBehaviour.cs" Line="60" Column="56" />
+      <File FileName="Assets\Unity Behaviours\kAIUnityBehaviour.cs" Line="87" Column="3" />
       <File FileName="Assets\Unity Behaviours\PlayerController.cs" Line="1" Column="1" />
       <File FileName="Assets\Unity Behaviours\CharacterController.cs" Line="1" Column="1" />
       <File FileName="Assets\Unity Behaviours\HealthBehaviour.cs" Line="1" Column="1" />
       <File FileName="Assets\SwordTip.cs" Line="1" Column="1" />
-      <File FileName="Assets\Unity Behaviours\AIController.cs" Line="57" Column="39" />
-      <File FileName="Assets\kAICodeBehaviours\TestBehaviour.cs" Line="13" Column="39" />
+      <File FileName="Assets\kAICodeBehaviours\TestBehaviour.cs" Line="1" Column="1" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="E:\dev\C#\kAI\kAI-Example\Assets\Unity Behaviours\AIController.cs" line="42" />
+      <Breakpoint file="E:\dev\C#\kAI\kAI-Example\Assets\Unity Behaviours\AIController.cs" line="44" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

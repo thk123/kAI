@@ -138,7 +138,9 @@
     <OriginalPath xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string" xmlns="">E:\dev\C#\kAI\kAI-Example</OriginalPath>
     <FullPath xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string" xmlns="">E:\dev\C#\kAI\kAI-Example</FullPath>
   </ProjectRoot>
-  <ProjectTypes xmlns:d2p1="http://schemas.datacontract.org/2004/07/System" />
+  <ProjectTypes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+    <d2p1:string>System.Int32</d2p1:string>
+  </ProjectTypes>
   <XmlBehaviourRoot xmlns:d2p1="http://schemas.datacontract.org/2004/07/kAI.Core">
     <d2p1:Path>\kAIBehaviours</d2p1:Path>
     <d2p1:RootID>ProjectRoot</d2p1:RootID>

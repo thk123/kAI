@@ -91,7 +91,7 @@ public class kAIUnityBehaviour : MonoBehaviour, kAIILogger
 		{
 			lDataPort.Data = lData;	
 		}
-				
+
 	}
 		
 	
