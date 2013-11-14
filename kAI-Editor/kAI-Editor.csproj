@@ -89,6 +89,9 @@
     <Compile Include="Controls\WinForms\DLLEntry.Designer.cs">
       <DependentUpon>DLLEntry.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\WinForms\FilterableList.cs">
+      <SubType>Component</SubType>
+    </Compile>
     <Compile Include="Controls\WinForms\PropertyEditor\PortListControl.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -167,6 +170,9 @@
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Windows\ProjectProperties\ProjectProperties_Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\ProjectProperties\ProjectProperties_Types.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Windows\ProjectProperties\XmlBehaviourCreatore.cs">

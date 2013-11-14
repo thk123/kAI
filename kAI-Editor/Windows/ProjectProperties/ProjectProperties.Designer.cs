@@ -46,14 +46,21 @@
             this.DLL_FlowList = new System.Windows.Forms.FlowLayoutPanel();
             this.DLL_TitleLabel = new System.Windows.Forms.Label();
             this.TabPage_Types = new System.Windows.Forms.TabPage();
+            this.mTypeSearchBoxBtn = new System.Windows.Forms.TextBox();
+            this.mIncludedTypesList = new System.Windows.Forms.ListBox();
+            this.mRemoveBtn = new System.Windows.Forms.Button();
+            this.mAddBtn = new System.Windows.Forms.Button();
+            this.mAllTypesList = new kAI.Editor.Controls.WinForms.FilterableList<System.Type>();
+            this.mProjectTypesTitle = new System.Windows.Forms.Label();
             this.TabPage_Actions = new System.Windows.Forms.TabPage();
             this.TabPage_Behaviours = new System.Windows.Forms.TabPage();
+            this.ProjectBehaviours_Title = new System.Windows.Forms.Label();
             this.Cancel_Btn = new System.Windows.Forms.Button();
             this.Confirm_Btn = new System.Windows.Forms.Button();
-            this.ProjectBehaviours_Title = new System.Windows.Forms.Label();
             this.ProjectProperties_TabControl.SuspendLayout();
             this.TabPage_General.SuspendLayout();
             this.TabPage_DLL.SuspendLayout();
+            this.TabPage_Types.SuspendLayout();
             this.TabPage_Behaviours.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -236,6 +243,12 @@
             // 
             // TabPage_Types
             // 
+            this.TabPage_Types.Controls.Add(this.mTypeSearchBoxBtn);
+            this.TabPage_Types.Controls.Add(this.mIncludedTypesList);
+            this.TabPage_Types.Controls.Add(this.mRemoveBtn);
+            this.TabPage_Types.Controls.Add(this.mAddBtn);
+            this.TabPage_Types.Controls.Add(this.mAllTypesList);
+            this.TabPage_Types.Controls.Add(this.mProjectTypesTitle);
             this.TabPage_Types.Location = new System.Drawing.Point(4, 22);
             this.TabPage_Types.Name = "TabPage_Types";
             this.TabPage_Types.Padding = new System.Windows.Forms.Padding(3);
@@ -243,6 +256,62 @@
             this.TabPage_Types.TabIndex = 2;
             this.TabPage_Types.Text = "Types";
             this.TabPage_Types.UseVisualStyleBackColor = true;
+            // 
+            // mTypeSearchBoxBtn
+            // 
+            this.mTypeSearchBoxBtn.Location = new System.Drawing.Point(15, 95);
+            this.mTypeSearchBoxBtn.Name = "mTypeSearchBoxBtn";
+            this.mTypeSearchBoxBtn.Size = new System.Drawing.Size(307, 20);
+            this.mTypeSearchBoxBtn.TabIndex = 8;
+            this.mTypeSearchBoxBtn.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
+            // 
+            // mIncludedTypesList
+            // 
+            this.mIncludedTypesList.FormattingEnabled = true;
+            this.mIncludedTypesList.Location = new System.Drawing.Point(362, 121);
+            this.mIncludedTypesList.Name = "mIncludedTypesList";
+            this.mIncludedTypesList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.mIncludedTypesList.Size = new System.Drawing.Size(307, 251);
+            this.mIncludedTypesList.TabIndex = 7;
+            // 
+            // mRemoveBtn
+            // 
+            this.mRemoveBtn.Location = new System.Drawing.Point(329, 256);
+            this.mRemoveBtn.Name = "mRemoveBtn";
+            this.mRemoveBtn.Size = new System.Drawing.Size(27, 23);
+            this.mRemoveBtn.TabIndex = 6;
+            this.mRemoveBtn.Text = "<-";
+            this.mRemoveBtn.UseVisualStyleBackColor = true;
+            this.mRemoveBtn.Click += new System.EventHandler(this.mRemoveBtn_Click);
+            // 
+            // mAddBtn
+            // 
+            this.mAddBtn.Location = new System.Drawing.Point(329, 215);
+            this.mAddBtn.Name = "mAddBtn";
+            this.mAddBtn.Size = new System.Drawing.Size(27, 23);
+            this.mAddBtn.TabIndex = 4;
+            this.mAddBtn.Text = "->";
+            this.mAddBtn.UseVisualStyleBackColor = true;
+            this.mAddBtn.Click += new System.EventHandler(this.mAddBtn_Click);
+            // 
+            // mAllTypesList
+            // 
+            this.mAllTypesList.FormattingEnabled = true;
+            this.mAllTypesList.Location = new System.Drawing.Point(15, 121);
+            this.mAllTypesList.Name = "mAllTypesList";
+            this.mAllTypesList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.mAllTypesList.Size = new System.Drawing.Size(307, 251);
+            this.mAllTypesList.TabIndex = 3;
+            // 
+            // mProjectTypesTitle
+            // 
+            this.mProjectTypesTitle.AutoSize = true;
+            this.mProjectTypesTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mProjectTypesTitle.Location = new System.Drawing.Point(8, 3);
+            this.mProjectTypesTitle.Name = "mProjectTypesTitle";
+            this.mProjectTypesTitle.Size = new System.Drawing.Size(317, 55);
+            this.mProjectTypesTitle.TabIndex = 2;
+            this.mProjectTypesTitle.Text = "Project Types";
             // 
             // TabPage_Actions
             // 
@@ -265,6 +334,16 @@
             this.TabPage_Behaviours.Text = "Behaviours";
             this.TabPage_Behaviours.UseVisualStyleBackColor = true;
             // 
+            // ProjectBehaviours_Title
+            // 
+            this.ProjectBehaviours_Title.AutoSize = true;
+            this.ProjectBehaviours_Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ProjectBehaviours_Title.Location = new System.Drawing.Point(3, 3);
+            this.ProjectBehaviours_Title.Name = "ProjectBehaviours_Title";
+            this.ProjectBehaviours_Title.Size = new System.Drawing.Size(427, 55);
+            this.ProjectBehaviours_Title.TabIndex = 2;
+            this.ProjectBehaviours_Title.Text = "Project Behaviours";
+            // 
             // Cancel_Btn
             // 
             this.Cancel_Btn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
@@ -285,16 +364,6 @@
             this.Confirm_Btn.UseVisualStyleBackColor = true;
             this.Confirm_Btn.Click += new System.EventHandler(this.Confirm_Btn_Click);
             // 
-            // ProjectBehaviours_Title
-            // 
-            this.ProjectBehaviours_Title.AutoSize = true;
-            this.ProjectBehaviours_Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ProjectBehaviours_Title.Location = new System.Drawing.Point(3, 3);
-            this.ProjectBehaviours_Title.Name = "ProjectBehaviours_Title";
-            this.ProjectBehaviours_Title.Size = new System.Drawing.Size(427, 55);
-            this.ProjectBehaviours_Title.TabIndex = 2;
-            this.ProjectBehaviours_Title.Text = "Project Behaviours";
-            // 
             // ProjectPropertiesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -310,6 +379,8 @@
             this.TabPage_General.PerformLayout();
             this.TabPage_DLL.ResumeLayout(false);
             this.TabPage_DLL.PerformLayout();
+            this.TabPage_Types.ResumeLayout(false);
+            this.TabPage_Types.PerformLayout();
             this.TabPage_Behaviours.ResumeLayout(false);
             this.TabPage_Behaviours.PerformLayout();
             this.ResumeLayout(false);
@@ -341,5 +412,11 @@
         private System.Windows.Forms.Button DLL_BrowseBtn;
         private System.Windows.Forms.Button DLL_AddBtn;
         private System.Windows.Forms.Label ProjectBehaviours_Title;
+        private System.Windows.Forms.ListBox mIncludedTypesList;
+        private System.Windows.Forms.Button mRemoveBtn;
+        private System.Windows.Forms.Button mAddBtn;
+        private kAI.Editor.Controls.WinForms.FilterableList<System.Type> mAllTypesList;
+        private System.Windows.Forms.Label mProjectTypesTitle;
+        private System.Windows.Forms.TextBox mTypeSearchBoxBtn;
     }
 }

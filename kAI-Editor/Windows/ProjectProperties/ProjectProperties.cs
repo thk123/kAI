@@ -36,6 +36,8 @@ namespace kAI.Editor.Forms.ProjectProperties
         }
 
 
+        
+
         /// <summary>
         /// Create the project properties form with the relevant project. 
         /// </summary>
@@ -67,6 +69,7 @@ namespace kAI.Editor.Forms.ProjectProperties
         {
             SetMainFormFromProject();
             SetDLLFormFromProject();
+            SetTypesFormFromProject();
             
         }
 
@@ -77,6 +80,7 @@ namespace kAI.Editor.Forms.ProjectProperties
         {
             SetProjectFromMainForm();
             SetProjectFromDLLForm();
+            SetProjectFromTypesForm();
         }
 
 
@@ -110,6 +114,6 @@ namespace kAI.Editor.Forms.ProjectProperties
             Project.Save();
 
             DialogResult = DialogResult.OK;
-        }
+        }        
     }
 }

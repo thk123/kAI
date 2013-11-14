@@ -80,11 +80,27 @@ namespace kAI.Editor.Core
         /// <summary>
         /// List of types this project uses (such as vectors).
         /// </summary>
-        [DataMember()] //TODO: This won't work :P
         public List<Type> ProjectTypes
         {
             get;
             private set;
+        }
+
+        [DataMember(Name="ProjectTypes")]
+        public IEnumerable<string> ProjectTypeStrings
+        {
+            get
+            {
+                return ProjectTypes.Select<Type, string>((lType) => { return lType.FullName; });
+            }
+            set 
+            {
+                foreach (string lString in value)
+                {
+                    ProjectTypes.Add(Type.GetType(lString, (lAssemblyName) => { return GetAssemblyByName(lAssemblyName.Name); }, null));
+
+                }
+            }
         }
 
         /// <summary>
@@ -263,6 +279,10 @@ namespace kAI.Editor.Core
                 LoadDLL(lDLLPath);
             }
 
+            foreach (kAIRelativePath lRefdDllPath in this.mAdditionalDllPaths.Values)
+            {
+                LoadDLL(lRefdDllPath);
+            }
             /*foreach (kAIBehaviourTemplate lTemplate in NodeObjects.Values)
             {
                 if (lTemplate.BehaviourFlavour == eBehaviourFlavour.BehaviourFlavour_Code)
@@ -388,7 +408,7 @@ namespace kAI.Editor.Core
         private void SetDefaultDllPaths(StreamingContext lStreamContext)
         {
             mAdditionalDllPaths = new Dictionary<string, kAIRelativePath>();
-            
+            ProjectTypes = new List<Type>();
         }
 
         /// <summary>

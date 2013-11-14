@@ -59,5 +59,38 @@ namespace kAI.Editor.Core.Util
         {
             return (lSize.Width * lSize.Width) + (lSize.Height * lSize.Height);
         }
+
+        /// <summary>
+        /// Partition a source into two lists based on some splitter function. 
+        /// </summary>
+        /// <typeparam name="T">The type of object. </typeparam>
+        /// <param name="lSource">The enumerable data source. </param>
+        /// <param name="lSplitter">
+        /// A function which takes an element in the source and determines if it should 
+        /// be in the true set or the false set. 
+        /// </param>
+        /// <returns>
+        /// Two lists, one corresponding to elements that the partitioning function returned 
+        /// true for (Item1) and one which the partitioning function return false (Item2).
+        /// </returns>
+        public static Tuple<IEnumerable<T>, IEnumerable<T>> Split<T>(this IEnumerable<T> lSource, Func<T, bool> lSplitter)
+        {
+            List<T> lTrueSet = new List<T>();
+            List<T> lFalseSet = new List<T>();
+
+            foreach (T lEntry in lSource)
+            {
+                if (lSplitter(lEntry))
+                {
+                    lTrueSet.Add(lEntry);
+                }
+                else
+                {
+                    lFalseSet.Add(lEntry);
+                }
+            }
+
+            return new Tuple<IEnumerable<T>, IEnumerable<T>>(lTrueSet, lFalseSet);
+        }
     }
 }

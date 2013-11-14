@@ -49,7 +49,10 @@ namespace kAI.Editor.Controls.WinForms.PropertyEditor
             mPortDirectionDropdown.Items.AddRange(new object[] { kAIPort.ePortDirection.PortDirection_In, kAIPort.ePortDirection.PortDirection_Out });
             
             mPortTypeDropdown.Items.Add(kAIPortType.TriggerType);
-            mPortTypeDropdown.Items.Add(new kAIPortType(typeof(float)));
+            foreach (Type lType in lProject.ProjectTypes)
+            {
+                mPortTypeDropdown.Items.Add(new kAIPortType(lType));
+            }
 
             if (lPort != null)
             {
