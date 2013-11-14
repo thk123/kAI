@@ -104,17 +104,17 @@ namespace kAI.Core
             mExternalPorts = new Dictionary<kAIPortID, kAIPort>();            
 
             // Add external ports 
-            kAIPort lActivatePort = new kAIPort(kActivatePortID, kAIPort.ePortDirection.PortDirection_In, kAIPortType.TriggerType);
-            lActivatePort.OnTriggered += new kAIPort.TriggerEvent(lActivatePort_OnTriggered);
+            kAITriggerPort lActivatePort = new kAITriggerPort(kActivatePortID, kAIPort.ePortDirection.PortDirection_In);
+            lActivatePort.OnTriggered += new kAITriggerPort.TriggerEvent(lActivatePort_OnTriggered);
             AddExternalPort(lActivatePort);
 
             // External port for telling this node it is now inactive
-            kAIPort lDeactivatePort = new kAIPort(kDeactivatePortID, kAIPort.ePortDirection.PortDirection_In, kAIPortType.TriggerType);
-            lDeactivatePort.OnTriggered += new kAIPort.TriggerEvent(lDeactivatePort_OnTriggered);
+            kAITriggerPort lDeactivatePort = new kAITriggerPort(kDeactivatePortID, kAIPort.ePortDirection.PortDirection_In);
+            lDeactivatePort.OnTriggered += new kAITriggerPort.TriggerEvent(lDeactivatePort_OnTriggered);
             AddExternalPort(lDeactivatePort);
 
             // External port for when the contents of this node wants to deactivate this node. 
-            kAIPort lOnDeactivatedPort = new kAIPort(kOnDeactivatePortID, kAIPort.ePortDirection.PortDirection_Out, kAIPortType.TriggerType);
+            kAITriggerPort lOnDeactivatedPort = new kAITriggerPort(kOnDeactivatePortID, kAIPort.ePortDirection.PortDirection_Out);
             AddExternalPort(lOnDeactivatedPort);
 
             mActive = false;
@@ -178,7 +178,7 @@ namespace kAI.Core
         /// <returns>The external port to activate this behaviour. </returns>
         public void ForceActivation()
         {
-            mExternalPorts[kActivatePortID].Trigger();
+            ((kAITriggerPort)mExternalPorts[kActivatePortID]).Trigger();
             //mExternalPorts[kActivatePortID].Release();
         }
 
@@ -188,7 +188,7 @@ namespace kAI.Core
         /// <returns>The external port to deactivate this behaviour. </returns>
         public void ForceDeactivate()
         {
-            mExternalPorts[kDeactivatePortID].Trigger();
+            ((kAITriggerPort)mExternalPorts[kDeactivatePortID]).Trigger();
             //mExternalPorts[kDeactivatePortID].Release();
         }
 
@@ -223,7 +223,7 @@ namespace kAI.Core
             }
             else if (mWasActive) // just been deactivated so we trigger the OnDeactivated Port
             {
-                GetPort(kOnDeactivatePortID).Trigger();
+                ((kAITriggerPort)GetPort(kOnDeactivatePortID)).Trigger();
                 mWasActive = false;
             }
         }

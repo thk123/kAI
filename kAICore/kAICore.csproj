@@ -45,6 +45,7 @@
     <Compile Include="Behaviour.cs" />
     <Compile Include="BehaviourExceptions.cs" />
     <Compile Include="BehaviourID.cs" />
+    <Compile Include="DataPort.cs" />
     <Compile Include="ILogger.cs" />
     <Compile Include="NamespaceDoc.cs" />
     <Compile Include="Node.cs" />
@@ -52,6 +53,7 @@
     <Compile Include="Port.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelativePath.cs" />
+    <Compile Include="TriggerPort.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="XmlBehaviour.cs" />
     <Compile Include="XmlBehaviour.DebugInfo.cs" />

@@ -236,7 +236,15 @@ namespace kAI.Core
                 {
                     Assembly lPortTypeAssembly = lAssemblyGetter(lInternalPort.PortDataTypeAssembly);
                     Type lPortType = lPortTypeAssembly.GetType(lInternalPort.PortDataType);
-                    kAIPort lPort = new kAIPort(lInternalPort.PortID, lInternalPort.PortDirection, lPortType);
+                    kAIPort lPort;
+                    if (lPortType == kAIPortType.TriggerType)
+                    {
+                        lPort = new kAITriggerPort(lInternalPort.PortID, lInternalPort.PortDirection);
+                    }
+                    else
+                    {
+                        lPort = kAIDataPort.CreateDataPort(lPortType, lInternalPort.PortID, lInternalPort.PortDirection);
+                    }
 
                     InternalPort lWrappedPort = new InternalPort { Port = lPort, IsGloballyAccesible = lInternalPort.IsGloballyAccesible };
 
