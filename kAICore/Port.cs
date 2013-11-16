@@ -583,7 +583,7 @@ namespace kAI.Core
         /// <returns>A boolean indicating if the data types are compatible, true indicating they are. </returns>
         private static bool AreDataTypesCompatible(kAIPortType lDataA, kAIPortType lDataB)
         {
-            return lDataA.DataType == lDataA.DataType;
+            return lDataA == lDataB;
         }
     }
 
@@ -602,17 +602,24 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// We use this to differentiate between trigger ports and ports that are type boolean. 
+        /// </summary>
+        bool mIsTrigger;
+
+        /// <summary>
         /// The type of a trigger. 
         /// </summary>
-        public static readonly kAIPortType TriggerType = typeof(Boolean);
+        public static readonly kAIPortType TriggerType = new kAIPortType(typeof(Boolean), true);
 
         /// <summary>
         /// Standard constructor for a System.Type
         /// </summary>
         /// <param name="lType">The type to use. </param>
-        public kAIPortType(Type lType)
+        /// <param name="lIsTrigger">Is the port a trigger.</param>
+        public kAIPortType(Type lType, bool lIsTrigger = false)
         {
             DataType = lType;
+            mIsTrigger = lIsTrigger;
         }
 
 
@@ -675,7 +682,7 @@ namespace kAI.Core
             kAIPortType lDataType = obj as kAIPortType;
             if (((object)lDataType != null))
             {
-                return lDataType.DataType == DataType;
+                return lDataType.DataType == DataType && lDataType.mIsTrigger == mIsTrigger;
             }
             else
             {
@@ -689,7 +696,7 @@ namespace kAI.Core
         /// <returns>The hash code the type would return. </returns>
         public override int GetHashCode()
         {
-            return DataType.GetHashCode();
+            return (DataType.GetHashCode() / 2) + (mIsTrigger.GetHashCode() / 2);
         }
 
         /// <summary>
@@ -698,7 +705,7 @@ namespace kAI.Core
         /// <returns>Trigger if a trigger port, the data type otherwise. </returns>
         public override string ToString()
         {
-            if (this == TriggerType)
+            if (mIsTrigger)
             {
                 return "Trigger";
             }
