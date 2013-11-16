@@ -23,43 +23,55 @@ namespace kAI.Editor.Forms.ProjectProperties
         private void SetTypesFormFromProject()
         {
             mSearchTerm = String.Empty;
+            mApplyActions = new Queue<Action>();
 
             List<Type> lAllTypes = new List<Type>();
             foreach (Assembly lRefdAssembly in Project.ProjectDLLs)
             {
                 lAllTypes.AddRange(lRefdAssembly.GetExportedTypes().Where(CheckType));
-
-                foreach (Assembly lExecRefdAssembly in lRefdAssembly.GetReferencedAssemblies().Select<AssemblyName, Assembly>((lName) =>
-                {
-                    return Project.GetAssemblyByName(lName.Name);
-                }))
-                {
-                    if (lExecRefdAssembly != null)
-                    {
-                        lAllTypes.AddRange(lExecRefdAssembly.GetExportedTypes().Where(CheckType));
-                    }
-                }
             }
 
-            //lAllTypes.AddRange(Assembly.GetExecutingAssembly().GetExportedTypes().Where(CheckType));
+            // We also include mscorlib for basic types
+            Assembly lCoreAssembly = Project.GetAssemblyByName("mscorlib");
+            lAllTypes.AddRange(lCoreAssembly.GetExportedTypes().Where(CheckType));
+            
+            
 
-            /*foreach (Assembly lExecRefdAssembly in Assembly.GetExecutingAssembly().GetReferencedAssemblies().Select<AssemblyName, Assembly>((lName) =>
-                {
-                    return Project.GetAssemblyByName(lName.Name);
-                }))
+            // new project so we add the default stuff 
+            if (mIsNewProject)
             {
-                lAllTypes.AddRange(lExecRefdAssembly.GetExportedTypes().Where(CheckType));
-            }*/
-            
-            // Splits all the types into item1 if the project contains the type, item2 if not
-            Tuple<IEnumerable<Type>, IEnumerable<Type>> lTypeList = lAllTypes.Split((lType) => { return Project.ProjectTypes.Contains(lType); });
+                // Splits all the types in to 2 partitions, adding them to the project if they are a default type
+                Tuple<IEnumerable<Type>, IEnumerable<Type>> lTypeList = lAllTypes.Split(IsDefaultIncludeType);
 
-            mIncludedTypesList.Items.AddRange(lTypeList.Item1.ToArray());
-            mAllTypesList.SetSource(lTypeList.Item2);
-            
+                mIncludedTypesList.Items.AddRange(lTypeList.Item1.ToArray());
+                mAllTypesList.SetSource(lTypeList.Item2);
 
-            
-            mApplyActions = new Queue<Action>();
+                foreach (Type lDefaultType in lTypeList.Item1)
+                {
+                    Type lTypeToAdd = lDefaultType;
+                    mApplyActions.Enqueue(() => { Project.ProjectTypes.Add(lTypeToAdd); });
+                }
+            }
+            else
+            {
+                // Splits all the types into item1 if the project contains the type, item2 if not
+                Tuple<IEnumerable<Type>, IEnumerable<Type>> lTypeList = lAllTypes.Split((lType) => { return Project.ProjectTypes.Contains(lType); });
+
+                mIncludedTypesList.Items.AddRange(lTypeList.Item1.ToArray());
+                mAllTypesList.SetSource(lTypeList.Item2);
+            }
+        }
+
+        private bool IsDefaultIncludeType(Type lType)
+        {
+            bool lIsDefaultType = lType == typeof(int);
+            lIsDefaultType |= lType == typeof(uint);
+            lIsDefaultType |= lType == typeof(float);
+            lIsDefaultType |= lType == typeof(double);
+            lIsDefaultType |= lType == typeof(string);
+            lIsDefaultType |= lType == typeof(char);
+
+            return lIsDefaultType;
         }
 
         private bool CheckType(Type lType)

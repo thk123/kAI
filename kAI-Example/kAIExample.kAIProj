@@ -140,6 +140,22 @@
   </ProjectRoot>
   <ProjectTypes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
     <d2p1:string>System.Int32</d2p1:string>
+    <d2p1:string>System.UInt32</d2p1:string>
+    <d2p1:string>System.UInt32</d2p1:string>
+    <d2p1:string>System.UInt32</d2p1:string>
+    <d2p1:string>System.UInt32</d2p1:string>
+    <d2p1:string>System.UInt32</d2p1:string>
+    <d2p1:string>System.UInt32</d2p1:string>
+    <d2p1:string>System.String</d2p1:string>
+    <d2p1:string>System.Char</d2p1:string>
+    <d2p1:string>System.Double</d2p1:string>
+    <d2p1:string>System.Int32</d2p1:string>
+    <d2p1:string>System.Single</d2p1:string>
+    <d2p1:string>System.UInt32</d2p1:string>
+    <d2p1:string>UnityEngine.GameObject</d2p1:string>
+    <d2p1:string>UnityEngine.Vector4</d2p1:string>
+    <d2p1:string>UnityEngine.Vector4</d2p1:string>
+    <d2p1:string>UnityEngine.Vector4</d2p1:string>
   </ProjectTypes>
   <XmlBehaviourRoot xmlns:d2p1="http://schemas.datacontract.org/2004/07/kAI.Core">
     <d2p1:Path>\kAIBehaviours</d2p1:Path>
