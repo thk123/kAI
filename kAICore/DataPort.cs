@@ -24,8 +24,23 @@ namespace kAI.Core
         {}
 
         // TODO: Move me up the heirachy 
+        /// <summary>
+        /// Bind two ports together so as the data is set in one, it is mirrored in the other. 
+        /// </summary>
+        /// <param name="lOtherEnd">The other end of the binding. </param>
         internal abstract void BindPorts(kAIDataPort lOtherEnd);
 
+        /// <summary>
+        /// Get the data stored in this data port. 
+        /// </summary>
+        /// <returns>The current data in the port. </returns>
+        public abstract object GetData();
+
+        /// <summary>
+        /// Set the data in this data port. 
+        /// </summary>
+        /// <param name="lObject">The new value the data should have. </param>
+        public abstract void SetData(object lObject);
         /// <summary>
         /// Create a data port of the given type. 
         /// </summary>
@@ -141,6 +156,24 @@ namespace kAI.Core
 
         }
 
+        /// <summary>
+        /// Get the data stored in this data port. 
+        /// </summary>
+        /// <returns>The current data in the port. </returns>
+        public override object GetData()
+        {
+            return Data;
+        }
+
+        /// <summary>
+        /// Set the data in this data port. 
+        /// </summary>
+        /// <param name="lData">The new value the data should have. </param>
+        public override void SetData(object lData)
+        {
+            Data = (T)lData;
+        }
+
         internal override void BindPorts(kAIDataPort lOtherEnd)
         {
             kAIDataPort<T> lCastOtherEnd = lOtherEnd as kAIDataPort<T>;
@@ -154,6 +187,10 @@ namespace kAI.Core
             }
         }
 
+        /// <summary>
+        /// Create the port matching this but in the other direction.
+        /// </summary>
+        /// <returns>A port of the same type as this, but in the opposite direction. </returns>
         internal override kAIPort CreateOppositePort()
         {
             return new kAIDataPort<T>(PortID, PortDirection.OppositeDirection());
