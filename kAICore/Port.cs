@@ -682,7 +682,7 @@ namespace kAI.Core
             kAIPortType lDataType = obj as kAIPortType;
             if (((object)lDataType != null))
             {
-                return lDataType.DataType == DataType && lDataType.mIsTrigger == mIsTrigger;
+                return lDataType.DataType.FullName == DataType.FullName && lDataType.mIsTrigger == mIsTrigger;
             }
             else
             {

@@ -9,40 +9,82 @@ using System.Windows.Forms;
 
 namespace kAI.Editor.Controls.WinForms
 {
-    /// <summary>
-    /// A ListBox that can be filtered. 
-    /// </summary>
-    /// <typeparam name="T">The type of object to put in the list box. </typeparam>
-    public class FilterableList<T> : ListBox
+    public partial class SearchableList : UserControl
     {
-        List<T> mDataSource;
+        List<object> mDataSource;
 
         string mSearchQuery;
 
-        Stack<List<T>> lRemovedEntries;
+        Stack<List<object>> lRemovedEntries;
 
-        /// <summary>
-        /// Create a list which can be searched in real time. 
-        /// </summary>
-        public FilterableList()
-            :base()
+        public ListBox.ObjectCollection Items
         {
-            mSearchQuery = String.Empty;
+            get
+            {
+                return listBox1.Items;
+            }
         }
 
-        /// <summary>
-        /// Set the data source for this list. 
-        /// </summary>
-        /// <param name="lSource">The source. </param>
-        public void SetSource(IEnumerable<T> lSource)
+        public ListBox.SelectedObjectCollection SelectedItems
         {
-            mDataSource = new List<T>();
-            lRemovedEntries = new Stack<List<T>>();
-            foreach (T lData in lSource)
+            get
+            {
+                return listBox1.SelectedItems;
+            }
+        }
+
+        public object SelectedItem
+        {
+            get
+            {
+                return listBox1.SelectedItem;
+            }
+        }
+
+        public SelectionMode SelectionMode
+        {
+            get
+            {
+                return listBox1.SelectionMode;
+            }
+            set
+            {
+                listBox1.SelectionMode = value;
+                
+            }
+        }
+
+        public event EventHandler SelectedValueChange;
+
+        public SearchableList()
+        {
+            mSearchQuery = String.Empty;
+            InitializeComponent();
+            listBox1.SelectedValueChanged += new EventHandler(listBox1_SelectedValueChanged);
+        }
+
+        void listBox1_SelectedValueChanged(object sender, EventArgs e)
+        {
+            if (SelectedValueChange != null)
+            {
+                SelectedValueChange(sender, e);
+            }
+        }
+
+        public void SetDataSource(IEnumerable<object> lSource)
+        {
+            mDataSource = new List<object>();
+            lRemovedEntries = new Stack<List<object>>();
+            foreach (object lData in lSource)
             {
                 mDataSource.Add(lData);
-                Items.Add(lData);
+                listBox1.Items.Add(lData);
             }
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+            UpdateSearchTerm(textBox1.Text);
         }
 
         /// <summary>
@@ -51,7 +93,7 @@ namespace kAI.Editor.Controls.WinForms
         /// <param name="lSearchTerm">The new search value. </param>
         public void UpdateSearchTerm(string lSearchTerm)
         {
-            if(lSearchTerm != mSearchQuery)
+            if (lSearchTerm != mSearchQuery)
             {
                 // new search term longer than the original query
                 if (lSearchTerm.Length > mSearchQuery.Length)
@@ -79,7 +121,7 @@ namespace kAI.Editor.Controls.WinForms
                         }
                     }
                 }
-                else if(lSearchTerm.Length == mSearchQuery.Length)
+                else if (lSearchTerm.Length == mSearchQuery.Length)
                 {
                     int lLastCommonChar = CommonStem(mSearchQuery, lSearchTerm);
 
@@ -116,8 +158,8 @@ namespace kAI.Editor.Controls.WinForms
 
         void AppendToSearchTerm(char lNewChar)
         {
-            List<T> lNewlyRemoved = new List<T>();
-            foreach (T lObject in Items.Cast<T>())
+            List<object> lNewlyRemoved = new List<object>();
+            foreach (object lObject in listBox1.Items)
             {
                 if (!IsMatch(lObject, mSearchQuery + lNewChar))
                 {
@@ -125,9 +167,9 @@ namespace kAI.Editor.Controls.WinForms
                 }
             }
 
-            foreach (T lRemoved in lNewlyRemoved)
+            foreach (object lRemoved in lNewlyRemoved)
             {
-                Items.Remove(lRemoved);
+                listBox1.Items.Remove(lRemoved);
             }
 
             lRemovedEntries.Push(lNewlyRemoved);
@@ -139,10 +181,10 @@ namespace kAI.Editor.Controls.WinForms
         {
             for (int i = 0; i < count; ++i)
             {
-                List<T> lEntriesToAdd = lRemovedEntries.Pop();
-                foreach (T lEntry in lEntriesToAdd)
+                List<object> lEntriesToAdd = lRemovedEntries.Pop();
+                foreach (object lEntry in lEntriesToAdd)
                 {
-                    Items.Add(lEntry);
+                    listBox1.Items.Add(lEntry);
                 }
             }
 
@@ -163,9 +205,14 @@ namespace kAI.Editor.Controls.WinForms
 
         }
 
-        bool IsMatch(T lEntry, string lSearchEntry)
+        bool IsMatch(object lEntry, string lSearchEntry)
         {
             return lEntry.ToString().ToUpper().Contains(lSearchEntry.ToUpper());
+        }
+
+        private void SearchableList_Resize(object sender, EventArgs e)
+        {
+            //listBox1.Height = Height - textBox1.Height - 5;
         }
     }
 }

@@ -44,7 +44,7 @@ namespace kAI.Editor.Forms.ProjectProperties
                 Tuple<IEnumerable<Type>, IEnumerable<Type>> lTypeList = lAllTypes.Split(IsDefaultIncludeType);
 
                 mIncludedTypesList.Items.AddRange(lTypeList.Item1.ToArray());
-                mAllTypesList.SetSource(lTypeList.Item2);
+                //mAllTypesList.SetSource(lTypeList.Item2);
 
                 foreach (Type lDefaultType in lTypeList.Item1)
                 {
@@ -55,10 +55,22 @@ namespace kAI.Editor.Forms.ProjectProperties
             else
             {
                 // Splits all the types into item1 if the project contains the type, item2 if not
-                Tuple<IEnumerable<Type>, IEnumerable<Type>> lTypeList = lAllTypes.Split((lType) => { return Project.ProjectTypes.Contains(lType); });
+                Tuple<IEnumerable<Type>, IEnumerable<Type>> lTypeList = lAllTypes.Split(
+                    (lType) => 
+                    {
+                        foreach (Type lExistingType in Project.ProjectTypes)
+                        {
+                            if (lExistingType.FullName == lType.FullName)
+                            {
+                                return true;
+                            }
+                        }
+                        return false;
+                    });
+                
 
                 mIncludedTypesList.Items.AddRange(lTypeList.Item1.ToArray());
-                mAllTypesList.SetSource(lTypeList.Item2);
+                mAllTypesList.SetDataSource(lTypeList.Item2);
             }
         }
 
@@ -90,8 +102,6 @@ namespace kAI.Editor.Forms.ProjectProperties
         /// </summary>
         private void SetProjectFromTypesForm()
         {
-            //TODO: probably not required but for consistency should. 
-
             foreach(Action lAction in mApplyActions)
             {
                 lAction();
@@ -106,7 +116,10 @@ namespace kAI.Editor.Forms.ProjectProperties
             foreach (Type lSelectedType in lSelectedTypes)
             {
                 mAllTypesList.Items.Remove(lSelectedType);
-                mApplyActions.Enqueue(() => { Project.ProjectTypes.Add(lSelectedType); });
+
+                // Must capture the correct type
+                Type lNewlyAddedType = lSelectedType;
+                mApplyActions.Enqueue(() => { Project.ProjectTypes.Add(lNewlyAddedType); });
             }
             
         }
@@ -119,13 +132,13 @@ namespace kAI.Editor.Forms.ProjectProperties
             foreach (Type lSelectedType in lSelectedTypes)
             {
                 mIncludedTypesList.Items.Remove(lSelectedType);
-                mApplyActions.Enqueue(() => { Project.ProjectTypes.Remove(lSelectedType); });
+
+                // Must capture the correct type
+                Type lRemovedType = lSelectedType;
+                mApplyActions.Enqueue(() => { Project.ProjectTypes.Remove(lRemovedType); });
             }
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-            mAllTypesList.UpdateSearchTerm(mTypeSearchBoxBtn.Text);
-        }
+
     }
 }

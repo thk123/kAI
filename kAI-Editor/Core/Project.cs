@@ -47,14 +47,27 @@ namespace kAI.Editor.Core
             set;
         }
 
+        List<kAIRelativePath> mProjectDLLPaths;
+
         /// <summary>
         /// A list of DLL's this project uses. 
         /// </summary>
         [DataMember()]
         public List<kAIRelativePath> ProjectDllPaths
         {
-            get;
-            private set;
+            get
+            {
+                return mProjectDLLPaths;
+            }
+            private set
+            {
+                foreach (kAIRelativePath lDLLPath in value)
+                {
+                    LoadDLL(lDLLPath);
+                }
+
+                mProjectDLLPaths = value;
+            }
         }
 
         /// <summary>
@@ -86,18 +99,77 @@ namespace kAI.Editor.Core
             private set;
         }
 
+        public List<MethodInfo> ProjectFunctions
+        {
+            get;
+            private set;
+        }
+
         [DataMember(Name="ProjectTypes")]
         public IEnumerable<string> ProjectTypeStrings
         {
             get
             {
-                return ProjectTypes.Select<Type, string>((lType) => { return lType.FullName; });
+                return ProjectTypes.Select<Type, string>((lType) => { return lType.AssemblyQualifiedName; });
             }
             set 
             {
                 foreach (string lString in value)
                 {
-                    ProjectTypes.Add(Type.GetType(lString, (lAssemblyName) => { return GetAssemblyByName(lAssemblyName.Name); }, null));
+                    ProjectTypes.Add(Type.GetType(lString, (lAssemblyName) => { return GetAssemblyByName(lAssemblyName.Name); }, null, true));
+
+                }
+            }
+        }
+
+        [DataContract()]
+        public class SerialMethodInfo
+        {
+            /// <summary>
+            /// The name of the method this function node corresponds to. 
+            /// </summary>
+            [DataMember()]
+            public string MethodName;
+
+            /// <summary>
+            /// The decleraing type of the function. 
+            /// </summary>
+            [DataMember()]
+            public string TypeName;
+
+            /// <summary>
+            /// The assembly of the declaring type of the function.
+            /// </summary>
+            [DataMember()]
+            public string AssemblyName;
+
+            public SerialMethodInfo(MethodInfo lMethod)
+            {
+                MethodName = lMethod.Name;
+                TypeName = lMethod.DeclaringType.FullName;
+                AssemblyName = lMethod.DeclaringType.Assembly.GetName().Name;
+            }
+
+            public MethodInfo Instantiate(kAIXmlBehaviour.GetAssemblyByName lAssemblyResolver)
+            {
+                Assembly lFunctionAssembly = lAssemblyResolver(AssemblyName);
+                Type lDeclType = lFunctionAssembly.GetType(TypeName);
+                return lDeclType.GetMethod(MethodName);
+            }
+        }
+
+        [DataMember(Name = "ProjectFunctions")]
+        public IEnumerable<SerialMethodInfo> ProjectFunctionStrings
+        {
+            get
+            {
+                return ProjectFunctions.Select<MethodInfo, SerialMethodInfo>((lType) => { return new SerialMethodInfo(lType);  });
+            }
+            set
+            {
+                foreach (SerialMethodInfo lString in value)
+                {
+                    ProjectFunctions.Add(lString.Instantiate(GetAssemblyByName));
 
                 }
             }
@@ -134,9 +206,25 @@ namespace kAI.Editor.Core
         /// <summary>
         /// The locations of additional DLLs referenced by other DLLs. 
         /// </summary>
-        [OptionalField(VersionAdded = 2)]
         [DataMember(Name = "AdditionalDLLPaths")]
-        Dictionary<string, kAIRelativePath> mAdditionalDllPaths;
+        Dictionary<string, kAIRelativePath> mAdditionalDllPaths
+        {
+            get
+            {
+                return mAdditionalDllPathsInt;
+            }
+            set
+            {
+                foreach (KeyValuePair<string, kAIRelativePath> lAdditionalPath in value)
+                {
+                    LoadDLL(lAdditionalPath.Value);
+                }
+
+                mAdditionalDllPathsInt = value;
+            }
+        }
+
+        Dictionary<string, kAIRelativePath> mAdditionalDllPathsInt;
 
         /// <summary>
         /// The file backing up this project. 
@@ -157,6 +245,8 @@ namespace kAI.Editor.Core
             ProjectTypes = new List<Type>();
 
             mAdditionalDllPaths = new Dictionary<string, kAIRelativePath>();
+
+            //NodeObjects.Add("FunctionNode", )
 
             // We also initialise all the types that wouldn't have come from the XML
             // We pass null as there is no file (yet). 
@@ -263,8 +353,6 @@ namespace kAI.Editor.Core
         private void Init(FileInfo lSouceFile)
         {
             mFile = lSouceFile;
-            ProjectDLLs = new List<Assembly>();
-            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
 
             kAIRelativeObject.AddPathID(kBehaviourRootID, XmlBehaviourRoot.GetDirectory());
         }
@@ -407,8 +495,13 @@ namespace kAI.Editor.Core
         [OnDeserializing]
         private void SetDefaultDllPaths(StreamingContext lStreamContext)
         {
+            AppDomain.CurrentDomain.AssemblyResolve += new ResolveEventHandler(CurrentDomain_AssemblyResolve);
+
             mAdditionalDllPaths = new Dictionary<string, kAIRelativePath>();
             ProjectTypes = new List<Type>();
+            ProjectDLLs = new List<Assembly>();
+            ProjectFunctions = new List<MethodInfo>();
+
         }
 
         /// <summary>

@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace kAI.Editor.Core.Util
 {
@@ -91,6 +92,25 @@ namespace kAI.Editor.Core.Util
             }
 
             return new Tuple<IEnumerable<T>, IEnumerable<T>>(lTrueSet, lFalseSet);
+        }
+    }
+
+    public class MyMethodInfoDisplay
+    {
+        public MethodInfo Method
+        {
+            get;
+            private set;
+        }
+
+        public MyMethodInfoDisplay(MethodInfo lMethod)
+        {
+            Method = lMethod;
+        }
+
+        public override string ToString()
+        {
+            return Method.ReturnType.FullName + " " + Method.DeclaringType.FullName + "::" + Method.ToString();
         }
     }
 }

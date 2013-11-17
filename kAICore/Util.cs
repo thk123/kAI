@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reflection;
+using System.Runtime.Serialization;
+
 
 namespace kAI.Core
 {
@@ -53,6 +56,46 @@ namespace kAI.Core
         public static T GetValueOrDefault<T>(this T lObject, T lDefault) where T : class
         {
             return lObject != null ? lObject : lDefault;
+        }
+    }
+
+    /// <summary>
+    /// 
+    /// </summary>
+    [DataContract()]
+    public class SerialType
+    {
+        /// <summary>
+        /// The decleraing type of the function. 
+        /// </summary>
+        [DataMember()]
+        public string TypeName;
+
+        /// <summary>
+        /// The assembly of the declaring type of the function.
+        /// </summary>
+        [DataMember()]
+        public string AssemblyName;
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lType"></param>
+        public SerialType(Type lType)
+        {
+            TypeName = lType.FullName;
+            AssemblyName = lType.Assembly.GetName().Name;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="lAssemblyResolver"></param>
+        /// <returns></returns>
+        public Type Instantiate(kAIXmlBehaviour.GetAssemblyByName lAssemblyResolver)
+        {
+            Assembly lFunctionAssembly = lAssemblyResolver(AssemblyName);
+            return lFunctionAssembly.GetType(TypeName);
         }
     }
 }

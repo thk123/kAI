@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Reflection;
 using System.Runtime.Serialization;
-
+using System.ComponentModel;
 namespace kAI.Core
 {
     /// <summary>
@@ -12,6 +12,120 @@ namespace kAI.Core
     /// </summary>
     public class kAIFunctionNode : kAINodeObject
     {
+        /// <summary>
+        /// 
+        /// </summary>
+        public class FunctionConfiguration
+        {
+            Type[] mGenericTypes;
+            List<int>[] mGenericMappings;
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public Type[] GenericTypes
+            {
+                get 
+                {
+                    return mGenericTypes;
+                }
+                set
+                {
+                    for (int i = 0; i < value.Length; ++i)
+                    {
+                        SetGenericParameter(i, value[i]);
+                    }
+
+                    mGenericTypes = value;
+                }
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="index"></param>
+            /// <param name="lValue"></param>
+            public void SetGenericParameter(int index, Type lValue)
+            {
+                foreach (int lParamIndex in mGenericMappings[index])
+                {
+                    ParameterTypes[lParamIndex] = lValue;
+                }
+
+                mGenericTypes[index] = lValue;
+
+                if (IsConfigured && OnConfigured != null)
+                {
+                    OnConfigured(this, new EventArgs());
+                }
+
+            }
+
+
+            Type[] ParameterTypes
+            {
+                get;
+                set;
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public bool IsConfigured
+            {
+                get
+                {
+                    return ParameterTypes.All((lType) => { return !lType.IsGenericParameter; });;
+                }
+            }
+
+            /// <summary>
+            /// 
+            /// </summary>
+            public event EventHandler OnConfigured;
+
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="lMethod"></param>
+            public FunctionConfiguration(MethodInfo lMethod)
+            {
+                if (lMethod.IsGenericMethod)
+                {
+                    mGenericTypes = lMethod.GetGenericArguments();
+                    mGenericMappings = new List<int>[mGenericTypes.Length];
+                    for (int i = 0; i < mGenericTypes.Length; ++i)
+                    {
+                        mGenericMappings[i] = new List<int>();
+                    }
+
+                }
+
+                ParameterInfo[] lParams = lMethod.GetParameters();
+
+                ParameterTypes = new Type[lParams.Length];
+
+                for (int lParamIndx = 0; lParamIndx < lParams.Length; ++lParamIndx )
+                {
+                    ParameterTypes[lParamIndx] = lParams[lParamIndx].ParameterType;
+                    if (lParams[lParamIndx].ParameterType.IsGenericParameter)
+                    {
+                        int lGenericMatch = mGenericTypes.ToList().FindIndex((lType) => { return lType.Name == lParams[lParamIndx].ParameterType.Name; });
+                        mGenericMappings[lGenericMatch].Add(lParamIndx);
+                    }
+                }
+            }
+            /// <summary>
+            /// 
+            /// </summary>
+            /// <param name="lParamIndex"></param>
+            /// <returns></returns>
+            public Type GetConcreteType(int lParamIndex)
+            {
+                return ParameterTypes[lParamIndex];
+            }
+        }
+
         /// <summary>
         /// Represents the serial version of a function node for saving out. 
         /// </summary>
@@ -37,6 +151,12 @@ namespace kAI.Core
             public string AssemblyName;
 
             /// <summary>
+            /// The concrete types for each of the generic parameters;
+            /// </summary>
+            [DataMember()]
+            public List<SerialType> GenericConfiguration;
+
+            /// <summary>
             /// Create a serial representation of the specified function node. 
             /// </summary>
             /// <param name="lNode">The function node to serialise. </param>
@@ -45,6 +165,13 @@ namespace kAI.Core
                 MethodName = lNode.mMethod.Name;
                 TypeName = lNode.mMethod.DeclaringType.FullName;
                 AssemblyName = lNode.mMethod.DeclaringType.Assembly.GetName().Name;
+
+                GenericConfiguration = new List<SerialType>();
+
+                foreach (Type lType in lNode.mConfig.GenericTypes)
+                {
+                    GenericConfiguration.Add(new SerialType(lType));
+                }
             }
 
             /// <summary>
@@ -76,7 +203,14 @@ namespace kAI.Core
                 Type lDeclType = lFunctionAssembly.GetType(TypeName);
                 MethodInfo lMethod = lDeclType.GetMethod(MethodName);
 
-                return new kAIFunctionNode(lMethod);
+                FunctionConfiguration lConfig = new FunctionConfiguration(lMethod);
+                for(int i =0; i < GenericConfiguration.Count; ++i)
+                {
+                    lConfig.SetGenericParameter(i, GenericConfiguration[i].Instantiate(lAssemblyResolver));
+                }
+                
+
+                return new kAIFunctionNode(lMethod, lConfig);
             }
         }
 
@@ -87,17 +221,21 @@ namespace kAI.Core
         List<kAIDataPort> lOutParameters;
 
         MethodInfo mMethod;
-
+        FunctionConfiguration mConfig;
         /// <summary>
         /// Create a function node representing a specific function. 
         /// </summary>
         /// <param name="lBaseMethod">The method to base this function node on. </param>
         /// <param name="lLogger">Optionally, the logger this node should use. </param>
-        public kAIFunctionNode(MethodInfo lBaseMethod, kAIILogger lLogger = null)
+        /// <param name="lConfig"></param>
+        public kAIFunctionNode(MethodInfo lBaseMethod, FunctionConfiguration lConfig, kAIILogger lLogger = null)
             :base(lLogger)
         {
+            Assert(lConfig.IsConfigured);
+
             lInParameters = new List<kAIDataPort>();
             lOutParameters = new List<kAIDataPort>();
+            int i = 0;
             foreach (ParameterInfo lParam in lBaseMethod.GetParameters())
             {
                 if (lParam.IsOut)
@@ -108,10 +246,14 @@ namespace kAI.Core
                 }
                 else
                 {
-                    kAIDataPort lInParam = kAIDataPort.CreateDataPort(lParam.ParameterType, lParam.Name, kAIPort.ePortDirection.PortDirection_In);
+                    kAIDataPort lInParam = kAIDataPort.CreateDataPort(lConfig.GetConcreteType(i), lParam.Name, kAIPort.ePortDirection.PortDirection_In);
                     lInParameters.Add(lInParam);
                     AddExternalPort(lInParam);
+
+                    ++i;
                 }
+
+                
             }
 
             if (lBaseMethod.ReturnType != null)
@@ -132,7 +274,8 @@ namespace kAI.Core
                 AddExternalPort(lOperandPort);
             }
 
-            mMethod = lBaseMethod;
+            mMethod = lBaseMethod.MakeGenericMethod(lConfig.GenericTypes);
+            mConfig = lConfig;
         }
 
         /// <summary>
@@ -218,9 +361,14 @@ namespace kAI.Core
 
     static class kAIFunctionNodes
     {
-        public static bool IfEquals(int lA, int lB)
+        public static bool IfEquals<T>(T lA, T lB)
         {
-            return lA == lB;
+            return (lA == null && lB == null ) || lA.Equals(lB);
+        }
+
+        public static string Print<T, U>(T lOne, U lTwo)
+        {
+            return lOne.ToString() + lTwo.ToString();
         }
     }
 }

@@ -11,7 +11,7 @@ using kAI.Editor.Core;
 namespace kAI.Editor.Forms.ProjectProperties
 {
     partial class ProjectPropertiesForm : Form
-    {
+    { 
         /// <summary>
         /// Set the controls on the main page from the project. 
         /// </summary>
