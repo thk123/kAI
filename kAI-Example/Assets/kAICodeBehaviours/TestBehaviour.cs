@@ -1,5 +1,5 @@
 using System;
-
+using UnityEngine;
 using kAI.Core;
 
 namespace AssemblyCSharp
@@ -23,7 +23,7 @@ namespace AssemblyCSharp
 		
 		protected override void InternalUpdate (float lDeltaTime, object lUserData)
 		{
-			kAIUnityBehaviour lBehaviour = lUserData as kAIUnityBehaviour;
+			GameObject lBehaviour = lUserData as GameObject;
 			if(lBehaviour != null)
 			{
 				lBehaviour.transform.Translate(-1, 0, 0);	

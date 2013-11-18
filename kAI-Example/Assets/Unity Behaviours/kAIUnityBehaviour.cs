@@ -22,17 +22,22 @@ public class kAIUnityBehaviour : MonoBehaviour, kAIILogger
 	}
 	
 	public string XmlBehaviourPath;
+
+	public bool EnableLoad = true;
 	
 	object lObject;
 	
 	void Awake()
 	{
-		kAIObject.GlobalLogger = this;
-		//kAIObject.ExceptionHandler = HandleException;
-		kAIObject.ExceptionOnAssert = true;
-		
-		FileInfo lFile = new FileInfo(XmlBehaviourPath);
-		mXmlBehaviour = kAIXmlBehaviour.LoadFromFile(lFile, GetAssemblyByName);
+		if(EnableLoad)			
+		{
+			kAIObject.GlobalLogger = this;
+			//kAIObject.ExceptionHandler = HandleException;
+			kAIObject.ExceptionOnAssert = true;
+			
+			FileInfo lFile = new FileInfo(XmlBehaviourPath);
+			mXmlBehaviour = kAIXmlBehaviour.LoadFromFile(lFile, GetAssemblyByName);
+		}
 	}
 	
 	TestBehaviour ls;

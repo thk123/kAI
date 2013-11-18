@@ -21,7 +21,7 @@ namespace kAI.Editor.Controls.WinForms
     {
         MethodInfo mSelectedMethod;
 
-        kAIFunctionNode.FunctionConfiguration mConfig;
+        kAIFunctionNode.kAIFunctionConfiguration mConfig;
 
         public kAIFunctionNode FunctionNode
         {
@@ -69,7 +69,7 @@ namespace kAI.Editor.Controls.WinForms
         void SetMethod(MethodInfo lMethod)
         {
             mSelectedMethod = lMethod;
-            mConfig = new kAIFunctionNode.FunctionConfiguration(mSelectedMethod);
+            mConfig = new kAIFunctionNode.kAIFunctionConfiguration(mSelectedMethod);
 
             mConfig.OnConfigured += new EventHandler(mConfig_OnConfigured);
 
@@ -83,6 +83,28 @@ namespace kAI.Editor.Controls.WinForms
                 flowLayoutPanel1.Controls.Add(lComboBox);
                 lComboBox.SelectedValueChanged += new EventHandler(lComboBox_SelectedValueChanged);
                 ++lGenericParamIndex;
+            }
+
+            int lPropertyIndex = 0;
+            foreach(string lPropertyName in mConfig.ReturnConfiguration.PropertyNames)
+            {
+                CheckBox lCheckbox = new CheckBox();
+                lCheckbox.Text = lPropertyName;
+                lCheckbox.Checked = mConfig.ReturnConfiguration.GetPropertyState(lPropertyIndex);
+                int lStoredProperyIndex = lPropertyIndex;
+                lCheckbox.CheckedChanged += (sender, e) =>
+                    {
+                        CheckBox lClickedCheckbox = sender as CheckBox;
+                        mConfig.ReturnConfiguration.SetPropertyState(lStoredProperyIndex, lClickedCheckbox.CheckState == CheckState.Checked);
+                    };
+
+                mOutParametersFlow.Controls.Add(lCheckbox);
+                ++lPropertyIndex;
+            }
+
+            if (mConfig.IsConfigured)
+            {
+                mConfig_OnConfigured(null, null);
             }
 
             /*listBox1.Items.Clear();
@@ -188,7 +210,7 @@ namespace kAI.Editor.Controls.WinForms
         }
 
 
-        public MethodConfigurationProperties(kAIFunctionNode.FunctionConfiguration lFunctionConfig)
+        public MethodConfigurationProperties(kAIFunctionNode.kAIFunctionConfiguration lFunctionConfig)
         {
             Type[] lGenTypes = lFunctionConfig.GenericTypes;
             Types = new ParameterProperties[lGenTypes.Length];

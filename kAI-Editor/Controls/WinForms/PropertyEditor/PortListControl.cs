@@ -10,7 +10,7 @@ using System.Windows.Forms;
 namespace kAI.Editor.Controls.WinForms
 {
     /// <summary>
-    /// A control for managing the PortList in <see cref="kAIXmlBehaviourPropertiesEditor"/>.
+    /// A control for managing the PortList in <see cref="XmlBehaviourPropertiesEditor"/>.
     /// </summary>
     partial class PortListControl : UserControl
     {

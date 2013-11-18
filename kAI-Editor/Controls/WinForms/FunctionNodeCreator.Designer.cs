@@ -36,7 +36,9 @@
             this.serviceController1 = new System.ServiceProcess.ServiceController();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
             this.mCreateBtn = new System.Windows.Forms.Button();
+            this.mOutParametersFlow = new System.Windows.Forms.FlowLayoutPanel();
             this.mInParamsGroup.SuspendLayout();
+            this.mOutParamsGroup.SuspendLayout();
             this.SuspendLayout();
             // 
             // label1
@@ -77,6 +79,7 @@
             // 
             // mOutParamsGroup
             // 
+            this.mOutParamsGroup.Controls.Add(this.mOutParametersFlow);
             this.mOutParamsGroup.Location = new System.Drawing.Point(324, 316);
             this.mOutParamsGroup.Name = "mOutParamsGroup";
             this.mOutParamsGroup.Size = new System.Drawing.Size(362, 242);
@@ -104,6 +107,13 @@
             this.mCreateBtn.UseVisualStyleBackColor = true;
             this.mCreateBtn.Click += new System.EventHandler(this.mCreateBtn_Click);
             // 
+            // mOutParametersFlow
+            // 
+            this.mOutParametersFlow.Location = new System.Drawing.Point(7, 20);
+            this.mOutParametersFlow.Name = "mOutParametersFlow";
+            this.mOutParametersFlow.Size = new System.Drawing.Size(349, 216);
+            this.mOutParametersFlow.TabIndex = 0;
+            // 
             // FunctionNodeCreator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -117,6 +127,7 @@
             this.Name = "FunctionNodeCreator";
             this.Text = "FunctionNodeCreator";
             this.mInParamsGroup.ResumeLayout(false);
+            this.mOutParamsGroup.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -132,5 +143,6 @@
         private System.Windows.Forms.FlowLayoutPanel flowLayoutPanel1;
         private System.ServiceProcess.ServiceController serviceController1;
         private System.Windows.Forms.Button mCreateBtn;
+        private System.Windows.Forms.FlowLayoutPanel mOutParametersFlow;
     }
 }

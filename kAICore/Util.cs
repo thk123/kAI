@@ -57,6 +57,23 @@ namespace kAI.Core
         {
             return lObject != null ? lObject : lDefault;
         }
+
+        /// <summary>
+        /// Gets a default(T) for a specific T
+        /// </summary>
+        /// <param name="lObjectType">The type of this object. </param>
+        /// <returns>The default value for this object. </returns>
+        public static object GetDefault(this Type lObjectType)
+        {
+            if (lObjectType.IsValueType)
+            {
+                return Activator.CreateInstance(lObjectType);
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 
     /// <summary>

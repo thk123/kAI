@@ -153,6 +153,7 @@ namespace kAI.Editor.Controls.WinForms
                 mActionsOnBehaviour.Enqueue((lBehaviour) =>
                     {
                         //TOOD
+                        throw new NotImplementedException();
                     });
             }
         }
