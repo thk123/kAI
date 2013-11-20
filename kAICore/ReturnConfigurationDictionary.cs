@@ -117,7 +117,7 @@ namespace kAI.Core
                     /// Create the default return configuration for a specic type -
                     /// just a data port returning the value;
                     /// </summary>
-                    /// <param name="lType"></param>
+                    /// <param name="lType">The type of the return. </param>
                     public kAIDefaultReturnConfiguration(Type lType)
                     {
                         mType = lType;
@@ -163,7 +163,7 @@ namespace kAI.Core
                     /// <summary>
                     /// To be used for getting property count and default values.
                     /// </summary>
-                    public static kAIDefaultReturnConfiguration DefaultConfig = new kAIDefaultReturnConfiguration(typeof(object));
+                    public static kAIDefaultReturnConfiguration DefaultConfig = new kAIDefaultReturnConfiguration(null);
                 }
 
                 /// <summary>

@@ -186,6 +186,7 @@
     <d2p1:string>UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</d2p1:string>
     <d2p1:string>UnityEngine.Vector4, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</d2p1:string>
     <d2p1:string>UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</d2p1:string>
+    <d2p1:string>System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</d2p1:string>
   </ProjectTypes>
   <XmlBehaviourRoot xmlns:d2p1="http://schemas.datacontract.org/2004/07/kAI.Core">
     <d2p1:Path>\kAIBehaviours</d2p1:Path>

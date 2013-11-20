@@ -68,14 +68,39 @@ namespace kAI.Editor.Controls.WinForms
 
         void SetMethod(MethodInfo lMethod)
         {
-            mOutParametersFlow.Controls.Clear();
-            flowLayoutPanel1.Controls.Clear();
+            ClearGenericsBox();
+            ClearReturnsBox();
 
             mSelectedMethod = lMethod;
             mConfig = new kAIFunctionNode.kAIFunctionConfiguration(mSelectedMethod);
 
             mConfig.OnConfigured += new EventHandler(mConfig_OnConfigured);
+            mConfig.ReturnConfiguration.ReturnConfigurationChanged += new EventHandler(ReturnConfiguration_ReturnConfigurationChanged);
 
+            SetUpGenericsBox(lMethod, mConfig);
+
+            SetUpReturnsBox(mConfig.ReturnConfiguration);
+
+            if (mConfig.IsConfigured)
+            {
+                mConfig_OnConfigured(null, null);
+            }
+        }
+
+        void ClearGenericsBox()
+        {
+            flowLayoutPanel1.Controls.Clear();
+
+        }
+
+        void ClearReturnsBox()
+        {
+            mOutParametersFlow.Controls.Clear();
+
+        }
+
+        void SetUpGenericsBox(MethodInfo lMethod, kAIFunctionNode.kAIFunctionConfiguration lConfig)
+        {
             int lGenericParamIndex = 0;
             foreach (Type lType in mConfig.GenericTypes)
             {
@@ -87,28 +112,33 @@ namespace kAI.Editor.Controls.WinForms
                 lComboBox.SelectedValueChanged += new EventHandler(lComboBox_SelectedValueChanged);
                 ++lGenericParamIndex;
             }
+        }
 
+        void SetUpReturnsBox(kAIFunctionNode.kAIFunctionConfiguration.kAIReturnConfiguration lReturnConfig)
+        {
             int lPropertyIndex = 0;
-            foreach(string lPropertyName in mConfig.ReturnConfiguration.PropertyNames)
+            foreach (string lPropertyName in mConfig.ReturnConfiguration.PropertyNames)
             {
                 CheckBox lCheckbox = new CheckBox();
                 lCheckbox.Text = lPropertyName;
                 lCheckbox.Checked = mConfig.ReturnConfiguration.GetPropertyState(lPropertyIndex);
                 int lStoredProperyIndex = lPropertyIndex;
                 lCheckbox.CheckedChanged += (sender, e) =>
-                    {
-                        CheckBox lClickedCheckbox = sender as CheckBox;
-                        mConfig.ReturnConfiguration.SetPropertyState(lStoredProperyIndex, lClickedCheckbox.CheckState == CheckState.Checked);
-                    };
+                {
+                    CheckBox lClickedCheckbox = sender as CheckBox;
+                    mConfig.ReturnConfiguration.SetPropertyState(lStoredProperyIndex, lClickedCheckbox.CheckState == CheckState.Checked);
+                };
 
                 mOutParametersFlow.Controls.Add(lCheckbox);
                 ++lPropertyIndex;
             }
+        }
 
-            if (mConfig.IsConfigured)
-            {
-                mConfig_OnConfigured(null, null);
-            }
+
+        void ReturnConfiguration_ReturnConfigurationChanged(object sender, EventArgs e)
+        {
+            ClearReturnsBox();
+            SetUpReturnsBox(mConfig.ReturnConfiguration);
         }
 
         void mConfig_OnConfigured(object sender, EventArgs e)

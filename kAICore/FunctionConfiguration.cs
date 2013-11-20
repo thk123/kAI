@@ -63,7 +63,11 @@ namespace kAI.Core
                 /// <summary>
                 /// The return type.
                 /// </summary>
-                Type mReturnType;
+                public Type ReturnType
+                {
+                    get;
+                    private set;
+                }
 
                 /// <summary>
                 /// The set of properties this return type has.
@@ -92,7 +96,22 @@ namespace kAI.Core
                     }
                 }
 
-                
+                /// <summary>
+                /// Is the return type configured. 
+                /// </summary>
+                public bool IsConfigured
+                {
+                    get
+                    {
+                        return !ReturnType.IsGenericParameter;
+                    }
+                }
+
+                /// <summary>
+                /// Triggered if the return is a generic type and has now been set to a concrete type.
+                /// This means that potentially the return properties have changed. 
+                /// </summary>
+                public event EventHandler ReturnConfigurationChanged;
 
                 /// <summary>
                 /// Create an initial return configuration for a specified type. 
@@ -100,16 +119,7 @@ namespace kAI.Core
                 /// <param name="lReturnType"></param>
                 public kAIReturnConfiguration(Type lReturnType)
                 {
-                    if (sReturnConfigs.ContainsKey(lReturnType.ToString()))
-                    {
-                        lPropertyDictionary = sReturnConfigs[lReturnType.ToString()];
-                    }
-                    else
-                    {
-                        lPropertyDictionary = new kAIDefaultReturnConfiguration(lReturnType);
-                    }
-                    mIsEnabled = new List<bool>(lPropertyDictionary.PropertyDefaults);
-                    mReturnType = lReturnType;
+                    SetReturnType(lReturnType);                   
                 }
 
                 /// <summary>
@@ -181,6 +191,32 @@ namespace kAI.Core
                 {
                     return mIsEnabled[lPropertyIndex];
                 }
+
+                /// <summary>
+                /// Sets the return type to a concrete type. 
+                /// </summary>
+                /// <param name="lType">The concrete type. </param>
+                public void SetReturnType(Type lType)
+                {
+                    ReturnType = lType;
+
+                    // Need to reconfigure the return type
+                    if (sReturnConfigs.ContainsKey(ReturnType.ToString()))
+                    {
+                        lPropertyDictionary = sReturnConfigs[ReturnType.ToString()];
+                    }
+                    else
+                    {
+                        lPropertyDictionary = new kAIDefaultReturnConfiguration(ReturnType);
+                    }
+
+                    mIsEnabled = new List<bool>(lPropertyDictionary.PropertyDefaults);
+
+                    if (ReturnConfigurationChanged != null)
+                    {
+                        ReturnConfigurationChanged(this, new EventArgs());
+                    }
+                }
             }
 
 
@@ -233,9 +269,8 @@ namespace kAI.Core
 
                     return new kAIFunctionConfiguration(lFunction, GenericConfiguration.Select<SerialType, Type>((lType) =>
                         {
-                            return lType.Instantiate(lAssemblyResolver);   
-                        }), ReturnConfiguration.Instantiate(lFunction.ReturnType, lAssemblyResolver));
-                    
+                            return lType.Instantiate(lAssemblyResolver);
+                        }), ReturnConfiguration, lAssemblyResolver);
                 }
             }
 
@@ -303,7 +338,8 @@ namespace kAI.Core
             {
                 get
                 {
-                    return ParameterTypes.All((lType) => { return !lType.IsGenericParameter; }); ;
+                    return ReturnConfiguration.IsConfigured &&
+                        ParameterTypes.All((lType) => { return !lType.IsGenericParameter; }); ;
                 }
             }
 
@@ -347,6 +383,13 @@ namespace kAI.Core
                     }
                 }
 
+                Type lReturnType = lMethod.ReturnType;
+                if (lReturnType.ContainsGenericParameters)
+                {
+                    int lGenericMatch = mGenericTypes.ToList().FindIndex((lType) => { return lType.Name == lReturnType.Name; });
+                    mGenericMappings[lGenericMatch].Add(-1);
+                }
+
                 ReturnConfiguration = new kAIReturnConfiguration(lMethod.ReturnType);
 
                 if (IsConfigured && OnConfigured != null)
@@ -355,7 +398,7 @@ namespace kAI.Core
                 }
             }
 
-            private kAIFunctionConfiguration(MethodInfo lMethod, IEnumerable<Type> lConfiguredTypes, kAIReturnConfiguration lReturnConfig)
+            private kAIFunctionConfiguration(MethodInfo lMethod, IEnumerable<Type> lConfiguredTypes, kAIReturnConfiguration.SerialObject lReturnConfig, kAIXmlBehaviour.GetAssemblyByName lAssemblyResolver)
                 :this(lMethod)
             {
                 int lGenParamIndex = 0;
@@ -365,7 +408,7 @@ namespace kAI.Core
                     ++lGenParamIndex;
                 }
 
-                ReturnConfiguration = lReturnConfig;
+                ReturnConfiguration = lReturnConfig.Instantiate(ReturnConfiguration.ReturnType, lAssemblyResolver);                   
 
                 Assert(null, IsConfigured, "Loaded an in-complete configuration");
             }
@@ -379,7 +422,15 @@ namespace kAI.Core
             {
                 foreach (int lParamIndex in mGenericMappings[lGenericParametricIndex])
                 {
-                    ParameterTypes[lParamIndex] = lValue;
+                    // This is the generic parameter corresponding to the return type
+                    if (lParamIndex == -1)
+                    {
+                        ReturnConfiguration.SetReturnType(lValue);
+                    }
+                    else
+                    {
+                        ParameterTypes[lParamIndex] = lValue;
+                    }
                 }
 
                 mGenericTypes[lGenericParametricIndex] = lValue;
