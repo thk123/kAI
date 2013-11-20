@@ -74,10 +74,45 @@ namespace kAI.Core
                 return null;
             }
         }
+
+        /// <summary>
+        /// Compare two enumerable sources and check they match at every element and in size. 
+        /// </summary>
+        /// <typeparam name="T">The type of element. </typeparam>
+        /// <param name="lListA">The first source. </param>
+        /// <param name="lListB">The second source. </param>
+        /// <param name="lComparer">Optionally, the comparision between 2 objects to use. If none specified, will use T.Equals</param>
+        /// <returns>True if the sources contain the same number of elements and each element matches</returns>
+        public static bool DoMatch<T>(this IEnumerable<T> lListA, IEnumerable<T> lListB, Func<T, T, bool> lComparer = null)
+        {
+            if (lComparer == null)
+            {
+                lComparer = (lA, lB) => { return lA.Equals(lB); };
+            }
+
+
+            IEnumerator<T> lEnumeratorA = lListA.GetEnumerator();
+            IEnumerator<T> lEnumeratorB = lListB.GetEnumerator();
+
+            while (lEnumeratorA.MoveNext() & lEnumeratorB.MoveNext())
+            {
+                if (!lComparer(lEnumeratorA.Current, lEnumeratorB.Current))
+                {
+                    return false;
+                }
+            }
+
+            bool lAFinished = !lEnumeratorA.MoveNext();
+            bool lBFinished = !lEnumeratorB.MoveNext();
+
+            // If both lists are finished, we matched both of them correctly.
+            return lAFinished && lBFinished;
+
+        }
     }
 
     /// <summary>
-    /// 
+    /// A serialisation of System.Type. 
     /// </summary>
     [DataContract()]
     public class SerialType
@@ -95,9 +130,9 @@ namespace kAI.Core
         public string AssemblyName;
 
         /// <summary>
-        /// 
+        /// Create a serial representation of a given type. 
         /// </summary>
-        /// <param name="lType"></param>
+        /// <param name="lType">The type to serailse. </param>
         public SerialType(Type lType)
         {
             TypeName = lType.FullName;
@@ -105,10 +140,10 @@ namespace kAI.Core
         }
 
         /// <summary>
-        /// 
+        /// Get the type that is serialised in this. 
         /// </summary>
-        /// <param name="lAssemblyResolver"></param>
-        /// <returns></returns>
+        /// <param name="lAssemblyResolver">The method to use to resolve assembly names. </param>
+        /// <returns>The type represented by this serialisation. </returns>
         public Type Instantiate(kAIXmlBehaviour.GetAssemblyByName lAssemblyResolver)
         {
             Assembly lFunctionAssembly = lAssemblyResolver(AssemblyName);

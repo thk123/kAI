@@ -5,6 +5,7 @@ using System.Text;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.ComponentModel;
+using MiscUtil;
 namespace kAI.Core
 {
     /// <summary>
@@ -12,8 +13,6 @@ namespace kAI.Core
     /// </summary>
     public partial class kAIFunctionNode : kAINodeObject
     {
-        
-
         /// <summary>
         /// Represents the serial version of a function node for saving out. 
         /// </summary>
@@ -244,9 +243,171 @@ namespace kAI.Core
             return (lA == null && lB == null ) || lA.Equals(lB);
         }
 
+        [StaticConstraint(StaticConstraint.StaticConstraintType.eConstraint_Plus)]
+        public static T Sum<T>(T A, T B)
+        {
+            return Operator.Add<T>(A, B);
+        }
+
         public static string Print<T, U>(T lOne, U lTwo)
         {
             return lOne.ToString() + lTwo.ToString();
         }
+    }
+
+    /// <summary>
+    /// Use to apply static constraints on to a type. 
+    /// </summary>
+    [AttributeUsage(AttributeTargets.Method)]
+    public class StaticConstraint : Attribute 
+    {
+        /// <summary>
+        /// For each generic parameter, the constraint being applied to it. 
+        /// </summary>
+        public StaticConstraintType[] Constraints
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// 
+        /// </summary>
+        public struct MethodDescription
+        {
+            /// <summary>
+            /// The name of the method
+            /// </summary>
+            string mMethodName;
+
+            /// <summary>
+            /// The types of each of the parameters. 
+            /// </summary>
+            List<Type> mParameters;
+
+            /// <summary>
+            /// The type of the return
+            /// </summary>
+            Type mReturnType;
+
+            /// <summary>
+            /// The set of types which match this method description but not in the standard way
+            /// E.g. primitves don't have a method op_Addition but can still be added. 
+            /// </summary>
+            List<Type> mSpecialCases;
+
+
+            /// <summary>
+            /// Does a given type have the static corresponding method. 
+            /// </summary>
+            /// <param name="lType">The type to check. </param>
+            /// <returns>True if the type implements the relevant method, false otherwise. </returns>
+            public bool DoesTypeHaveMethodMatch(Type lType)
+            {
+                if (mSpecialCases.Contains(lType))
+                {
+                    return true;
+                }
+
+                MethodInfo lMethod = lType.GetMethod(mMethodName);
+
+                if (lMethod == null)
+                {
+                    return false;
+                }
+
+                if (!lMethod.ReturnType.Equals(mReturnType))
+                {
+                    return false;
+                }
+
+                ParameterInfo[] lParams = lMethod.GetParameters();
+
+                IEnumerable<Type> lParamTypes = lParams.Select<ParameterInfo, Type>((lParam) => { return lParam.ParameterType; });
+
+                if (!lParamTypes.DoMatch(mParameters))
+                {
+                    return false;
+                }
+                return true;
+            }
+
+            /// <summary>
+            /// Create a method description for operator+
+            /// </summary>
+            /// <param name="lType">The type of things to add. </param>
+            /// <returns>A method description for the lType+lType. </returns>
+            public static MethodDescription PlusOperator(Type lType)
+            {
+                MethodDescription lPlusOp = new MethodDescription();
+                lPlusOp.mMethodName = "op_Addition";
+                lPlusOp.mParameters = new List<Type>(new Type[] { lType, lType });
+                lPlusOp.mReturnType = lType;
+
+                lPlusOp.mSpecialCases = new List<Type>();
+                lPlusOp.mSpecialCases.AddRange(GetPrimitiveTypes());
+                return lPlusOp;
+            }
+
+            /// <summary>
+            /// All the primitives. 
+            /// </summary>
+            /// <returns>All the primitve data types that can be added etc. </returns>
+            static IEnumerable<Type> GetPrimitiveTypes()
+            {
+                yield return typeof(int);
+                yield return typeof(float);
+                yield return typeof(long);
+                yield return typeof(uint);
+                yield return typeof(double);
+                yield return typeof(string);
+                yield return typeof(byte);
+                yield return typeof(short);
+                yield return typeof(ushort);
+            }
+        }
+
+        /// <summary>
+        /// The types of static constraints
+        /// </summary>
+        public enum StaticConstraintType
+        {
+            /// <summary>
+            /// Should have operator+
+            /// </summary>
+            eConstraint_Plus
+        }
+
+        /// <summary>
+        /// Attribute for specifying that the parameter must implement a certain static method. 
+        /// </summary>
+        /// <param name="lConstraint">The constraint. </param>
+        public StaticConstraint(params StaticConstraintType[] lConstraint)
+        {
+            Constraints = lConstraint;
+        }
+
+        /// <summary>
+        /// Checks whether a given type matches the static constraints on the corresponding generic parameter. 
+        /// </summary>
+        /// <param name="lGenericParamIndex">The index of the generic parameter. </param>
+        /// <param name="lParameterType">The type we are checking to see if it matches. </param>
+        /// <returns>True if the type is a suitable type for the specified generic parameter. </returns>
+        public bool MatchesConstraint(int lGenericParamIndex, Type lParameterType)
+        {
+            MethodDescription lDescription = sStaticMethods[Constraints[lGenericParamIndex]](lParameterType);
+            return lDescription.DoesTypeHaveMethodMatch(lParameterType);
+        }
+
+
+        // Create the dictionary of MethodDescriptions for each constraint type. 
+        static Dictionary<StaticConstraintType, Func<Type, MethodDescription>> sStaticMethods;
+
+        static StaticConstraint()
+        {
+            sStaticMethods = new Dictionary<StaticConstraintType,  Func<Type, MethodDescription>>();
+            sStaticMethods.Add(StaticConstraintType.eConstraint_Plus, MethodDescription.PlusOperator);
+        }
+        
     }
 }

@@ -68,6 +68,9 @@ namespace kAI.Editor.Controls.WinForms
 
         void SetMethod(MethodInfo lMethod)
         {
+            mOutParametersFlow.Controls.Clear();
+            flowLayoutPanel1.Controls.Clear();
+
             mSelectedMethod = lMethod;
             mConfig = new kAIFunctionNode.kAIFunctionConfiguration(mSelectedMethod);
 
@@ -79,7 +82,7 @@ namespace kAI.Editor.Controls.WinForms
                 // Each combo box corresponds to precisely one generic parameter
                 ComboBox lComboBox = new ComboBox();
                 lComboBox.Tag = lGenericParamIndex;
-                lComboBox.Items.AddRange(GetSuitableTypes(lType));
+                lComboBox.Items.AddRange(GetSuitableTypes(lType, lGenericParamIndex, lMethod));
                 flowLayoutPanel1.Controls.Add(lComboBox);
                 lComboBox.SelectedValueChanged += new EventHandler(lComboBox_SelectedValueChanged);
                 ++lGenericParamIndex;
@@ -106,21 +109,6 @@ namespace kAI.Editor.Controls.WinForms
             {
                 mConfig_OnConfigured(null, null);
             }
-
-            /*listBox1.Items.Clear();
-            lParamConfigs.Clear();
-
-            listBox1.Items.Add(new MethodConfigurationProperties(new kAIFunctionNode.FunctionConfiguration(mSelectedMethod)));
-
-            foreach (ParameterInfo lParam in lMethod.GetParameters())
-            {
-                if (!lParam.IsOut)
-                {
-                    listBox1.Items.Add(lParam);
-                    lParamConfigs.Add(new kAIFunctionParameterConfiguration(lParam));
-                    
-                }
-            }*/
         }
 
         void mConfig_OnConfigured(object sender, EventArgs e)
@@ -134,12 +122,30 @@ namespace kAI.Editor.Controls.WinForms
             mConfig.SetGenericParameter((int)lSelected.Tag, (Type)lSelected.SelectedItem);
         }
 
-        Type[] GetSuitableTypes(Type lParamType)
+        Type[] GetSuitableTypes(Type lParamType, int lGenericParameterIndex, MethodInfo lMethod)
         {
             List<Type> lSuitableTypes = new List<Type>();
+            Type[] lConstrains = lParamType.GetGenericParameterConstraints();
+            StaticConstraint[] lSConstraints = lMethod.GetCustomAttributes(typeof(StaticConstraint), false) as StaticConstraint[];
+            
             foreach (Type lType in PropertiesWindow.Project.ProjectTypes)
             {
-                lSuitableTypes.Add(lType);
+                bool lSatisfiedAllStatic = true;
+                foreach (StaticConstraint lConstraint in lSConstraints)
+                {
+                    if (!lConstraint.MatchesConstraint(lGenericParameterIndex, lType))
+                    {
+                        lSatisfiedAllStatic = false;
+                    }
+                }
+
+                // TODO: check actual constraints. 
+
+
+                if (lSatisfiedAllStatic)
+                {
+                    lSuitableTypes.Add(lType);
+                }
             }
 
             return lSuitableTypes.ToArray();

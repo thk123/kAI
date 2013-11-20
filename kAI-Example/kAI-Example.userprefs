@@ -1,24 +1,25 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Unity Behaviours\kAIUnityBehaviour.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\FunctionTest.cs">
     <Files>
-      <File FileName="Assets\Unity Behaviours\kAIUnityBehaviour.cs" Line="27" Column="2" />
+      <File FileName="Assets\FunctionTest.cs" Line="1" Column="1" />
+      <File FileName="Assets\Unity Behaviours\kAIUnityBehaviour.cs" Line="178" Column="12" />
       <File FileName="Assets\FunctionTest.cs" Line="1" Column="1" />
       <File FileName="Assets\Unity Behaviours\AIController.cs" Line="1" Column="1" />
       <File FileName="Assets\kAIDebugBehaviour.cs" Line="1" Column="1" />
-      <File FileName="Assets\Unity Behaviours\kAIUnityBehaviour.cs" Line="1" Column="1" />
       <File FileName="Assets\Unity Behaviours\PlayerController.cs" Line="1" Column="1" />
       <File FileName="Assets\Unity Behaviours\CharacterController.cs" Line="1" Column="1" />
       <File FileName="Assets\Unity Behaviours\HealthBehaviour.cs" Line="1" Column="1" />
       <File FileName="Assets\SwordTip.cs" Line="1" Column="1" />
-      <File FileName="Assets\kAICodeBehaviours\TestBehaviour.cs" Line="1" Column="1" />
+      <File FileName="Assets\kAICodeBehaviours\TestBehaviour.cs" Line="9" Column="3" />
     </Files>
     <Pads>
       <Pad Id="ProjectPad">
         <State expanded="True">
           <Node name="Assembly-CSharp" expanded="True">
+            <Node name="kAICodeBehaviours" expanded="True" />
             <Node name="Unity Behaviours" expanded="True" />
-            <Node name="SwordTip.cs" selected="True" />
+            <Node name="FunctionTest.cs" selected="True" />
           </Node>
         </State>
       </Pad>

@@ -5,6 +5,8 @@ using System.Text;
 using System.Reflection;
 using System.Runtime.Serialization;
 using System.ComponentModel;
+
+using MiscUtil;
 namespace kAI.Core
 {
     public partial class kAIFunctionNode : kAINodeObject
@@ -83,6 +85,7 @@ namespace kAI.Core
                         }
                     }
 
+
                     /// <summary>
                     /// The names of all the properties.
                     /// </summary>
@@ -127,7 +130,7 @@ namespace kAI.Core
                     /// <returns>An instance of the port we need to add for this property. </returns>
                     public kAIPort GetExternalPort(int lPropertyIndex)
                     {
-                        if (lPropertyIndex == 0)
+                        if (lPropertyIndex == 0) // Property: Data Return
                         {
                             return kAIDataPort.CreateDataPort(mType, "DataReturn", kAIPort.ePortDirection.PortDirection_Out);
                         }
@@ -151,7 +154,16 @@ namespace kAI.Core
                             kAIDataPort lDataPort = (kAIDataPort)lFunctionNode.GetPort("DataReturn");
                             lDataPort.SetData(lResult);
                         }
+                        else
+                        {
+                            throw new Exception("No property at index " + lPropertyIndex);
+                        }
                     }
+
+                    /// <summary>
+                    /// To be used for getting property count and default values.
+                    /// </summary>
+                    public static kAIDefaultReturnConfiguration DefaultConfig = new kAIDefaultReturnConfiguration(typeof(object));
                 }
 
                 /// <summary>
@@ -221,7 +233,13 @@ namespace kAI.Core
                     {
                         get
                         {
-                            for (int i = 0; i < PropertyCount; ++i)
+                            foreach(bool lDefaultValue in kAIDefaultReturnConfiguration.DefaultConfig.PropertyDefaults)
+                            {
+                            yield return lDefaultValue;
+
+                            }
+
+                            for (int i =  kAIDefaultReturnConfiguration.DefaultConfig.PropertyCount; i < PropertyCount; ++i)
                             {
                                 yield return false;
                             }
