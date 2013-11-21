@@ -18,7 +18,7 @@ namespace kAI.Editor.ObjectProperties
         /// <summary>
         /// Represents the contents of the node. 
         /// </summary>
-        public class kAINodeContentsProperties
+        public class kAINodeContentsProperties : kAIIPropertyEntry
         {
             // The object being represented. 
             kAIINodeObject mNodeObject;
@@ -37,11 +37,20 @@ namespace kAI.Editor.ObjectProperties
             /// <summary>
             /// The name of the contents. 
             /// </summary>
-            public string Contents
+            [TypeConverterAttribute(typeof(ExpandableObjectConverter))]
+            [DescriptionAttribute("The contents of this node. ")]
+            public object Contents
             {
                 get 
                 {
-                    return mNodeObject.GetDataContractClass(null).GetFriendlyName();
+                    if (sNodeContentsProperties.ContainsKey(mNodeObject.GetType()))
+                    {
+                        return sNodeContentsProperties[mNodeObject.GetType()](mNodeObject);
+                    }
+                    else
+                    {
+                        return mNodeObject.GetDataContractClass(null).GetFriendlyName();
+                    }
                 }
             }
 
@@ -114,5 +123,15 @@ namespace kAI.Editor.ObjectProperties
         {
             mNode = lNode;
         }
+
+        static kAINodeProperties()
+        {
+            sNodeContentsProperties = new Dictionary<Type, Func<kAIINodeObject, kAIIPropertyEntry>>();
+            sNodeContentsProperties.Add(typeof(kAIConstantFloatNode), (lEntry) => { return new ConstantProperties((kAIConstantNode)lEntry); });
+            sNodeContentsProperties.Add(typeof(kAIConstantIntNode), (lEntry) => { return new ConstantProperties((kAIConstantNode)lEntry); });
+            sNodeContentsProperties.Add(typeof(kAIConstantStringNode), (lEntry) => { return new ConstantProperties((kAIConstantNode)lEntry); });
+        }
+
+        static Dictionary<Type, Func<kAIINodeObject, kAIIPropertyEntry>> sNodeContentsProperties;
     }
 }

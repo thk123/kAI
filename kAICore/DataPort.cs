@@ -203,6 +203,10 @@ namespace kAI.Core
         public override void Release()
         {}
 
+        /// <summary>
+        /// Occurs when the port it gets connected to another port. 
+        /// </summary>
+        /// <param name="lOtherEnd">The port it is being connected to. </param>
         protected override void OnConnect(kAIPort lOtherEnd)
         {
             base.OnConnect(lOtherEnd);
@@ -210,7 +214,7 @@ namespace kAI.Core
             if (PortDirection == kAIPort.ePortDirection.PortDirection_Out)
             {
                 kAIDataPort<T> lOtherEndCast = lOtherEnd as kAIDataPort<T>;
-
+                Assert(lOtherEndCast, "Invalid port being connected to");
                 lOtherEndCast.Data = Data;
             }
         }

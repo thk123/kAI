@@ -26,6 +26,19 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// Temporary: Set the value from a string representation.
+        /// </summary>
+        /// <param name="lRepresentation">A string that can be converted in to relevant type. </param>
+        /// <returns>True if the conversion suceeded. </returns>
+        public abstract bool SetValueFromString(string lRepresentation);
+
+        /// <summary>
+        /// Gets a string representation of the value. 
+        /// </summary>
+        /// <returns>The string representation of the value. </returns>
+        public abstract string GetValueString();
+
+        /// <summary>
         /// Update this node, does nothing for a constant. 
         /// </summary>
         /// <param name="lDeltaTime">The time passed since the last update. </param>
@@ -160,7 +173,36 @@ namespace kAI.Core
         public override Type GetDataContractType()
         {
             return typeof(SerialObject);
-        } 
+        }
+
+        /// <summary>
+        /// Temporary: Set the value from a string representation.
+        /// </summary>
+        /// <param name="lRepresentation">A string that can be converted in to relevant type. </param>
+        /// <returns>True if the conversion suceeded. </returns>
+        public override bool SetValueFromString(string lRepresentation)
+        {
+            int lValue;
+            if (Int32.TryParse(lRepresentation, out lValue))
+            {
+                Value = lValue;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
+        }
+
+        /// <summary>
+        /// Gets a string representation of the value. 
+        /// </summary>
+        /// <returns>The string representation of the value. </returns>
+        public override string GetValueString()
+        {
+            return Value.ToString();
+        }
     }
 
     /// <summary>
@@ -270,6 +312,34 @@ namespace kAI.Core
         {
             return typeof(SerialObject);
         }
+
+        /// <summary>
+        /// Temporary: Set the value from a string representation.
+        /// </summary>
+        /// <param name="lRepresentation">A string that can be converted in to relevant type. </param>
+        /// <returns>True if the conversion suceeded. </returns>
+        public override bool SetValueFromString(string lRepresentation)
+        {
+            float lValue;
+            if (float.TryParse(lRepresentation, out lValue))
+            {
+                Value = lValue;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Gets a string representation of the value. 
+        /// </summary>
+        /// <returns>The string representation of the value. </returns>
+        public override string GetValueString()
+        {
+            return Value.ToString();
+        }
     }
 
     /// <summary>
@@ -378,6 +448,26 @@ namespace kAI.Core
         public override Type GetDataContractType()
         {
             return typeof(SerialObject);
+        }
+
+        /// <summary>
+        /// Temporary: Set the value from a string representation.
+        /// </summary>
+        /// <param name="lRepresentation">A string that can be converted in to relevant type. </param>
+        /// <returns>True if the conversion succeeded. </returns>
+        public override bool SetValueFromString(string lRepresentation)
+        {
+            Value = lRepresentation;
+            return true;
+        }
+
+        /// <summary>
+        /// Gets a string representation of the value. 
+        /// </summary>
+        /// <returns>The string representation of the value. </returns>
+        public override string GetValueString()
+        {
+            return Value;
         }
     }
 

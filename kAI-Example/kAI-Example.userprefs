@@ -1,42 +1,18 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\FunctionTest.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Unity Behaviours\SwordController.cs">
     <Files>
-      <File FileName="Assets\FunctionTest.cs" Line="1" Column="1" />
-      <File FileName="Assets\Unity Behaviours\kAIUnityBehaviour.cs" Line="178" Column="12" />
-      <File FileName="Assets\FunctionTest.cs" Line="1" Column="1" />
-      <File FileName="Assets\Unity Behaviours\AIController.cs" Line="1" Column="1" />
-      <File FileName="Assets\kAIDebugBehaviour.cs" Line="1" Column="1" />
       <File FileName="Assets\Unity Behaviours\PlayerController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Unity Behaviours\CharacterController.cs" Line="1" Column="1" />
-      <File FileName="Assets\Unity Behaviours\HealthBehaviour.cs" Line="1" Column="1" />
-      <File FileName="Assets\SwordTip.cs" Line="1" Column="1" />
-      <File FileName="Assets\kAICodeBehaviours\TestBehaviour.cs" Line="9" Column="3" />
+      <File FileName="..\..\..\Unity\TheUnsatiableHunger\Assets\Scripts\DraggableBox.cs" Line="105" Column="8" />
+      <File FileName="..\..\..\Unity\TheUnsatiableHunger\Assets\Scripts\TriggerVolume.cs" Line="1" Column="1" />
+      <File FileName="..\..\..\Unity\TheUnsatiableHunger\Assets\Scripts\ScoreManager.cs" Line="1" Column="1" />
+      <File FileName="Assets\Unity Behaviours\SwordController.cs" Line="30" Column="2" />
     </Files>
-    <Pads>
-      <Pad Id="ProjectPad">
-        <State expanded="True">
-          <Node name="Assembly-CSharp" expanded="True">
-            <Node name="kAICodeBehaviours" expanded="True" />
-            <Node name="Unity Behaviours" expanded="True" />
-            <Node name="FunctionTest.cs" selected="True" />
-          </Node>
-        </State>
-      </Pad>
-      <Pad Id="ClassPad">
-        <State expanded="True" selected="True" />
-      </Pad>
-      <Pad Id="MonoDevelop.Debugger.WatchPad">
-        <State>
-          <Value>lSource</Value>
-        </State>
-      </Pad>
-    </Pads>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
-      <Breakpoint file="E:\dev\C#\kAI\kAI-Example\Assets\Unity Behaviours\AIController.cs" line="44" />
-      <Breakpoint file="E:\dev\C#\kAI\kAI-Example\Assets\Unity Behaviours\kAIUnityBehaviour.cs" line="45" />
+      <Breakpoint file="E:\dev\Unity\TheUnsatiableHunger\Assets\Scripts\DraggableBox.cs" line="95" />
+      <Breakpoint file="E:\dev\Unity\TheUnsatiableHunger\Assets\Scripts\DraggableBox.cs" line="120" />
     </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />

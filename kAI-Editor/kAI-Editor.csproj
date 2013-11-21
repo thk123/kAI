@@ -147,6 +147,7 @@
     <Compile Include="Core\ConsoleLogger.cs" />
     <Compile Include="Core\InteractionTerminal.cs" />
     <Compile Include="ObjectProperties\ConnexionProperties.cs" />
+    <Compile Include="ObjectProperties\ConstantProperties.cs" />
     <Compile Include="ObjectProperties\IPropertyEntry.cs" />
     <Compile Include="ObjectProperties\ListType.cs" />
     <Compile Include="ObjectProperties\NodeProperties.cs" />
