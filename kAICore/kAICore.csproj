@@ -51,6 +51,7 @@
     <Compile Include="Behaviour.cs" />
     <Compile Include="BehaviourExceptions.cs" />
     <Compile Include="BehaviourID.cs" />
+    <Compile Include="Constant.cs" />
     <Compile Include="DataPort.cs" />
     <Compile Include="FunctionConfiguration.cs" />
     <Compile Include="FunctionNode.cs" />

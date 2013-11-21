@@ -84,6 +84,12 @@
     <Compile Include="Controls\WinForms\BehaviourTree.Designer.cs">
       <DependentUpon>BehaviourTree.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\WinForms\ConstantNodeCreator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\WinForms\ConstantNodeCreator.Designer.cs">
+      <DependentUpon>ConstantNodeCreator.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\WinForms\DLLEntry.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -207,6 +213,9 @@
     <Compile Include="Core\Util\Util.cs" />
     <EmbeddedResource Include="Controls\WinForms\BehaviourTree.resx">
       <DependentUpon>BehaviourTree.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WinForms\ConstantNodeCreator.resx">
+      <DependentUpon>ConstantNodeCreator.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\WinForms\DLLEntry.resx">
       <DependentUpon>DLLEntry.cs</DependentUpon>

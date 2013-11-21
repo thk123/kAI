@@ -90,24 +90,18 @@ namespace kAI.Editor.Controls
             MenuItem lAddFunctionItem = new MenuItem("Add Function...");
             lAddFunctionItem.Click += new EventHandler(lAddFunctionItem_Click);
 
+            MenuItem lAddConstantItem = new MenuItem("Add Constant...");
+            lAddConstantItem.Click += new EventHandler(lAddConstantItem_Click);
+
             GlobalContextMenu = new ContextMenu(new MenuItem[] {
                 lAddNodeMenuItem,
-                lAddFunctionItem
+                lAddFunctionItem,
+                lAddConstantItem
             });
 
             GlobalContextMenu.Popup += new EventHandler(GlobalContextMenu_Popup);
 
             
-        }
-
-        void lAddFunctionItem_Click(object sender, EventArgs e)
-        {
-            FunctionNodeCreator lFunctionDesigner = new FunctionNodeCreator(mProject);
-            DialogResult lResult = lFunctionDesigner.ShowDialog();
-            if (lResult == DialogResult.OK)
-            {
-                AddNode(lFunctionDesigner.FunctionNode, mMousePositionOnContext);
-            }
         }
 
         /// <summary>
@@ -342,6 +336,26 @@ namespace kAI.Editor.Controls
             if (lSelectedNode != null)
             {
                 AddNode(lSelectedNode, mMousePositionOnContext);
+            }
+        }
+
+        void lAddConstantItem_Click(object sender, EventArgs e)
+        {
+            ConstantNodeCreator lNodeCreatore = new ConstantNodeCreator();
+
+            if (lNodeCreatore.ShowDialog() == DialogResult.OK)
+            {
+                AddNode(lNodeCreatore.Node, mMousePositionOnContext);
+            }
+        }
+
+        void lAddFunctionItem_Click(object sender, EventArgs e)
+        {
+            FunctionNodeCreator lFunctionDesigner = new FunctionNodeCreator(mProject);
+            DialogResult lResult = lFunctionDesigner.ShowDialog();
+            if (lResult == DialogResult.OK)
+            {
+                AddNode(lFunctionDesigner.FunctionNode, mMousePositionOnContext);
             }
         }
     }    

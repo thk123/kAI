@@ -18,18 +18,6 @@ public class FunctionTest : MonoBehaviour {
 		lAIController = GetComponent<kAIUnityBehaviour>();
 		lNumber1Port = (kAIDataPort<int>)lAIController.GetPort("number1");
 		lNumber2Port = (kAIDataPort<int>)lAIController.GetPort("number2");
-
-		kAIDataPort<string> lLabelPortT = (kAIDataPort<string>)lAIController.GetPort("OnTrueString");
-		lLabelPortT.Data = "OnTrue";
-
-		kAIDataPort<string> lLabelPortF = (kAIDataPort<string>)lAIController.GetPort("OnFalseString");
-		lLabelPortF.Data = "OnFalse";
-
-		kAIDataPort<string> lLabelPortJT = (kAIDataPort<string>)lAIController.GetPort("OnBecomeTrueString");
-		lLabelPortJT.Data = "OnBT";
-
-		kAIDataPort<string> lLabelPortJF = (kAIDataPort<string>)lAIController.GetPort("OnBecomeFalseString");
-		lLabelPortJF.Data = "OnBF";
 	}
 	
 	// Update is called once per frame

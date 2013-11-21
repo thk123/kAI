@@ -203,6 +203,18 @@ namespace kAI.Core
         public override void Release()
         {}
 
+        protected override void OnConnect(kAIPort lOtherEnd)
+        {
+            base.OnConnect(lOtherEnd);
+
+            if (PortDirection == kAIPort.ePortDirection.PortDirection_Out)
+            {
+                kAIDataPort<T> lOtherEndCast = lOtherEnd as kAIDataPort<T>;
+
+                lOtherEndCast.Data = Data;
+            }
+        }
+
         private bool IsTNull(T lT)
         {
             return ((object)lT) == null || lT == null || lT.Equals(default(T));

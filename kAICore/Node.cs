@@ -61,6 +61,11 @@ namespace kAI.Core
         Function,
 
         /// <summary>
+        /// The node is a constant value. 
+        /// </summary>
+        Constant,
+
+        /// <summary>
         /// The type is unknown. 
         /// </summary>
         UnknownType,
@@ -119,6 +124,9 @@ namespace kAI.Core
                 yield return typeof(kAIXmlBehaviour.SerialObject);
                 yield return typeof(kAICodeBehaviour.SerialObject);
                 yield return typeof(kAIFunctionNode.SerialObject);
+                yield return typeof(kAIConstantIntNode.SerialObject);
+                yield return typeof(kAIConstantFloatNode.SerialObject);
+                yield return typeof(kAIConstantStringNode.SerialObject);
             }
         }
 
