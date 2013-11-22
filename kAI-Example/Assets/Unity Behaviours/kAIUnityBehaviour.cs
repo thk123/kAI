@@ -22,17 +22,22 @@ public class kAIUnityBehaviour : MonoBehaviour, kAIILogger
 	}
 	
 	public string XmlBehaviourPath;
+
+	public bool EnableLoad = true;
 	
 	object lObject;
 	
 	void Awake()
 	{
-		kAIObject.GlobalLogger = this;
-		//kAIObject.ExceptionHandler = HandleException;
-		kAIObject.ExceptionOnAssert = true;
-		
-		FileInfo lFile = new FileInfo(XmlBehaviourPath);
-		mXmlBehaviour = kAIXmlBehaviour.LoadFromFile(lFile, GetAssemblyByName);
+		if(EnableLoad)			
+		{
+			kAIObject.GlobalLogger = this;
+			//kAIObject.ExceptionHandler = HandleException;
+			kAIObject.ExceptionOnAssert = true;
+			
+			FileInfo lFile = new FileInfo(XmlBehaviourPath);
+			mXmlBehaviour = kAIXmlBehaviour.LoadFromFile(lFile, GetAssemblyByName);
+		}
 	}
 	
 	TestBehaviour ls;
@@ -79,9 +84,21 @@ public class kAIUnityBehaviour : MonoBehaviour, kAIILogger
 			
 		lock(lObject)
 		{
-			mXmlBehaviour.GetPort(lPortID).Trigger();	
+			((kAITriggerPort)mXmlBehaviour.GetPort(lPortID)).Trigger();	
 		}
 	}
+	
+	public void SetData<T>(string lPortID, T lData)
+	{
+		kAIDataPort<T> lDataPort = GetPort(lPortID) as kAIDataPort<T>;
+		
+		if(lDataPort != null)
+		{
+			lDataPort.Data = lData;	
+		}
+
+	}
+		
 	
 	public void DoSomeMagic()
 	{

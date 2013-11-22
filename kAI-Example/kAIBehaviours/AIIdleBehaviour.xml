@@ -16,6 +16,20 @@
         <PortID>OnActivate</PortID>
       </StartPortID>
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>MoveTowardsPlayer</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Target</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>InvalidNode</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>Target</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
   </InternalConnexions>
   <InternalNodes>
     <kAIXmlBehaviour.InternalXml.SerialNode>
@@ -40,6 +54,7 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>OnActivate</PortID>
+      <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
     <kAIXmlBehaviour.InternalXml.SerialPort>
       <IsGloballyAccesible>false</IsGloballyAccesible>
@@ -47,6 +62,7 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_In</PortDirection>
       <PortID>Deactivate</PortID>
+      <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
     <kAIXmlBehaviour.InternalXml.SerialPort>
       <IsGloballyAccesible>true</IsGloballyAccesible>
@@ -54,6 +70,15 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>PlayerBehind</PortID>
+      <PortIsTrigger>true</PortIsTrigger>
+    </kAIXmlBehaviour.InternalXml.SerialPort>
+    <kAIXmlBehaviour.InternalXml.SerialPort>
+      <IsGloballyAccesible>true</IsGloballyAccesible>
+      <PortDataType>UnityEngine.GameObject</PortDataType>
+      <PortDataTypeAssembly>UnityEngine</PortDataTypeAssembly>
+      <PortDirection>PortDirection_Out</PortDirection>
+      <PortID>Target</PortID>
+      <PortIsTrigger>false</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
   </InternalPorts>
 </kAIXmlBehaviour>

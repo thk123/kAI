@@ -9,8 +9,15 @@ public class SwordController : MonoBehaviour {
 	
 	float progress = 0.0f;
 	public float swingDuration = 2.0f;
+
+	/// <summary>
+	/// The length of the sword.
+	/// </summary>
 	public float swordLength;
-	
+
+	/// <summary>
+	/// The swing radius.
+	/// </summary>
 	public float swingRadius;
 	
 	public float direction = 1.0f;

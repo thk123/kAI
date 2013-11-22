@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Drawing;
 using System.Windows.Forms;
+using System.Reflection;
 
 namespace kAI.Editor.Core.Util
 {
@@ -58,6 +59,58 @@ namespace kAI.Editor.Core.Util
         public static int GetSquareSize(this Rectangle lSize)
         {
             return (lSize.Width * lSize.Width) + (lSize.Height * lSize.Height);
+        }
+
+        /// <summary>
+        /// Partition a source into two lists based on some splitter function. 
+        /// </summary>
+        /// <typeparam name="T">The type of object. </typeparam>
+        /// <param name="lSource">The enumerable data source. </param>
+        /// <param name="lSplitter">
+        /// A function which takes an element in the source and determines if it should 
+        /// be in the true set or the false set. 
+        /// </param>
+        /// <returns>
+        /// Two lists, one corresponding to elements that the partitioning function returned 
+        /// true for (Item1) and one which the partitioning function return false (Item2).
+        /// </returns>
+        public static Tuple<IEnumerable<T>, IEnumerable<T>> Split<T>(this IEnumerable<T> lSource, Func<T, bool> lSplitter)
+        {
+            List<T> lTrueSet = new List<T>();
+            List<T> lFalseSet = new List<T>();
+
+            foreach (T lEntry in lSource)
+            {
+                if (lSplitter(lEntry))
+                {
+                    lTrueSet.Add(lEntry);
+                }
+                else
+                {
+                    lFalseSet.Add(lEntry);
+                }
+            }
+
+            return new Tuple<IEnumerable<T>, IEnumerable<T>>(lTrueSet, lFalseSet);
+        }
+    }
+
+    public class MyMethodInfoDisplay
+    {
+        public MethodInfo Method
+        {
+            get;
+            private set;
+        }
+
+        public MyMethodInfoDisplay(MethodInfo lMethod)
+        {
+            Method = lMethod;
+        }
+
+        public override string ToString()
+        {
+            return Method.ReturnType.FullName + " " + Method.DeclaringType.FullName + "::" + Method.ToString();
         }
     }
 }

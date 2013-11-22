@@ -10,6 +10,7 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>OnActivate</PortID>
+      <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
     <kAIXmlBehaviour.InternalXml.SerialPort>
       <IsGloballyAccesible>false</IsGloballyAccesible>
@@ -17,6 +18,7 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_In</PortDirection>
       <PortID>Deactivate</PortID>
+      <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
     <kAIXmlBehaviour.InternalXml.SerialPort>
       <IsGloballyAccesible>true</IsGloballyAccesible>
@@ -24,6 +26,7 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>PlayerNear</PortID>
+      <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
     <kAIXmlBehaviour.InternalXml.SerialPort>
       <IsGloballyAccesible>true</IsGloballyAccesible>
@@ -31,6 +34,7 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>LowHealth</PortID>
+      <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
   </InternalPorts>
 </kAIXmlBehaviour>

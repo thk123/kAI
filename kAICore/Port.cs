@@ -10,7 +10,7 @@ namespace kAI.Core
     /// <summary>
     /// Represents a connectible port, can be from a behaviour, action, input, trigger etc.
     /// </summary>
-    public class kAIPort : kAIObject
+    public abstract class kAIPort : kAIObject
     {
         /// <summary>
         /// Represents a connexion between two ports. 
@@ -79,44 +79,32 @@ namespace kAI.Core
         public event ConnexionEvent OnDisconnected;
 
         /// <summary>
-        /// For when this node gets triggered by something connecting to it (or an external event).
-        /// </summary>
-        /// <param name="lSender">The port that just got triggered. </param>
-        public delegate void TriggerEvent(kAIPort lSender);
-        //TODO: Maybe provide the origin of the trigger?
-
-        /// <summary>
-        /// Occurs when this node gets triggered. 
-        /// </summary>
-        public event TriggerEvent OnTriggered;
-
-        //TODO: Data drive ports
-        /*public delegate void DataEvent(kAIPort lSender, Type lObjectData, object lData);
-        public event DataEvent OnDataSet;
-        public event DataEvent OnDataChanged;
-        public event DataEvent OnDataUnset;*/
-
-
-
-
-
-        /// <summary>
         /// The set of ports this port connects to (not is connected from).
         /// </summary>
-        Dictionary<kAIPortID, kAIPort> mConnectingPorts;
+        protected Dictionary<kAIPortID, kAIPort> mConnectingPorts
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// The node that this port belongs to (null if global). 
         /// </summary>
-        kAINode mOwningNode;
+        protected kAINode mOwningNode
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// The XML behaviour this port is embedded in. 
         /// Can be null if it is an external node to a behaviour and that behaviour is at the root
         /// </summary>
-        kAIXmlBehaviour mOwningBehaviour;
-
-        bool mHasBeenTriggered;
+        protected kAIXmlBehaviour mOwningBehaviour
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Get and sets the owning node of this port (maybe hide and just have the ID).
@@ -138,7 +126,14 @@ namespace kAI.Core
             }
         }
 
-        bool mOwningBehaviourSet = false;
+        /// <summary>
+        /// Has the owning behaviour of this node been set. 
+        /// </summary>
+        protected bool mOwningBehaviourSet
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// Get and sets the owning behaviour
@@ -163,7 +158,7 @@ namespace kAI.Core
         /// <summary>
         /// Is this port a global port or is it belonging to a node. 
         /// </summary>
-        bool IsGlobal
+        protected bool IsGlobal
         {
             get
             {
@@ -310,60 +305,20 @@ namespace kAI.Core
 
             OwningNode = null;
 
-            mHasBeenTriggered = false;
-        }
-
-        /// <summary>
-        /// Tell this port it just got triggered. 
-        /// </summary>
-        public void Trigger()
-        {
-            Assert(mOwningBehaviourSet, "A port has not been told what XML behaviour it belongs to: " + PortID.ToString());
-            if (!CheckState())
-            {
-                throw new Exception("Currently releasing a port, cannot trigger more" + ToString());
-            }
-            
-
-            if (DataType == kAIPortType.TriggerType)
-            {
-                if (PortDirection == ePortDirection.PortDirection_Out)
-                {
-                    foreach (kAIPort lConnectedPorts in mConnectingPorts.Values)
-                    {
-                        lConnectedPorts.Trigger();
-                    }
-                }
-
-                mHasBeenTriggered = true;
-            }
-
-            // If we are a global port (i.e. not inside any XML behaviour) we will never be released so we just release instantly. 
-            // TODO: Prove this is ok
-            if (mOwningBehaviour == null)
-            {
-                Release();
-            }
-        }
-
-        
+            mOwningBehaviourSet = false;
+        }        
         
         /// <summary>
         /// Release this port (first stage of the drill down update). 
         /// </summary>
-        public void Release()
-        {
-            Assert(mOwningBehaviourSet, "A port has not been told what XML behaviour it belongs to: " + PortID.ToString());
-            if (mHasBeenTriggered)
-            {
-                // TODO: it is vital this does not trigger more ports within the same behaviour
-                if (OnTriggered != null)
-                {
-                    OnTriggered(this);
-                }
-                mHasBeenTriggered = false;
-            }
-        }
+        public abstract void Release();
+
+        /// <summary>
+        /// Create a port going the opposite direction but of the same type as this port.
+        /// This is used when creating ports that are externally accessible ports on XML behaviours. 
+        /// </summary>
+        /// <returns>The opposite port. </returns>
+        internal abstract kAIPort CreateOppositePort();
 
         /// <summary>
         /// Determine if this port is connected to another specified port. 
@@ -628,7 +583,7 @@ namespace kAI.Core
         /// <returns>A boolean indicating if the data types are compatible, true indicating they are. </returns>
         private static bool AreDataTypesCompatible(kAIPortType lDataA, kAIPortType lDataB)
         {
-            return lDataA.DataType == lDataA.DataType;
+            return lDataA == lDataB;
         }
     }
 
@@ -647,17 +602,24 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// We use this to differentiate between trigger ports and ports that are type boolean. 
+        /// </summary>
+        bool mIsTrigger;
+
+        /// <summary>
         /// The type of a trigger. 
         /// </summary>
-        public static readonly kAIPortType TriggerType = typeof(Boolean);
+        public static readonly kAIPortType TriggerType = new kAIPortType(typeof(Boolean), true);
 
         /// <summary>
         /// Standard constructor for a System.Type
         /// </summary>
         /// <param name="lType">The type to use. </param>
-        public kAIPortType(Type lType)
+        /// <param name="lIsTrigger">Is the port a trigger.</param>
+        public kAIPortType(Type lType, bool lIsTrigger = false)
         {
             DataType = lType;
+            mIsTrigger = lIsTrigger;
         }
 
 
@@ -720,7 +682,7 @@ namespace kAI.Core
             kAIPortType lDataType = obj as kAIPortType;
             if (((object)lDataType != null))
             {
-                return lDataType.DataType == DataType;
+                return lDataType.DataType.FullName == DataType.FullName && lDataType.mIsTrigger == mIsTrigger;
             }
             else
             {
@@ -734,7 +696,7 @@ namespace kAI.Core
         /// <returns>The hash code the type would return. </returns>
         public override int GetHashCode()
         {
-            return DataType.GetHashCode();
+            return (DataType.GetHashCode() / 2) + (mIsTrigger.GetHashCode() / 2);
         }
 
         /// <summary>
@@ -743,7 +705,7 @@ namespace kAI.Core
         /// <returns>Trigger if a trigger port, the data type otherwise. </returns>
         public override string ToString()
         {
-            if (this == TriggerType)
+            if (mIsTrigger)
             {
                 return "Trigger";
             }

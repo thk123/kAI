@@ -25,7 +25,9 @@ public class AIController : MonoBehaviour {
 		swordController = GetComponentInChildren<SwordController>();
 		health = GetComponent<HealthBehaviour>();
 		
-		aiInterface.GetPort("SwingSword").OnTriggered += SwingSword_OnTriggerered;
+//		aiInterface.GetPort("SwingSword").OnTriggered += SwingSword_OnTriggerered;
+		
+		aiInterface.SetData<GameObject>("Target", enemy);
 	}
 	
 	void SwingSword_OnTriggerered(kAIPort lSender)
@@ -114,25 +116,32 @@ public class SwordSwingAction : kAICodeBehaviour
 
 public class MoveTowardsPlayer : kAICodeBehaviour
 {
+	kAIDataPort<GameObject> lThingToFollowPort;
 	public MoveTowardsPlayer(kAIILogger lLogger)
 		:base(lLogger)
-	{}
+	{
+		lThingToFollowPort = new kAIDataPort<GameObject>("Target", kAIPort.ePortDirection.PortDirection_In, null);
+		AddExternalPort(lThingToFollowPort);
+	}
 	
 	protected override void InternalUpdate (float lDeltaTime, object lUserData)
 	{
 		GameObject lGameObject = lUserData as GameObject;
 		if(lGameObject != null)
 		{
-			AIController lController = lGameObject.GetComponent<AIController>();
 			CharacterController lCharController = lGameObject.GetComponent<CharacterController>();
-			if(lController.enemy.transform.position.x < lGameObject.transform.position.x - 2)
+			GameObject enemy = lThingToFollowPort.Data;
+			if(enemy != null)
 			{
-				
-				lCharController.MoveLeft();
-			}
-			else if(lController.enemy.transform.position.x > lGameObject.transform.position.x + 2)
-			{
-				lCharController.MoveRight();
+				if(enemy.transform.position.x < lGameObject.transform.position.x - 2)
+				{
+					
+					lCharController.MoveLeft();
+				}
+				else if(enemy.transform.position.x > lGameObject.transform.position.x + 2)
+				{
+					lCharController.MoveRight();
+				}
 			}
 		}
 		
@@ -155,15 +164,15 @@ public class MoveAction : kAICodeBehaviour
 	public MoveAction(kAIILogger lLogger)
 		:base(lLogger)
 	{
-		kAIPort lMoveLeftPort = new kAIPort("MoveLeft", kAIPort.ePortDirection.PortDirection_In, kAIPortType.TriggerType, null);
+		kAITriggerPort lMoveLeftPort = new kAITriggerPort("MoveLeft", kAIPort.ePortDirection.PortDirection_In, null);
 		lMoveLeftPort.OnTriggered += MoveLeft_OnTriggered;
 		AddExternalPort(lMoveLeftPort);
 		
-		kAIPort lMoveRightPort = new kAIPort("MoveRight", kAIPort.ePortDirection.PortDirection_In, kAIPortType.TriggerType, null);
+		kAITriggerPort lMoveRightPort = new kAITriggerPort("MoveRight", kAIPort.ePortDirection.PortDirection_In, null);
 		lMoveRightPort.OnTriggered += MoveRight_OnTriggered;
 		AddExternalPort(lMoveRightPort);
 		
-		kAIPort lStopMovingPort = new kAIPort("StopMoving", kAIPort.ePortDirection.PortDirection_In, kAIPortType.TriggerType, null);
+		kAITriggerPort lStopMovingPort = new kAITriggerPort("StopMoving", kAIPort.ePortDirection.PortDirection_In, null);
 		lStopMovingPort.OnTriggered += StopMoving_OnTriggered;
 		AddExternalPort(lStopMovingPort);
 		

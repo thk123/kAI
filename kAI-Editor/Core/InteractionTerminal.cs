@@ -140,8 +140,17 @@ namespace kAI.Editor.Core
             try
             {
                 kAIPort lPort = mBehaviour.InternalPorts.First((lPortToCheck) => { return lPortToCheck.PortID == lPortName; });
-                lPort.Trigger();
-                return true;
+                kAITriggerPort lTriggerPort = lPort as kAITriggerPort;
+                if (lTriggerPort != null)
+                {
+                    lTriggerPort.Trigger();
+                    return true;
+                }
+                else
+                {
+                    kAIObject.LogWarning(null, "This is not a trigger port");
+                    return false;
+                }
             }
             catch(InvalidOperationException)
             {
@@ -164,7 +173,7 @@ namespace kAI.Editor.Core
         [TerminalCommand()]
         public static bool AddTriggerPort(string lPortID, string lPortDirection)
         {
-            mBehaviour.AddInternalPort(new kAIPort(lPortID, (kAIPort.ePortDirection)Enum.Parse(typeof(kAIPort.ePortDirection), lPortDirection), kAIPortType.TriggerType), true);
+            mBehaviour.AddInternalPort(new kAITriggerPort(lPortID, (kAIPort.ePortDirection)Enum.Parse(typeof(kAIPort.ePortDirection), lPortDirection)), true);
             return true;
         }
 

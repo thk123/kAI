@@ -77,6 +77,9 @@ namespace kAI.Core
                 public string PortDataType;
 
                 [DataMember()]
+                public bool PortIsTrigger;
+
+                [DataMember()]
                 public string PortDataTypeAssembly;
 
                 [DataMember()]
@@ -87,6 +90,7 @@ namespace kAI.Core
                     PortID = lPort.Port.PortID;
                     PortDirection = lPort.Port.PortDirection;
                     PortDataType = lPort.Port.DataType.DataType.FullName;
+                    PortIsTrigger = lPort.Port.DataType == kAIPortType.TriggerType;
                     PortDataTypeAssembly = lPort.Port.DataType.DataType.Assembly.GetName().Name;
                     IsGloballyAccesible = lPort.IsGloballyAccesible;
                 }
@@ -236,7 +240,15 @@ namespace kAI.Core
                 {
                     Assembly lPortTypeAssembly = lAssemblyGetter(lInternalPort.PortDataTypeAssembly);
                     Type lPortType = lPortTypeAssembly.GetType(lInternalPort.PortDataType);
-                    kAIPort lPort = new kAIPort(lInternalPort.PortID, lInternalPort.PortDirection, lPortType);
+                    kAIPort lPort;
+                    if (lInternalPort.PortIsTrigger)
+                    {
+                        lPort = new kAITriggerPort(lInternalPort.PortID, lInternalPort.PortDirection);
+                    }
+                    else
+                    {
+                        lPort = kAIDataPort.CreateDataPort(lPortType, lInternalPort.PortID, lInternalPort.PortDirection);
+                    }
 
                     InternalPort lWrappedPort = new InternalPort { Port = lPort, IsGloballyAccesible = lInternalPort.IsGloballyAccesible };
 

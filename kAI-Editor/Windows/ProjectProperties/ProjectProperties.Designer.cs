@@ -46,14 +46,26 @@
             this.DLL_FlowList = new System.Windows.Forms.FlowLayoutPanel();
             this.DLL_TitleLabel = new System.Windows.Forms.Label();
             this.TabPage_Types = new System.Windows.Forms.TabPage();
+            this.mAllTypesList = new kAI.Editor.Controls.WinForms.SearchableList();
+            this.mIncludedTypesList = new System.Windows.Forms.ListBox();
+            this.mRemoveBtn = new System.Windows.Forms.Button();
+            this.mAddBtn = new System.Windows.Forms.Button();
+            this.mProjectTypesTitle = new System.Windows.Forms.Label();
             this.TabPage_Actions = new System.Windows.Forms.TabPage();
+            this.mAllFunctionsList = new kAI.Editor.Controls.WinForms.SearchableList();
+            this.mProjectFunctionsList = new System.Windows.Forms.ListBox();
+            this.mFunctionsRemoveBtn = new System.Windows.Forms.Button();
+            this.mFunctionRemoveBtn = new System.Windows.Forms.Button();
+            this.label2 = new System.Windows.Forms.Label();
             this.TabPage_Behaviours = new System.Windows.Forms.TabPage();
+            this.ProjectBehaviours_Title = new System.Windows.Forms.Label();
             this.Cancel_Btn = new System.Windows.Forms.Button();
             this.Confirm_Btn = new System.Windows.Forms.Button();
-            this.ProjectBehaviours_Title = new System.Windows.Forms.Label();
             this.ProjectProperties_TabControl.SuspendLayout();
             this.TabPage_General.SuspendLayout();
             this.TabPage_DLL.SuspendLayout();
+            this.TabPage_Types.SuspendLayout();
+            this.TabPage_Actions.SuspendLayout();
             this.TabPage_Behaviours.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -236,6 +248,11 @@
             // 
             // TabPage_Types
             // 
+            this.TabPage_Types.Controls.Add(this.mAllTypesList);
+            this.TabPage_Types.Controls.Add(this.mIncludedTypesList);
+            this.TabPage_Types.Controls.Add(this.mRemoveBtn);
+            this.TabPage_Types.Controls.Add(this.mAddBtn);
+            this.TabPage_Types.Controls.Add(this.mProjectTypesTitle);
             this.TabPage_Types.Location = new System.Drawing.Point(4, 22);
             this.TabPage_Types.Name = "TabPage_Types";
             this.TabPage_Types.Padding = new System.Windows.Forms.Padding(3);
@@ -244,8 +261,59 @@
             this.TabPage_Types.Text = "Types";
             this.TabPage_Types.UseVisualStyleBackColor = true;
             // 
+            // mAllTypesList
+            // 
+            this.mAllTypesList.Location = new System.Drawing.Point(18, 90);
+            this.mAllTypesList.Name = "mAllTypesList";
+            this.mAllTypesList.Size = new System.Drawing.Size(294, 259);
+            this.mAllTypesList.TabIndex = 8;
+            // 
+            // mIncludedTypesList
+            // 
+            this.mIncludedTypesList.FormattingEnabled = true;
+            this.mIncludedTypesList.Location = new System.Drawing.Point(362, 121);
+            this.mIncludedTypesList.Name = "mIncludedTypesList";
+            this.mIncludedTypesList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.mIncludedTypesList.Size = new System.Drawing.Size(307, 225);
+            this.mIncludedTypesList.TabIndex = 7;
+            // 
+            // mRemoveBtn
+            // 
+            this.mRemoveBtn.Location = new System.Drawing.Point(329, 256);
+            this.mRemoveBtn.Name = "mRemoveBtn";
+            this.mRemoveBtn.Size = new System.Drawing.Size(27, 23);
+            this.mRemoveBtn.TabIndex = 6;
+            this.mRemoveBtn.Text = "<-";
+            this.mRemoveBtn.UseVisualStyleBackColor = true;
+            this.mRemoveBtn.Click += new System.EventHandler(this.mRemoveBtn_Click);
+            // 
+            // mAddBtn
+            // 
+            this.mAddBtn.Location = new System.Drawing.Point(329, 215);
+            this.mAddBtn.Name = "mAddBtn";
+            this.mAddBtn.Size = new System.Drawing.Size(27, 23);
+            this.mAddBtn.TabIndex = 4;
+            this.mAddBtn.Text = "->";
+            this.mAddBtn.UseVisualStyleBackColor = true;
+            this.mAddBtn.Click += new System.EventHandler(this.mAddBtn_Click);
+            // 
+            // mProjectTypesTitle
+            // 
+            this.mProjectTypesTitle.AutoSize = true;
+            this.mProjectTypesTitle.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.mProjectTypesTitle.Location = new System.Drawing.Point(8, 3);
+            this.mProjectTypesTitle.Name = "mProjectTypesTitle";
+            this.mProjectTypesTitle.Size = new System.Drawing.Size(317, 55);
+            this.mProjectTypesTitle.TabIndex = 2;
+            this.mProjectTypesTitle.Text = "Project Types";
+            // 
             // TabPage_Actions
             // 
+            this.TabPage_Actions.Controls.Add(this.mAllFunctionsList);
+            this.TabPage_Actions.Controls.Add(this.mProjectFunctionsList);
+            this.TabPage_Actions.Controls.Add(this.mFunctionsRemoveBtn);
+            this.TabPage_Actions.Controls.Add(this.mFunctionRemoveBtn);
+            this.TabPage_Actions.Controls.Add(this.label2);
             this.TabPage_Actions.Location = new System.Drawing.Point(4, 22);
             this.TabPage_Actions.Name = "TabPage_Actions";
             this.TabPage_Actions.Padding = new System.Windows.Forms.Padding(3);
@@ -253,6 +321,52 @@
             this.TabPage_Actions.TabIndex = 3;
             this.TabPage_Actions.Text = "Actions";
             this.TabPage_Actions.UseVisualStyleBackColor = true;
+            // 
+            // mAllFunctionsList
+            // 
+            this.mAllFunctionsList.Location = new System.Drawing.Point(18, 90);
+            this.mAllFunctionsList.Name = "mAllFunctionsList";
+            this.mAllFunctionsList.Size = new System.Drawing.Size(294, 259);
+            this.mAllFunctionsList.TabIndex = 13;
+            // 
+            // mProjectFunctionsList
+            // 
+            this.mProjectFunctionsList.FormattingEnabled = true;
+            this.mProjectFunctionsList.Location = new System.Drawing.Point(362, 121);
+            this.mProjectFunctionsList.Name = "mProjectFunctionsList";
+            this.mProjectFunctionsList.SelectionMode = System.Windows.Forms.SelectionMode.MultiExtended;
+            this.mProjectFunctionsList.Size = new System.Drawing.Size(307, 225);
+            this.mProjectFunctionsList.TabIndex = 12;
+            // 
+            // mFunctionsRemoveBtn
+            // 
+            this.mFunctionsRemoveBtn.Location = new System.Drawing.Point(329, 256);
+            this.mFunctionsRemoveBtn.Name = "mFunctionsRemoveBtn";
+            this.mFunctionsRemoveBtn.Size = new System.Drawing.Size(27, 23);
+            this.mFunctionsRemoveBtn.TabIndex = 11;
+            this.mFunctionsRemoveBtn.Text = "<-";
+            this.mFunctionsRemoveBtn.UseVisualStyleBackColor = true;
+            this.mFunctionsRemoveBtn.Click += new System.EventHandler(this.mFunctionRemoveBtn_Click);
+            // 
+            // mFunctionRemoveBtn
+            // 
+            this.mFunctionRemoveBtn.Location = new System.Drawing.Point(329, 215);
+            this.mFunctionRemoveBtn.Name = "mFunctionRemoveBtn";
+            this.mFunctionRemoveBtn.Size = new System.Drawing.Size(27, 23);
+            this.mFunctionRemoveBtn.TabIndex = 10;
+            this.mFunctionRemoveBtn.Text = "->";
+            this.mFunctionRemoveBtn.UseVisualStyleBackColor = true;
+            this.mFunctionRemoveBtn.Click += new System.EventHandler(this.mFunctionAddBtn);
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(8, 3);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(394, 55);
+            this.label2.TabIndex = 9;
+            this.label2.Text = "Project Functions";
             // 
             // TabPage_Behaviours
             // 
@@ -264,6 +378,16 @@
             this.TabPage_Behaviours.TabIndex = 4;
             this.TabPage_Behaviours.Text = "Behaviours";
             this.TabPage_Behaviours.UseVisualStyleBackColor = true;
+            // 
+            // ProjectBehaviours_Title
+            // 
+            this.ProjectBehaviours_Title.AutoSize = true;
+            this.ProjectBehaviours_Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.ProjectBehaviours_Title.Location = new System.Drawing.Point(3, 3);
+            this.ProjectBehaviours_Title.Name = "ProjectBehaviours_Title";
+            this.ProjectBehaviours_Title.Size = new System.Drawing.Size(427, 55);
+            this.ProjectBehaviours_Title.TabIndex = 2;
+            this.ProjectBehaviours_Title.Text = "Project Behaviours";
             // 
             // Cancel_Btn
             // 
@@ -285,16 +409,6 @@
             this.Confirm_Btn.UseVisualStyleBackColor = true;
             this.Confirm_Btn.Click += new System.EventHandler(this.Confirm_Btn_Click);
             // 
-            // ProjectBehaviours_Title
-            // 
-            this.ProjectBehaviours_Title.AutoSize = true;
-            this.ProjectBehaviours_Title.Font = new System.Drawing.Font("Microsoft Sans Serif", 36F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.ProjectBehaviours_Title.Location = new System.Drawing.Point(3, 3);
-            this.ProjectBehaviours_Title.Name = "ProjectBehaviours_Title";
-            this.ProjectBehaviours_Title.Size = new System.Drawing.Size(427, 55);
-            this.ProjectBehaviours_Title.TabIndex = 2;
-            this.ProjectBehaviours_Title.Text = "Project Behaviours";
-            // 
             // ProjectPropertiesForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -310,6 +424,10 @@
             this.TabPage_General.PerformLayout();
             this.TabPage_DLL.ResumeLayout(false);
             this.TabPage_DLL.PerformLayout();
+            this.TabPage_Types.ResumeLayout(false);
+            this.TabPage_Types.PerformLayout();
+            this.TabPage_Actions.ResumeLayout(false);
+            this.TabPage_Actions.PerformLayout();
             this.TabPage_Behaviours.ResumeLayout(false);
             this.TabPage_Behaviours.PerformLayout();
             this.ResumeLayout(false);
@@ -341,5 +459,15 @@
         private System.Windows.Forms.Button DLL_BrowseBtn;
         private System.Windows.Forms.Button DLL_AddBtn;
         private System.Windows.Forms.Label ProjectBehaviours_Title;
+        private System.Windows.Forms.ListBox mIncludedTypesList;
+        private System.Windows.Forms.Button mRemoveBtn;
+        private System.Windows.Forms.Button mAddBtn;
+        private System.Windows.Forms.Label mProjectTypesTitle;
+        private Controls.WinForms.SearchableList mAllTypesList;
+        private Controls.WinForms.SearchableList mAllFunctionsList;
+        private System.Windows.Forms.ListBox mProjectFunctionsList;
+        private System.Windows.Forms.Button mFunctionsRemoveBtn;
+        private System.Windows.Forms.Button mFunctionRemoveBtn;
+        private System.Windows.Forms.Label label2;
     }
 }

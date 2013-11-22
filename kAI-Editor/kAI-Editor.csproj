@@ -57,6 +57,7 @@
     <Reference Include="System.Runtime.Remoting" />
     <Reference Include="System.Runtime.Serialization" />
     <Reference Include="System.Runtime.Serialization.Formatters.Soap" />
+    <Reference Include="System.ServiceProcess" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -83,11 +84,23 @@
     <Compile Include="Controls\WinForms\BehaviourTree.Designer.cs">
       <DependentUpon>BehaviourTree.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\WinForms\ConstantNodeCreator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\WinForms\ConstantNodeCreator.Designer.cs">
+      <DependentUpon>ConstantNodeCreator.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\WinForms\DLLEntry.cs">
       <SubType>UserControl</SubType>
     </Compile>
     <Compile Include="Controls\WinForms\DLLEntry.Designer.cs">
       <DependentUpon>DLLEntry.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WinForms\FunctionNodeCreator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\WinForms\FunctionNodeCreator.Designer.cs">
+      <DependentUpon>FunctionNodeCreator.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\WinForms\PropertyEditor\PortListControl.cs">
       <SubType>UserControl</SubType>
@@ -106,6 +119,12 @@
     </Compile>
     <Compile Include="Controls\WinForms\PropertyEditor\PropertiesWindow.Designer.cs">
       <DependentUpon>PropertiesWindow.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Controls\WinForms\SearchableList.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\WinForms\SearchableList.Designer.cs">
+      <DependentUpon>SearchableList.cs</DependentUpon>
     </Compile>
     <Compile Include="Controls\WinForms\SelectConnexionDialogue.cs">
       <SubType>Form</SubType>
@@ -128,6 +147,7 @@
     <Compile Include="Core\ConsoleLogger.cs" />
     <Compile Include="Core\InteractionTerminal.cs" />
     <Compile Include="ObjectProperties\ConnexionProperties.cs" />
+    <Compile Include="ObjectProperties\ConstantProperties.cs" />
     <Compile Include="ObjectProperties\IPropertyEntry.cs" />
     <Compile Include="ObjectProperties\ListType.cs" />
     <Compile Include="ObjectProperties\NodeProperties.cs" />
@@ -166,7 +186,13 @@
     <Compile Include="Windows\ProjectProperties\ProjectProperties_DLL.cs">
       <SubType>Form</SubType>
     </Compile>
+    <Compile Include="Windows\ProjectProperties\ProjectProperties_Functions.cs">
+      <SubType>Form</SubType>
+    </Compile>
     <Compile Include="Windows\ProjectProperties\ProjectProperties_Main.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Windows\ProjectProperties\ProjectProperties_Types.cs">
       <SubType>Form</SubType>
     </Compile>
     <Compile Include="Windows\ProjectProperties\XmlBehaviourCreatore.cs">
@@ -189,8 +215,14 @@
     <EmbeddedResource Include="Controls\WinForms\BehaviourTree.resx">
       <DependentUpon>BehaviourTree.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WinForms\ConstantNodeCreator.resx">
+      <DependentUpon>ConstantNodeCreator.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\WinForms\DLLEntry.resx">
       <DependentUpon>DLLEntry.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WinForms\FunctionNodeCreator.resx">
+      <DependentUpon>FunctionNodeCreator.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\WinForms\PropertyEditor\PortListControl.resx">
       <DependentUpon>PortListControl.cs</DependentUpon>
@@ -200,6 +232,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\WinForms\PropertyEditor\PropertiesWindow.resx">
       <DependentUpon>PropertiesWindow.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WinForms\SearchableList.resx">
+      <DependentUpon>SearchableList.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\WinForms\SelectConnexionDialogue.resx">
       <DependentUpon>SelectConnexionDialogue.cs</DependentUpon>

@@ -9,6 +9,7 @@ using kAI.Core;
 using kAI.Editor.Core;
 using System.Drawing;
 using kAI.Editor.Controls.DX.Coordinates;
+using kAI.Editor.Controls.WinForms;
 
 namespace kAI.Editor.Controls
 {
@@ -84,10 +85,18 @@ namespace kAI.Editor.Controls
             mEditorImpl = lEditorImpl;
 
             MenuItem lAddNodeMenuItem = new MenuItem("Add Node...");
-            lAddNodeMenuItem.Click += new EventHandler(lAddNodeMenuItem_Click);            
+            lAddNodeMenuItem.Click += new EventHandler(lAddNodeMenuItem_Click);
+
+            MenuItem lAddFunctionItem = new MenuItem("Add Function...");
+            lAddFunctionItem.Click += new EventHandler(lAddFunctionItem_Click);
+
+            MenuItem lAddConstantItem = new MenuItem("Add Constant...");
+            lAddConstantItem.Click += new EventHandler(lAddConstantItem_Click);
 
             GlobalContextMenu = new ContextMenu(new MenuItem[] {
-                lAddNodeMenuItem
+                lAddNodeMenuItem,
+                lAddFunctionItem,
+                lAddConstantItem
             });
 
             GlobalContextMenu.Popup += new EventHandler(GlobalContextMenu_Popup);
@@ -327,6 +336,26 @@ namespace kAI.Editor.Controls
             if (lSelectedNode != null)
             {
                 AddNode(lSelectedNode, mMousePositionOnContext);
+            }
+        }
+
+        void lAddConstantItem_Click(object sender, EventArgs e)
+        {
+            ConstantNodeCreator lNodeCreatore = new ConstantNodeCreator();
+
+            if (lNodeCreatore.ShowDialog() == DialogResult.OK)
+            {
+                AddNode(lNodeCreatore.Node, mMousePositionOnContext);
+            }
+        }
+
+        void lAddFunctionItem_Click(object sender, EventArgs e)
+        {
+            FunctionNodeCreator lFunctionDesigner = new FunctionNodeCreator(mProject);
+            DialogResult lResult = lFunctionDesigner.ShowDialog();
+            if (lResult == DialogResult.OK)
+            {
+                AddNode(lFunctionDesigner.FunctionNode, mMousePositionOnContext);
             }
         }
     }    

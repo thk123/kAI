@@ -49,6 +49,10 @@ namespace kAI.Editor.Controls.WinForms.PropertyEditor
             mPortDirectionDropdown.Items.AddRange(new object[] { kAIPort.ePortDirection.PortDirection_In, kAIPort.ePortDirection.PortDirection_Out });
             
             mPortTypeDropdown.Items.Add(kAIPortType.TriggerType);
+            foreach (Type lType in lProject.ProjectTypes)
+            {
+                mPortTypeDropdown.Items.Add(new kAIPortType(lType));
+            }
 
             if (lPort != null)
             {
@@ -78,12 +82,27 @@ namespace kAI.Editor.Controls.WinForms.PropertyEditor
             // apply to the port
             if (Port == null)
             {
-                Port = new kAIPort(mPortIDTextBox.Text, (kAIPort.ePortDirection)mPortDirectionDropdown.SelectedItem, (kAIPortType)mPortTypeDropdown.SelectedItem);
+                if ((kAIPortType)mPortTypeDropdown.SelectedItem == kAIPortType.TriggerType)
+                {
+                    Port = new kAITriggerPort(mPortIDTextBox.Text, (kAIPort.ePortDirection)mPortDirectionDropdown.SelectedItem);
+                }
+                else
+                {
+                    Port = kAIDataPort.CreateDataPort((kAIPortType)mPortTypeDropdown.SelectedItem, mPortIDTextBox.Text, (kAIPort.ePortDirection)mPortDirectionDropdown.SelectedItem);
+                }
+                
             }
             else
             {
                 // TODO: modify ports!                
-                Port = new kAIPort(mPortIDTextBox.Text, (kAIPort.ePortDirection)mPortDirectionDropdown.SelectedItem, (kAIPortType)mPortTypeDropdown.SelectedItem);
+                if ((kAIPortType)mPortTypeDropdown.SelectedItem == kAIPortType.TriggerType)
+                {
+                    Port = new kAITriggerPort(mPortIDTextBox.Text, (kAIPort.ePortDirection)mPortDirectionDropdown.SelectedItem);
+                }
+                else
+                {
+                    Port = kAIDataPort.CreateDataPort((kAIPortType)mPortTypeDropdown.SelectedItem, mPortIDTextBox.Text, (kAIPort.ePortDirection)mPortDirectionDropdown.SelectedItem);
+                }
             }
 
         }

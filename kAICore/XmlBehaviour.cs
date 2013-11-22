@@ -252,11 +252,11 @@ namespace kAI.Core
             kAIRelativeObject.AddPathID(XmlLocationID, XmlLocation.GetFile().Directory);
 
             // Create the internal ports 
-            kAIPort lOnActivatePort = new kAIPort(kOnActivatePortID, kAIPort.ePortDirection.PortDirection_Out, kAIPortType.TriggerType, lLogger);
+            kAITriggerPort lOnActivatePort = new kAITriggerPort(kOnActivatePortID, kAIPort.ePortDirection.PortDirection_Out, lLogger);
             AddInternalPort(lOnActivatePort, false);
 
-            kAIPort lDeactivatePort = new kAIPort(kDeactivatePortID, kAIPort.ePortDirection.PortDirection_In, kAIPortType.TriggerType, lLogger);
-            lDeactivatePort.OnTriggered += new kAIPort.TriggerEvent(lDeactivatePort_OnTriggered);
+            kAITriggerPort lDeactivatePort = new kAITriggerPort(kDeactivatePortID, kAIPort.ePortDirection.PortDirection_In, lLogger);
+            lDeactivatePort.OnTriggered += new kAITriggerPort.TriggerEvent(lDeactivatePort_OnTriggered);
             AddInternalPort(lDeactivatePort, false);
         }
 
@@ -526,22 +526,31 @@ namespace kAI.Core
 
                 if (lInternalPort.IsGloballyAccesible)
                 {
-                    kAIPort lExternalPort = new kAIPort(lPortToAdd.PortID, lPortToAdd.PortDirection.OppositeDirection(), lPortToAdd.DataType);
+                    kAIPort lExternalPort = lPortToAdd.CreateOppositePort();
 
-                    // Trigger the internal port if our direction is in
-                    if (lExternalPort.PortDirection == kAIPort.ePortDirection.PortDirection_In)
+                    if(lExternalPort is kAITriggerPort)
                     {
-                        lExternalPort.OnTriggered += (lSender) =>
-                            {
-                                mInternalPorts[lSender.PortID].Port.Trigger();
-                            };
+                        kAITriggerPort lExternalTrigger = lExternalPort as kAITriggerPort;
+                        // Trigger the internal port if our direction is in
+                        if (lExternalPort.PortDirection == kAIPort.ePortDirection.PortDirection_In)
+                        {
+                            lExternalTrigger.OnTriggered += (lSender) =>
+                                {
+                                    ((kAITriggerPort)mInternalPorts[lSender.PortID].Port).Trigger();
+                                };
+                        }
+                        else // The external port in an outward port, so should be trigger when the internal port is
+                        {
+                            lExternalTrigger.OnTriggered += (lSender) =>
+                                {
+                                    ((kAITriggerPort)GetPort(lSender.PortID)).Trigger();
+                                };
+                        }
                     }
-                    else // The external port in an outward port, so should be trigger when the internal port is
+                    else
                     {
-                        lPortToAdd.OnTriggered += (lSender) =>
-                            {
-                                GetPort(lSender.PortID).Trigger();
-                            };
+                        kAIDataPort lExternalDataPort = lExternalPort as kAIDataPort;
+                        lExternalDataPort.BindPorts((kAIDataPort)lPortToAdd);
                     }
 
                     AddExternalPort(lExternalPort);
@@ -696,7 +705,7 @@ namespace kAI.Core
         {
             base.OnActivate();
             // Trigger the activate port. 
-            mInternalPorts[kOnActivatePortID].Port.Trigger();
+            ((kAITriggerPort)mInternalPorts[kOnActivatePortID].Port).Trigger();
         }
 
         /// <summary>

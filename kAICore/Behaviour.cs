@@ -27,14 +27,12 @@ namespace kAI.Core
     /// <summary>
     /// Represents a kAIBehaviour (can be code or XML). 
     /// </summary>
-    public abstract class kAIBehaviour : kAIObject, kAIINodeObject
+    public abstract class kAIBehaviour : kAINodeObject
     {
         //External port IDs
         private readonly kAIPortID kActivatePortID = "Activate";
         private readonly kAIPortID kDeactivatePortID = "Deactivate";
         private readonly kAIPortID kOnDeactivatePortID = "OnDeactivated";
-
-        Dictionary<kAIPortID, kAIPort> mExternalPorts;
 
         bool mActive;
 
@@ -47,17 +45,6 @@ namespace kAI.Core
         {
             get;
             private set;
-        }
-
-        /// <summary>
-        /// The list of externally connectible ports. 
-        /// </summary>
-        public IEnumerable<kAIPort> GlobalPorts
-        {
-            get
-            {
-                return mExternalPorts.Values;
-            }
         }
 
         /// <summary>
@@ -101,20 +88,18 @@ namespace kAI.Core
         {
             BehaviourID = GetType().Name;
 
-            mExternalPorts = new Dictionary<kAIPortID, kAIPort>();            
-
             // Add external ports 
-            kAIPort lActivatePort = new kAIPort(kActivatePortID, kAIPort.ePortDirection.PortDirection_In, kAIPortType.TriggerType);
-            lActivatePort.OnTriggered += new kAIPort.TriggerEvent(lActivatePort_OnTriggered);
+            kAITriggerPort lActivatePort = new kAITriggerPort(kActivatePortID, kAIPort.ePortDirection.PortDirection_In);
+            lActivatePort.OnTriggered += new kAITriggerPort.TriggerEvent(lActivatePort_OnTriggered);
             AddExternalPort(lActivatePort);
 
             // External port for telling this node it is now inactive
-            kAIPort lDeactivatePort = new kAIPort(kDeactivatePortID, kAIPort.ePortDirection.PortDirection_In, kAIPortType.TriggerType);
-            lDeactivatePort.OnTriggered += new kAIPort.TriggerEvent(lDeactivatePort_OnTriggered);
+            kAITriggerPort lDeactivatePort = new kAITriggerPort(kDeactivatePortID, kAIPort.ePortDirection.PortDirection_In);
+            lDeactivatePort.OnTriggered += new kAITriggerPort.TriggerEvent(lDeactivatePort_OnTriggered);
             AddExternalPort(lDeactivatePort);
 
             // External port for when the contents of this node wants to deactivate this node. 
-            kAIPort lOnDeactivatedPort = new kAIPort(kOnDeactivatePortID, kAIPort.ePortDirection.PortDirection_Out, kAIPortType.TriggerType);
+            kAITriggerPort lOnDeactivatedPort = new kAITriggerPort(kOnDeactivatePortID, kAIPort.ePortDirection.PortDirection_Out);
             AddExternalPort(lOnDeactivatedPort);
 
             mActive = false;
@@ -132,41 +117,12 @@ namespace kAI.Core
         }
 
         /// <summary>
-        /// Add a globally accessible port to this behaviour.
-        /// </summary>
-        /// <param name="lNewPort">The new port to add. </param>
-        /// <exception cref="kAIBehaviourPortAlreadyExistsException">
-        /// If a port with the same PortID already exists in this behaviour.
-        /// </exception>
-        protected void AddExternalPort(kAIPort lNewPort)
-        {
-            if (!mExternalPorts.ContainsKey(lNewPort.PortID))
-            {
-                mExternalPorts.Add(lNewPort.PortID, lNewPort);
-            }
-            else
-            {
-                ThrowException(new kAIBehaviourPortAlreadyExistsException(this, lNewPort, mExternalPorts[lNewPort.PortID]));
-            }
-        }
-
-        /// <summary>
-        /// Gets a externally accesible port by name. 
-        /// </summary>
-        /// <param name="lPortID">The ID of the port. </param>
-        /// <returns>Returns the port if it exists. </returns>
-        public kAIPort GetPort(kAIPortID lPortID)
-        {
-            return mExternalPorts[lPortID];
-        }
-
-        /// <summary>
         /// Should be used if this behaviour is not contained within another behaviour as 
         /// these can behave a little differently. 
         /// </summary>
         public void SetGlobal()
         {
-            foreach (kAIPort lExternalPort in mExternalPorts.Values)
+            foreach (kAIPort lExternalPort in GlobalPorts)
             {
                 lExternalPort.OwningBehaviour = null;
             }
@@ -178,7 +134,7 @@ namespace kAI.Core
         /// <returns>The external port to activate this behaviour. </returns>
         public void ForceActivation()
         {
-            mExternalPorts[kActivatePortID].Trigger();
+            ((kAITriggerPort)GetPort(kActivatePortID)).Trigger();
             //mExternalPorts[kActivatePortID].Release();
         }
 
@@ -188,17 +144,9 @@ namespace kAI.Core
         /// <returns>The external port to deactivate this behaviour. </returns>
         public void ForceDeactivate()
         {
-            mExternalPorts[kDeactivatePortID].Trigger();
-            //mExternalPorts[kDeactivatePortID].Release();
-        }
 
-        /// <summary>
-        /// The list of externally connectible ports. 
-        /// </summary>
-        /// <returns>A list of ports that can be connected to externally. </returns>
-        public IEnumerable<kAIPort> GetExternalPorts()
-        {
-            return GlobalPorts;
+            ((kAITriggerPort)GetPort(kDeactivatePortID)).Trigger();
+            //mExternalPorts[kDeactivatePortID].Release();
         }
 
         /// <summary>
@@ -206,7 +154,7 @@ namespace kAI.Core
         /// </summary>
         /// <param name="lDeltaTime">The time in seconds that has passed since the last frame. </param>
         /// <param name="lUserData">The user data. </param>
-        public void Update(float lDeltaTime, object lUserData)
+        public override void Update(float lDeltaTime, object lUserData)
         {
             if (Active)
             {
@@ -223,7 +171,7 @@ namespace kAI.Core
             }
             else if (mWasActive) // just been deactivated so we trigger the OnDeactivated Port
             {
-                GetPort(kOnDeactivatePortID).Trigger();
+                ((kAITriggerPort)GetPort(kOnDeactivatePortID)).Trigger();
                 mWasActive = false;
             }
         }
@@ -274,26 +222,10 @@ namespace kAI.Core
         }
 
         /// <summary>
-        /// Get the data required to turn this object into an XML structure. 
-        /// </summary>
-        /// <param name="lOwningBehaviour">
-        /// The XML Behaviour this node serial object is in. 
-        /// Can be null if we are serialising the node for the project.
-        /// </param>
-        /// <returns>The serialised version of this object, wrt being inside lOwningBehaviour</returns>
-        public abstract kAIINodeSerialObject GetDataContractClass(kAIXmlBehaviour lOwningBehaviour);
-
-        /// <summary>
-        /// Gets the type of object returned in <see cref="GetDataContractClass"/>.
-        /// </summary>
-        /// <returns>The type of the serialiable used in this behaviour.</returns>
-        public abstract Type GetDataContractType();
-
-        /// <summary>
         /// Gets the name nodes should be based off. 
         /// </summary>
         /// <returns>The behaviour id. </returns>
-        public string GetNameTemplate()
+        public override string GetNameTemplate()
         {
             return BehaviourID;
         }

@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Reflection;
+using System.Runtime.Serialization;
+
 
 namespace kAI.Core
 {
@@ -53,6 +56,98 @@ namespace kAI.Core
         public static T GetValueOrDefault<T>(this T lObject, T lDefault) where T : class
         {
             return lObject != null ? lObject : lDefault;
+        }
+
+        /// <summary>
+        /// Gets a default(T) for a specific T
+        /// </summary>
+        /// <param name="lObjectType">The type of this object. </param>
+        /// <returns>The default value for this object. </returns>
+        public static object GetDefault(this Type lObjectType)
+        {
+            if (lObjectType.IsValueType)
+            {
+                return Activator.CreateInstance(lObjectType);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        /// <summary>
+        /// Compare two enumerable sources and check they match at every element and in size. 
+        /// </summary>
+        /// <typeparam name="T">The type of element. </typeparam>
+        /// <param name="lListA">The first source. </param>
+        /// <param name="lListB">The second source. </param>
+        /// <param name="lComparer">Optionally, the comparision between 2 objects to use. If none specified, will use T.Equals</param>
+        /// <returns>True if the sources contain the same number of elements and each element matches</returns>
+        public static bool DoMatch<T>(this IEnumerable<T> lListA, IEnumerable<T> lListB, Func<T, T, bool> lComparer = null)
+        {
+            if (lComparer == null)
+            {
+                lComparer = (lA, lB) => { return lA.Equals(lB); };
+            }
+
+
+            IEnumerator<T> lEnumeratorA = lListA.GetEnumerator();
+            IEnumerator<T> lEnumeratorB = lListB.GetEnumerator();
+
+            while (lEnumeratorA.MoveNext() & lEnumeratorB.MoveNext())
+            {
+                if (!lComparer(lEnumeratorA.Current, lEnumeratorB.Current))
+                {
+                    return false;
+                }
+            }
+
+            bool lAFinished = !lEnumeratorA.MoveNext();
+            bool lBFinished = !lEnumeratorB.MoveNext();
+
+            // If both lists are finished, we matched both of them correctly.
+            return lAFinished && lBFinished;
+
+        }
+    }
+
+    /// <summary>
+    /// A serialisation of System.Type. 
+    /// </summary>
+    [DataContract()]
+    public class SerialType
+    {
+        /// <summary>
+        /// The decleraing type of the function. 
+        /// </summary>
+        [DataMember()]
+        public string TypeName;
+
+        /// <summary>
+        /// The assembly of the declaring type of the function.
+        /// </summary>
+        [DataMember()]
+        public string AssemblyName;
+
+        /// <summary>
+        /// Create a serial representation of a given type. 
+        /// </summary>
+        /// <param name="lType">The type to serailse. </param>
+        public SerialType(Type lType)
+        {
+            TypeName = lType.FullName;
+            AssemblyName = lType.Assembly.GetName().Name;
+        }
+
+        /// <summary>
+        /// Get the type that is serialised in this. 
+        /// </summary>
+        /// <param name="lAssemblyResolver">The method to use to resolve assembly names. </param>
+        /// <returns>The type represented by this serialisation. </returns>
+        public Type Instantiate(kAIXmlBehaviour.GetAssemblyByName lAssemblyResolver)
+        {
+            Assembly lFunctionAssembly = lAssemblyResolver(AssemblyName);
+            return lFunctionAssembly.GetType(TypeName);
         }
     }
 }
