@@ -17,6 +17,8 @@ public class AIController : MonoBehaviour {
 	bool wasSwingingSword = false;
 	
 	public float lowHealthThreshhold = 25.0f;
+
+	kAIDataPort lHealthPort;
 	
 	// Use this for initialization
 	void Start () {
@@ -28,6 +30,8 @@ public class AIController : MonoBehaviour {
 //		aiInterface.GetPort("SwingSword").OnTriggered += SwingSword_OnTriggerered;
 		
 		aiInterface.SetData<GameObject>("Target", enemy);
+
+		lHealthPort = (kAIDataPort)aiInterface.GetPort ("CharHealth");
 	}
 	
 	void SwingSword_OnTriggerered(kAIPort lSender)
@@ -62,14 +66,7 @@ public class AIController : MonoBehaviour {
 			
 		}*/
 		
-		if(health.CurrentHealth < lowHealthThreshhold)
-		{
-			aiInterface.TriggerPort("LowHealth");	
-		}
-		else
-		{
-			aiInterface.TriggerPort("NotLowHealth");	
-		}
+		lHealthPort.SetData(health.CurrentHealth);
 	}
 }
 

@@ -35,6 +35,48 @@
         <NodeID>AIIdleBehaviour</NodeID>
       </EndNodeID>
       <EndPortID>
+        <PortID>Deactivate</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>IfLessThan</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>OnBecomeTrue</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>AIRunAwayBehaviour</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Deactivate</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>IfLessThan</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>OnBecomeFalse</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>IfLessThan</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>entry2</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>HealthThreshold</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>Value</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>AIIdleBehaviour</NodeID>
+      </EndNodeID>
+      <EndPortID>
         <PortID>Activate</PortID>
       </EndPortID>
       <StartNodeID>
@@ -105,34 +147,6 @@
         <NodeID>AIIdleBehaviour</NodeID>
       </EndNodeID>
       <EndPortID>
-        <PortID>Deactivate</PortID>
-      </EndPortID>
-      <StartNodeID>
-        <NodeID>InvalidNode</NodeID>
-      </StartNodeID>
-      <StartPortID>
-        <PortID>LowHealth</PortID>
-      </StartPortID>
-    </kAIXmlBehaviour.InternalXml.SerialConnexion>
-    <kAIXmlBehaviour.InternalXml.SerialConnexion>
-      <EndNodeID>
-        <NodeID>AIRunAwayBehaviour</NodeID>
-      </EndNodeID>
-      <EndPortID>
-        <PortID>Deactivate</PortID>
-      </EndPortID>
-      <StartNodeID>
-        <NodeID>InvalidNode</NodeID>
-      </StartNodeID>
-      <StartPortID>
-        <PortID>NotLowHealth</PortID>
-      </StartPortID>
-    </kAIXmlBehaviour.InternalXml.SerialConnexion>
-    <kAIXmlBehaviour.InternalXml.SerialConnexion>
-      <EndNodeID>
-        <NodeID>AIIdleBehaviour</NodeID>
-      </EndNodeID>
-      <EndPortID>
         <PortID>Target</PortID>
       </EndPortID>
       <StartNodeID>
@@ -140,6 +154,20 @@
       </StartNodeID>
       <StartPortID>
         <PortID>Target</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>IfLessThan</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>entry1</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>InvalidNode</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>CharHealth</PortID>
       </StartPortID>
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
   </InternalConnexions>
@@ -192,6 +220,49 @@
       <NodeSerialAssembly>kAICore</NodeSerialAssembly>
       <NodeSerialType>kAI.Core.kAIXmlBehaviour+SerialObject</NodeSerialType>
       <NodeType>kAI.Core.kAIXmlBehaviour</NodeType>
+      <NodeTypeAssembly>kAICore</NodeTypeAssembly>
+    </kAIXmlBehaviour.InternalXml.SerialNode>
+    <kAIXmlBehaviour.InternalXml.SerialNode>
+      <NodeContents i:type="kAIFunctionNode.SerialObject">
+        <AssemblyName>kAICore</AssemblyName>
+        <FunctionConfiguraion>
+          <GenericConfiguration>
+            <SerialType>
+              <AssemblyName>mscorlib</AssemblyName>
+              <TypeName>System.Single</TypeName>
+            </SerialType>
+          </GenericConfiguration>
+          <ReturnConfiguration>
+            <PropertyEnabled xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+              <d7p1:boolean>false</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
+              <d7p1:boolean>true</d7p1:boolean>
+              <d7p1:boolean>true</d7p1:boolean>
+            </PropertyEnabled>
+          </ReturnConfiguration>
+        </FunctionConfiguraion>
+        <MethodName>IfLessThan</MethodName>
+        <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+      </NodeContents>
+      <NodeID>
+        <NodeID>IfLessThan</NodeID>
+      </NodeID>
+      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
+      <NodeSerialType>kAI.Core.kAIFunctionNode+SerialObject</NodeSerialType>
+      <NodeType>kAI.Core.kAIFunctionNode</NodeType>
+      <NodeTypeAssembly>kAICore</NodeTypeAssembly>
+    </kAIXmlBehaviour.InternalXml.SerialNode>
+    <kAIXmlBehaviour.InternalXml.SerialNode>
+      <NodeContents i:type="kAIConstantFloatNode.SerialObject">
+        <Value>50</Value>
+      </NodeContents>
+      <NodeID>
+        <NodeID>HealthThreshold</NodeID>
+      </NodeID>
+      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
+      <NodeSerialType>kAI.Core.kAIConstantFloatNode+SerialObject</NodeSerialType>
+      <NodeType>kAI.Core.kAIConstantFloatNode</NodeType>
       <NodeTypeAssembly>kAICore</NodeTypeAssembly>
     </kAIXmlBehaviour.InternalXml.SerialNode>
   </InternalNodes>
@@ -254,26 +325,18 @@
     </kAIXmlBehaviour.InternalXml.SerialPort>
     <kAIXmlBehaviour.InternalXml.SerialPort>
       <IsGloballyAccesible>true</IsGloballyAccesible>
-      <PortDataType>System.Boolean</PortDataType>
-      <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
-      <PortDirection>PortDirection_Out</PortDirection>
-      <PortID>LowHealth</PortID>
-      <PortIsTrigger>true</PortIsTrigger>
-    </kAIXmlBehaviour.InternalXml.SerialPort>
-    <kAIXmlBehaviour.InternalXml.SerialPort>
-      <IsGloballyAccesible>true</IsGloballyAccesible>
-      <PortDataType>System.Boolean</PortDataType>
-      <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
-      <PortDirection>PortDirection_Out</PortDirection>
-      <PortID>NotLowHealth</PortID>
-      <PortIsTrigger>true</PortIsTrigger>
-    </kAIXmlBehaviour.InternalXml.SerialPort>
-    <kAIXmlBehaviour.InternalXml.SerialPort>
-      <IsGloballyAccesible>true</IsGloballyAccesible>
       <PortDataType>UnityEngine.GameObject</PortDataType>
       <PortDataTypeAssembly>UnityEngine</PortDataTypeAssembly>
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>Target</PortID>
+      <PortIsTrigger>false</PortIsTrigger>
+    </kAIXmlBehaviour.InternalXml.SerialPort>
+    <kAIXmlBehaviour.InternalXml.SerialPort>
+      <IsGloballyAccesible>true</IsGloballyAccesible>
+      <PortDataType>System.Single</PortDataType>
+      <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
+      <PortDirection>PortDirection_Out</PortDirection>
+      <PortID>CharHealth</PortID>
       <PortIsTrigger>false</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
   </InternalPorts>

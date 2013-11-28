@@ -238,20 +238,39 @@ namespace kAI.Core
     /// </summary>
     static class kAIFunctionNodes
     {
-        public static bool IfEquals<T>(T lA, T lB)
+        public static bool IfEquals<T>(T entry1, T entry2)
         {
-            return (lA == null && lB == null ) || lA.Equals(lB);
+            return (entry1 == null && entry2 == null ) || entry1.Equals(entry2);
+        }
+
+        [StaticConstraint(StaticConstraint.StaticConstraintType.eConstraint_Comparable)]
+        public static bool IfLessThan<T>(T entry1, T entry2)
+        {
+            return Operator.LessThan<T>(entry1, entry2);
+        }
+
+        [StaticConstraint(StaticConstraint.StaticConstraintType.eConstraint_Comparable)]
+        public static bool IfGreaterThan<T>(T entry1, T entry2)
+        {
+            return Operator.GreaterThan<T>(entry1, entry2);
+        }
+
+        [StaticConstraint(StaticConstraint.StaticConstraintType.eConstraint_Comparable)]
+        public static bool IfLessThanOrEqual<T>(T entry1, T entry2)
+        {
+            return Operator.LessThanOrEqual<T>(entry1, entry2);
+        }
+
+        [StaticConstraint(StaticConstraint.StaticConstraintType.eConstraint_Comparable)]
+        public static bool IfGreaterThanOrEqual<T>(T entry1, T entry2)
+        {
+            return Operator.GreaterThanOrEqual<T>(entry1, entry2);
         }
 
         [StaticConstraint(StaticConstraint.StaticConstraintType.eConstraint_Plus)]
-        public static T Sum<T>(T A, T B)
+        public static T Sum<T>(T entry1, T entry2)
         {
-            return Operator.Add<T>(A, B);
-        }
-
-        public static string Print<T, U>(T lOne, U lTwo)
-        {
-            return lOne.ToString() + lTwo.ToString();
+            return Operator.Add<T>(entry1, entry2);
         }
     }
 
@@ -337,7 +356,7 @@ namespace kAI.Core
             /// </summary>
             /// <param name="lType">The type of things to add. </param>
             /// <returns>A method description for the lType+lType. </returns>
-            public static MethodDescription PlusOperator(Type lType)
+            public static MethodDescription[] PlusOperator(Type lType)
             {
                 MethodDescription lPlusOp = new MethodDescription();
                 lPlusOp.mMethodName = "op_Addition";
@@ -346,7 +365,49 @@ namespace kAI.Core
 
                 lPlusOp.mSpecialCases = new List<Type>();
                 lPlusOp.mSpecialCases.AddRange(GetPrimitiveTypes());
-                return lPlusOp;
+                return new[] { lPlusOp };
+            }
+
+            /// <summary>
+            /// Create a method description for operator-
+            /// </summary>
+            /// <param name="lType">The type of things to add. </param>
+            /// <returns>A method description for the lType+lType. </returns>
+            public static MethodDescription[] MinusOperator(Type lType)
+            {
+                MethodDescription lSubOp = new MethodDescription();
+                lSubOp.mMethodName = "op_Subtraction";
+                lSubOp.mParameters = new List<Type>(new Type[] { lType, lType });
+                lSubOp.mReturnType = lType;
+
+                lSubOp.mSpecialCases = new List<Type>();
+                lSubOp.mSpecialCases.AddRange(GetNumericalPrimitives());
+                return new[] { lSubOp };
+            }
+
+            /// <summary>
+            /// Create a method description for operator-
+            /// </summary>
+            /// <param name="lType">The type of things to add. </param>
+            /// <returns>A method description for the lType+lType. </returns>
+            public static MethodDescription[] ComparableOperators(Type lType)
+            {
+                MethodDescription lLessThanOp = new MethodDescription();
+                lLessThanOp.mMethodName = "op_LessThan";
+                lLessThanOp.mParameters = new List<Type>(new Type[] { lType, lType });
+                lLessThanOp.mReturnType = lType;
+
+                lLessThanOp.mSpecialCases = new List<Type>();
+                lLessThanOp.mSpecialCases.AddRange(GetNumericalPrimitives());
+
+                MethodDescription lGreaterThanOp = new MethodDescription();
+                lGreaterThanOp.mMethodName = "op_GreaterThan";
+                lGreaterThanOp.mParameters = new List<Type>(new Type[] { lType, lType });
+                lGreaterThanOp.mReturnType = lType;
+
+                lGreaterThanOp.mSpecialCases = new List<Type>();
+                lGreaterThanOp.mSpecialCases.AddRange(GetNumericalPrimitives());
+                return new[] { lLessThanOp, lGreaterThanOp };
             }
 
             /// <summary>
@@ -355,12 +416,22 @@ namespace kAI.Core
             /// <returns>All the primitve data types that can be added etc. </returns>
             static IEnumerable<Type> GetPrimitiveTypes()
             {
+                return GetNumericalPrimitives().Concat(GetNonNumericalPrimitves());
+            }
+
+            static IEnumerable<Type> GetNonNumericalPrimitves()
+            {
+                yield return typeof(char);
+                yield return typeof(string);
+            }
+            
+            static IEnumerable<Type> GetNumericalPrimitives()
+            {
                 yield return typeof(int);
                 yield return typeof(float);
                 yield return typeof(long);
                 yield return typeof(uint);
                 yield return typeof(double);
-                yield return typeof(string);
                 yield return typeof(byte);
                 yield return typeof(short);
                 yield return typeof(ushort);
@@ -375,7 +446,15 @@ namespace kAI.Core
             /// <summary>
             /// Should have operator+
             /// </summary>
-            eConstraint_Plus
+            eConstraint_Plus,
+            /// <summary>
+            /// Should have operator-
+            /// </summary>
+            eConstraint_Minus,
+            /// <summary>
+            /// Should have less than and greater than
+            /// </summary>
+            eConstraint_Comparable,
         }
 
         /// <summary>
@@ -395,18 +474,20 @@ namespace kAI.Core
         /// <returns>True if the type is a suitable type for the specified generic parameter. </returns>
         public bool MatchesConstraint(int lGenericParamIndex, Type lParameterType)
         {
-            MethodDescription lDescription = sStaticMethods[Constraints[lGenericParamIndex]](lParameterType);
-            return lDescription.DoesTypeHaveMethodMatch(lParameterType);
+            MethodDescription[] lDescription = sStaticMethods[Constraints[lGenericParamIndex]](lParameterType);
+            return lDescription.All((lMethodDesc) => { return lMethodDesc.DoesTypeHaveMethodMatch(lParameterType); });
         }
 
 
         // Create the dictionary of MethodDescriptions for each constraint type. 
-        static Dictionary<StaticConstraintType, Func<Type, MethodDescription>> sStaticMethods;
+        static Dictionary<StaticConstraintType, Func<Type, MethodDescription[]>> sStaticMethods;
 
         static StaticConstraint()
         {
-            sStaticMethods = new Dictionary<StaticConstraintType,  Func<Type, MethodDescription>>();
-            sStaticMethods.Add(StaticConstraintType.eConstraint_Plus, MethodDescription.PlusOperator);
+            sStaticMethods = new Dictionary<StaticConstraintType,  Func<Type, MethodDescription[]>>();
+            sStaticMethods.Add(StaticConstraintType.eConstraint_Plus, MethodDescription.PlusOperator );
+            sStaticMethods.Add(StaticConstraintType.eConstraint_Minus, MethodDescription.MinusOperator);
+            sStaticMethods.Add(StaticConstraintType.eConstraint_Comparable, MethodDescription.ComparableOperators);
         }
         
     }

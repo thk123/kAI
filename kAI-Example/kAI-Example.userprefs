@@ -1,19 +1,13 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="MonoDevelop.Default" />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Unity Behaviours\SwordController.cs">
+  <MonoDevelop.Ide.Workspace />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Unity Behaviours\AIController.cs">
     <Files>
-      <File FileName="Assets\Unity Behaviours\PlayerController.cs" Line="1" Column="1" />
-      <File FileName="..\..\..\Unity\TheUnsatiableHunger\Assets\Scripts\DraggableBox.cs" Line="105" Column="8" />
-      <File FileName="..\..\..\Unity\TheUnsatiableHunger\Assets\Scripts\TriggerVolume.cs" Line="1" Column="1" />
-      <File FileName="..\..\..\Unity\TheUnsatiableHunger\Assets\Scripts\ScoreManager.cs" Line="1" Column="1" />
-      <File FileName="Assets\Unity Behaviours\SwordController.cs" Line="30" Column="2" />
+      <File FileName="Assets\Unity Behaviours\AIController.cs" Line="69" Column="45" />
+      <File FileName="Assets\Unity Behaviours\kAIUnityBehaviour.cs" Line="91" Column="2" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore>
-      <Breakpoint file="E:\dev\Unity\TheUnsatiableHunger\Assets\Scripts\DraggableBox.cs" line="95" />
-      <Breakpoint file="E:\dev\Unity\TheUnsatiableHunger\Assets\Scripts\DraggableBox.cs" line="120" />
-    </BreakpointStore>
+    <BreakpointStore />
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>
