@@ -358,29 +358,6 @@ namespace kAI.Editor.Core
         }
 
         /// <summary>
-        /// Performs load operations on the project (eg the DLLs).
-        /// </summary>
-        private void Load()
-        {
-            foreach (kAIRelativePath lDLLPath in ProjectDllPaths)
-            {
-                LoadDLL(lDLLPath);
-            }
-
-            foreach (kAIRelativePath lRefdDllPath in this.mAdditionalDllPaths.Values)
-            {
-                LoadDLL(lRefdDllPath);
-            }
-            /*foreach (kAIBehaviourTemplate lTemplate in NodeObjects.Values)
-            {
-                if (lTemplate.BehaviourFlavour == eBehaviourFlavour.BehaviourFlavour_Code)
-                {
-                    lTemplate.SetType(this);
-                }
-            }*/
-        }
-
-        /// <summary>
         /// Load a specific DLL. 
         /// </summary>
         /// <param name="lDLLPath">The path of the DLL to load. </param>
@@ -480,11 +457,8 @@ namespace kAI.Editor.Core
         /// <returns>The loaded assembly at that position. </returns>
         private Assembly LoadAssemblyFromFilePath(kAIRelativePath lDllPath)
         {
-            FileStream lDLLStream = lDllPath.GetFile().OpenRead();
-            byte[] lDLLArray = new byte[lDLLStream.Length];
-            lDLLStream.Read(lDLLArray, 0, (int)lDLLStream.Length);
-            lDLLStream.Close();
-            Assembly lLoadedAssembly = Assembly.Load(lDLLArray);
+            // Load using standard assembly load to ensure assembly image is all correct etc.
+            Assembly lLoadedAssembly = Assembly.LoadFrom(lDllPath.GetFile().FullName);
 
             // Force the loading of the dll
             lLoadedAssembly.GetExportedTypes();
@@ -516,12 +490,10 @@ namespace kAI.Editor.Core
             DataContractSerializer lDeserialiser = new DataContractSerializer(typeof(kAIProject), kAINode.NodeSerialTypes);
             FileStream lStream = lProjectXml.OpenRead();
             kAIProject lNewProject = (kAIProject)lDeserialiser.ReadObject(lStream);
-            lNewProject.ProjectDLLs = new List<Assembly>();
 
             lStream.Close();
 
             lNewProject.Init(lProjectXml);
-            lNewProject.Load();
 
             return lNewProject;
         }

@@ -127,9 +127,9 @@ namespace kAI.Core
                 }
                 else
                 {
-                    foreach (kAIDataPort lConnectedPorts in mConnectingPorts.Values.Cast<kAIDataPort>())
+                    foreach (kAIDataPort<T> lConnectedPorts in mConnectingPorts.Values.Cast<kAIDataPort<T>>())
                     {
-                        lConnectedPorts.SetData(value);
+                        lConnectedPorts.Data = value;
                     }
                 }
 
@@ -213,9 +213,9 @@ namespace kAI.Core
 
             if (PortDirection == kAIPort.ePortDirection.PortDirection_Out)
             {
-                kAIDataPort lOtherEndCast = lOtherEnd as kAIDataPort;
+                kAIDataPort<T> lOtherEndCast = (kAIDataPort<T>)lOtherEnd;
                 Assert(lOtherEndCast, "Invalid port being connected to");
-                lOtherEndCast.SetData(Data);
+                lOtherEndCast.Data = Data;
             }
         }
 
