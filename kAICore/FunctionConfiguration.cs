@@ -239,6 +239,12 @@ namespace kAI.Core
                 public kAIReturnConfiguration.SerialObject ReturnConfiguration;
 
                 /// <summary>
+                /// Is the first parameter of the function the pointer passed in the update. 
+                /// </summary>
+                [DataMember()]
+                public bool IsFirstParameterSelf;
+
+                /// <summary>
                 /// Create a Serialised version of the specified function configuration. 
                 /// </summary>
                 /// <param name="lConfig">The configuration to serailise. </param>
@@ -254,6 +260,8 @@ namespace kAI.Core
                     }
 
                     ReturnConfiguration = new kAIReturnConfiguration.SerialObject(lConfig.ReturnConfiguration);
+
+                    IsFirstParameterSelf = lConfig.FirstParameterSelf;
                 }
 
                 /// <summary>
@@ -270,7 +278,7 @@ namespace kAI.Core
                     return new kAIFunctionConfiguration(lFunction, GenericConfiguration.Select<SerialType, Type>((lType) =>
                         {
                             return lType.Instantiate(lAssemblyResolver);
-                        }), ReturnConfiguration, lAssemblyResolver);
+                        }), IsFirstParameterSelf, ReturnConfiguration, lAssemblyResolver);
                 }
             }
 
@@ -291,6 +299,15 @@ namespace kAI.Core
             /// of type U. 
             /// </summary>
             List<int>[] mGenericMappings;
+
+            /// <summary>
+            /// Is the first parameter of the function the pointer passed in the update. 
+            /// </summary>
+            public bool FirstParameterSelf
+            {
+                get;
+                set;
+            }
             
             /// <summary>
             /// The return configuration of this function configuration. 
@@ -354,14 +371,17 @@ namespace kAI.Core
                 {
                     // We store each of the generic arguments
                     mGenericTypes = lMethod.GetGenericArguments();
+                }
+                else
+                {
+                    mGenericTypes = Type.EmptyTypes;
+                }
 
-                    // Create a mapping from each of the generic arguments to all the parameters that correspond to
-                    mGenericMappings = new List<int>[mGenericTypes.Length];
-                    for (int i = 0; i < mGenericTypes.Length; ++i)
-                    {
-                        mGenericMappings[i] = new List<int>();
-                    }
-
+                // Create a mapping from each of the generic arguments to all the parameters that correspond to
+                mGenericMappings = new List<int>[mGenericTypes.Length];
+                for (int i = 0; i < mGenericTypes.Length; ++i)
+                {
+                    mGenericMappings[i] = new List<int>();
                 }
 
                 // Store each of the parameter types for this configuration
@@ -392,13 +412,15 @@ namespace kAI.Core
 
                 ReturnConfiguration = new kAIReturnConfiguration(lMethod.ReturnType);
 
+                FirstParameterSelf = false;
+
                 if (IsConfigured && OnConfigured != null)
                 {
                     OnConfigured(this, new EventArgs());
                 }
             }
 
-            private kAIFunctionConfiguration(MethodInfo lMethod, IEnumerable<Type> lConfiguredTypes, kAIReturnConfiguration.SerialObject lReturnConfig, kAIXmlBehaviour.GetAssemblyByName lAssemblyResolver)
+            private kAIFunctionConfiguration(MethodInfo lMethod, IEnumerable<Type> lConfiguredTypes, bool lIsFirstParamSelf, kAIReturnConfiguration.SerialObject lReturnConfig, kAIXmlBehaviour.GetAssemblyByName lAssemblyResolver)
                 :this(lMethod)
             {
                 int lGenParamIndex = 0;
@@ -408,7 +430,9 @@ namespace kAI.Core
                     ++lGenParamIndex;
                 }
 
-                ReturnConfiguration = lReturnConfig.Instantiate(ReturnConfiguration.ReturnType, lAssemblyResolver);                   
+                ReturnConfiguration = lReturnConfig.Instantiate(ReturnConfiguration.ReturnType, lAssemblyResolver);
+
+                FirstParameterSelf = lIsFirstParamSelf;
 
                 Assert(null, IsConfigured, "Loaded an in-complete configuration");
             }

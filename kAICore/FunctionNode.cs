@@ -122,6 +122,12 @@ namespace kAI.Core
             int lParamIndex = 0;
             foreach (ParameterInfo lParam in lBaseMethod.GetParameters())
             {
+                if (lParamIndex == 0 && lConfig.FirstParameterSelf)
+                {
+                    ++lParamIndex;
+                    continue;
+                }
+
                 if (lParam.IsOut || lParam.ParameterType.IsByRef)
                 {
                     throw new NotImplementedException("Methods cannot currently have out or ref parameters");
@@ -149,8 +155,14 @@ namespace kAI.Core
                 lOperandPort = kAIDataPort.CreateDataPort(lBaseMethod.DeclaringType, "Executor", kAIPort.ePortDirection.PortDirection_In);
                 AddExternalPort(lOperandPort);
             }
-
-            mMethod = lBaseMethod.MakeGenericMethod(lConfig.GenericTypes);
+            if (lBaseMethod.IsGenericMethod)
+            {
+                mMethod = lBaseMethod.MakeGenericMethod(lConfig.GenericTypes);
+            }
+            else
+            {
+                mMethod = lBaseMethod;
+            }
             mConfig = lConfig;
         }
 
@@ -189,9 +201,22 @@ namespace kAI.Core
         /// <param name="lUserData">The user data. </param>
         public override void Update(float lDeltaTime, object lUserData)
         {
-            object[] lParams = new object[lInParameters.Count + lOutParameters.Count];
+            int lParamCount = lInParameters.Count + lOutParameters.Count;
+            if (mConfig.FirstParameterSelf)
+            {
+                ++lParamCount;
+            }
+
+            object[] lParams = new object[lParamCount];
 
             int i = 0;
+
+            if (mConfig.FirstParameterSelf)
+            {
+                lParams[i] = lUserData;
+                ++i;
+            }
+
             foreach(kAIDataPort lInParamPort in lInParameters)
             {
                 lParams[i] = lInParamPort.GetData();

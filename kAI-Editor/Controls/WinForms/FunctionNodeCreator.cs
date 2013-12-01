@@ -112,6 +112,8 @@ namespace kAI.Editor.Controls.WinForms
                 lComboBox.SelectedValueChanged += new EventHandler(lComboBox_SelectedValueChanged);
                 ++lGenericParamIndex;
             }
+
+            mFirstParamSelf.Checked = mConfig.FirstParameterSelf;
         }
 
         void SetUpReturnsBox(kAIFunctionNode.kAIFunctionConfiguration.kAIReturnConfiguration lReturnConfig)
@@ -184,6 +186,11 @@ namespace kAI.Editor.Controls.WinForms
         private void mCreateBtn_Click(object sender, EventArgs e)
         {
             FunctionNode = new kAIFunctionNode(mSelectedMethod, mConfig);
+        }
+
+        private void mFirstParamSelf_CheckStateChanged(object sender, EventArgs e)
+        {
+            mConfig.FirstParameterSelf = mFirstParamSelf.Checked;
         }
     }
 
