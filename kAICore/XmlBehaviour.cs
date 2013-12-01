@@ -564,19 +564,29 @@ namespace kAI.Core
         }
 
         /// <summary>
-        /// Gets an port belonging to this behaviour. 
+        /// Gets a port belonging to this behaviour. 
         /// </summary>
         /// <param name="lPortID">The ID of the port. </param>
         /// <param name="lNodeID">The node the port belongs to, invalid id if an internal port. </param>
         /// <returns>The port matching lNodeID:lPortID</returns>
         public kAIPort GetInternalPort(kAIPortID lPortID, kAINodeID lNodeID)
         {
+            return GetInternalPort(new kAIFQPortID(lNodeID, lPortID));
+        }
+
+        /// <summary>
+        /// Gets a port belonging to this behaviour. 
+        /// </summary>
+        /// <param name="lPortID">The fully qualified port id. </param>
+        /// <returns></returns>
+        public kAIPort GetInternalPort(kAIFQPortID lPortID)
+        {
             // Is the start node ID a real node.
-            if (lNodeID == kAINodeID.InvalidNodeID)
+            if (lPortID.NodeID == kAINodeID.InvalidNodeID)
             {
-                if (mInternalPorts.ContainsKey(lPortID))
+                if (mInternalPorts.ContainsKey(lPortID.PortID))
                 {
-                    return mInternalPorts[lPortID].Port;
+                    return mInternalPorts[lPortID.PortID].Port;
                 }
                 else
                 {
@@ -585,18 +595,18 @@ namespace kAI.Core
             }
             else // The start node is invalid, so is a global port. 
             {
-                if (mInternalNodes.ContainsKey(lNodeID))
+                if (mInternalNodes.ContainsKey(lPortID.NodeID))
                 {
-                    kAINode lStartNode = mInternalNodes[lNodeID];
+                    kAINode lStartNode = mInternalNodes[lPortID.NodeID];
 
                     Assert(lStartNode);
 
                     // TODO: Need a method to just get a port from the dictionary
-                    return lStartNode.GetExternalPorts().First((lPort) => { return lPort.PortID == lPortID; });
+                    return lStartNode.GetExternalPorts().First((lPort) => { return lPort.PortID == lPortID.PortID; });
                 }
                 else
                 {
-                    throw new Exception("Could not find node " + lNodeID);
+                    throw new Exception("Could not find node " + lPortID.NodeID);
                 }
             }
         }
