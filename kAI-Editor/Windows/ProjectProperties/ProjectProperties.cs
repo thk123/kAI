@@ -113,7 +113,7 @@ namespace kAI.Editor.Forms.ProjectProperties
                 }
             }
 
-            Project.Save();
+            Project.Save(null);
 
             DialogResult = DialogResult.OK;
         }
