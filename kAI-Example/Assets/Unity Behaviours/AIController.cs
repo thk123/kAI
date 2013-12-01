@@ -42,12 +42,12 @@ public class AIController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(wasSwingingSword && !swordController.swordSwinging)
+		/*if(wasSwingingSword && !swordController.swordSwinging)
 		{
 			aiInterface.TriggerPort("SwordSwingFinished");
-		}
+		}*/
 		
-		if((enemy.transform.position - transform.position).sqrMagnitude < 2 * 2)
+		/*if((enemy.transform.position - transform.position).sqrMagnitude < 2 * 2)
 		{
 			aiInterface.TriggerPort("PlayerNear");	
 		}
@@ -55,7 +55,7 @@ public class AIController : MonoBehaviour {
 		if((enemy.transform.position - transform.position).sqrMagnitude > 5 * 5)
 		{
 			aiInterface.TriggerPort("PlayerNotNear");	
-		}
+		}*/
 		/*else
 		{
 			
@@ -67,6 +67,11 @@ public class AIController : MonoBehaviour {
 		}*/
 		
 		lHealthPort.SetData(health.CurrentHealth);
+	}
+
+	public GameObject GetTarget()
+	{
+		return enemy;
 	}
 }
 
@@ -108,6 +113,11 @@ public class SwordSwingAction : kAICodeBehaviour
 				}
 			}
 		}
+	}
+
+	public static bool IsGameObjectNear(GameObject me, GameObject lOtherObject, float lDist)
+	{
+		return (me.transform.position - lOtherObject.transform.position).sqrMagnitude <= (lDist * lDist);
 	}
 }
 
@@ -214,4 +224,7 @@ public class MoveAction : kAICodeBehaviour
 			}
 		}
 	}
+
 }
+
+

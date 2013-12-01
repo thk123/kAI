@@ -7,6 +7,48 @@
         <NodeID>MoveAction</NodeID>
       </EndNodeID>
       <EndPortID>
+        <PortID>MoveRight</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>IsGameObjectNear</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>OnBecomeTrue</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>MoveAction</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>StopMoving</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>IsGameObjectNear</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>OnBecomeFalse</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>IsGameObjectNear</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>lDist</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>DistanceToStop</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>Value</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>MoveAction</NodeID>
+      </EndNodeID>
+      <EndPortID>
         <PortID>Activate</PortID>
       </EndPortID>
       <StartNodeID>
@@ -32,30 +74,16 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
-        <NodeID>MoveAction</NodeID>
+        <NodeID>IsGameObjectNear</NodeID>
       </EndNodeID>
       <EndPortID>
-        <PortID>StopMoving</PortID>
+        <PortID>lOtherObject</PortID>
       </EndPortID>
       <StartNodeID>
         <NodeID>InvalidNode</NodeID>
       </StartNodeID>
       <StartPortID>
-        <PortID>PlayerNotNear</PortID>
-      </StartPortID>
-    </kAIXmlBehaviour.InternalXml.SerialConnexion>
-    <kAIXmlBehaviour.InternalXml.SerialConnexion>
-      <EndNodeID>
-        <NodeID>MoveAction</NodeID>
-      </EndNodeID>
-      <EndPortID>
-        <PortID>MoveRight</PortID>
-      </EndPortID>
-      <StartNodeID>
-        <NodeID>InvalidNode</NodeID>
-      </StartNodeID>
-      <StartPortID>
-        <PortID>PlayerNear</PortID>
+        <PortID>Target</PortID>
       </StartPortID>
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
   </InternalConnexions>
@@ -73,6 +101,45 @@
       <NodeSerialType>kAI.Core.kAICodeBehaviour+SerialObject</NodeSerialType>
       <NodeType>MoveAction</NodeType>
       <NodeTypeAssembly>Assembly-CSharp</NodeTypeAssembly>
+    </kAIXmlBehaviour.InternalXml.SerialNode>
+    <kAIXmlBehaviour.InternalXml.SerialNode>
+      <NodeContents i:type="kAIFunctionNode.SerialObject">
+        <AssemblyName>Assembly-CSharp</AssemblyName>
+        <FunctionConfiguraion>
+          <GenericConfiguration />
+          <IsFirstParameterSelf>true</IsFirstParameterSelf>
+          <ReturnConfiguration>
+            <PropertyEnabled xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+              <d7p1:boolean>false</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
+              <d7p1:boolean>true</d7p1:boolean>
+              <d7p1:boolean>true</d7p1:boolean>
+            </PropertyEnabled>
+          </ReturnConfiguration>
+        </FunctionConfiguraion>
+        <MethodName>IsGameObjectNear</MethodName>
+        <TypeName>SwordSwingAction</TypeName>
+      </NodeContents>
+      <NodeID>
+        <NodeID>IsGameObjectNear</NodeID>
+      </NodeID>
+      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
+      <NodeSerialType>kAI.Core.kAIFunctionNode+SerialObject</NodeSerialType>
+      <NodeType>kAI.Core.kAIFunctionNode</NodeType>
+      <NodeTypeAssembly>kAICore</NodeTypeAssembly>
+    </kAIXmlBehaviour.InternalXml.SerialNode>
+    <kAIXmlBehaviour.InternalXml.SerialNode>
+      <NodeContents i:type="kAIConstantFloatNode.SerialObject">
+        <Value>5</Value>
+      </NodeContents>
+      <NodeID>
+        <NodeID>DistanceToStop</NodeID>
+      </NodeID>
+      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
+      <NodeSerialType>kAI.Core.kAIConstantFloatNode+SerialObject</NodeSerialType>
+      <NodeType>kAI.Core.kAIConstantFloatNode</NodeType>
+      <NodeTypeAssembly>kAICore</NodeTypeAssembly>
     </kAIXmlBehaviour.InternalXml.SerialNode>
   </InternalNodes>
   <InternalPorts>
@@ -107,6 +174,14 @@
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>PlayerNear</PortID>
       <PortIsTrigger>true</PortIsTrigger>
+    </kAIXmlBehaviour.InternalXml.SerialPort>
+    <kAIXmlBehaviour.InternalXml.SerialPort>
+      <IsGloballyAccesible>true</IsGloballyAccesible>
+      <PortDataType>UnityEngine.GameObject</PortDataType>
+      <PortDataTypeAssembly>UnityEngine</PortDataTypeAssembly>
+      <PortDirection>PortDirection_Out</PortDirection>
+      <PortID>Target</PortID>
+      <PortIsTrigger>false</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
   </InternalPorts>
 </kAIXmlBehaviour>

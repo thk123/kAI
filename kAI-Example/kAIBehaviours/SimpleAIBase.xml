@@ -74,6 +74,34 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
+        <NodeID>SwordSwingAction</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Activate</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>IsGameObjectNear</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>OnTrue</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>IsGameObjectNear</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>lDist</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>ConstantSingle</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>Value</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
         <NodeID>AIIdleBehaviour</NodeID>
       </EndNodeID>
       <EndPortID>
@@ -88,63 +116,35 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
-        <NodeID>SwordSwingAction</NodeID>
+        <NodeID>AIIdleBehaviour</NodeID>
       </EndNodeID>
       <EndPortID>
-        <PortID>Activate</PortID>
+        <PortID>Target</PortID>
       </EndPortID>
       <StartNodeID>
         <NodeID>InvalidNode</NodeID>
       </StartNodeID>
       <StartPortID>
-        <PortID>PlayerNear</PortID>
+        <PortID>Target</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>IsGameObjectNear</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>lOtherObject</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>InvalidNode</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>Target</PortID>
       </StartPortID>
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
         <NodeID>AIRunAwayBehaviour</NodeID>
-      </EndNodeID>
-      <EndPortID>
-        <PortID>PlayerNear</PortID>
-      </EndPortID>
-      <StartNodeID>
-        <NodeID>InvalidNode</NodeID>
-      </StartNodeID>
-      <StartPortID>
-        <PortID>PlayerNear</PortID>
-      </StartPortID>
-    </kAIXmlBehaviour.InternalXml.SerialConnexion>
-    <kAIXmlBehaviour.InternalXml.SerialConnexion>
-      <EndNodeID>
-        <NodeID>AIRunAwayBehaviour</NodeID>
-      </EndNodeID>
-      <EndPortID>
-        <PortID>PlayerNotNear</PortID>
-      </EndPortID>
-      <StartNodeID>
-        <NodeID>InvalidNode</NodeID>
-      </StartNodeID>
-      <StartPortID>
-        <PortID>PlayerNotNear</PortID>
-      </StartPortID>
-    </kAIXmlBehaviour.InternalXml.SerialConnexion>
-    <kAIXmlBehaviour.InternalXml.SerialConnexion>
-      <EndNodeID>
-        <NodeID>AIIdleBehaviour</NodeID>
-      </EndNodeID>
-      <EndPortID>
-        <PortID>PlayerBehind</PortID>
-      </EndPortID>
-      <StartNodeID>
-        <NodeID>InvalidNode</NodeID>
-      </StartNodeID>
-      <StartPortID>
-        <PortID>PlayerBehind</PortID>
-      </StartPortID>
-    </kAIXmlBehaviour.InternalXml.SerialConnexion>
-    <kAIXmlBehaviour.InternalXml.SerialConnexion>
-      <EndNodeID>
-        <NodeID>AIIdleBehaviour</NodeID>
       </EndNodeID>
       <EndPortID>
         <PortID>Target</PortID>
@@ -232,6 +232,7 @@
               <TypeName>System.Single</TypeName>
             </SerialType>
           </GenericConfiguration>
+          <IsFirstParameterSelf>false</IsFirstParameterSelf>
           <ReturnConfiguration>
             <PropertyEnabled xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
               <d7p1:boolean>false</d7p1:boolean>
@@ -259,6 +260,45 @@
       </NodeContents>
       <NodeID>
         <NodeID>HealthThreshold</NodeID>
+      </NodeID>
+      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
+      <NodeSerialType>kAI.Core.kAIConstantFloatNode+SerialObject</NodeSerialType>
+      <NodeType>kAI.Core.kAIConstantFloatNode</NodeType>
+      <NodeTypeAssembly>kAICore</NodeTypeAssembly>
+    </kAIXmlBehaviour.InternalXml.SerialNode>
+    <kAIXmlBehaviour.InternalXml.SerialNode>
+      <NodeContents i:type="kAIFunctionNode.SerialObject">
+        <AssemblyName>Assembly-CSharp</AssemblyName>
+        <FunctionConfiguraion>
+          <GenericConfiguration />
+          <IsFirstParameterSelf>true</IsFirstParameterSelf>
+          <ReturnConfiguration>
+            <PropertyEnabled xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+              <d7p1:boolean>false</d7p1:boolean>
+              <d7p1:boolean>true</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
+            </PropertyEnabled>
+          </ReturnConfiguration>
+        </FunctionConfiguraion>
+        <MethodName>IsGameObjectNear</MethodName>
+        <TypeName>SwordSwingAction</TypeName>
+      </NodeContents>
+      <NodeID>
+        <NodeID>IsGameObjectNear</NodeID>
+      </NodeID>
+      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
+      <NodeSerialType>kAI.Core.kAIFunctionNode+SerialObject</NodeSerialType>
+      <NodeType>kAI.Core.kAIFunctionNode</NodeType>
+      <NodeTypeAssembly>kAICore</NodeTypeAssembly>
+    </kAIXmlBehaviour.InternalXml.SerialNode>
+    <kAIXmlBehaviour.InternalXml.SerialNode>
+      <NodeContents i:type="kAIConstantFloatNode.SerialObject">
+        <Value>5</Value>
+      </NodeContents>
+      <NodeID>
+        <NodeID>ConstantSingle</NodeID>
       </NodeID>
       <NodeSerialAssembly>kAICore</NodeSerialAssembly>
       <NodeSerialType>kAI.Core.kAIConstantFloatNode+SerialObject</NodeSerialType>
@@ -296,31 +336,7 @@
       <PortDataType>System.Boolean</PortDataType>
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_Out</PortDirection>
-      <PortID>SwordSwingFinished</PortID>
-      <PortIsTrigger>true</PortIsTrigger>
-    </kAIXmlBehaviour.InternalXml.SerialPort>
-    <kAIXmlBehaviour.InternalXml.SerialPort>
-      <IsGloballyAccesible>true</IsGloballyAccesible>
-      <PortDataType>System.Boolean</PortDataType>
-      <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
-      <PortDirection>PortDirection_Out</PortDirection>
       <PortID>PlayerNear</PortID>
-      <PortIsTrigger>true</PortIsTrigger>
-    </kAIXmlBehaviour.InternalXml.SerialPort>
-    <kAIXmlBehaviour.InternalXml.SerialPort>
-      <IsGloballyAccesible>true</IsGloballyAccesible>
-      <PortDataType>System.Boolean</PortDataType>
-      <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
-      <PortDirection>PortDirection_Out</PortDirection>
-      <PortID>PlayerNotNear</PortID>
-      <PortIsTrigger>true</PortIsTrigger>
-    </kAIXmlBehaviour.InternalXml.SerialPort>
-    <kAIXmlBehaviour.InternalXml.SerialPort>
-      <IsGloballyAccesible>true</IsGloballyAccesible>
-      <PortDataType>System.Boolean</PortDataType>
-      <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
-      <PortDirection>PortDirection_Out</PortDirection>
-      <PortID>PlayerBehind</PortID>
       <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
     <kAIXmlBehaviour.InternalXml.SerialPort>
