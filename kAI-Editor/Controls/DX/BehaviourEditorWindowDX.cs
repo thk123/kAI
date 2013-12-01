@@ -389,8 +389,11 @@ namespace kAI.Editor.Controls.DX
             mNodes.Add(lNewNode);
         }
 
-        
-
+        /// <summary>
+        /// Add a node to the render of the behaviour. 
+        /// </summary>
+        /// <param name="lNode"></param>
+        /// <param name="lPoint"></param>
         public void AddNode(kAI.Core.kAINode lNode, Point lPoint)
         {
             AddNode(lNode, new kAIAbsolutePosition(new kAIRelativePosition(lPoint), mCameraPosition, false));
@@ -461,6 +464,28 @@ namespace kAI.Editor.Controls.DX
         public void RemoveInternalPort(kAIPort lPort)
         {
             //throw new NotImplementedException();
+        }
+
+        /// <summary>
+        /// Gets the absolute positions of each of the nodes. 
+        /// </summary>
+        /// <returns>A enumeration of each of the node's IDs and its absolute position. </returns>
+        public IEnumerable<Tuple<kAINodeID, kAIAbsolutePosition>> GetNodePositions()
+        {
+            foreach (kAIEditorNodeDX lEdiorNode in mNodes)
+            {
+                yield return new Tuple<kAINodeID, kAIAbsolutePosition>(lEdiorNode.Node.NodeID, lEdiorNode.Position);
+            }
+        }
+
+        /// <summary>
+        /// Sets the position of a specific node. 
+        /// </summary>
+        /// <param name="lNodeID">The node id to position. </param>
+        /// <param name="lPoint">The absolute position where the node should be positioned. </param>
+        public void SetNodePosition(kAINodeID lNodeID, kAIAbsolutePosition lPoint)
+        {
+            GetNode(lNodeID).SetPosition(lPoint);
         }
 
         /// <summary>
@@ -665,9 +690,14 @@ namespace kAI.Editor.Controls.DX
 
         private kAIEditorNodeDX GetNode(kAINode lNode)
         {
+            return GetNode(lNode.NodeID);
+        }
+
+        private kAIEditorNodeDX GetNode(kAINodeID lNodeID)
+        {
             foreach (kAIEditorNodeDX lEditorNode in mNodes)
             {
-                if (lEditorNode.Node.NodeID == lNode.NodeID)
+                if (lEditorNode.Node.NodeID == lNodeID)
                 {
                     return lEditorNode;
                 }

@@ -52,13 +52,33 @@ namespace kAI.Editor.Controls.DX
             private set;
         }
 
+        kAIAbsolutePosition mPosition;
+
         /// <summary>
         /// The position of the node in absolute pixels. 
         /// </summary>
         public kAIAbsolutePosition Position
         {
-            get;
-            private set;
+            get
+            {
+                return mPosition;
+            }
+            private set
+            {
+                // We store the old position
+                Point lOldPoint = mPosition.mPoint;
+                mPosition = value;
+
+                // Work out the delta between the two points
+                int lDX = mPosition.mPoint.X - lOldPoint.X;
+                int lDY = mPosition.mPoint.Y - lOldPoint.Y;
+
+                // And use these to move the ports accordingly. 
+                foreach (kAIEditorPortDX lExternalPort in mExternalPorts)
+                {
+                    lExternalPort.UpdatePosition(lDX, lDY);
+                }
+            }
         }
 
         /// <summary>
@@ -84,7 +104,7 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lEditorWindow">The editor window this node belongs to. </param>
         public kAIEditorNodeDX(kAINode lNode, kAIAbsolutePosition lPoint, kAIAbsoluteSize lSize, kAIBehaviourEditorWindowDX lEditorWindow)
         {
-            Position = lPoint;
+            mPosition = lPoint;
             Size = lSize;
             Node = lNode;
             mBeingDragged = false;
@@ -247,6 +267,12 @@ namespace kAI.Editor.Controls.DX
             return null;
         }
 
+        public void SetPosition(kAIAbsolutePosition lAbsolutePosition)
+        {
+            Position = lAbsolutePosition;
+            FinalisePosition();
+        }
+
         void OnMouseDown(object sender, MouseEventArgs e)
         {
             if (!mBeingDragged && mEditorWindow.CanDrag())
@@ -278,6 +304,15 @@ namespace kAI.Editor.Controls.DX
             mEditorWindow.InputManager.OnMouseMove -= InputManager_OnMouseMove;
             mEditorWindow.InputManager.OnMouseUp -= InputManager_OnMouseUp;
 
+            FinalisePosition();
+
+            mBeingDragged = false;
+
+            mEditorWindow.StopDrag();
+        }
+
+        void FinalisePosition()
+        {
             // Remove the old rectangle. 
             kAIMouseEventResponders lResponder = mEditorWindow.InputManager.RemoveClickListenArea(mAddedRectangle, false);
             kAIObject.Assert(null, lResponder, "Could not find node!");
@@ -294,30 +329,16 @@ namespace kAI.Editor.Controls.DX
 
             // Since we have moved some ports we may need to recalculate the lines used to represent the connexions. 
             mEditorWindow.InvalidateConnexionPositions();
-
-            mBeingDragged = false;
-
-            mEditorWindow.StopDrag();
         }
 
         void InputManager_OnMouseMove(object sender, MouseEventArgs e)
         {
-            // We store the old position
-            Point lOldPoint = Position.mPoint;
 
             // Update the position to the location of the mouse
             kAIRelativePosition lRelativePosition = new kAIRelativePosition(e.Location);
             Position = new kAIAbsolutePosition(lRelativePosition, mEditorWindow.CameraPosition, false);
 
-            // Work out the delta between the two points
-            int lDX = Position.mPoint.X - lOldPoint.X;
-            int lDY = Position.mPoint.Y - lOldPoint.Y;
             
-            // And use these to move the ports accordingly. 
-            foreach (kAIEditorPortDX lExternalPort in mExternalPorts)
-            {
-                lExternalPort.UpdatePosition(lDX, lDY);
-            }
         }
 
         void lDeleteNode_Click(object sender, EventArgs e)

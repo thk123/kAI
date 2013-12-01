@@ -146,6 +146,7 @@
     </Compile>
     <Compile Include="Core\ConsoleLogger.cs" />
     <Compile Include="Core\InteractionTerminal.cs" />
+    <Compile Include="Core\XmlBehaviourMetaSaveFile.cs" />
     <Compile Include="ObjectProperties\ConnexionProperties.cs" />
     <Compile Include="ObjectProperties\ConstantProperties.cs" />
     <Compile Include="ObjectProperties\IPropertyEntry.cs" />
