@@ -535,21 +535,33 @@ namespace kAI.Editor.Controls.DX
         public void Destroy()
         {
             TextRenderer.Dispose();
+            TextRenderer = null;
+
             SpriteRenderer.Dispose();
+            SpriteRenderer = null;
 
             for (eTextureID lTexture = (eTextureID)0; lTexture < eTextureID.TextureCount; ++lTexture)
             {
                 mTextures[(int)lTexture].Resource.Dispose();
                 mTextures[(int)lTexture].Dispose();
             }
+            mTextures = null;
+
             mRenderTarget.Dispose();
+            mRenderTarget = null;
 
             vertexShader.Dispose();
+            vertexShader = null;
+
             pixelShader.Dispose();
+            pixelShader = null;
 
             mContext.Device.Dispose();
             mSwapChain.Dispose();
+            mSwapChain = null;
+
             mContext.Dispose();
+            mContext = null;
         }
 
         private void LineRender()

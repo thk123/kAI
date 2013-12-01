@@ -218,5 +218,10 @@ namespace kAI.Editor.Core
             return true;
         }
 
+        public static void Deinit()
+        {
+            mBehaviour = null;
+        }
+
     }
 }

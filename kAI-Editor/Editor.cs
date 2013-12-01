@@ -106,6 +106,41 @@ namespace kAI.Editor
             MainEditor.Panel1.Controls.Add(mBehaviourTree);
         }
 
+        private void LoadBehaviour(kAIXmlBehaviour lBehaviour)
+        {
+            CreateBehaviourEditorWindow();
+            mBehaviourEditor.LoadBehaviour(lBehaviour);
+            SetEnabledSetControls(mBehaviourLoadedControls, true);
+
+            kAIInteractionTerminal.Init(lBehaviour);
+        }
+
+        private void UnloadBehaviour()
+        {
+            mBehaviourEditor.UnloadBehaviour();
+            DestroyBehaviourEditorWindow();
+            SetEnabledSetControls(mBehaviourLoadedControls, false);
+
+            kAIInteractionTerminal.Deinit();
+        }
+
+        /// <summary>
+        /// Close the currently open project. 
+        /// </summary>
+        private void CloseProject()
+        {
+            System.Diagnostics.Debug.Assert(mLoadedProject != null);
+
+            UnloadBehaviour();
+
+            MainEditor.Panel1.Controls.Clear();
+
+            SetEnabledSetControls(mProjectLoadedControls, false);
+
+            mLoadedProject = null;
+
+        }
+
         void mBehaviourTree_OnBehaviourDoubleClick(kAIINodeSerialObject lObject)
         {
             // If it was a kAI-Behaviour, we load it.
@@ -116,29 +151,9 @@ namespace kAI.Editor
             
         }
 
-        private void LoadBehaviour(kAIXmlBehaviour lBehaviour)
-        {
-            CreateBehaviourEditorWindow();
-            mBehaviourEditor.LoadBehaviour(lBehaviour);
-            SetEnabledSetControls(mBehaviourLoadedControls, true);
+        
 
-            kAIInteractionTerminal.Init(lBehaviour);
-        }
-
-        /// <summary>
-        /// Close the currently open project. 
-        /// </summary>
-        private void CloseProject()
-        {
-            System.Diagnostics.Debug.Assert(mLoadedProject != null);
-
-            DestroyBehaviourEditorWindow();
-
-            mLoadedProject = null;
-
-            SetEnabledSetControls(mBehaviourLoadedControls, false);
-            SetEnabledSetControls(mProjectLoadedControls, false);
-        }
+        
 
         /// <summary>
         /// Either enable or disable all the project controls (eg controls that only make sense when a project is open). 
@@ -165,7 +180,10 @@ namespace kAI.Editor
 
                 mBehaviourEditor.ObjectSelected += new Action<kAI.Editor.ObjectProperties.kAIIPropertyEntry>(mBehaviourEditor_ObjectSelected);
 
-                mBehaviourEditor.Init(splitContainer1.Panel1);
+                Control lEditorControl = new Control();
+                lEditorControl.Dock = DockStyle.Fill;
+                splitContainer1.Panel1.Controls.Add(lEditorControl);
+                mBehaviourEditor.Init(lEditorControl);
                 
                 CreatePropertiesWindow();
             }
@@ -194,6 +212,8 @@ namespace kAI.Editor
             if (mBehaviourEditor != null)
             {
                 mBehaviourEditor.Destroy();
+                mBehaviourEditor = null;
+                splitContainer1.Panel1.Controls.Clear();
             }
 
             SetEnabledSetControls(mBehaviourLoadedControls, false);
@@ -244,9 +264,31 @@ namespace kAI.Editor
             lOpenDialog.Filter = "kAI Project Files |*." + kAIProject.kProjectFileExtension;
             if (lOpenDialog.ShowDialog() == DialogResult.OK)
             {
-                kAIProject lProject = kAIProject.Load(new FileInfo(lOpenDialog.FileName));
+                kAIBehaviourID lBehaviourToLoad;
+                kAIProject lProject = kAIProject.Load(new FileInfo(lOpenDialog.FileName), out lBehaviourToLoad);
 
                 LoadProject(lProject);
+
+                if (lBehaviourToLoad != null)
+                {
+                    try
+                    {
+                        kAIINodeSerialObject lNodeObject = lProject.NodeObjects[lBehaviourToLoad];
+
+                        if(lNodeObject.GetNodeFlavour() == eNodeFlavour.BehaviourXml)
+                        {
+                            LoadBehaviour(kAIXmlBehaviour.Load(lNodeObject, lProject.GetAssemblyByName));
+                        }
+                        else
+                        {
+                            kAIObject.GlobalLogger.LogWarning("The last loaded behaviour is now somehow not an XML behaviour. ");
+                        }
+                    }
+                    catch (KeyNotFoundException)
+                    {
+                    	kAIObject.GlobalLogger.LogWarning("Could not find behaviour that was loaded. ");
+                    }
+                }
             }
         }
 
@@ -343,7 +385,8 @@ namespace kAI.Editor
 
         private void saveProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            mLoadedProject.Save();
+
+            mLoadedProject.Save(mBehaviourEditor.Behaviour.BehaviourID);
         }
 
         private void Editor_FormClosed(object sender, FormClosedEventArgs e)
