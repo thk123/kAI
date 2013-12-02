@@ -73,6 +73,7 @@ namespace kAI.Editor
 
             kAIObject.GlobalLogger = uiLogger1;
             kAIObject.GlobalLogger.LogMessage("kAI Editor loaded");
+            GlobalServices.Logger = uiLogger1;
         }
 
         /// <summary>
@@ -104,6 +105,8 @@ namespace kAI.Editor
             mBehaviourTree.Dock = DockStyle.Fill;
             mBehaviourTree.OnBehaviourDoubleClick += new BehaviourTree.NodeEvent(mBehaviourTree_OnBehaviourDoubleClick);
             MainEditor.Panel1.Controls.Add(mBehaviourTree);
+
+            GlobalServices.LoadedProject = mLoadedProject;
         }
 
         private void LoadBehaviour(kAIXmlBehaviour lBehaviour)
@@ -138,7 +141,7 @@ namespace kAI.Editor
             SetEnabledSetControls(mProjectLoadedControls, false);
 
             mLoadedProject = null;
-
+            GlobalServices.LoadedProject = null;
         }
 
         void mBehaviourTree_OnBehaviourDoubleClick(kAIINodeSerialObject lObject)

@@ -145,6 +145,7 @@
       <DependentUpon>XmlBehaviourPropertiesEditor.cs</DependentUpon>
     </Compile>
     <Compile Include="Core\ConsoleLogger.cs" />
+    <Compile Include="Core\GlobalServices.cs" />
     <Compile Include="Core\InteractionTerminal.cs" />
     <Compile Include="Core\Project.MetaSave.cs" />
     <Compile Include="Core\XmlBehaviourMetaSaveFile.cs" />

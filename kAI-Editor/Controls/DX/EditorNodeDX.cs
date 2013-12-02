@@ -12,6 +12,7 @@ using kAI.Editor.Controls.DX.Coordinates;
 using SlimDX;
 using SpriteTextRenderer;
 using SlimDX.Direct3D11;
+using kAI.Editor.Core;
 
 
 namespace kAI.Editor.Controls.DX
@@ -133,6 +134,7 @@ namespace kAI.Editor.Controls.DX
                 {
                     OnMouseDown = OnMouseDown,
                     OnMouseClick = OnMouseClick,
+                    OnMouseDoubleClick = OnMouseDoubleClick,
                     ContextMenu = new ContextMenu(new MenuItem[] { lDeleteNode }),
                     RectangleId = Node.NodeID
                 },
@@ -295,11 +297,27 @@ namespace kAI.Editor.Controls.DX
             }
         }
 
+        void OnMouseDoubleClick(object sender, MouseEventArgs e)
+        {
+            // If it was a kAI-Behaviour, we load it.
+            kAIINodeSerialObject lObject = Node.GetNodeSerialisableContent(null);
+            
+            if (lObject.GetNodeFlavour() == eNodeFlavour.BehaviourXml)
+            {
+                mEditorWindow.Editor.LoadBehaviour(kAIXmlBehaviour.Load(lObject, GlobalServices.LoadedProject.GetAssemblyByName));
+            }
+        }
+
+        void InputManager_OnMouseMove(object sender, MouseEventArgs e)
+        {
+            // Update the position to the location of the mouse
+            kAIRelativePosition lRelativePosition = new kAIRelativePosition(e.Location);
+            Position = new kAIAbsolutePosition(lRelativePosition, mEditorWindow.CameraPosition, false);
+        }
 
         void InputManager_OnMouseUp(object sender, MouseEventArgs e)
         {
             kAIObject.Assert(null, mBeingDragged, "Stopping dragging an object that wasn't being dragged");
-
             // We have finished dragging so we stop listenign to these events. 
             mEditorWindow.InputManager.OnMouseMove -= InputManager_OnMouseMove;
             mEditorWindow.InputManager.OnMouseUp -= InputManager_OnMouseUp;
@@ -313,33 +331,29 @@ namespace kAI.Editor.Controls.DX
 
         void FinalisePosition()
         {
-            // Remove the old rectangle. 
-            kAIMouseEventResponders lResponder = mEditorWindow.InputManager.RemoveClickListenArea(mAddedRectangle, false);
-            kAIObject.Assert(null, lResponder, "Could not find node!");
-
-            // Create and add the new rectangle. 
-            mAddedRectangle = new Rectangle(Position.mPoint, Size.mSize);
-            mEditorWindow.InputManager.AddClickListenArea(mAddedRectangle, lResponder, false);
-
-            // Tell the ports we are done moving (so they can remove their old rectangles and add the new ones). 
-            foreach (kAIEditorPortDX lExternalPort in mExternalPorts)
+            Rectangle lNewRectanlge = new Rectangle(Position.mPoint, Size.mSize);
+            if(mAddedRectangle != lNewRectanlge)
             {
-                lExternalPort.FinalisePosition();
+                // Remove the old rectangle. 
+                kAIMouseEventResponders lResponder = mEditorWindow.InputManager.RemoveClickListenArea(mAddedRectangle, false);
+                kAIObject.Assert(null, lResponder, "Could not find node!");
+
+                // Create and add the new rectangle. 
+                mAddedRectangle = lNewRectanlge;
+                mEditorWindow.InputManager.AddClickListenArea(mAddedRectangle, lResponder, false);
+
+                // Tell the ports we are done moving (so they can remove their old rectangles and add the new ones). 
+                foreach (kAIEditorPortDX lExternalPort in mExternalPorts)
+                {
+                    lExternalPort.FinalisePosition();
+                }
+
+                // Since we have moved some ports we may need to recalculate the lines used to represent the connexions. 
+                mEditorWindow.InvalidateConnexionPositions();
             }
-
-            // Since we have moved some ports we may need to recalculate the lines used to represent the connexions. 
-            mEditorWindow.InvalidateConnexionPositions();
         }
 
-        void InputManager_OnMouseMove(object sender, MouseEventArgs e)
-        {
 
-            // Update the position to the location of the mouse
-            kAIRelativePosition lRelativePosition = new kAIRelativePosition(e.Location);
-            Position = new kAIAbsolutePosition(lRelativePosition, mEditorWindow.CameraPosition, false);
-
-            
-        }
 
         void lDeleteNode_Click(object sender, EventArgs e)
         {
