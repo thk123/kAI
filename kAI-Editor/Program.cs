@@ -18,8 +18,9 @@ namespace kAI.Editor
         /// The main entry point for the application.
         /// </summary>
         [STAThread]
-        static void Main()
+        static void Main(string[] args)
         {
+            CommandLineHandler.ProcessCommands(args);
             //kAIObject.GlobalLogger = ConsoleLogger.Get();
             ConsoleLogger.Get().LogMessage("kAI Editor starting");
 

@@ -109,6 +109,40 @@ namespace kAI.Core
             return lAFinished && lBFinished;
 
         }
+
+        /// <summary>
+        /// Check whether a given enum has a given flag. 
+        /// </summary>
+        /// <param name="lType">The enum to check. </param>
+        /// <param name="lFlagToCheck">The flag to check. </param>
+        /// <returns>True if the flag is enabled. </returns>
+        public static bool HasFlag<T>(this T lType, T lFlagToCheck) where T : IConvertible
+        {
+            int aValue = Convert.ToInt32(lType);
+            int bValue = Convert.ToInt32(lFlagToCheck);
+
+            return (aValue & bValue) > 0;
+        }
+
+        /// <summary>
+        /// Get a list of the flags enabled in this enum. 
+        /// </summary>
+        /// <param name="lType">The enum to check. </param>
+        /// <returns>An array of each of the flags that are enabled. </returns>
+        public static T[] GetAsFlags<T>(this T lType) where T : IConvertible
+        {
+            List<T> lConstraints = new List<T>();
+            foreach (T lConstraint in Enum.GetValues(lType.GetType()))
+            {
+                if (lType.HasFlag(lConstraint))
+                {
+                    lConstraints.Add(lConstraint);
+                }
+            }
+
+            return lConstraints.ToArray();
+        }
+
     }
 
     /// <summary>

@@ -268,25 +268,25 @@ namespace kAI.Core
             return (entry1 == null && entry2 == null ) || entry1.Equals(entry2);
         }
 
-        [StaticConstraint(StaticConstraint.StaticConstraintType.eConstraint_Comparable)]
+        [StaticConstraint(StaticConstraint.StaticConstraintType.eConstraint_LessThan | StaticConstraint.StaticConstraintType.eConstraint_GreaterThan)]
         public static bool IfLessThan<T>(T entry1, T entry2)
         {
             return Operator.LessThan<T>(entry1, entry2);
         }
 
-        [StaticConstraint(StaticConstraint.StaticConstraintType.eConstraint_Comparable)]
+        [StaticConstraint(StaticConstraint.StaticConstraintType.eConstraint_LessThan | StaticConstraint.StaticConstraintType.eConstraint_GreaterThan)]
         public static bool IfGreaterThan<T>(T entry1, T entry2)
         {
             return Operator.GreaterThan<T>(entry1, entry2);
         }
 
-        [StaticConstraint(StaticConstraint.StaticConstraintType.eConstraint_Comparable)]
+        [StaticConstraint(StaticConstraint.StaticConstraintType.eConstraint_LessThan | StaticConstraint.StaticConstraintType.eConstraint_GreaterThan)]
         public static bool IfLessThanOrEqual<T>(T entry1, T entry2)
         {
             return Operator.LessThanOrEqual<T>(entry1, entry2);
         }
 
-        [StaticConstraint(StaticConstraint.StaticConstraintType.eConstraint_Comparable)]
+        [StaticConstraint(StaticConstraint.StaticConstraintType.eConstraint_LessThan | StaticConstraint.StaticConstraintType.eConstraint_GreaterThan)]
         public static bool IfGreaterThanOrEqual<T>(T entry1, T entry2)
         {
             return Operator.GreaterThanOrEqual<T>(entry1, entry2);
@@ -411,11 +411,11 @@ namespace kAI.Core
             }
 
             /// <summary>
-            /// Create a method description for operator-
+            /// Create a method description for operator less than 
             /// </summary>
-            /// <param name="lType">The type of things to add. </param>
-            /// <returns>A method description for the lType+lType. </returns>
-            public static MethodDescription[] ComparableOperators(Type lType)
+            /// <param name="lType">The type of things to compare. </param>
+            /// <returns>A method description describing a less than operator</returns>
+            public static MethodDescription[] LessThanOperator(Type lType)
             {
                 MethodDescription lLessThanOp = new MethodDescription();
                 lLessThanOp.mMethodName = "op_LessThan";
@@ -425,6 +425,17 @@ namespace kAI.Core
                 lLessThanOp.mSpecialCases = new List<Type>();
                 lLessThanOp.mSpecialCases.AddRange(GetNumericalPrimitives());
 
+                
+                return new[] { lLessThanOp  };
+            }
+
+            /// <summary>
+            /// Create a method description for operator less than 
+            /// </summary>
+            /// <param name="lType">The type of things to compare. </param>
+            /// <returns>A method description describing a less than operator</returns>
+            public static MethodDescription[] GreaterThanOperator(Type lType)
+            {
                 MethodDescription lGreaterThanOp = new MethodDescription();
                 lGreaterThanOp.mMethodName = "op_GreaterThan";
                 lGreaterThanOp.mParameters = new List<Type>(new Type[] { lType, lType });
@@ -432,7 +443,8 @@ namespace kAI.Core
 
                 lGreaterThanOp.mSpecialCases = new List<Type>();
                 lGreaterThanOp.mSpecialCases.AddRange(GetNumericalPrimitives());
-                return new[] { lLessThanOp, lGreaterThanOp };
+
+                return new[] { lGreaterThanOp };
             }
 
             /// <summary>
@@ -471,15 +483,20 @@ namespace kAI.Core
             /// <summary>
             /// Should have operator+
             /// </summary>
-            eConstraint_Plus,
-            /// <summary>
+            eConstraint_Plus = 1,
+            /// <summary> 
             /// Should have operator-
             /// </summary>
-            eConstraint_Minus,
+            eConstraint_Minus = 1 << 1,
             /// <summary>
-            /// Should have less than and greater than
+            /// Should have less than 
             /// </summary>
-            eConstraint_Comparable,
+            eConstraint_LessThan = 1 << 2,
+
+            /// <summary>
+            /// Should have greater than
+            /// </summary>
+            eConstraint_GreaterThan = 1 << 3,
         }
 
         /// <summary>
@@ -499,8 +516,19 @@ namespace kAI.Core
         /// <returns>True if the type is a suitable type for the specified generic parameter. </returns>
         public bool MatchesConstraint(int lGenericParamIndex, Type lParameterType)
         {
-            MethodDescription[] lDescription = sStaticMethods[Constraints[lGenericParamIndex]](lParameterType);
-            return lDescription.All((lMethodDesc) => { return lMethodDesc.DoesTypeHaveMethodMatch(lParameterType); });
+            StaticConstraintType lTypeFlags = Constraints[lGenericParamIndex];
+
+            StaticConstraintType[] lActualConstraints = lTypeFlags.GetAsFlags();
+
+            List<MethodDescription> lMethodDescriptions = new List<MethodDescription>(lActualConstraints.Length);
+
+            foreach (StaticConstraintType lActualConstraint in lActualConstraints)
+            {
+                MethodDescription[] lDescription = sStaticMethods[lActualConstraint](lParameterType);
+                lMethodDescriptions.AddRange(lDescription);
+            }
+
+            return lMethodDescriptions.All((lMethodDesc) => { return lMethodDesc.DoesTypeHaveMethodMatch(lParameterType); });
         }
 
 
@@ -512,8 +540,9 @@ namespace kAI.Core
             sStaticMethods = new Dictionary<StaticConstraintType,  Func<Type, MethodDescription[]>>();
             sStaticMethods.Add(StaticConstraintType.eConstraint_Plus, MethodDescription.PlusOperator );
             sStaticMethods.Add(StaticConstraintType.eConstraint_Minus, MethodDescription.MinusOperator);
-            sStaticMethods.Add(StaticConstraintType.eConstraint_Comparable, MethodDescription.ComparableOperators);
+            sStaticMethods.Add(StaticConstraintType.eConstraint_LessThan, MethodDescription.LessThanOperator);
+            sStaticMethods.Add(StaticConstraintType.eConstraint_GreaterThan, MethodDescription.GreaterThanOperator);
         }
+
         
     }
-}
