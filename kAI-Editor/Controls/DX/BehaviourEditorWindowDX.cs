@@ -33,12 +33,12 @@ namespace kAI.Editor.Controls.DX
         /// <seealso cref="kAIBehaviourEditorWindowDX.GetTexture"/>
         public enum eTextureID
         {
-            NodeTexture,
             InPort,
             InPort_Hover,
             OutPort,
             OutPort_Hover,
-
+            NodeLowerTexture,
+            NodeUpperTexture, 
             TextureCount
         }
 
@@ -272,11 +272,13 @@ namespace kAI.Editor.Controls.DX
 
             // Create the shader resources for each of the textures
             mTextures = new ShaderResourceView[(int)eTextureID.TextureCount];
-            mTextures[(int)eTextureID.NodeTexture] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "Node.png"));
+            //mTextures[(int)eTextureID.NodeTexture] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "Node.png"));
             mTextures[(int)eTextureID.InPort] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "InPort.png"));
             mTextures[(int)eTextureID.InPort_Hover] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "InPort_Hover.png"));
             mTextures[(int)eTextureID.OutPort] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "OutPort.png"));
             mTextures[(int)eTextureID.OutPort_Hover] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "OutPort_Hover.png"));
+            mTextures[(int)eTextureID.NodeLowerTexture] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "NodeLower.png"));
+            mTextures[(int)eTextureID.NodeUpperTexture] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "NodeUpper.png"));
 
         }
 
@@ -384,7 +386,7 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lPoint">The position relateive to the form for where to add this node. </param>
         public void AddNode(kAI.Core.kAINode lNode, kAIAbsolutePosition lPoint)
         {
-            kAIEditorNodeDX lNewNode = new kAIEditorNodeDX(lNode, lPoint, new kAIAbsoluteSize(200, 100), this);
+            kAIEditorNodeDX lNewNode = new kAIEditorNodeDX(lNode, lPoint, new kAIAbsoluteSize(200, 0), this);
             lNewNode.OnSelected += new Action<ObjectProperties.kAIIPropertyEntry>(lObject_OnSelected);
             mNodes.Add(lNewNode);
         }

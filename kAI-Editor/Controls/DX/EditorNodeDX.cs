@@ -26,6 +26,7 @@ namespace kAI.Editor.Controls.DX
         readonly Point kNodeNamePosition = new Point(5, 5);
         readonly Point kInPortStartPosition = new Point(-(int)kAIEditorPortDX.sPortSize.X, 30);
         readonly Point kOutPortStartPosition;
+        const float kHeaderHeight = 25.0f;
         readonly int kPortDeltaY = (int)kAIEditorPortDX.sPortSize.Y + 5;
 
         // The set of ports this node has
@@ -183,8 +184,16 @@ namespace kAI.Editor.Controls.DX
             kAIRelativePosition lFormPosition = new kAIRelativePosition(Position, lEditorWindow.CameraPosition);
             kAIRelativeSize lFormSize = new kAIRelativeSize(Size);
 
+            Vector2 lHeaderSize = new Vector2(lFormSize.mSize.Width, kHeaderHeight);
+            Vector2 lBodySize = new Vector2(lFormSize.mSize.Width, lFormSize.mSize.Height);
+            
+
             // Render the box for the node
-            lEditorWindow.SpriteRenderer.Draw(lEditorWindow.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.NodeTexture), new Vector2(lFormPosition.mPoint.X, lFormPosition.mPoint.Y), new Vector2(lFormSize.mSize.Width, lFormSize.mSize.Height), CoordinateType.Absolute);
+            lEditorWindow.SpriteRenderer.Draw(lEditorWindow.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.NodeUpperTexture), 
+                new Vector2(lFormPosition.mPoint.X, lFormPosition.mPoint.Y), lHeaderSize, CoordinateType.Absolute);
+
+            lEditorWindow.SpriteRenderer.Draw(lEditorWindow.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.NodeLowerTexture), 
+                new Vector2(lFormPosition.mPoint.X, lFormPosition.mPoint.Y + kHeaderHeight), lBodySize, CoordinateType.Absolute);
 
             // Render the node label.
             lEditorWindow.TextRenderer.DrawString(Node.NodeID.ToString(), new Vector2(lFormPosition.mPoint.X + kNodeNamePosition.X, lFormPosition.mPoint.Y + kNodeNamePosition.Y), new Color4(Color.White));
@@ -226,20 +235,40 @@ namespace kAI.Editor.Controls.DX
         {
             kAIObject.Assert(null, lPort.OwningNode == Node, "Tried to set as an external port a port which is not related to this node");
 
+            bool lDidSizeIncrease = false;
+
             kAIAbsolutePosition lPositionForPort;
             if (lPort.PortDirection == kAIPort.ePortDirection.PortDirection_In)
             {
                 lPositionForPort = Position.Add(new kAIAbsolutePosition(mCurrentInPosition.X, mCurrentInPosition.Y, false));
                 mCurrentInPosition.Offset(0, kPortDeltaY);
+
+                // There are more in ports than out ports, so we are the limiting factor so should grow. 
+                if (mCurrentInPosition.Y > mCurrentOutPosition.Y)
+                {
+                    lDidSizeIncrease = true;
+                }
             }
             else
             {
                 lPositionForPort = Position.Add(new kAIAbsolutePosition(mCurrentOutPosition.X, mCurrentOutPosition.Y, false));
                 mCurrentOutPosition.Offset(0, kPortDeltaY);
+
+                // There are more out ports than in ports, so we are the limiting factor so should grow
+                if (mCurrentOutPosition.Y > mCurrentInPosition.Y)
+                {
+                    lDidSizeIncrease = true;
+                }
             }
+
             kAIEditorPortDX lEditorPort = new kAIEditorPortDX(lPort, lPositionForPort, mEditorWindow);
             lEditorPort.OnSelected += new Action<kAIIPropertyEntry>(lEditorPort_OnSelected);
             mExternalPorts.Add(lEditorPort);
+
+            if (lDidSizeIncrease)
+            {
+                Size = Size.ChangeHeight(kPortDeltaY);
+            }
         }
 
         void lEditorPort_OnSelected(kAIIPropertyEntry obj)
