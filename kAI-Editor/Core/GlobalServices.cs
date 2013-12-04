@@ -11,5 +11,7 @@ namespace kAI.Editor.Core
         public static kAIILogger Logger;
 
         public static kAIProject LoadedProject;
+
+        public static Editor Editor;
     }
 }

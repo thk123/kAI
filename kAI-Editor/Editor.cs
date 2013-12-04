@@ -74,6 +74,9 @@ namespace kAI.Editor
             kAIObject.GlobalLogger = uiLogger1;
             kAIObject.GlobalLogger.LogMessage("kAI Editor loaded");
             GlobalServices.Logger = uiLogger1;
+            GlobalServices.Editor = this;
+
+            CommandLineHandler.TakeActions();
         }
 
         /// <summary>
@@ -91,7 +94,7 @@ namespace kAI.Editor
         /// Load a given project in to the editor. 
         /// </summary>
         /// <param name="lProject"></param>
-        private void LoadProject(kAIProject lProject)
+        void LoadProject(kAIProject lProject)
         {
             mLoadedProject = lProject;
             mIsProjectLoaded = true;
@@ -261,37 +264,48 @@ namespace kAI.Editor
             }
         }
 
+        public void LoadProject(FileInfo lProjectFile)
+        {
+            if (!lProjectFile.Exists)
+            {
+                GlobalServices.Logger.LogError("Could not load project - file not found", new KeyValuePair<string, object>("Project Location", lProjectFile.FullName));
+                return;
+            }
+
+            kAIBehaviourID lBehaviourToLoad;
+            kAIProject lProject = kAIProject.Load(lProjectFile, out lBehaviourToLoad);
+
+            LoadProject(lProject);
+
+            if (lBehaviourToLoad != null)
+            {
+                try
+                {
+                    kAIINodeSerialObject lNodeObject = lProject.NodeObjects[lBehaviourToLoad];
+
+                    if (lNodeObject.GetNodeFlavour() == eNodeFlavour.BehaviourXml)
+                    {
+                        LoadBehaviour(kAIXmlBehaviour.Load(lNodeObject, lProject.GetAssemblyByName));
+                    }
+                    else
+                    {
+                        kAIObject.GlobalLogger.LogWarning("The last loaded behaviour is now somehow not an XML behaviour. ");
+                    }
+                }
+                catch (KeyNotFoundException)
+                {
+                    kAIObject.GlobalLogger.LogWarning("Could not find behaviour that was loaded. ");
+                }
+            }
+        }
+
         private void openProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
             OpenFileDialog lOpenDialog = new OpenFileDialog();
             lOpenDialog.Filter = "kAI Project Files |*." + kAIProject.kProjectFileExtension;
             if (lOpenDialog.ShowDialog() == DialogResult.OK)
             {
-                kAIBehaviourID lBehaviourToLoad;
-                kAIProject lProject = kAIProject.Load(new FileInfo(lOpenDialog.FileName), out lBehaviourToLoad);
-
-                LoadProject(lProject);
-
-                if (lBehaviourToLoad != null)
-                {
-                    try
-                    {
-                        kAIINodeSerialObject lNodeObject = lProject.NodeObjects[lBehaviourToLoad];
-
-                        if(lNodeObject.GetNodeFlavour() == eNodeFlavour.BehaviourXml)
-                        {
-                            LoadBehaviour(kAIXmlBehaviour.Load(lNodeObject, lProject.GetAssemblyByName));
-                        }
-                        else
-                        {
-                            kAIObject.GlobalLogger.LogWarning("The last loaded behaviour is now somehow not an XML behaviour. ");
-                        }
-                    }
-                    catch (KeyNotFoundException)
-                    {
-                    	kAIObject.GlobalLogger.LogWarning("Could not find behaviour that was loaded. ");
-                    }
-                }
+                LoadProject(new FileInfo(lOpenDialog.FileName));
             }
         }
 
