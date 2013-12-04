@@ -316,6 +316,11 @@ namespace kAI.Core
         /// <param name="lNode">The node to remove. </param>
         public void RemoveNode(kAINode lNode)
         {
+            foreach (kAIPort lPort in lNode.GetExternalPorts())
+            {
+                lPort.BreakAllConnexions();
+            }
+
             mInternalNodes.Remove(lNode.NodeID);
         }
 
@@ -638,8 +643,8 @@ namespace kAI.Core
         public static kAIXmlBehaviour LoadFromFile(FileInfo lPath, GetAssemblyByName lAssemblyGetter)
         {
             XmlObjectSerializer lProjectDeserialiser = new DataContractSerializer(typeof(InternalXml), kAINode.NodeSerialTypes);
-            try
-            {
+            /*try
+            {*/
                 Stream lXmlStream = lPath.OpenRead();
 
                 InternalXml lXmlFile = (InternalXml)lProjectDeserialiser.ReadObject(lXmlStream);
@@ -649,7 +654,7 @@ namespace kAI.Core
                 lXmlStream.Close();
 
                 return new kAIXmlBehaviour(lXmlFile, lAssemblyGetter, lPath);
-            }
+            /*}
             catch (System.UnauthorizedAccessException)
             {
                 //TODO: Error - have you forgot to check the file out of source control?
@@ -663,7 +668,7 @@ namespace kAI.Core
                 // TODOO: Error - File is already open elsewhere. 
             }
 
-            return null;
+            return null;*/
         }
 
         /// <summary>

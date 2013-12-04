@@ -111,6 +111,18 @@ namespace kAI.Editor.Controls.DX
                 }
             }
 
+
+            Port.OnDisconnected += new kAIPort.ConnexionEvent(Port_OnDisconnected);
+        }
+
+        void Port_OnDisconnected(kAIPort lSender, kAIPort lOtherEnd)
+        {
+            if(Port.PortDirection == kAIPort.ePortDirection.PortDirection_Out)
+            {
+                kAIObject.Assert(null, lSender == Port);
+                int lNumberRemoved = mConnexions.RemoveAll((lConnexion) => { return lConnexion.End == lOtherEnd; });
+                kAIObject.Assert(null, lNumberRemoved == 1);
+            }
         }
 
         void lRemoveConnexion_Click(object sender, EventArgs e)

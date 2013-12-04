@@ -16,6 +16,30 @@ namespace kAI.Editor.Controls.DX
 
         List<kAIAbsolutePosition> mPath;
 
+
+        /// <summary>
+        /// The start port (PortDirection_Out) of this connexion. 
+        /// </summary>
+        public kAIPort Start
+        {
+            get
+            {
+                return mConnexion.StartPort;
+            }
+        }
+
+
+        /// <summary>
+        /// The end port (PortDirection_In) of this connexion. 
+        /// </summary>
+        public kAIPort End
+        {
+            get
+            {
+                return mConnexion.EndPort;
+            }
+        }
+
         public kAIEditorConnexionDX(kAIPort.kAIConnexion lConnexion, kAIBehaviourEditorWindowDX lEditor)
         {
             mConnexion = lConnexion;

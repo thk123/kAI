@@ -365,10 +365,19 @@ namespace kAI.Core
         /// </summary>
         public void BreakAllConnexions()
         {
-            Assert(PortDirection == ePortDirection.PortDirection_Out, "In ports are not connected to things, things connect to them.");
-            foreach (kAIPort lPort in mConnectingPorts.Values)
+            if(PortDirection == ePortDirection.PortDirection_Out)
             {
-                BreakConnexion(lPort);
+                while (mConnectingPorts.Count > 0)
+                {
+                    BreakConnexion(mConnectingPorts.Values.First());
+                }
+            }
+            else
+            {
+                foreach (kAIConnexion lConnexion in mOwningBehaviour.GetConnectedPorts(this))
+                {
+                    lConnexion.StartPort.BreakConnexion(lConnexion.EndPort);
+                }
             }
         }
 
