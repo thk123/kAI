@@ -325,29 +325,18 @@ namespace kAI.Editor
         private void createNewXmlBehaviourToolStripMenuItem_Click(object sender, EventArgs e)
         {
             // TODO: should get a default name from the project. 
-            XmlBehaviourCreator lCreator = new XmlBehaviourCreator(mLoadedProject, "New Behaviour");
+            XmlBehaviourPropertiesEditor lCreator = new XmlBehaviourPropertiesEditor(mLoadedProject, null);
 
             if(lCreator.ShowDialog() == DialogResult.OK)
             {
                 CreateBehaviourEditorWindow();
 
-                //kAIXmlBehaviour lBehaviour = 
-                
-                kAIRelativePath lNewBehPath = new kAIRelativePath(lCreator.BehaviourPath, mLoadedProject.XmlBehaviourRoot.GetDirectory(), kAIProject.kBehaviourRootID);
-                kAIXmlBehaviour lBehaviour = new kAIXmlBehaviour(lCreator.BehaviourID, lNewBehPath);
-
+                kAIXmlBehaviour lBehaviour = lCreator.Behaviour;
                 mLoadedProject.AddXmlBehaviour(lBehaviour.GetDataContractClass(null));
 
                 mBehaviourTree.UpdateTree(mLoadedProject);
 
                 LoadBehaviour(lBehaviour);
-
-                
-
-
-                /*kAIXmlBehaviour lBehaviour = mBehaviourEditor.NewBehaviour();
-
-                ;*/
             }
         }
 

@@ -11,6 +11,8 @@ using System.Reflection;
 
 namespace kAI.Core
 {
+    using DefaultPortEntry = KeyValuePair<kAIPortID, Func<kAIXmlBehaviour, kAIPort>>;
+
     /// <summary>
     /// An XML behaviour (ie one created by the editor).
     /// </summary>
@@ -133,8 +135,8 @@ namespace kAI.Core
         public const string kAIXmlBehaviourExtension = "xml";
 
         //Internal port IDs
-        private readonly kAIPortID kOnActivatePortID = "OnActivate";
-        private readonly kAIPortID kDeactivatePortID = "Deactivate";
+        private static readonly kAIPortID kOnActivatePortID = "OnActivate";
+        private static readonly kAIPortID kDeactivatePortID = "Deactivate";
 
         /// <summary>
         /// Nodes within this XML behaviour. 
@@ -221,6 +223,53 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// The dictionary of default internal port IDs and the functions to create them.
+        /// </summary>
+        static IEnumerable<DefaultPortEntry> sDefaultPortsInteralDictionary
+        {
+            get
+            {
+                yield return new DefaultPortEntry(kOnActivatePortID, (lBehaviour) =>
+                {
+                    return new kAITriggerPort(kOnActivatePortID, kAIPort.ePortDirection.PortDirection_Out);
+                });
+
+                yield return new DefaultPortEntry(kDeactivatePortID, (lBehaviour) =>
+                {
+                    kAITriggerPort lDeactivatePort = new kAITriggerPort(kDeactivatePortID, kAIPort.ePortDirection.PortDirection_In);
+                    if (lBehaviour != null)
+                    {
+                        lDeactivatePort.OnTriggered += new kAITriggerPort.TriggerEvent(lBehaviour.lDeactivatePort_OnTriggered);
+                    }
+                    return lDeactivatePort;
+                });
+            }
+        }
+
+        /// <summary>
+        /// The functions to create the default internal ports for an XML behaviour.
+        /// Call the function with null to get a template port. 
+        /// </summary>
+        public static IEnumerable<Func<kAIXmlBehaviour, kAIPort>> sDefaultInternalPorts
+        {
+            get
+            {
+                return sDefaultPortsInteralDictionary.Select((lKVP) => { return lKVP.Value; });
+            }
+        }
+
+        /// <summary>
+        /// The names that are reserved for internal ports. 
+        /// </summary>
+        public static IEnumerable<kAIPortID> sDefaultInternalPortNames
+        {
+            get
+            {
+                return sDefaultPortsInteralDictionary.Select((lKVP) => { return lKVP.Key; });
+            }
+        }
+
+        /// <summary>
         /// Triggered when a new internal port is added to this behaviour.
         /// </summary>
         public event InternalPortAdded OnInternalPortAdded;
@@ -238,26 +287,24 @@ namespace kAI.Core
             mDebugInfo = null;
         }
 
+
         /// <summary>
         /// Create a new XML behaviour 
         /// </summary>
         /// <param name="lBehaviourID">The name of the new behaviour. </param>
         /// <param name="lFile">Where this behaviour should be saved. </param>
         /// <param name="lLogger">Optionally, the logger this behaviour should use. </param>
-        public kAIXmlBehaviour(kAIBehaviourID lBehaviourID, kAIRelativePath lFile, kAIILogger lLogger = null)
+        private kAIXmlBehaviour(kAIBehaviourID lBehaviourID, kAIRelativePath lFile, kAIILogger lLogger = null)
             : this(lBehaviourID, lLogger)
         {
             //kAIRelativePath lRelativePath = new kAIRelativePath(lFile, )
             XmlLocation = lFile;
             kAIRelativeObject.AddPathID(XmlLocationID, XmlLocation.GetFile().Directory);
 
-            // Create the internal ports 
-            kAITriggerPort lOnActivatePort = new kAITriggerPort(kOnActivatePortID, kAIPort.ePortDirection.PortDirection_Out, lLogger);
-            AddInternalPort(lOnActivatePort, false);
-
-            kAITriggerPort lDeactivatePort = new kAITriggerPort(kDeactivatePortID, kAIPort.ePortDirection.PortDirection_In, lLogger);
-            lDeactivatePort.OnTriggered += new kAITriggerPort.TriggerEvent(lDeactivatePort_OnTriggered);
-            AddInternalPort(lDeactivatePort, false);
+            foreach (Func<kAIXmlBehaviour, kAIPort> lPortCreator in sDefaultInternalPorts)
+            {
+                AddInternalPort(lPortCreator(this), false);
+            }
         }
 
         /// <summary>

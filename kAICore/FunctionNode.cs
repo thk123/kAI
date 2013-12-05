@@ -83,7 +83,7 @@ namespace kAI.Core
                 Assert(null, AssemblyName, "ASsemblyName not present...");
                 Assembly lFunctionAssembly = lAssemblyResolver(AssemblyName);
                 Assert(null, lFunctionAssembly, "Could not find assembly: " + AssemblyName);
-                
+
                 Type lDeclType = lFunctionAssembly.GetType(TypeName);
                 Assert(null, lDeclType, "Could not find type: " + TypeName);
 
@@ -112,10 +112,10 @@ namespace kAI.Core
         /// <param name="lLogger">Optionally, the logger this node should use. </param>
         /// <param name="lConfig"></param>
         public kAIFunctionNode(MethodInfo lBaseMethod, kAIFunctionConfiguration lConfig, kAIILogger lLogger = null)
-            :base(lLogger)
+            : base(lLogger)
         {
             Assert(lConfig.IsConfigured, "Need a fully configured configuration to create a function node. ");
-            
+
 
             lInParameters = new List<kAIDataPort>();
             lOutParameters = new List<kAIDataPort>();
@@ -217,7 +217,7 @@ namespace kAI.Core
                 ++i;
             }
 
-            foreach(kAIDataPort lInParamPort in lInParameters)
+            foreach (kAIDataPort lInParamPort in lInParameters)
             {
                 lParams[i] = lInParamPort.GetData();
                 ++i;
@@ -265,7 +265,7 @@ namespace kAI.Core
     {
         public static bool IfEquals<T>(T entry1, T entry2)
         {
-            return (entry1 == null && entry2 == null ) || entry1.Equals(entry2);
+            return (entry1 == null && entry2 == null) || entry1.Equals(entry2);
         }
 
         [StaticConstraint(StaticConstraint.StaticConstraintType.eConstraint_LessThan | StaticConstraint.StaticConstraintType.eConstraint_GreaterThan)]
@@ -303,7 +303,7 @@ namespace kAI.Core
     /// Use to apply static constraints on to a type. 
     /// </summary>
     [AttributeUsage(AttributeTargets.Method)]
-    public class StaticConstraint : Attribute 
+    public class StaticConstraint : Attribute
     {
         /// <summary>
         /// For each generic parameter, the constraint being applied to it. 
@@ -425,8 +425,8 @@ namespace kAI.Core
                 lLessThanOp.mSpecialCases = new List<Type>();
                 lLessThanOp.mSpecialCases.AddRange(GetNumericalPrimitives());
 
-                
-                return new[] { lLessThanOp  };
+
+                return new[] { lLessThanOp };
             }
 
             /// <summary>
@@ -461,7 +461,7 @@ namespace kAI.Core
                 yield return typeof(char);
                 yield return typeof(string);
             }
-            
+
             static IEnumerable<Type> GetNumericalPrimitives()
             {
                 yield return typeof(int);
@@ -537,12 +537,13 @@ namespace kAI.Core
 
         static StaticConstraint()
         {
-            sStaticMethods = new Dictionary<StaticConstraintType,  Func<Type, MethodDescription[]>>();
-            sStaticMethods.Add(StaticConstraintType.eConstraint_Plus, MethodDescription.PlusOperator );
+            sStaticMethods = new Dictionary<StaticConstraintType, Func<Type, MethodDescription[]>>();
+            sStaticMethods.Add(StaticConstraintType.eConstraint_Plus, MethodDescription.PlusOperator);
             sStaticMethods.Add(StaticConstraintType.eConstraint_Minus, MethodDescription.MinusOperator);
             sStaticMethods.Add(StaticConstraintType.eConstraint_LessThan, MethodDescription.LessThanOperator);
             sStaticMethods.Add(StaticConstraintType.eConstraint_GreaterThan, MethodDescription.GreaterThanOperator);
         }
 
-        
+
     }
+}
