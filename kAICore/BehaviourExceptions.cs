@@ -59,4 +59,48 @@ namespace kAI.Core
             return "Attempted to create a port in behaviour \"" + mBehaviour.BehaviourID + "\" whose name already existed: \"" + mExistingPort.PortID + "\"";
         }
     }
+
+    /// <summary>
+    /// Exception when try to add a global port to a behaviour that already has a port with the same node ID. 
+    /// </summary>
+    public class kAIBehaviourPortNotFoundException : Exception
+    {
+        /// <summary>
+        /// The port that was already present with the same PortID. 
+        /// </summary>
+        public kAIPortID mPortID
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// The behaviour who the port was being being looked in. 
+        /// </summary>
+        public kAIBehaviour mBehaviour
+        {
+            get;
+            private set;
+        }
+
+        /// <summary>
+        /// Construct the exception. 
+        /// </summary>
+        /// <param name="lBehaviour">The behaviour which this port was added to. </param>
+        /// <param name="lPortID">The name of the port we were looking for. </param>
+        public kAIBehaviourPortNotFoundException(kAIBehaviour lBehaviour, kAIPortID lPortID)
+        {
+            mPortID = lPortID;
+            mBehaviour = lBehaviour;
+        }
+
+        /// <summary>
+        /// Gets the message of the exception. 
+        /// </summary>
+        /// <returns>A string explaining what has happened. </returns>
+        public override string ToString()
+        {
+            return "Attempted to create acess a port in behaviour \"" + mBehaviour.BehaviourID + "\" which did not exist: \"" + mPortID + "\"";
+        }
+    }
 }

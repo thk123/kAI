@@ -182,34 +182,12 @@ namespace kAI.Editor.Core
         {
             kAIPort lStartPort;
             {
-                string[] lStartSplit = lStart.Split(':');
-                if (lStartSplit.Length != 2)
-                {
-                    kAIObject.LogWarning(null, "Invalid start port id, use format: \"NodeID:PortID\"");
-                    return false;
-                }
-
-                bool lIsNodePort = lStartSplit[0].Length > 0;
-                kAINodeID lNodeID = lIsNodePort ? new kAINodeID(lStartSplit[0]) : kAINodeID.InvalidNodeID;
-                kAIPortID lPortID = new kAIPortID(lStartSplit[1]);
-
-                lStartPort = mBehaviour.GetInternalPort(lPortID, lNodeID);
+                lStartPort = mBehaviour.GetInternalPort(lStart);
             }
 
             kAIPort lEndPort;
             {
-                string[] lEndSplit = lEnd.Split(':');
-                if (lEndSplit.Length != 2)
-                {
-                    kAIObject.LogWarning(null, "Invalid end port id, use format: \"NodeID:PortID\"");
-                    return false;
-                }
-
-                bool lIsNodePort = lEndSplit[0].Length > 0;
-                kAINodeID lNodeID = lIsNodePort ? new kAINodeID(lEndSplit[0]) : kAINodeID.InvalidNodeID;
-                kAIPortID lPortID = new kAIPortID(lEndSplit[1]);
-
-                lEndPort = mBehaviour.GetInternalPort(lPortID, lNodeID);
+                lEndPort = mBehaviour.GetInternalPort(lEnd);
             }
 
             kAIPort.ePortConnexionResult lResult = kAIPort.ConnectPorts(lStartPort, lEndPort);
@@ -238,6 +216,11 @@ namespace kAI.Editor.Core
             }
 
             return true;
+        }
+
+        public static void Deinit()
+        {
+            mBehaviour = null;
         }
 
     }

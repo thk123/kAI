@@ -29,14 +29,15 @@
         private void InitializeComponent()
         {
             this.label1 = new System.Windows.Forms.Label();
-            this.lSearchableList = new kAI.Editor.Controls.WinForms.SearchableList();
-            this.mFunctionList = new kAI.Editor.Controls.WinForms.SearchableList();
             this.mInParamsGroup = new System.Windows.Forms.GroupBox();
-            this.mOutParamsGroup = new System.Windows.Forms.GroupBox();
-            this.serviceController1 = new System.ServiceProcess.ServiceController();
             this.flowLayoutPanel1 = new System.Windows.Forms.FlowLayoutPanel();
-            this.mCreateBtn = new System.Windows.Forms.Button();
+            this.mOutParamsGroup = new System.Windows.Forms.GroupBox();
             this.mOutParametersFlow = new System.Windows.Forms.FlowLayoutPanel();
+            this.serviceController1 = new System.ServiceProcess.ServiceController();
+            this.mCreateBtn = new System.Windows.Forms.Button();
+            this.mFunctionList = new kAI.Editor.Controls.WinForms.SearchableList();
+            this.lSearchableList = new kAI.Editor.Controls.WinForms.SearchableList();
+            this.mFirstParamSelf = new System.Windows.Forms.CheckBox();
             this.mInParamsGroup.SuspendLayout();
             this.mOutParamsGroup.SuspendLayout();
             this.SuspendLayout();
@@ -51,22 +52,6 @@
             this.label1.TabIndex = 0;
             this.label1.Text = "Create new function node";
             // 
-            // lSearchableList
-            // 
-            this.lSearchableList.Location = new System.Drawing.Point(0, 0);
-            this.lSearchableList.Name = "lSearchableList";
-            this.lSearchableList.SelectionMode = System.Windows.Forms.SelectionMode.One;
-            this.lSearchableList.Size = new System.Drawing.Size(294, 258);
-            this.lSearchableList.TabIndex = 0;
-            // 
-            // mFunctionList
-            // 
-            this.mFunctionList.Location = new System.Drawing.Point(19, 51);
-            this.mFunctionList.Name = "mFunctionList";
-            this.mFunctionList.SelectionMode = System.Windows.Forms.SelectionMode.One;
-            this.mFunctionList.Size = new System.Drawing.Size(298, 258);
-            this.mFunctionList.TabIndex = 1;
-            // 
             // mInParamsGroup
             // 
             this.mInParamsGroup.Controls.Add(this.flowLayoutPanel1);
@@ -76,6 +61,14 @@
             this.mInParamsGroup.TabIndex = 2;
             this.mInParamsGroup.TabStop = false;
             this.mInParamsGroup.Text = "In Parameters";
+            // 
+            // flowLayoutPanel1
+            // 
+            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
+            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 20);
+            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
+            this.flowLayoutPanel1.Size = new System.Drawing.Size(356, 231);
+            this.flowLayoutPanel1.TabIndex = 0;
             // 
             // mOutParamsGroup
             // 
@@ -87,13 +80,12 @@
             this.mOutParamsGroup.TabStop = false;
             this.mOutParamsGroup.Text = "Out Data";
             // 
-            // flowLayoutPanel1
+            // mOutParametersFlow
             // 
-            this.flowLayoutPanel1.FlowDirection = System.Windows.Forms.FlowDirection.TopDown;
-            this.flowLayoutPanel1.Location = new System.Drawing.Point(0, 20);
-            this.flowLayoutPanel1.Name = "flowLayoutPanel1";
-            this.flowLayoutPanel1.Size = new System.Drawing.Size(356, 231);
-            this.flowLayoutPanel1.TabIndex = 0;
+            this.mOutParametersFlow.Location = new System.Drawing.Point(7, 20);
+            this.mOutParametersFlow.Name = "mOutParametersFlow";
+            this.mOutParametersFlow.Size = new System.Drawing.Size(349, 216);
+            this.mOutParametersFlow.TabIndex = 0;
             // 
             // mCreateBtn
             // 
@@ -107,18 +99,39 @@
             this.mCreateBtn.UseVisualStyleBackColor = true;
             this.mCreateBtn.Click += new System.EventHandler(this.mCreateBtn_Click);
             // 
-            // mOutParametersFlow
+            // mFunctionList
             // 
-            this.mOutParametersFlow.Location = new System.Drawing.Point(7, 20);
-            this.mOutParametersFlow.Name = "mOutParametersFlow";
-            this.mOutParametersFlow.Size = new System.Drawing.Size(349, 216);
-            this.mOutParametersFlow.TabIndex = 0;
+            this.mFunctionList.Location = new System.Drawing.Point(19, 51);
+            this.mFunctionList.Name = "mFunctionList";
+            this.mFunctionList.SelectionMode = System.Windows.Forms.SelectionMode.One;
+            this.mFunctionList.Size = new System.Drawing.Size(298, 258);
+            this.mFunctionList.TabIndex = 1;
+            // 
+            // lSearchableList
+            // 
+            this.lSearchableList.Location = new System.Drawing.Point(0, 0);
+            this.lSearchableList.Name = "lSearchableList";
+            this.lSearchableList.SelectionMode = System.Windows.Forms.SelectionMode.One;
+            this.lSearchableList.Size = new System.Drawing.Size(294, 258);
+            this.lSearchableList.TabIndex = 0;
+            // 
+            // mFirstParamSelf
+            // 
+            this.mFirstParamSelf.AutoSize = true;
+            this.mFirstParamSelf.Location = new System.Drawing.Point(19, 315);
+            this.mFirstParamSelf.Name = "mFirstParamSelf";
+            this.mFirstParamSelf.Size = new System.Drawing.Size(128, 17);
+            this.mFirstParamSelf.TabIndex = 5;
+            this.mFirstParamSelf.Text = "Is First Parameter Self";
+            this.mFirstParamSelf.UseVisualStyleBackColor = true;
+            this.mFirstParamSelf.CheckStateChanged += new System.EventHandler(this.mFirstParamSelf_CheckStateChanged);
             // 
             // FunctionNodeCreator
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(698, 600);
+            this.Controls.Add(this.mFirstParamSelf);
             this.Controls.Add(this.mCreateBtn);
             this.Controls.Add(this.mOutParamsGroup);
             this.Controls.Add(this.mInParamsGroup);
@@ -144,5 +157,6 @@
         private System.ServiceProcess.ServiceController serviceController1;
         private System.Windows.Forms.Button mCreateBtn;
         private System.Windows.Forms.FlowLayoutPanel mOutParametersFlow;
+        private System.Windows.Forms.CheckBox mFirstParamSelf;
     }
 }

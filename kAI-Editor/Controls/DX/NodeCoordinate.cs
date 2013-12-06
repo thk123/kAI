@@ -72,6 +72,16 @@ namespace kAI.Editor.Controls.DX.Coordinates
         {
             mSize = lSize.mSize;
         }
+
+        public kAIAbsoluteSize ChangeHeight(int lDelta)
+        {
+            return new kAIAbsoluteSize(mSize.Width, mSize.Height + lDelta);
+        }
+
+        public kAIAbsoluteSize ChangeWidth(int lDelta)
+        {
+            return new kAIAbsoluteSize(mSize.Width + lDelta, mSize.Height);
+        }
     }
 
     /// <summary>

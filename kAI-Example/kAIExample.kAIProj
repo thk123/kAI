@@ -161,13 +161,38 @@
     </kAIProject.SerialMethodInfo>
     <kAIProject.SerialMethodInfo>
       <AssemblyName>kAICore</AssemblyName>
-      <MethodName>Print</MethodName>
+      <MethodName>Sum</MethodName>
       <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
     </kAIProject.SerialMethodInfo>
     <kAIProject.SerialMethodInfo>
       <AssemblyName>kAICore</AssemblyName>
-      <MethodName>Sum</MethodName>
+      <MethodName>IfLessThan</MethodName>
       <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>kAICore</AssemblyName>
+      <MethodName>IfLessThanOrEqual</MethodName>
+      <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>kAICore</AssemblyName>
+      <MethodName>IfGreaterThan</MethodName>
+      <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>kAICore</AssemblyName>
+      <MethodName>IfGreaterThanOrEqual</MethodName>
+      <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>Assembly-CSharp</AssemblyName>
+      <MethodName>GetTarget</MethodName>
+      <TypeName>AIController</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>Assembly-CSharp</AssemblyName>
+      <MethodName>IsGameObjectNear</MethodName>
+      <TypeName>SwordSwingAction</TypeName>
     </kAIProject.SerialMethodInfo>
   </ProjectFunctions>
   <ProjectName>kAIExample</ProjectName>
@@ -187,6 +212,8 @@
     <d2p1:string>UnityEngine.Vector4, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</d2p1:string>
     <d2p1:string>UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</d2p1:string>
     <d2p1:string>System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</d2p1:string>
+    <d2p1:string>AIController, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</d2p1:string>
+    <d2p1:string>SwordSwingAction, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</d2p1:string>
   </ProjectTypes>
   <XmlBehaviourRoot xmlns:d2p1="http://schemas.datacontract.org/2004/07/kAI.Core">
     <d2p1:Path>\kAIBehaviours</d2p1:Path>

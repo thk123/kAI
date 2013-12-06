@@ -33,12 +33,12 @@ namespace kAI.Editor.Controls.DX
         /// <seealso cref="kAIBehaviourEditorWindowDX.GetTexture"/>
         public enum eTextureID
         {
-            NodeTexture,
             InPort,
             InPort_Hover,
             OutPort,
             OutPort_Hover,
-
+            NodeLowerTexture,
+            NodeUpperTexture, 
             TextureCount
         }
 
@@ -272,11 +272,13 @@ namespace kAI.Editor.Controls.DX
 
             // Create the shader resources for each of the textures
             mTextures = new ShaderResourceView[(int)eTextureID.TextureCount];
-            mTextures[(int)eTextureID.NodeTexture] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "Node.png"));
+            //mTextures[(int)eTextureID.NodeTexture] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "Node.png"));
             mTextures[(int)eTextureID.InPort] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "InPort.png"));
             mTextures[(int)eTextureID.InPort_Hover] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "InPort_Hover.png"));
             mTextures[(int)eTextureID.OutPort] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "OutPort.png"));
             mTextures[(int)eTextureID.OutPort_Hover] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "OutPort_Hover.png"));
+            mTextures[(int)eTextureID.NodeLowerTexture] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "NodeLower.png"));
+            mTextures[(int)eTextureID.NodeUpperTexture] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "NodeUpper.png"));
 
         }
 
@@ -384,13 +386,16 @@ namespace kAI.Editor.Controls.DX
         /// <param name="lPoint">The position relateive to the form for where to add this node. </param>
         public void AddNode(kAI.Core.kAINode lNode, kAIAbsolutePosition lPoint)
         {
-            kAIEditorNodeDX lNewNode = new kAIEditorNodeDX(lNode, lPoint, new kAIAbsoluteSize(200, 100), this);
+            kAIEditorNodeDX lNewNode = new kAIEditorNodeDX(lNode, lPoint, new kAIAbsoluteSize(200, 0), this);
             lNewNode.OnSelected += new Action<ObjectProperties.kAIIPropertyEntry>(lObject_OnSelected);
             mNodes.Add(lNewNode);
         }
 
-        
-
+        /// <summary>
+        /// Add a node to the render of the behaviour. 
+        /// </summary>
+        /// <param name="lNode"></param>
+        /// <param name="lPoint"></param>
         public void AddNode(kAI.Core.kAINode lNode, Point lPoint)
         {
             AddNode(lNode, new kAIAbsolutePosition(new kAIRelativePosition(lPoint), mCameraPosition, false));
@@ -464,6 +469,28 @@ namespace kAI.Editor.Controls.DX
         }
 
         /// <summary>
+        /// Gets the absolute positions of each of the nodes. 
+        /// </summary>
+        /// <returns>A enumeration of each of the node's IDs and its absolute position. </returns>
+        public IEnumerable<Tuple<kAINodeID, kAIAbsolutePosition>> GetNodePositions()
+        {
+            foreach (kAIEditorNodeDX lEdiorNode in mNodes)
+            {
+                yield return new Tuple<kAINodeID, kAIAbsolutePosition>(lEdiorNode.Node.NodeID, lEdiorNode.Position);
+            }
+        }
+
+        /// <summary>
+        /// Sets the position of a specific node. 
+        /// </summary>
+        /// <param name="lNodeID">The node id to position. </param>
+        /// <param name="lPoint">The absolute position where the node should be positioned. </param>
+        public void SetNodePosition(kAINodeID lNodeID, kAIAbsolutePosition lPoint)
+        {
+            GetNode(lNodeID).SetPosition(lPoint);
+        }
+
+        /// <summary>
         /// Start rendering an external port for a specific node. 
         /// </summary>
         /// <param name="lParentNode">The owning node of the port. </param>
@@ -510,21 +537,33 @@ namespace kAI.Editor.Controls.DX
         public void Destroy()
         {
             TextRenderer.Dispose();
+            TextRenderer = null;
+
             SpriteRenderer.Dispose();
+            SpriteRenderer = null;
 
             for (eTextureID lTexture = (eTextureID)0; lTexture < eTextureID.TextureCount; ++lTexture)
             {
                 mTextures[(int)lTexture].Resource.Dispose();
                 mTextures[(int)lTexture].Dispose();
             }
+            mTextures = null;
+
             mRenderTarget.Dispose();
+            mRenderTarget = null;
 
             vertexShader.Dispose();
+            vertexShader = null;
+
             pixelShader.Dispose();
+            pixelShader = null;
 
             mContext.Device.Dispose();
             mSwapChain.Dispose();
+            mSwapChain = null;
+
             mContext.Dispose();
+            mContext = null;
         }
 
         private void LineRender()
@@ -665,9 +704,14 @@ namespace kAI.Editor.Controls.DX
 
         private kAIEditorNodeDX GetNode(kAINode lNode)
         {
+            return GetNode(lNode.NodeID);
+        }
+
+        private kAIEditorNodeDX GetNode(kAINodeID lNodeID)
+        {
             foreach (kAIEditorNodeDX lEditorNode in mNodes)
             {
-                if (lEditorNode.Node.NodeID == lNode.NodeID)
+                if (lEditorNode.Node.NodeID == lNodeID)
                 {
                     return lEditorNode;
                 }

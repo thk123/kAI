@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Windows.Forms;
+using System.Runtime.Serialization;
+using System.Xml;
+
 
 using kAI.Core;
 using kAI.Editor.Core;
@@ -25,6 +28,8 @@ namespace kAI.Editor.Controls
         void AddNode(kAINode lNode, kAIAbsolutePosition lPoint);
         void RemoveNode(kAINode lNode);
 
+        void SetNodePosition(kAINodeID lNodeID, kAIAbsolutePosition lPoint);
+
         void AddConnexion(kAIPort.kAIConnexion lConnexion);
         void RemoveConnexion(kAIPort.kAIConnexion lConnexion);
 
@@ -35,6 +40,8 @@ namespace kAI.Editor.Controls
         void RemoveExternalPort(kAINode lParentNode, kAIPort lPort);
 
         bool CanConnect();
+
+        IEnumerable<Tuple<kAINodeID, kAIAbsolutePosition>> GetNodePositions();
 
         event Action<kAI.Editor.ObjectProperties.kAIIPropertyEntry> ObjectSelected;
     }
@@ -169,6 +176,29 @@ namespace kAI.Editor.Controls
 
             Behaviour = lBehaviour;
 
+
+            // Load the meta file
+            XmlObjectSerializer lProjectDeserialiser = new DataContractSerializer(typeof(kAIXmlBehaviourMetaSaveFile), kAINode.NodeSerialTypes);
+
+            FileInfo lMetaPath = new FileInfo(Behaviour.XmlLocation.GetFile().FullName + ".meta");
+            if(lMetaPath.Exists)
+            {
+                Stream lXmlStream = lMetaPath.OpenRead();
+
+                kAIXmlBehaviourMetaSaveFile lXmlFile = (kAIXmlBehaviourMetaSaveFile)lProjectDeserialiser.ReadObject(lXmlStream);
+
+                lXmlStream.Close();
+
+                foreach (Tuple<kAINodeID, kAIAbsolutePosition> lNodePosition in lXmlFile.GetPositions())
+                {
+                    mEditorImpl.SetNodePosition(lNodePosition.Item1, lNodePosition.Item2);
+                }
+            }
+            else
+            {
+                kAIObject.LogWarning(Behaviour, "No meta file found for behaviour", new KeyValuePair<string, object>("Behaviour", Behaviour.BehaviourID));
+            }
+
             Behaviour.OnInternalPortAdded += new kAIXmlBehaviour.InternalPortAdded(Behaviour_OnInternalPortAdded);
 
             Behaviour.SetGlobal();
@@ -244,6 +274,21 @@ namespace kAI.Editor.Controls
             {
                 Behaviour.Save();
             }
+
+
+            kAIXmlBehaviourMetaSaveFile lMetaFile = new kAIXmlBehaviourMetaSaveFile(mEditorImpl.GetNodePositions());
+
+            XmlObjectSerializer lProjectSerialiser = new DataContractSerializer(typeof(kAIXmlBehaviourMetaSaveFile), kAINode.NodeSerialTypes);
+
+            // Settings for writing the XML file 
+            XmlWriterSettings lSettings = new XmlWriterSettings();
+            lSettings.Indent = true;
+
+            // Create the writer and write the file. 
+            XmlWriter lWriter = XmlWriter.Create(Behaviour.XmlLocation.GetFile().FullName + ".meta", lSettings);
+            lProjectSerialiser.WriteObject(lWriter, lMetaFile);
+            lWriter.Close();   
+
         }
 
         /// <summary>

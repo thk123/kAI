@@ -11,6 +11,8 @@ using System.Reflection;
 
 namespace kAI.Core
 {
+    using DefaultPortEntry = KeyValuePair<kAIPortID, Func<kAIXmlBehaviour, kAIPort>>;
+
     /// <summary>
     /// An XML behaviour (ie one created by the editor).
     /// </summary>
@@ -133,8 +135,8 @@ namespace kAI.Core
         public const string kAIXmlBehaviourExtension = "xml";
 
         //Internal port IDs
-        private readonly kAIPortID kOnActivatePortID = "OnActivate";
-        private readonly kAIPortID kDeactivatePortID = "Deactivate";
+        private static readonly kAIPortID kOnActivatePortID = "OnActivate";
+        private static readonly kAIPortID kDeactivatePortID = "Deactivate";
 
         /// <summary>
         /// Nodes within this XML behaviour. 
@@ -221,6 +223,53 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// The dictionary of default internal port IDs and the functions to create them.
+        /// </summary>
+        static IEnumerable<DefaultPortEntry> sDefaultPortsInteralDictionary
+        {
+            get
+            {
+                yield return new DefaultPortEntry(kOnActivatePortID, (lBehaviour) =>
+                {
+                    return new kAITriggerPort(kOnActivatePortID, kAIPort.ePortDirection.PortDirection_Out);
+                });
+
+                yield return new DefaultPortEntry(kDeactivatePortID, (lBehaviour) =>
+                {
+                    kAITriggerPort lDeactivatePort = new kAITriggerPort(kDeactivatePortID, kAIPort.ePortDirection.PortDirection_In);
+                    if (lBehaviour != null)
+                    {
+                        lDeactivatePort.OnTriggered += new kAITriggerPort.TriggerEvent(lBehaviour.lDeactivatePort_OnTriggered);
+                    }
+                    return lDeactivatePort;
+                });
+            }
+        }
+
+        /// <summary>
+        /// The functions to create the default internal ports for an XML behaviour.
+        /// Call the function with null to get a template port. 
+        /// </summary>
+        public static IEnumerable<Func<kAIXmlBehaviour, kAIPort>> sDefaultInternalPorts
+        {
+            get
+            {
+                return sDefaultPortsInteralDictionary.Select((lKVP) => { return lKVP.Value; });
+            }
+        }
+
+        /// <summary>
+        /// The names that are reserved for internal ports. 
+        /// </summary>
+        public static IEnumerable<kAIPortID> sDefaultInternalPortNames
+        {
+            get
+            {
+                return sDefaultPortsInteralDictionary.Select((lKVP) => { return lKVP.Key; });
+            }
+        }
+
+        /// <summary>
         /// Triggered when a new internal port is added to this behaviour.
         /// </summary>
         public event InternalPortAdded OnInternalPortAdded;
@@ -238,26 +287,24 @@ namespace kAI.Core
             mDebugInfo = null;
         }
 
+
         /// <summary>
         /// Create a new XML behaviour 
         /// </summary>
         /// <param name="lBehaviourID">The name of the new behaviour. </param>
         /// <param name="lFile">Where this behaviour should be saved. </param>
         /// <param name="lLogger">Optionally, the logger this behaviour should use. </param>
-        public kAIXmlBehaviour(kAIBehaviourID lBehaviourID, kAIRelativePath lFile, kAIILogger lLogger = null)
+        private kAIXmlBehaviour(kAIBehaviourID lBehaviourID, kAIRelativePath lFile, kAIILogger lLogger = null)
             : this(lBehaviourID, lLogger)
         {
             //kAIRelativePath lRelativePath = new kAIRelativePath(lFile, )
             XmlLocation = lFile;
             kAIRelativeObject.AddPathID(XmlLocationID, XmlLocation.GetFile().Directory);
 
-            // Create the internal ports 
-            kAITriggerPort lOnActivatePort = new kAITriggerPort(kOnActivatePortID, kAIPort.ePortDirection.PortDirection_Out, lLogger);
-            AddInternalPort(lOnActivatePort, false);
-
-            kAITriggerPort lDeactivatePort = new kAITriggerPort(kDeactivatePortID, kAIPort.ePortDirection.PortDirection_In, lLogger);
-            lDeactivatePort.OnTriggered += new kAITriggerPort.TriggerEvent(lDeactivatePort_OnTriggered);
-            AddInternalPort(lDeactivatePort, false);
+            foreach (Func<kAIXmlBehaviour, kAIPort> lPortCreator in sDefaultInternalPorts)
+            {
+                AddInternalPort(lPortCreator(this), false);
+            }
         }
 
         /// <summary>
@@ -316,6 +363,11 @@ namespace kAI.Core
         /// <param name="lNode">The node to remove. </param>
         public void RemoveNode(kAINode lNode)
         {
+            foreach (kAIPort lPort in lNode.GetExternalPorts())
+            {
+                lPort.BreakAllConnexions();
+            }
+
             mInternalNodes.Remove(lNode.NodeID);
         }
 
@@ -564,19 +616,29 @@ namespace kAI.Core
         }
 
         /// <summary>
-        /// Gets an port belonging to this behaviour. 
+        /// Gets a port belonging to this behaviour. 
         /// </summary>
         /// <param name="lPortID">The ID of the port. </param>
         /// <param name="lNodeID">The node the port belongs to, invalid id if an internal port. </param>
         /// <returns>The port matching lNodeID:lPortID</returns>
         public kAIPort GetInternalPort(kAIPortID lPortID, kAINodeID lNodeID)
         {
+            return GetInternalPort(new kAIFQPortID(lNodeID, lPortID));
+        }
+
+        /// <summary>
+        /// Gets a port belonging to this behaviour. 
+        /// </summary>
+        /// <param name="lPortID">The fully qualified port id. </param>
+        /// <returns></returns>
+        public kAIPort GetInternalPort(kAIFQPortID lPortID)
+        {
             // Is the start node ID a real node.
-            if (lNodeID == kAINodeID.InvalidNodeID)
+            if (lPortID.NodeID == kAINodeID.InvalidNodeID)
             {
-                if (mInternalPorts.ContainsKey(lPortID))
+                if (mInternalPorts.ContainsKey(lPortID.PortID))
                 {
-                    return mInternalPorts[lPortID].Port;
+                    return mInternalPorts[lPortID.PortID].Port;
                 }
                 else
                 {
@@ -585,18 +647,18 @@ namespace kAI.Core
             }
             else // The start node is invalid, so is a global port. 
             {
-                if (mInternalNodes.ContainsKey(lNodeID))
+                if (mInternalNodes.ContainsKey(lPortID.NodeID))
                 {
-                    kAINode lStartNode = mInternalNodes[lNodeID];
+                    kAINode lStartNode = mInternalNodes[lPortID.NodeID];
 
                     Assert(lStartNode);
 
                     // TODO: Need a method to just get a port from the dictionary
-                    return lStartNode.GetExternalPorts().First((lPort) => { return lPort.PortID == lPortID; });
+                    return lStartNode.GetExternalPorts().First((lPort) => { return lPort.PortID == lPortID.PortID; });
                 }
                 else
                 {
-                    throw new Exception("Could not find node " + lNodeID);
+                    throw new Exception("Could not find node " + lPortID.NodeID);
                 }
             }
         }
@@ -628,8 +690,8 @@ namespace kAI.Core
         public static kAIXmlBehaviour LoadFromFile(FileInfo lPath, GetAssemblyByName lAssemblyGetter)
         {
             XmlObjectSerializer lProjectDeserialiser = new DataContractSerializer(typeof(InternalXml), kAINode.NodeSerialTypes);
-            try
-            {
+            /*try
+            {*/
                 Stream lXmlStream = lPath.OpenRead();
 
                 InternalXml lXmlFile = (InternalXml)lProjectDeserialiser.ReadObject(lXmlStream);
@@ -639,7 +701,7 @@ namespace kAI.Core
                 lXmlStream.Close();
 
                 return new kAIXmlBehaviour(lXmlFile, lAssemblyGetter, lPath);
-            }
+            /*}
             catch (System.UnauthorizedAccessException)
             {
                 //TODO: Error - have you forgot to check the file out of source control?
@@ -653,7 +715,7 @@ namespace kAI.Core
                 // TODOO: Error - File is already open elsewhere. 
             }
 
-            return null;
+            return null;*/
         }
 
         /// <summary>

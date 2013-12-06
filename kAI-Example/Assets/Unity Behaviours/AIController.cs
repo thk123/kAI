@@ -17,6 +17,8 @@ public class AIController : MonoBehaviour {
 	bool wasSwingingSword = false;
 	
 	public float lowHealthThreshhold = 25.0f;
+
+	kAIDataPort lHealthPort;
 	
 	// Use this for initialization
 	void Start () {
@@ -28,6 +30,8 @@ public class AIController : MonoBehaviour {
 //		aiInterface.GetPort("SwingSword").OnTriggered += SwingSword_OnTriggerered;
 		
 		aiInterface.SetData<GameObject>("Target", enemy);
+
+		lHealthPort = (kAIDataPort)aiInterface.GetPort ("CharHealth");
 	}
 	
 	void SwingSword_OnTriggerered(kAIPort lSender)
@@ -38,12 +42,12 @@ public class AIController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(wasSwingingSword && !swordController.swordSwinging)
+		/*if(wasSwingingSword && !swordController.swordSwinging)
 		{
 			aiInterface.TriggerPort("SwordSwingFinished");
-		}
+		}*/
 		
-		if((enemy.transform.position - transform.position).sqrMagnitude < 2 * 2)
+		/*if((enemy.transform.position - transform.position).sqrMagnitude < 2 * 2)
 		{
 			aiInterface.TriggerPort("PlayerNear");	
 		}
@@ -51,7 +55,7 @@ public class AIController : MonoBehaviour {
 		if((enemy.transform.position - transform.position).sqrMagnitude > 5 * 5)
 		{
 			aiInterface.TriggerPort("PlayerNotNear");	
-		}
+		}*/
 		/*else
 		{
 			
@@ -62,14 +66,12 @@ public class AIController : MonoBehaviour {
 			
 		}*/
 		
-		if(health.CurrentHealth < lowHealthThreshhold)
-		{
-			aiInterface.TriggerPort("LowHealth");	
-		}
-		else
-		{
-			aiInterface.TriggerPort("NotLowHealth");	
-		}
+		lHealthPort.SetData(health.CurrentHealth);
+	}
+
+	public GameObject GetTarget()
+	{
+		return enemy;
 	}
 }
 
@@ -111,6 +113,11 @@ public class SwordSwingAction : kAICodeBehaviour
 				}
 			}
 		}
+	}
+
+	public static bool IsGameObjectNear(GameObject me, GameObject lOtherObject, float lDist)
+	{
+		return (me.transform.position - lOtherObject.transform.position).sqrMagnitude <= (lDist * lDist);
 	}
 }
 
@@ -217,4 +224,7 @@ public class MoveAction : kAICodeBehaviour
 			}
 		}
 	}
+
 }
+
+

@@ -23,6 +23,11 @@ namespace kAI.Editor.Controls.DX
             public bool WasHovered = false;
             public bool Hovered = false;
             public bool MousePressStartHere = false;
+
+            public DateTime LastClickTime = DateTime.MinValue;
+            public Point LastMousePressPosition = Point.Empty;
+
+            public const double kDoubleClickDuration = 0.5;
         }
 
         /// <summary>
@@ -209,7 +214,24 @@ namespace kAI.Editor.Controls.DX
                     // if the mouse was initially pressed on this object  so this is a click action
                     if (lResponder.Item2.MousePressStartHere)
                     {
-                        lResponder.Item1.CallAction(lResponder.Item1.OnMouseClick, lSender, lEventArgs);
+                        // We find out the time difference between the two clicks
+                        DateTime lastRectanglePress = lResponder.Item2.LastClickTime;
+                        TimeSpan lTimeSpan = lastRectanglePress - DateTime.Now;
+
+                        // If the duration is short enough && the mouse has not moved
+                        if (lTimeSpan.Duration().TotalSeconds <= RectangleState.kDoubleClickDuration &&
+                            lResponder.Item2.LastMousePressPosition == lEventArgs.Location)
+                        {
+                            lResponder.Item1.CallAction(lResponder.Item1.OnMouseDoubleClick, lSender, lEventArgs);
+                        }
+                        else // duration too long or the mouse has moved, therefore not a double click but a single click
+                        {
+                            lResponder.Item1.CallAction(lResponder.Item1.OnMouseClick, lSender, lEventArgs);
+                        }
+
+                        // Update the values in the rectangle of this press
+                        lResponder.Item2.LastClickTime = DateTime.Now;
+                        lResponder.Item2.LastMousePressPosition = lEventArgs.Location;
                     }
                     else // else the mouse was pressed down somewhere else so is a MouseUp event
                     {
@@ -218,7 +240,6 @@ namespace kAI.Editor.Controls.DX
 
                     lResponder.Item2.MousePressStartHere = false;                    
                 }
-                
 
                 // The mouse is on something. 
                 MouseOnSomething = true;

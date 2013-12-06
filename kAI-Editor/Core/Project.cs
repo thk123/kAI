@@ -17,7 +17,7 @@ namespace kAI.Editor.Core
     /// Represents a loaded kAIProject.
     /// </summary>
     [DataContract(Name = "kAIProject")]
-    class kAIProject 
+    partial class kAIProject 
     {
         /// <summary>
         /// The extension of a project file. 
@@ -256,20 +256,34 @@ namespace kAI.Editor.Core
         /// <summary>
         /// Save out this project. 
         /// </summary>
-        public void Save()
+        public void Save(kAIBehaviourID lOpenBehaviour)
         {
-            // We serialise the project in to an XML file and save the changes
-            XmlObjectSerializer lProjectSerialiser = new DataContractSerializer(typeof(kAIProject), kAINode.NodeSerialTypes);
-
             // Settings for writing the XML file 
             XmlWriterSettings lSettings = new XmlWriterSettings();
             lSettings.Indent = true;
             lSettings.NamespaceHandling = NamespaceHandling.OmitDuplicates;
 
-            // Create the writer and write the file. 
-            XmlWriter lWriter = XmlWriter.Create(ProjectFile.FullName, lSettings);
-            lProjectSerialiser.WriteObject(lWriter, this);
-            lWriter.Close();
+            using(XmlWriter lWriter = XmlWriter.Create(ProjectFile.FullName, lSettings))
+            {
+                // We serialise the project in to an XML file and save the changes
+                XmlObjectSerializer lProjectSerialiser = new DataContractSerializer(typeof(kAIProject), kAINode.NodeSerialTypes);
+
+                // Create the writer and write the file. 
+                lProjectSerialiser.WriteObject(lWriter, this);
+                //lWriter.Close();
+            }
+
+            // Write the meta file
+            using (XmlWriter lWriter = XmlWriter.Create(ProjectFile.FullName + ".meta", lSettings))
+            {
+                MetaSaveFile lMetaSave = new MetaSaveFile();
+                lMetaSave.OpenBehaviour = lOpenBehaviour;
+
+                XmlObjectSerializer lMetaSerialiser = new DataContractSerializer(typeof(MetaSaveFile));
+                lMetaSerialiser.WriteObject(lWriter, lMetaSave);
+            }
+            
+
         }
 
         /// <summary>
@@ -355,29 +369,6 @@ namespace kAI.Editor.Core
             mFile = lSouceFile;
 
             kAIRelativeObject.AddPathID(kBehaviourRootID, XmlBehaviourRoot.GetDirectory());
-        }
-
-        /// <summary>
-        /// Performs load operations on the project (eg the DLLs).
-        /// </summary>
-        private void Load()
-        {
-            foreach (kAIRelativePath lDLLPath in ProjectDllPaths)
-            {
-                LoadDLL(lDLLPath);
-            }
-
-            foreach (kAIRelativePath lRefdDllPath in this.mAdditionalDllPaths.Values)
-            {
-                LoadDLL(lRefdDllPath);
-            }
-            /*foreach (kAIBehaviourTemplate lTemplate in NodeObjects.Values)
-            {
-                if (lTemplate.BehaviourFlavour == eBehaviourFlavour.BehaviourFlavour_Code)
-                {
-                    lTemplate.SetType(this);
-                }
-            }*/
         }
 
         /// <summary>
@@ -480,11 +471,8 @@ namespace kAI.Editor.Core
         /// <returns>The loaded assembly at that position. </returns>
         private Assembly LoadAssemblyFromFilePath(kAIRelativePath lDllPath)
         {
-            FileStream lDLLStream = lDllPath.GetFile().OpenRead();
-            byte[] lDLLArray = new byte[lDLLStream.Length];
-            lDLLStream.Read(lDLLArray, 0, (int)lDLLStream.Length);
-            lDLLStream.Close();
-            Assembly lLoadedAssembly = Assembly.Load(lDLLArray);
+            // Load using standard assembly load to ensure assembly image is all correct etc.
+            Assembly lLoadedAssembly = Assembly.LoadFrom(lDllPath.GetFile().FullName);
 
             // Force the loading of the dll
             lLoadedAssembly.GetExportedTypes();
@@ -509,20 +497,33 @@ namespace kAI.Editor.Core
         /// </summary>
         /// <param name="lProjectXml">The path to the kAIProject.</param>
         /// <returns>An instantiated kAIProject with the relevant properties. </returns>
-        public static kAIProject Load(FileInfo lProjectXml)
+        public static kAIProject Load(FileInfo lProjectXml, out kAIBehaviourID lBehaviourToLoad)
         {
             kAIRelativeDirectory.AddPathID(kProjectRootID, lProjectXml.Directory);
 
             DataContractSerializer lDeserialiser = new DataContractSerializer(typeof(kAIProject), kAINode.NodeSerialTypes);
             FileStream lStream = lProjectXml.OpenRead();
             kAIProject lNewProject = (kAIProject)lDeserialiser.ReadObject(lStream);
-            lNewProject.ProjectDLLs = new List<Assembly>();
 
             lStream.Close();
 
             lNewProject.Init(lProjectXml);
-            lNewProject.Load();
 
+            FileInfo lMetaFileInfo = new FileInfo(lProjectXml.FullName + ".meta");
+            if (lMetaFileInfo.Exists)
+            {
+                using (FileStream lMetaStream = lMetaFileInfo.OpenRead())
+                {
+                    DataContractSerializer lMetaDeserialiser = new DataContractSerializer(typeof(MetaSaveFile));
+                    MetaSaveFile lMetaFile = (MetaSaveFile)lMetaDeserialiser.ReadObject(lMetaStream);
+
+                    lBehaviourToLoad = lMetaFile.OpenBehaviour;
+                }
+            }
+            else
+            {
+                lBehaviourToLoad = null;
+            }
             return lNewProject;
         }
 

@@ -60,7 +60,14 @@ namespace kAI.Core
         /// <returns>Whether the two behaviours match.</returns>
         public static bool operator ==(kAIBehaviourID lBehaviourIDA, kAIBehaviourID lBehaviourIDB)
         {
-            return lBehaviourIDA.Equals(lBehaviourIDB);
+            if ((object)lBehaviourIDA != null)
+            {
+                return lBehaviourIDA.Equals(lBehaviourIDB);
+            }
+            else
+            {
+                return (object)lBehaviourIDB == null;
+            }
         }
 
         /// <summary>
@@ -71,7 +78,14 @@ namespace kAI.Core
         /// <returns>Whether the two behaviours match.</returns>
         public static bool operator !=(kAIBehaviourID lBehaviourIDA, kAIBehaviourID lBehaviourIDB)
         {
-            return !lBehaviourIDA.Equals(lBehaviourIDB);
+            if ((object)lBehaviourIDA != null)
+            {
+                return !lBehaviourIDA.Equals(lBehaviourIDB);
+            }
+            else
+            {
+                return (object)lBehaviourIDB != null;
+            }
         }
 
         /// <summary>

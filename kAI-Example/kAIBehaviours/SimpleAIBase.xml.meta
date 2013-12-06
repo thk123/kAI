@@ -1,0 +1,68 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XmlBehaviourMetaSave xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/kAI.Editor.Core">
+  <NodePositions>
+    <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+      <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
+        <d4p1:NodeID>AIIdleBehaviour</d4p1:NodeID>
+      </Node>
+      <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
+        <d4p1:x>579</d4p1:x>
+        <d4p1:y>-385</d4p1:y>
+      </Position>
+    </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+    <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+      <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
+        <d4p1:NodeID>SwordSwingAction</d4p1:NodeID>
+      </Node>
+      <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
+        <d4p1:x>-280</d4p1:x>
+        <d4p1:y>339</d4p1:y>
+      </Position>
+    </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+    <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+      <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
+        <d4p1:NodeID>AIRunAwayBehaviour</d4p1:NodeID>
+      </Node>
+      <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
+        <d4p1:x>625</d4p1:x>
+        <d4p1:y>-116</d4p1:y>
+      </Position>
+    </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+    <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+      <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
+        <d4p1:NodeID>IfLessThan</d4p1:NodeID>
+      </Node>
+      <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
+        <d4p1:x>248</d4p1:x>
+        <d4p1:y>-234</d4p1:y>
+      </Position>
+    </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+    <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+      <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
+        <d4p1:NodeID>HealthThreshold</d4p1:NodeID>
+      </Node>
+      <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
+        <d4p1:x>-140</d4p1:x>
+        <d4p1:y>-77</d4p1:y>
+      </Position>
+    </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+    <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+      <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
+        <d4p1:NodeID>IsGameObjectNear</d4p1:NodeID>
+      </Node>
+      <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
+        <d4p1:x>-554</d4p1:x>
+        <d4p1:y>251</d4p1:y>
+      </Position>
+    </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+    <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+      <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
+        <d4p1:NodeID>ConstantSingle</d4p1:NodeID>
+      </Node>
+      <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
+        <d4p1:x>-861</d4p1:x>
+        <d4p1:y>327</d4p1:y>
+      </Position>
+    </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+  </NodePositions>
+</XmlBehaviourMetaSave>

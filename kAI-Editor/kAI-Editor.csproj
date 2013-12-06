@@ -144,8 +144,12 @@
     <Compile Include="Controls\WinForms\PropertyEditor\XmlBehaviourPropertiesEditor.Designer.cs">
       <DependentUpon>XmlBehaviourPropertiesEditor.cs</DependentUpon>
     </Compile>
+    <Compile Include="Core\CommandLineHandler.cs" />
     <Compile Include="Core\ConsoleLogger.cs" />
+    <Compile Include="Core\GlobalServices.cs" />
     <Compile Include="Core\InteractionTerminal.cs" />
+    <Compile Include="Core\Project.MetaSave.cs" />
+    <Compile Include="Core\XmlBehaviourMetaSaveFile.cs" />
     <Compile Include="ObjectProperties\ConnexionProperties.cs" />
     <Compile Include="ObjectProperties\ConstantProperties.cs" />
     <Compile Include="ObjectProperties\IPropertyEntry.cs" />
@@ -331,6 +335,12 @@
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
     <Content Include="Assets\Node.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\NodeLower.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\NodeUpper.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
     <Content Include="Assets\triangle.fx">

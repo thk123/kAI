@@ -28,8 +28,6 @@
         /// </summary>
         private void InitializeComponent()
         {
-            this.mXmlBehaviourDropdown = new System.Windows.Forms.ComboBox();
-            this.mBehaviourDropDownLabel = new System.Windows.Forms.Label();
             this.mBehaviourNameLabel = new System.Windows.Forms.Label();
             this.mInPortsGroupBox = new System.Windows.Forms.GroupBox();
             this.mInPortListControl = new kAI.Editor.Controls.WinForms.PortListControl();
@@ -39,31 +37,18 @@
             this.mOutPortsList = new System.Windows.Forms.ListBox();
             this.mConfirmBtn = new System.Windows.Forms.Button();
             this.mCancelBtn = new System.Windows.Forms.Button();
+            this.mBehaviourIDText = new System.Windows.Forms.TextBox();
+            this.label1 = new System.Windows.Forms.Label();
+            this.mBehaviourLocationText = new System.Windows.Forms.TextBox();
+            this.mBrowseBtn = new System.Windows.Forms.Button();
             this.mInPortsGroupBox.SuspendLayout();
             this.mGroupOutPorts.SuspendLayout();
             this.SuspendLayout();
             // 
-            // mXmlBehaviourDropdown
-            // 
-            this.mXmlBehaviourDropdown.FormattingEnabled = true;
-            this.mXmlBehaviourDropdown.Location = new System.Drawing.Point(445, 10);
-            this.mXmlBehaviourDropdown.Name = "mXmlBehaviourDropdown";
-            this.mXmlBehaviourDropdown.Size = new System.Drawing.Size(169, 21);
-            this.mXmlBehaviourDropdown.TabIndex = 0;
-            // 
-            // mBehaviourDropDownLabel
-            // 
-            this.mBehaviourDropDownLabel.AutoSize = true;
-            this.mBehaviourDropDownLabel.Location = new System.Drawing.Point(378, 13);
-            this.mBehaviourDropDownLabel.Name = "mBehaviourDropDownLabel";
-            this.mBehaviourDropDownLabel.Size = new System.Drawing.Size(61, 13);
-            this.mBehaviourDropDownLabel.TabIndex = 1;
-            this.mBehaviourDropDownLabel.Text = "Behaviour: ";
-            // 
             // mBehaviourNameLabel
             // 
             this.mBehaviourNameLabel.AutoSize = true;
-            this.mBehaviourNameLabel.Location = new System.Drawing.Point(13, 13);
+            this.mBehaviourNameLabel.Location = new System.Drawing.Point(16, 13);
             this.mBehaviourNameLabel.Name = "mBehaviourNameLabel";
             this.mBehaviourNameLabel.Size = new System.Drawing.Size(55, 13);
             this.mBehaviourNameLabel.TabIndex = 2;
@@ -73,16 +58,16 @@
             // 
             this.mInPortsGroupBox.Controls.Add(this.mInPortListControl);
             this.mInPortsGroupBox.Controls.Add(this.mInPortsList);
-            this.mInPortsGroupBox.Location = new System.Drawing.Point(12, 50);
+            this.mInPortsGroupBox.Location = new System.Drawing.Point(12, 86);
             this.mInPortsGroupBox.Name = "mInPortsGroupBox";
-            this.mInPortsGroupBox.Size = new System.Drawing.Size(300, 445);
+            this.mInPortsGroupBox.Size = new System.Drawing.Size(300, 409);
             this.mInPortsGroupBox.TabIndex = 3;
             this.mInPortsGroupBox.TabStop = false;
             this.mInPortsGroupBox.Text = "In Ports";
             // 
             // mInPortListControl
             // 
-            this.mInPortListControl.Location = new System.Drawing.Point(6, 389);
+            this.mInPortListControl.Location = new System.Drawing.Point(4, 355);
             this.mInPortListControl.Name = "mInPortListControl";
             this.mInPortListControl.Size = new System.Drawing.Size(280, 50);
             this.mInPortListControl.TabIndex = 1;
@@ -94,23 +79,23 @@
             this.mInPortsList.FormattingEnabled = true;
             this.mInPortsList.Location = new System.Drawing.Point(4, 20);
             this.mInPortsList.Name = "mInPortsList";
-            this.mInPortsList.Size = new System.Drawing.Size(290, 368);
+            this.mInPortsList.Size = new System.Drawing.Size(290, 329);
             this.mInPortsList.TabIndex = 0;
             // 
             // mGroupOutPorts
             // 
             this.mGroupOutPorts.Controls.Add(this.mOutPortListControl);
             this.mGroupOutPorts.Controls.Add(this.mOutPortsList);
-            this.mGroupOutPorts.Location = new System.Drawing.Point(318, 50);
+            this.mGroupOutPorts.Location = new System.Drawing.Point(318, 86);
             this.mGroupOutPorts.Name = "mGroupOutPorts";
-            this.mGroupOutPorts.Size = new System.Drawing.Size(300, 445);
+            this.mGroupOutPorts.Size = new System.Drawing.Size(300, 409);
             this.mGroupOutPorts.TabIndex = 4;
             this.mGroupOutPorts.TabStop = false;
             this.mGroupOutPorts.Text = "Out Ports";
             // 
             // mOutPortListControl
             // 
-            this.mOutPortListControl.Location = new System.Drawing.Point(14, 389);
+            this.mOutPortListControl.Location = new System.Drawing.Point(6, 353);
             this.mOutPortListControl.Name = "mOutPortListControl";
             this.mOutPortListControl.Size = new System.Drawing.Size(280, 50);
             this.mOutPortListControl.TabIndex = 1;
@@ -122,7 +107,7 @@
             this.mOutPortsList.FormattingEnabled = true;
             this.mOutPortsList.Location = new System.Drawing.Point(7, 20);
             this.mOutPortsList.Name = "mOutPortsList";
-            this.mOutPortsList.Size = new System.Drawing.Size(287, 368);
+            this.mOutPortsList.Size = new System.Drawing.Size(287, 329);
             this.mOutPortsList.TabIndex = 0;
             // 
             // mConfirmBtn
@@ -147,6 +132,38 @@
             this.mCancelBtn.UseVisualStyleBackColor = true;
             this.mCancelBtn.Click += new System.EventHandler(this.mCancelBtn_Click);
             // 
+            // mBehaviourIDText
+            // 
+            this.mBehaviourIDText.Location = new System.Drawing.Point(126, 10);
+            this.mBehaviourIDText.Name = "mBehaviourIDText";
+            this.mBehaviourIDText.Size = new System.Drawing.Size(486, 20);
+            this.mBehaviourIDText.TabIndex = 7;
+            // 
+            // label1
+            // 
+            this.label1.AutoSize = true;
+            this.label1.Location = new System.Drawing.Point(16, 41);
+            this.label1.Name = "label1";
+            this.label1.Size = new System.Drawing.Size(99, 13);
+            this.label1.TabIndex = 8;
+            this.label1.Text = "Behaviour Location";
+            // 
+            // mBehaviourLocationText
+            // 
+            this.mBehaviourLocationText.Location = new System.Drawing.Point(126, 38);
+            this.mBehaviourLocationText.Name = "mBehaviourLocationText";
+            this.mBehaviourLocationText.Size = new System.Drawing.Size(411, 20);
+            this.mBehaviourLocationText.TabIndex = 9;
+            // 
+            // mBrowseBtn
+            // 
+            this.mBrowseBtn.Location = new System.Drawing.Point(544, 36);
+            this.mBrowseBtn.Name = "mBrowseBtn";
+            this.mBrowseBtn.Size = new System.Drawing.Size(68, 23);
+            this.mBrowseBtn.TabIndex = 10;
+            this.mBrowseBtn.Text = "Browse";
+            this.mBrowseBtn.UseVisualStyleBackColor = true;
+            // 
             // XmlBehaviourPropertiesEditor
             // 
             this.AcceptButton = this.mConfirmBtn;
@@ -154,13 +171,15 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.CancelButton = this.mCancelBtn;
             this.ClientSize = new System.Drawing.Size(626, 536);
+            this.Controls.Add(this.mBrowseBtn);
+            this.Controls.Add(this.mBehaviourLocationText);
+            this.Controls.Add(this.label1);
+            this.Controls.Add(this.mBehaviourIDText);
             this.Controls.Add(this.mCancelBtn);
             this.Controls.Add(this.mConfirmBtn);
             this.Controls.Add(this.mGroupOutPorts);
             this.Controls.Add(this.mInPortsGroupBox);
             this.Controls.Add(this.mBehaviourNameLabel);
-            this.Controls.Add(this.mBehaviourDropDownLabel);
-            this.Controls.Add(this.mXmlBehaviourDropdown);
             this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedDialog;
             this.MaximizeBox = false;
             this.MinimizeBox = false;
@@ -177,8 +196,6 @@
 
         #endregion
 
-        private System.Windows.Forms.ComboBox mXmlBehaviourDropdown;
-        private System.Windows.Forms.Label mBehaviourDropDownLabel;
         private System.Windows.Forms.Label mBehaviourNameLabel;
         private System.Windows.Forms.GroupBox mInPortsGroupBox;
         private System.Windows.Forms.ListBox mInPortsList;
@@ -188,5 +205,9 @@
         private PortListControl mOutPortListControl;
         private System.Windows.Forms.Button mConfirmBtn;
         private System.Windows.Forms.Button mCancelBtn;
+        private System.Windows.Forms.TextBox mBehaviourIDText;
+        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.TextBox mBehaviourLocationText;
+        private System.Windows.Forms.Button mBrowseBtn;
     }
 }

@@ -213,7 +213,7 @@ namespace kAI.Core
 
             if (PortDirection == kAIPort.ePortDirection.PortDirection_Out)
             {
-                kAIDataPort<T> lOtherEndCast = lOtherEnd as kAIDataPort<T>;
+                kAIDataPort<T> lOtherEndCast = (kAIDataPort<T>)lOtherEnd;
                 Assert(lOtherEndCast, "Invalid port being connected to");
                 lOtherEndCast.Data = Data;
             }

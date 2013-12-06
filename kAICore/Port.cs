@@ -81,7 +81,7 @@ namespace kAI.Core
         /// <summary>
         /// The set of ports this port connects to (not is connected from).
         /// </summary>
-        protected Dictionary<kAIPortID, kAIPort> mConnectingPorts
+        protected Dictionary<kAIFQPortID, kAIPort> mConnectingPorts
         {
             get;
             private set;
@@ -244,6 +244,25 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// Gets the fully qualified ID of the port in the format NodeID:PortID (or :PortID if the port
+        /// is an internal port). 
+        /// </summary>
+        public kAIFQPortID FQPortID
+        {
+            get
+            {
+                if (OwningNode == null)
+                {
+                    return new kAIFQPortID(PortID);
+                }
+                else
+                {
+                    return new kAIFQPortID(OwningNodeID, PortID);
+                }
+            }
+        }
+
+        /// <summary>
         /// The direction of this port. 
         /// </summary>
         public ePortDirection PortDirection
@@ -298,7 +317,7 @@ namespace kAI.Core
         public kAIPort(kAIPortID lPortID, ePortDirection lPortDirection, kAIPortType lDataType, kAIILogger lLogger = null)
             : base(lLogger)
         {
-            mConnectingPorts = new Dictionary<kAIPortID, kAIPort>();
+            mConnectingPorts = new Dictionary<kAIFQPortID, kAIPort>();
             PortID = lPortID;
             PortDirection = lPortDirection;
             DataType = lDataType;
@@ -329,7 +348,7 @@ namespace kAI.Core
         public bool IsConnectedTo(kAIPort lPort)
         {
             Assert(PortDirection == ePortDirection.PortDirection_Out, "In ports are not connected to things, things connect to them.");
-            return mConnectingPorts.ContainsKey(lPort.PortID);
+            return mConnectingPorts.ContainsKey(lPort.FQPortID);
         }
 
         /// <summary>
@@ -346,10 +365,19 @@ namespace kAI.Core
         /// </summary>
         public void BreakAllConnexions()
         {
-            Assert(PortDirection == ePortDirection.PortDirection_Out, "In ports are not connected to things, things connect to them.");
-            foreach (kAIPort lPort in mConnectingPorts.Values)
+            if(PortDirection == ePortDirection.PortDirection_Out)
             {
-                BreakConnexion(lPort);
+                while (mConnectingPorts.Count > 0)
+                {
+                    BreakConnexion(mConnectingPorts.Values.First());
+                }
+            }
+            else
+            {
+                foreach (kAIConnexion lConnexion in mOwningBehaviour.GetConnectedPorts(this))
+                {
+                    lConnexion.StartPort.BreakConnexion(lConnexion.EndPort);
+                }
             }
         }
 
@@ -362,7 +390,7 @@ namespace kAI.Core
         {
             if (PortDirection == ePortDirection.PortDirection_Out)
             {
-                mConnectingPorts.Add(lOtherEnd.PortID, lOtherEnd);
+                mConnectingPorts.Add(lOtherEnd.FQPortID, lOtherEnd);
             }
 
             OnConnect(lOtherEnd);
@@ -390,7 +418,7 @@ namespace kAI.Core
             // If we are the outbound port, we are storing what we are connected to, so we remove it
             if(PortDirection == ePortDirection.PortDirection_Out)
             {
-                mConnectingPorts.Remove(lOtherEnd.PortID);
+                mConnectingPorts.Remove(lOtherEnd.FQPortID);
                 
             }
 
@@ -823,6 +851,158 @@ namespace kAI.Core
         public override string ToString()
         {
             return PortID;
+        }
+    }
+
+    /// <summary>
+    /// A fully qualified port id which includes the node it belongs to (if any). 
+    /// </summary>
+    [DataContract()]
+    public class kAIFQPortID
+    {
+        /// <summary>
+        /// The string of the port id
+        /// </summary>
+        [DataMember()]
+        public kAIPortID PortID
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// The node ID this port is an external port for. 
+        /// </summary>
+        [DataMember()]
+        public kAINodeID NodeID
+        {
+            get;
+            set;
+        }
+
+        /// <summary>
+        /// Construct a PortID from a string.
+        /// </summary>
+        /// <param name="lPortID">A fully qualified port ID in the format PortID:NodeID</param>
+        public kAIFQPortID(string lPortID)
+        {
+            string[] lName = lPortID.Split(':');
+
+            if (lName.Length != 2)
+            {
+                throw new Exception("Invalid string to create port id");
+            }
+
+            bool lIsNodePort = lName[0].Length > 0;
+            NodeID = lIsNodePort ? new kAINodeID(lName[0]) : kAINodeID.InvalidNodeID;
+            PortID = lName[1];
+        }
+
+        /// <summary>
+        /// Construct a fully qualified port id for an internal port. 
+        /// </summary>
+        /// <param name="lPortID">The ID of the port. </param>
+        public kAIFQPortID(kAIPortID lPortID)
+        {
+            NodeID = String.Empty;
+            PortID = lPortID;
+        }
+
+        /// <summary>
+        /// Consutrct a fully qualified port ID with a given node id. 
+        /// </summary>
+        /// <param name="lNodeID">The ID of the node the port belongs to. </param>
+        /// <param name="lPortID">The ID of the port. </param>
+        public kAIFQPortID(kAINodeID lNodeID, kAIPortID lPortID)
+        {
+            NodeID = lNodeID;
+            PortID = lPortID;
+        }
+
+
+        /// <summary>
+        /// Implicitly convert between kAIPortIDs and strings.
+        /// </summary>
+        /// <param name="lPortID">The existing port ID.</param>
+        /// <returns>The string representing the port ID.</returns>
+        public static implicit operator string(kAIFQPortID lPortID)
+        {
+            string lNodeIdString = lPortID.NodeID == kAINodeID.InvalidNodeID ? String.Empty : (string)lPortID.NodeID;
+            return lNodeIdString + ":" + lPortID.PortID;
+        }
+
+        /// <summary>
+        /// Implicitly convert between kAIPortIDs and strings.
+        /// </summary>
+        /// <param name="lPortID">The string of a port id.</param>
+        /// <returns>A kAIFQPortID from the string. </returns>
+        public static implicit operator kAIFQPortID(string lPortID)
+        {
+            return new kAIFQPortID(lPortID);
+        }
+
+        /// <summary>
+        /// Checks two PortID's match.
+        /// </summary>
+        /// <param name="lPortIDA">The first port ID.</param>
+        /// <param name="lPortIDB">The second port ID.</param>
+        /// <returns>Whether the two ports match.</returns>
+        public static bool operator ==(kAIFQPortID lPortIDA, kAIFQPortID lPortIDB)
+        {
+            return lPortIDA.Equals(lPortIDB);
+        }
+
+        /// <summary>
+        /// Checks two PortID's don't match. 
+        /// </summary>
+        /// <param name="lPortIDA">The first port ID.</param>
+        /// <param name="lPortIDB">The second port ID.</param>
+        /// <returns>Whether the two ports match.</returns>
+        public static bool operator !=(kAIFQPortID lPortIDA, kAIFQPortID lPortIDB)
+        {
+            return !lPortIDA.Equals(lPortIDB);
+        }
+
+        /// <summary>
+        /// Standard Equals method, uses proper comparison on correct objects. 
+        /// </summary>
+        /// <param name="obj">The other object to compare.</param>
+        /// <returns>True if the two objects have the same ID</returns>
+        public override bool Equals(object obj)
+        {
+            if (ReferenceEquals(this, obj))
+                return true;
+
+            if (((object)obj == null))
+                return false;
+
+            kAIFQPortID lPortID = obj as kAIFQPortID;
+            if (((object)lPortID != null))
+            {
+                return lPortID.PortID == PortID && lPortID.NodeID == NodeID;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        /// <summary>
+        /// Standard hash code.
+        /// </summary>
+        /// <returns>The hash of the object.</returns>
+        public override int GetHashCode()
+        {
+            return (PortID + NodeID).GetHashCode();
+        }
+
+        /// <summary>
+        /// Returns the PortID.
+        /// </summary>
+        /// <returns>The PortID. </returns>
+        public override string ToString()
+        {
+            return this;
         }
     }
 }

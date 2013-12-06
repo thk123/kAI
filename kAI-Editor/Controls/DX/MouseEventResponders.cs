@@ -36,6 +36,12 @@ namespace kAI.Editor.Controls.DX
         public EventHandler<MouseEventArgs> OnMouseClick;
 
         /// <summary>
+        /// Triggered when the mouse is clicked twice without the mouse moving in a
+        /// small window of time. 
+        /// </summary>
+        public EventHandler<MouseEventArgs> OnMouseDoubleClick;
+
+        /// <summary>
         /// The context menu that is applicable within this rectangle. 
         /// </summary>
         public ContextMenu ContextMenu;

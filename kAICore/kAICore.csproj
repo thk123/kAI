@@ -65,6 +65,7 @@
     <Compile Include="ReturnConfigurationDictionary.cs" />
     <Compile Include="TriggerPort.cs" />
     <Compile Include="Util.cs" />
+    <Compile Include="XmlBehaviour.Builder.cs" />
     <Compile Include="XmlBehaviour.cs" />
     <Compile Include="XmlBehaviour.DebugInfo.cs" />
     <Compile Include="XmlBehaviour.InternalXml.cs" />
@@ -77,7 +78,9 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>cp $(TargetPath) $(SolutionDir)kAI-Example\Assets\DLLs\$(TargetFileName)</PostBuildEvent>
+    <PostBuildEvent>cp $(TargetPath) $(SolutionDir)kAI-Example\Assets\DLLs\$(TargetFileName)
+cp $(TargetDir)\MiscUtil.dll $(SolutionDir)kAI-Example\Assets\DLLs\MiscUtil.dll
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
