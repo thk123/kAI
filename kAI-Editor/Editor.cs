@@ -397,6 +397,19 @@ namespace kAI.Editor
 
         private void Editor_FormClosed(object sender, FormClosedEventArgs e)
         {
+            
+            if (mLoadedProject != null)
+            {
+                if(mBehaviourEditor != null)
+                {
+                    mLoadedProject.Save(mBehaviourEditor.Behaviour.BehaviourID);
+                }
+                else 
+                {
+                    mLoadedProject.Save(null);
+                }
+            }
+
             DestroyBehaviourEditorWindow();
         }
 
