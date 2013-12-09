@@ -231,7 +231,10 @@ namespace kAI.Editor
             {
 
                 kAIINodeObject lSelectedNode = SelectNode();
-                mBehaviourEditor.AddNode(lSelectedNode, mBehaviourEditor.GetPositionForNode());
+                if (lSelectedNode != null)
+                {
+                    mBehaviourEditor.AddNode(lSelectedNode, mBehaviourEditor.GetPositionForNode());
+                }
             }
         }
 
