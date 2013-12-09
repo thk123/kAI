@@ -372,7 +372,11 @@ namespace kAI.Editor.Controls
         void GlobalContextMenu_Popup(object sender, EventArgs e)
         {
             // We store the position relative to the top left of the control
-            mMousePositionOnContext = new Point(Control.MousePosition.X - GlobalContextMenu.SourceControl.Location.X, Control.MousePosition.Y - GlobalContextMenu.SourceControl.Location.Y);
+            Control lParentControl = GlobalContextMenu.SourceControl;
+
+            Point lMousePoint =  Control.MousePosition ;
+
+            mMousePositionOnContext = lParentControl.PointToClient(lMousePoint);
         }
 
         void lAddNodeMenuItem_Click(object sender, EventArgs e)
