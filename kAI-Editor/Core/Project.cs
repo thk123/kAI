@@ -37,14 +37,22 @@ namespace kAI.Editor.Core
             set;
         }
 
+        DirectoryInfo mProjectRoot;
+
         /// <summary>
         /// The root directory of the project. 
         /// </summary>
-        [DataMember()]
+        [DataMember(Order=0)]
         public DirectoryInfo ProjectRoot
         {
-            get;
-            set;
+            get
+            {
+                return mProjectRoot;
+            }
+            set
+            {
+                mProjectRoot = value;
+            }
         }
 
         List<kAIRelativePath> mProjectDLLPaths;
@@ -52,7 +60,7 @@ namespace kAI.Editor.Core
         /// <summary>
         /// A list of DLL's this project uses. 
         /// </summary>
-        [DataMember()]
+        [DataMember(Order=1)]
         public List<kAIRelativePath> ProjectDllPaths
         {
             get
@@ -73,7 +81,7 @@ namespace kAI.Editor.Core
         /// <summary>
         /// The directory that contains all the XML behaviors.
         /// </summary>
-        [DataMember()]
+        [DataMember(Order=0)]
         public kAIRelativeDirectory XmlBehaviourRoot
         {
             get;
@@ -83,7 +91,7 @@ namespace kAI.Editor.Core
         /// <summary>
         /// A list of the behaviors in this project (both code and XML). 
         /// </summary>
-        [DataMember()]
+        [DataMember(Order=1)]
         public Dictionary<string, kAIINodeSerialObject> NodeObjects
         {
             get;
@@ -105,7 +113,7 @@ namespace kAI.Editor.Core
             private set;
         }
 
-        [DataMember(Name="ProjectTypes")]
+        [DataMember(Name="ProjectTypes", Order=1)]
         public IEnumerable<string> ProjectTypeStrings
         {
             get
@@ -158,7 +166,7 @@ namespace kAI.Editor.Core
             }
         }
 
-        [DataMember(Name = "ProjectFunctions")]
+        [DataMember(Name = "ProjectFunctions", Order=1)]
         public IEnumerable<SerialMethodInfo> ProjectFunctionStrings
         {
             get
@@ -206,7 +214,7 @@ namespace kAI.Editor.Core
         /// <summary>
         /// The locations of additional DLLs referenced by other DLLs. 
         /// </summary>
-        [DataMember(Name = "AdditionalDLLPaths")]
+        [DataMember(Name = "AdditionalDLLPaths", Order=1)]
         Dictionary<string, kAIRelativePath> mAdditionalDllPaths
         {
             get
@@ -243,6 +251,8 @@ namespace kAI.Editor.Core
             ProjectDllPaths = new List<kAIRelativePath>();
             NodeObjects = new Dictionary<string, kAIINodeSerialObject>();
             ProjectTypes = new List<Type>();
+            ProjectDLLs = new List<Assembly>();
+            ProjectFunctions = new List<MethodInfo>();
 
             mAdditionalDllPaths = new Dictionary<string, kAIRelativePath>();
 
@@ -524,6 +534,7 @@ namespace kAI.Editor.Core
             {
                 lBehaviourToLoad = null;
             }
+
             return lNewProject;
         }
 

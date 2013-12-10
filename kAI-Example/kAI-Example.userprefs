@@ -1,13 +1,15 @@
 ﻿<Properties>
-  <MonoDevelop.Ide.Workspace />
-  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Unity Behaviours\AIController.cs">
+  <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets\Unity Behaviours\kAIUnityBehaviour.cs">
     <Files>
-      <File FileName="Assets\Unity Behaviours\AIController.cs" Line="30" Column="36" />
-      <File FileName="Assets\Unity Behaviours\kAIUnityBehaviour.cs" Line="91" Column="2" />
+      <File FileName="Assets\Unity Behaviours\AIController.cs" Line="47" Column="30" />
+      <File FileName="Assets\Unity Behaviours\kAIUnityBehaviour.cs" Line="23" Column="3" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="E:\dev\C#\kAI\kAI-Example\Assets\Unity Behaviours\kAIUnityBehaviour.cs" line="131" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

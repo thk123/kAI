@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEditor;
 using kAI.Core;
 using System.Collections;
 using System.Collections.Generic;
@@ -7,6 +8,26 @@ using System.IO;
 using System;
 
 using AssemblyCSharp;
+
+
+public class kAIBehaviourPathAttribute : PropertyAttribute
+{}
+
+[CustomPropertyDrawer(typeof(RandomType))]
+public class BehaviourPathDrawer : PropertyDrawer
+{
+	public override float GetPropertyHeight (SerializedProperty prop,
+	                                         GUIContent label) 
+	{
+		return base.GetPropertyHeight (prop, label);
+	}
+}
+
+[System.Serializable]
+public class RandomType
+{
+	public string someString;
+}
 
 public class kAIUnityBehaviour : MonoBehaviour, kAIILogger
 {
@@ -20,21 +41,31 @@ public class kAIUnityBehaviour : MonoBehaviour, kAIILogger
 			return mXmlBehaviour;
 		}
 	}
-	
+
+	public RandomType random;
+
+	[kAIBehaviourPathAttribute()]
 	public string XmlBehaviourPath;
+
+	public TextAsset XmlBehaviourAsset;
 
 	public bool EnableLoad = true;
 	
 	object lObject;
-	
+
+	public FileInfo XmlBehaviourFile; 
+
 	void Awake()
 	{
 		if(EnableLoad)			
 		{
+
 			kAIObject.GlobalLogger = this;
 			//kAIObject.ExceptionHandler = HandleException;
 			kAIObject.ExceptionOnAssert = true;
-			
+
+
+
 			FileInfo lFile = new FileInfo(XmlBehaviourPath);
 			mXmlBehaviour = kAIXmlBehaviour.LoadFromFile(lFile, GetAssemblyByName);
 		}

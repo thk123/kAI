@@ -11,6 +11,7 @@ namespace kAI.Core
     /// Represents a relative path to either file or folder. 
     /// </summary>
     [DataContract()]
+    [System.Diagnostics.DebuggerDisplay("{mPath}")]
     public abstract class kAIRelativeObject
     {
         /// <summary>
@@ -247,6 +248,7 @@ namespace kAI.Core
                 }
             }
         }
+
     }
 
     /// <summary>

@@ -54,7 +54,7 @@ namespace kAI.Editor.Forms.ProjectProperties
             DialogResult lResult = lFolderBrowser.ShowDialog();
             if (lResult == DialogResult.OK)
             {
-                ProjectDir_TextBox.Text = lFolderBrowser.SelectedPath;
+                BehaviuorDir_TextBox.Text = lFolderBrowser.SelectedPath;
                 Project.XmlBehaviourRoot = new kAIRelativeDirectory(new DirectoryInfo(lFolderBrowser.SelectedPath), Project.ProjectRoot, kAIProject.kProjectRootID);
             }
         }

@@ -394,8 +394,12 @@ namespace kAI.Editor
 
         private void saveProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
-            mLoadedProject.Save(mBehaviourEditor.Behaviour.BehaviourID);
+            kAIBehaviourID lLoadedBehaviour = null;
+            if (mBehaviourEditor != null)
+            {
+                lLoadedBehaviour = mBehaviourEditor.Behaviour.BehaviourID; 
+            }
+            mLoadedProject.Save(lLoadedBehaviour);
         }
 
         private void Editor_FormClosed(object sender, FormClosedEventArgs e)

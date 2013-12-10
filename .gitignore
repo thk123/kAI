@@ -32,3 +32,5 @@ kAIBehaviourLoadTest/obj/*
 us.stackdump
 SpriteTextRenderer/Sample/obj/*
 SimpleRepro*
+*.kAIProj.meta
+*.csproj.user
