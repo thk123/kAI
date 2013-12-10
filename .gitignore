@@ -34,3 +34,5 @@ SpriteTextRenderer/Sample/obj/*
 SimpleRepro*
 *.kAIProj.meta
 *.csproj.user
+SpaceExample/Library/*
+SpaceExample/Temp/*

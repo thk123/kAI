@@ -1,0 +1,71 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<kAIProject xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/kAI.Editor.Core">
+  <AdditionalDLLPaths xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+    <d2p1:KeyValueOfstringFilePathfz1EyZ2r>
+      <d2p1:Key>UnityEngine</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
+        <d4p1:Path>\\UnityEngine.dll</d4p1:Path>
+        <d4p1:RootID>ProjectRoot</d4p1:RootID>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringFilePathfz1EyZ2r>
+  </AdditionalDLLPaths>
+  <NodeObjects xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <ProjectDllPaths xmlns:d2p1="http://schemas.datacontract.org/2004/07/kAI.Core">
+    <d2p1:FilePath>
+      <d2p1:Path>\Library\ScriptAssemblies\Assembly-CSharp.dll</d2p1:Path>
+      <d2p1:RootID>ProjectRoot</d2p1:RootID>
+    </d2p1:FilePath>
+  </ProjectDllPaths>
+  <ProjectFunctions>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>kAICore</AssemblyName>
+      <MethodName>IfEquals</MethodName>
+      <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>kAICore</AssemblyName>
+      <MethodName>IfLessThan</MethodName>
+      <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>kAICore</AssemblyName>
+      <MethodName>IfGreaterThan</MethodName>
+      <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>kAICore</AssemblyName>
+      <MethodName>IfLessThanOrEqual</MethodName>
+      <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>kAICore</AssemblyName>
+      <MethodName>IfGreaterThanOrEqual</MethodName>
+      <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>kAICore</AssemblyName>
+      <MethodName>Sum</MethodName>
+      <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+    </kAIProject.SerialMethodInfo>
+  </ProjectFunctions>
+  <ProjectName>SpaceProject</ProjectName>
+  <ProjectRoot xmlns:d2p1="http://schemas.datacontract.org/2004/07/System.IO">
+    <OriginalPath xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string" xmlns="">E:\dev\C#\kAI\SpaceExample</OriginalPath>
+    <FullPath xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string" xmlns="">E:\dev\C#\kAI\SpaceExample</FullPath>
+  </ProjectRoot>
+  <ProjectTypes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+    <d2p1:string>System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</d2p1:string>
+    <d2p1:string>System.Char, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</d2p1:string>
+    <d2p1:string>System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</d2p1:string>
+    <d2p1:string>System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</d2p1:string>
+    <d2p1:string>System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</d2p1:string>
+    <d2p1:string>System.UInt32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</d2p1:string>
+    <d2p1:string>UnityEngine.Vector2, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</d2p1:string>
+    <d2p1:string>UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</d2p1:string>
+    <d2p1:string>UnityEngine.Vector4, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</d2p1:string>
+  </ProjectTypes>
+  <XmlBehaviourRoot xmlns:d2p1="http://schemas.datacontract.org/2004/07/kAI.Core">
+    <d2p1:Path>\Assets\AIBehaviours</d2p1:Path>
+    <d2p1:RootID>ProjectRoot</d2p1:RootID>
+  </XmlBehaviourRoot>
+</kAIProject>
