@@ -28,6 +28,11 @@ namespace kAI.Editor.Controls.DX
         // Is the mouse currently hovering over the node. 
         bool mIsHovering;
 
+        // Used to determine when we have started dragging from this port
+        // we set to true if the mouse is left-pressed on the button, and then start
+        // dragging if the mouse then leaves port with the mouse still down
+        bool mDidLeftClick;
+
         // Reference to the containing editor window. 
         kAIBehaviourEditorWindowDX mEditorWindow;
 
@@ -351,16 +356,29 @@ namespace kAI.Editor.Controls.DX
         void OnLeave(object sender, MouseEventArgs e)
         {
             mIsHovering = false;
+            
+            if (e.Button == MouseButtons.Left && mDidLeftClick)
+            {
+                mEditorWindow.ConnexionCreator.PortDown(Port);
+            }
         }
 
         void OnMouseDown(object sender, MouseEventArgs e)
         {
-            mEditorWindow.ConnexionCreator.PortDown(Port);
+            kAI.Editor.Core.GlobalServices.Logger.LogMessage("OnMouseDown" + e.Button);
+            if (e.Button == MouseButtons.Left)
+            {
+                mDidLeftClick = true;
+            }
         }
 
         void OnMouseUp(object sender, MouseEventArgs e)
         {
-            mEditorWindow.ConnexionCreator.PortUp(Port);
+            if (!mDidLeftClick)
+            {
+                mEditorWindow.ConnexionCreator.PortUp(Port);
+                mDidLeftClick = false;
+            }
         }
 
         void OnMouseClick(object sender, MouseEventArgs e)

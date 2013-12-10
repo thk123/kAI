@@ -737,9 +737,12 @@ namespace kAI.Editor.Controls.DX
         {
             if (!InputManager.MouseOnSomething)
             {
-                mLastMousePoint = e.Location;
-                InputManager.OnMouseMove += new EventHandler<MouseEventArgs>(InputManager_OnMouseMove);
-                InputManager.OnMouseUp += new EventHandler<MouseEventArgs>(InputManager_OnMouseUp);
+                if (e.Button == MouseButtons.Left)
+                {
+                    mLastMousePoint = e.Location;
+                    InputManager.OnMouseMove += new EventHandler<MouseEventArgs>(InputManager_OnMouseMove);
+                    InputManager.OnMouseUp += new EventHandler<MouseEventArgs>(InputManager_OnMouseUp);
+                }
             }
         }
 
