@@ -36,3 +36,4 @@ SimpleRepro*
 *.csproj.user
 SpaceExample/Library/*
 SpaceExample/Temp/*
+SpaceExample/SpaceExample.userprefs
