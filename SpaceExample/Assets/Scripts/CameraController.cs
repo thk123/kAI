@@ -8,6 +8,8 @@ public class CameraController : MonoBehaviour {
 	Vector3 cameraPanLeft;
 	Vector3 cameraPanForward;
 
+	public bool locked;
+
 	// Use this for initialization
 	void Start () {
 		cameraPanLeft = -1 * transform.right;
@@ -16,36 +18,39 @@ public class CameraController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if(Input.mousePosition.x <= 10.0f)
+		if(!locked)
 		{
-			transform.Translate(cameraPanningSpeed * cameraPanLeft, Space.World);
-		}
+			if(Input.mousePosition.x <= 10.0f)
+			{
+				transform.Translate(cameraPanningSpeed * cameraPanLeft, Space.World);
+			}
 
 
-		if(Input.mousePosition.x >= Screen.width - 10.0f )
-		{
-			transform.Translate(cameraPanningSpeed * -1 * cameraPanLeft, Space.World);
-		}
+			if(Input.mousePosition.x >= Screen.width - 10.0f )
+			{
+				transform.Translate(cameraPanningSpeed * -1 * cameraPanLeft, Space.World);
+			}
 
-		if(Input.mousePosition.y <= 10.0f)
-		{
-			transform.Translate(-1 * cameraPanningSpeed * cameraPanForward, Space.World);
-		}
+			if(Input.mousePosition.y <= 10.0f)
+			{
+				transform.Translate(-1 * cameraPanningSpeed * cameraPanForward, Space.World);
+			}
 
-		if(Input.mousePosition.y >= Screen.height - 10.0f)
-		{
-			transform.Translate(cameraPanningSpeed * cameraPanForward, Space.World);
-		}
+			if(Input.mousePosition.y >= Screen.height - 10.0f)
+			{
+				transform.Translate(cameraPanningSpeed * cameraPanForward, Space.World);
+			}
 
-		float scrollValue = Input.GetAxis("Mouse ScrollWheel");
+			float scrollValue = Input.GetAxis("Mouse ScrollWheel");
 
-		if(scrollValue > 0.0f)
-		{
-			transform.Translate(Vector3.forward, Space.Self);
-		}
-		else if(scrollValue < 0.0f)
-		{
-			transform.Translate(-1 * Vector3.forward, Space.Self);
+			if(scrollValue > 0.0f)
+			{
+				transform.Translate(Vector3.forward, Space.Self);
+			}
+			else if(scrollValue < 0.0f)
+			{
+				transform.Translate(-1 * Vector3.forward, Space.Self);
+			}
 		}
 
 	}

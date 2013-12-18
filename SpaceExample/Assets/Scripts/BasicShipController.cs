@@ -15,21 +15,21 @@ public class BasicShipController : MonoBehaviour {
 	void Update () {
 		if(Input.GetKey(KeyCode.UpArrow))
 		{
-			engine.ApplyAccelerateForce();
+			engine.ApplyAccelerateForce(engine.accelerationForce);
 		}
 
 		if(Input.GetKey(KeyCode.DownArrow))
 		{
-			engine.ApplyDeccelerateForce();
+			engine.ApplyAccelerateForce(-engine.accelerationForce);
 		}
 
 		if(Input.GetKey(KeyCode.LeftArrow))
 		{
-			engine.ApplyTorque(10.0f);
+			engine.ApplyTorque(20.0f);
 		}
 		else if(Input.GetKey(KeyCode.RightArrow))
 		{
-			engine.ApplyTorque(-10.0f);
+			engine.ApplyTorque(-20.0f);
 		}
 	}
 }

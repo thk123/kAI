@@ -9,9 +9,13 @@ public class ShipEngine : MonoBehaviour {
 	public float torqueForce;
 
 
+	public float forceToApply;
+	public float torqueToApply;
+
 	// Use this for initialization
 	void Start () {
-	
+		forceToApply = 0.0f;
+		torqueToApply = 0.0f;
 	}
 	
 	// Update is called once per frame
@@ -19,20 +23,21 @@ public class ShipEngine : MonoBehaviour {
 	
 	}
 
-	public void ApplyAccelerateForce(float requestedForce = -1.0f)
+	void FixedUpdate()
 	{
-		if(requestedForce < 0.0f)
-		{
-			requestedForce = accelerationForce;
-		}
+		rigidbody.AddForce(Mathf.Min (forceToApply, accelerationForce) * transform.right);
+		forceToApply = 0.0f;
 
-		if(requestedForce > 0.0f)
-		{
-			rigidbody.AddForce(Mathf.Min (requestedForce, accelerationForce) * transform.right);
-		}
+		rigidbody.AddRelativeTorque(transform.up * Mathf.Min(torqueToApply, torqueForce));
+		torqueToApply = 0.0f;
 	}
 
-	public void ApplyDeccelerateForce(float requestedForce = -1.0f)
+	public void ApplyAccelerateForce(float requestedForce)
+	{
+		forceToApply += requestedForce;
+	}
+
+	public void ApplyDeccelerateForce(float requestedForce)
 	{
 		if(requestedForce < 0.0f)
 		{
@@ -47,7 +52,7 @@ public class ShipEngine : MonoBehaviour {
 
 	public void ApplyTorque(float requestedTorque)
 	{
-		rigidbody.AddTorque(transform.up * Mathf.Min(requestedTorque, torqueForce));
+		torqueToApply += requestedTorque;
 	}
 	
 }

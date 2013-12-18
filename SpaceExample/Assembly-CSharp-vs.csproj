@@ -48,10 +48,20 @@
   <ItemGroup>
      <Compile Include="Assets\Scripts\BasicShipController.cs" />
      <Compile Include="Assets\Scripts\CameraController.cs" />
+     <Compile Include="Assets\Scripts\Code Behaviours\AdvanceTo.cs" />
+     <Compile Include="Assets\Scripts\Code Behaviours\RotateTo.cs" />
+     <Compile Include="Assets\Scripts\Code Behaviours\Stabilize.cs" />
      <Compile Include="Assets\Scripts\Selectable.cs" />
      <Compile Include="Assets\Scripts\SelectedCamera.cs" />
      <Compile Include="Assets\Scripts\ShipEngine.cs" />
      <Compile Include="Assets\Scripts\ShipSelector.cs" />
+     <Compile Include="Assets\Scripts\SimpleShipControl.cs" />
+ <Reference Include="kAICore">
+ <HintPath>Assets\DLLs\kAICore.dll</HintPath>
+ </Reference>
+ <Reference Include="MiscUtil">
+ <HintPath>Assets\DLLs\MiscUtil.dll</HintPath>
+ </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
