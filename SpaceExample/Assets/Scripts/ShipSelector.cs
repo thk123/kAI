@@ -7,6 +7,7 @@ public class ShipSelector : MonoBehaviour {
 	Camera selectionCamera;
 	
 	public SelectedCamera selectedCamera;
+	public float gameDepth;
 
 	public Selectable selectedShip
 	{
@@ -25,13 +26,14 @@ public class ShipSelector : MonoBehaviour {
 
 		if(Input.GetMouseButtonUp(0))
 		{
+		
 			print ("doing ray cast");
 			Ray selectionRay =  selectionCamera.ScreenPointToRay(Input.mousePosition);
 
-			RaycastHit info;
+			RaycastHit2D info = Physics2D.GetRayIntersection(selectionRay, 1000.0f);
 
 
-			if(Physics.Raycast(selectionRay, out info, 1000.0f))
+			if(info)
 			{
 				Selectable selectableObject = info.collider.gameObject.GetComponent<Selectable>();
 				if(selectableObject != null)

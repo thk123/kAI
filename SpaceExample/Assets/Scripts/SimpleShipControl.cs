@@ -78,17 +78,17 @@ public class SimpleShipControl : MonoBehaviour, kAIILogger {
 	
 	public void LogWarning (string lWarning, params System.Collections.Generic.KeyValuePair<string, object>[] lDetails)
 	{
-		print(lWarning);
+		Debug.LogWarning(lWarning);
 	}
 	
 	public void LogError (string lError, params System.Collections.Generic.KeyValuePair<string, object>[] lDetails)
 	{
-		print (lError);
+		Debug.LogError (lError);
 	}
 	
 	public void LogCriticalError (string lError, params System.Collections.Generic.KeyValuePair<string, object>[] lDetails)
 	{
-		print (lError);
+		Debug.LogError (lError);
 	}
 	
 	#endregion
