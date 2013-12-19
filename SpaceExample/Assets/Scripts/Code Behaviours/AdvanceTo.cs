@@ -42,32 +42,34 @@ public class AdvanceTo : kAICodeBehaviour
 				firstRun = false;
 			}
 
-
+            float oldTime = time;
 			time = Time.fixedTime - startTime;
+
+            float variableFixedDeltaTime = time - oldTime;
+            float fixedRatio = variableFixedDeltaTime / Time.fixedDeltaTime;
 			if(time <= totalTime)
 			{
-				applyingForce = forceFunction.GetFunctionForPoint(time)(time);
+                applyingForce = forceFunction.GetValue(time) * fixedRatio;
 				
-				
-				Vector3 currentVelocity = ship.rigidbody.velocity;
-				Vector3 direction = ship.transform.right;
+				Vector2 currentVelocity = ship.rigidbody2D.velocity;
+				Vector2 direction = new Vector2(ship.transform.right.x, ship.transform.right.y);
 
-				float velocityAlongDir = Vector3.Dot(currentVelocity, direction);
-				LogMessage("Actual Velocity: " + velocityAlongDir);
+				float velocityAlongDir = Vector2.Dot(currentVelocity, direction);
 				float velocityPrediction = velocityAlongDir + (applyingForce * lDeltaTime);
-				LogMessage("Predicted Velocity: " + velocityPrediction);
 
-				if((velocityPrediction < 0.0f  && velocityAlongDir > 0.0f ) ||
-				   (velocityPrediction > 0.0f  && velocityAlongDir < 0.0f ) )
+                // TODO: we really should have the second param >= 0.0f but have an issue with only starting moving on the second frame. 
+				if(time > 0.0f && // we are not interested if we are just starting
+				   ((velocityPrediction < 0.0f  && velocityAlongDir > 0.0f ) ||
+				   (velocityPrediction > 0.0f  && velocityAlongDir < 0.0f ) ))
 				{
-					LogMessage("Low Power");
 					float ratio = Mathf.Abs((velocityAlongDir / (applyingForce * lDeltaTime)));
 					applyingForce = applyingForce * ratio;
-					/*time = Mathf.PI  * 2.0f;*/
+	
+                    // We have reversed the direction so we must have arrived
 					Deactivate();
 				}
-				
-				engine.ApplyAccelerateForce(applyingForce * ship.rigidbody.mass);
+			
+				engine.ApplyAccelerateForce(applyingForce);
 			}
 		}
 
@@ -75,43 +77,57 @@ public class AdvanceTo : kAICodeBehaviour
 
 	void ComputeForces(ShipEngine engine)
 	{
-		// We want to minimize the time given the force of the egine
+		// We want to minimize the time given the force of the engine
 		
 		float delta = targetAngle.Data;
 
 		float maxForce = engine.accelerationForce;
+
+        // if we are under this limit, then the optimal acceleration is just the cos curve, compressed if we can do it in less time
 		if(delta <= 2 * maxForce)
 		{
 			totalTime = Mathf.Acos((maxForce - delta)/maxForce);
-
+            LogMessage("Time:" + totalTime);
 			forceFunction = new MathFunction(0.0f, totalTime);
+
+            // The time factor represents how much we have compressed the cos curve
+            float timeFactor = Mathf.PI / totalTime;
+
 			forceFunction.AddSegment((point) => {
-				return ((Mathf.Cos(time * (Mathf.PI / totalTime)) * maxForce));
+				return ((timeFactor * Mathf.Cos(time * timeFactor) * maxForce)); 
 			}, 0.0f, totalTime);
+
+
 		}
 		else
 		{
-			Func<float, float> fullAccel = (point) => { Debug.Log("Full acceleration"); return maxForce; };
-			Func<float, float> fullDeccel = (point) => { Debug.Log("Full deceleration"); return -maxForce; };
+			Func<float, float> fullAccel = (point) => { return maxForce; };
+			Func<float, float> fullDeccel = (point) => { return -maxForce; };
 
+            // we compute the time to do full accerlation (and deceleration)
 			float t0 = ((-Mathf.PI * maxForce) + (Mathf.Sqrt(
 							(((Mathf.PI * Mathf.PI) - 8) * maxForce) + 4.0f * delta)) * Mathf.Sqrt(maxForce)) /
 							(2.0f * maxForce);
 
 			forceFunction = new MathFunction(0.0f, t0 + Mathf.PI + t0);
+
+            // We do full accleration between 0 and t0
 			forceFunction.AddSegment(fullAccel, 0.0f, t0);
+
+            // Do a cos acceleration as above between t0 and t0 + pi
 			forceFunction.AddSegment((lPoint) => {
-				Debug.Log("Curved acceleration");
 				return (Mathf.Cos(time-t0) * maxForce);
 			}, t0, t0 + Mathf.PI);
+
+            // Then a full deceleration at the end 
 			forceFunction.AddSegment(fullDeccel, t0 + Mathf.PI, Mathf.PI + (2 * t0));
+
+            // The total time is the time spend doing full acceleration, plus our cos section plus time spent doing full deceleration.
 			totalTime = t0 + Mathf.PI + t0;
 		}
 	
 		forceFunction.EndAddSegment();
 		time = 0.0f;
-
-		LogMessage("Time:" + totalTime);
 	}
 
 }
@@ -235,6 +251,7 @@ public class MathFunction
 		{
 			if(point <= seg.endPoint)
 			{
+				//Debug.Log("Getting function for " + point + ", which runs from " + seg.startPoint + " to " + seg.endPoint);
 				return seg.segmentFunction;
 			}
 		}

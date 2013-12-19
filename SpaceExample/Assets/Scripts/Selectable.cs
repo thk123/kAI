@@ -1,7 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(MeshRenderer))]
 public class Selectable : MonoBehaviour {
 
 	bool selected;
@@ -13,7 +12,7 @@ public class Selectable : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		selected = false;
-		mesh = GetComponent<MeshRenderer>();
+		mesh = GetComponentInChildren<MeshRenderer>();
 	}
 	
 	// Update is called once per frame

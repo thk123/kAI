@@ -13,11 +13,16 @@ public class CameraController : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		cameraPanLeft = -1 * transform.right;
-		cameraPanForward = Vector3.Cross(Vector3.up, cameraPanLeft);
+		cameraPanForward = transform.up;
 	}
 	
 	// Update is called once per frame
 	void Update () {
+		if(Input.GetKeyDown(KeyCode.Escape))
+		{
+			locked = !locked;
+		}
+
 		if(!locked)
 		{
 			if(Input.mousePosition.x <= 10.0f)
@@ -54,4 +59,13 @@ public class CameraController : MonoBehaviour {
 		}
 
 	}
+
+	void OnGUI()
+	{
+		if(locked)
+		{
+			GUI.TextArea(new Rect(10, 10, 100, 20), "Locked");
+		}
+	}
+
 }

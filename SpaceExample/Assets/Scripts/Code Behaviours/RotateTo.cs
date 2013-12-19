@@ -45,7 +45,7 @@ public class AIRotateToPoint : kAICodeBehaviour
 
 
 
-				float angularVelocity = Vector3.Dot(ship.rigidbody.angularVelocity, Vector3.up);
+				float angularVelocity = ship.rigidbody2D.angularVelocity;
 				LogMessage("Actual speed:" + angularVelocity);
 
 				float predictedAngularVelocity = angularVelocity + (applyingForce * lDeltaTime);
@@ -58,8 +58,8 @@ public class AIRotateToPoint : kAICodeBehaviour
 					applyingForce = applyingForce * angularRatio;
 				}
 
-
-				engine.ApplyTorque(applyingForce * ship.rigidbody.mass);
+                // TODO: This 0.01 actually needs to be a) smaller and b) related to the size of the collider
+				engine.ApplyTorque(applyingForce * ship.rigidbody2D.mass * 0.01f);
 			}
 		}
 	}

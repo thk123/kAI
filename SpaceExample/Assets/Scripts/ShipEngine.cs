@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-[RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(Rigidbody2D))]
 public class ShipEngine : MonoBehaviour {
 
 	public float accelerationForce;
@@ -25,10 +25,14 @@ public class ShipEngine : MonoBehaviour {
 
 	void FixedUpdate()
 	{
-		rigidbody.AddForce(Mathf.Min (forceToApply, accelerationForce) * transform.right);
+        // TODO: have removed cap on force to apply since if we miss a fixed update, we need to catch up
+        // should move this catch up handling in to here. 
+		//forceToApply = Mathf.Sign(forceToApply) * Mathf.Min(Mathf.Abs(forceToApply), accelerationForce);
+		rigidbody2D.AddForce(forceToApply * new Vector2(transform.right.x, transform.right.y));
 		forceToApply = 0.0f;
 
-		rigidbody.AddRelativeTorque(transform.up * Mathf.Min(torqueToApply, torqueForce));
+		rigidbody2D.AddTorque(Mathf.Min(torqueToApply, torqueForce));
+        //rigidbody2D.AddTorque(0.001f);
 		torqueToApply = 0.0f;
 	}
 
@@ -39,6 +43,7 @@ public class ShipEngine : MonoBehaviour {
 
 	public void ApplyDeccelerateForce(float requestedForce)
 	{
+		Debug.LogError("Something");
 		if(requestedForce < 0.0f)
 		{
 			requestedForce = decelerationForce;
@@ -52,7 +57,7 @@ public class ShipEngine : MonoBehaviour {
 
 	public void ApplyTorque(float requestedTorque)
 	{
-		torqueToApply += requestedTorque;
+		torqueToApply = requestedTorque;
 	}
 	
 }
