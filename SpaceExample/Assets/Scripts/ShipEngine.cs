@@ -16,6 +16,8 @@ public class ShipEngine : MonoBehaviour {
 	void Start () {
 		forceToApply = 0.0f;
 		torqueToApply = 0.0f;
+        //rigidbody2D.hingeJoint = Quaternion.identity;
+        
 	}
 	
 	// Update is called once per frame
@@ -60,4 +62,34 @@ public class ShipEngine : MonoBehaviour {
 		torqueToApply = requestedTorque;
 	}
 	
+}
+
+static class Extensions
+{
+    public static float GetColliderRadius2D(this Collider2D collider)
+    {
+        if(collider is BoxCollider2D)
+        {
+            // THIS ONE WORKS - ROTATION NOT CORRECT BUT INDPENDENT OF THESE SIZES
+            BoxCollider2D boxCollider = (BoxCollider2D)collider;
+            Vector2 scale2d = new Vector2(collider.transform.localScale.x, collider.transform.localScale.y);
+            Vector2 colliderScale = 0.5f * boxCollider.size;
+
+            Vector2 scaleVector = new Vector2(colliderScale.x * scale2d.x, colliderScale.y * scale2d.y);
+
+            return scaleVector.sqrMagnitude; /** (0.5f * collider.transform.localScale).sqrMagnitude*/; //0.01f; /*boxCollider.size.magnitude * 0.5f;*/
+        }
+        else if(collider is CircleCollider2D)
+        {
+            return ((CircleCollider2D)collider).radius;
+        }
+        else if(collider is PolygonCollider2D)
+        {
+            throw new System.NotImplementedException();
+        }
+        else
+        {
+            throw new System.InvalidOperationException();
+        }
+    }
 }

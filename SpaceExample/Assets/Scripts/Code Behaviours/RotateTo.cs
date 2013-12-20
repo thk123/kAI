@@ -58,8 +58,9 @@ public class AIRotateToPoint : kAICodeBehaviour
 					applyingForce = applyingForce * angularRatio;
 				}
 
-                // TODO: This 0.01 actually needs to be a) smaller and b) related to the size of the collider
-				engine.ApplyTorque(applyingForce * ship.rigidbody2D.mass * 0.01f);
+                float radius = ship.collider2D.GetColliderRadius2D();
+                LogMessage("Radius:" + radius);
+				engine.ApplyTorque(applyingForce * ship.rigidbody2D.mass * radius);
 			}
 		}
 	}
