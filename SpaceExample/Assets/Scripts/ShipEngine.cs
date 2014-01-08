@@ -33,8 +33,8 @@ public class ShipEngine : MonoBehaviour {
 		rigidbody2D.AddForce(forceToApply * new Vector2(transform.right.x, transform.right.y));
 		forceToApply = 0.0f;
 
-		rigidbody2D.AddTorque(Mathf.Min(torqueToApply, torqueForce));
-        //rigidbody2D.AddTorque(0.001f);
+		//rigidbody2D.AddTorque(Mathf.Min(torqueToApply, torqueForce));
+        rigidbody2D.AddTorque(torqueToApply);
 		torqueToApply = 0.0f;
 	}
 
@@ -59,7 +59,7 @@ public class ShipEngine : MonoBehaviour {
 
 	public void ApplyTorque(float requestedTorque)
 	{
-		torqueToApply = requestedTorque;
+		torqueToApply += requestedTorque;
 	}
 	
 }
@@ -70,7 +70,8 @@ static class Extensions
     {
         if(collider is BoxCollider2D)
         {
-            // THIS ONE WORKS - ROTATION NOT CORRECT BUT INDPENDENT OF THESE SIZES
+            // BoxColliders do not work well with trying to produce good behaviour
+            
             BoxCollider2D boxCollider = (BoxCollider2D)collider;
             Vector2 scale2d = new Vector2(collider.transform.localScale.x, collider.transform.localScale.y);
             Vector2 colliderScale = 0.5f * boxCollider.size;
@@ -81,7 +82,13 @@ static class Extensions
         }
         else if(collider is CircleCollider2D)
         {
-            return ((CircleCollider2D)collider).radius;
+            float radius = ((CircleCollider2D)collider).radius;
+            Vector2 scale2d = new Vector2(collider.transform.localScale.x, collider.transform.localScale.y);
+
+
+            Vector2 scaleVector = new Vector2((0.5f * radius) * scale2d.x, (0.5f * radius) * scale2d.y);
+
+            return scaleVector.sqrMagnitude;
         }
         else if(collider is PolygonCollider2D)
         {

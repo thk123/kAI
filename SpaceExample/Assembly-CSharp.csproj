@@ -46,9 +46,11 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\ConstantTorque.cs" />
      <Compile Include="Assets\Scripts\BasicShipController.cs" />
      <Compile Include="Assets\Scripts\CameraController.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\AdvanceTo.cs" />
+     <Compile Include="Assets\Scripts\Code Behaviours\MoveToPoint.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\RotateTo.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\Stabilize.cs" />
      <Compile Include="Assets\Scripts\Selectable.cs" />

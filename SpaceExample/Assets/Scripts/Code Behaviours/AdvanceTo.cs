@@ -94,7 +94,7 @@ public class AdvanceTo : kAICodeBehaviour
             float timeFactor = Mathf.PI / totalTime;
 
 			forceFunction.AddSegment((point) => {
-				return ((timeFactor * Mathf.Cos(time * timeFactor) * maxForce)); 
+				return ((timeFactor * Mathf.Cos(point * timeFactor) * maxForce)); 
 			}, 0.0f, totalTime);
 
 
@@ -116,7 +116,7 @@ public class AdvanceTo : kAICodeBehaviour
 
             // Do a cos acceleration as above between t0 and t0 + pi
 			forceFunction.AddSegment((lPoint) => {
-				return (Mathf.Cos(time-t0) * maxForce);
+				return (Mathf.Cos(lPoint-t0) * maxForce);
 			}, t0, t0 + Mathf.PI);
 
             // Then a full deceleration at the end 
