@@ -19,9 +19,12 @@ public class AIRotateToPoint : kAICodeBehaviour
 
     ShipEngine engine;
 
+    float debugStartingAngle;
+
 	public AIRotateToPoint() 
 		:base(null)
 	{
+        LogMessage("Constructing something");
 		targetAngle = new kAIDataPort<float>("Data", kAIPort.ePortDirection.PortDirection_In, null);
 		AddExternalPort(targetAngle);
 	}
@@ -36,7 +39,9 @@ public class AIRotateToPoint : kAICodeBehaviour
             engine = ship.GetComponent<ShipEngine>();
             if (currentTargetAngle != targetAngle.Data)
             {
-                ComputeForces(targetAngle.Data, engine);
+                debugStartingAngle = ship.transform.eulerAngles.z;
+                Debug.Log("Angle: " + debugStartingAngle);
+                ComputeForces(targetAngle.Data, ship.rigidbody2D.angularVelocity * Mathf.Deg2Rad, engine);
                 startTime = Time.fixedTime;
                 currentTargetAngle = targetAngle.Data;
             }
@@ -53,46 +58,70 @@ public class AIRotateToPoint : kAICodeBehaviour
                 // The force is given in radians but for whatever reason the angular velocity is in degrees per second
                 // we convert the acceleration in to degrees per second squared to predict the next frames angularVelocity
                 float currentAngularVelocity = ship.rigidbody2D.angularVelocity;
-                float angularVelocityPrediction = currentAngularVelocity + ((applyingForce * Mathf.Rad2Deg) * lDeltaTime);
+                float angularVelocityPrediction = currentAngularVelocity + ((applyingForce * Mathf.Rad2Deg) * lDeltaTime);                
 
                 // TODO: we really should have the second param >= 0.0f but have an issue with only starting moving on the second frame. 
                 if (time > 0.0f && // we are not interested if we are just starting
-                   ((angularVelocityPrediction < 0.0f && angularVelocityPrediction > 0.0f) ||
-                   (angularVelocityPrediction > 0.0f && angularVelocityPrediction < 0.0f)))
+                   ((currentAngularVelocity < 0.0f && angularVelocityPrediction > 0.0f) ||
+                   (currentAngularVelocity > 0.0f && angularVelocityPrediction < 0.0f)))
                 {
-                    float ratio = Mathf.Abs((angularVelocityPrediction / (applyingForce * lDeltaTime)));
+                    float ratio = Mathf.Abs((currentAngularVelocity / ((applyingForce * Mathf.Rad2Deg) * lDeltaTime)));
                     applyingForce = applyingForce * ratio;
 
+                    // This version is accurate to within 4 dp
+                    /*float finishingAngle = ship.transform.eulerAngles.z;
+                    float difference = finishingAngle - debugStartingAngle;
+                    Debug.Log("Difference: " + difference + ", " + difference * Mathf.Deg2Rad);*/
+
                     // We have reversed the direction so we must have arrived
+                    // TODO: The time is short, we reach the target before we mean to
+                    // This is possibly due to going to slow when we switch from cos to hard deceleration
                     Deactivate();
                 }
 
                 engine.ApplyTorque(applyingForce * ship.rigidbody2D.mass * ship.collider2D.GetColliderRadius2D());
             }
-        }
-
-        
+        }      
 	}
 
-    void ComputeForces(float angle, ShipEngine engine)
+    void ComputeForces(float angle, float currentAngularVelocity, ShipEngine engine)
     {
         // We want to minimize the time given the force of the engine
 
-        float maxForce = engine.torqueForce ;
+        // TODO: Lots of assumptions here: 
+        // - code for piDistance > 2*maxForce invalid
+        // - assume maxforce = 1
+        // - If we are going to fast need to support going round more than once
 
+        float maxForce = engine.torqueForce ;
+        Debug.Log("Angle: " + angle + ", Vel: " + currentAngularVelocity + ", mF: " + maxForce); ;
+        float piDistance = angle - ((currentAngularVelocity * currentAngularVelocity) / (2 * maxForce));
+        
         // if we are under this limit, then the optimal acceleration is just the cos curve, compressed if we can do it in less time
-        if (angle <= 2 * maxForce)
+        if (piDistance <= 2 * maxForce)
         {
-            totalTime = Mathf.Acos((maxForce - angle) / maxForce);
-            forceFunction = new MathFunction(0.0f, totalTime);
+
+            float hardDecelTime = currentAngularVelocity / maxForce;
+
+            float pi2 = Mathf.PI * Mathf.PI;
+            float piTime = (0.25f * Mathf.PI) * (Mathf.Sqrt(pi2 * Mathf.Pow(currentAngularVelocity, 2) + (8 * piDistance)) - Mathf.PI * currentAngularVelocity);
+
+            totalTime = piTime + hardDecelTime;
+            
+            forceFunction = new MathFunction(0.0f, piTime + hardDecelTime);
 
             // The time factor represents how much we have compressed the cos curve
-            float timeFactor = Mathf.PI / totalTime;
+            float timeFactor = Mathf.PI / piTime;
 
             forceFunction.AddSegment((point) =>
             {
-                return ((timeFactor * Mathf.Cos(point * timeFactor) * maxForce));
-            }, 0.0f, totalTime);
+                return ((timeFactor * (Mathf.Cos((point * timeFactor)) ))); /*- (currentAngularVelocity / totalTime)*/
+            }, 0.0f, piTime);
+
+            forceFunction.AddSegment((point) =>
+                {
+                    return -maxForce;
+                }, piTime, piTime + hardDecelTime);
 
 
         }
