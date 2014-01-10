@@ -6,9 +6,14 @@ public class BasicShipController : MonoBehaviour {
 
 	ShipEngine engine;
 
+    Weapon weaponSystem;
+
 	// Use this for initialization
 	void Start () {
 		engine = GetComponent<ShipEngine>();
+
+        weaponSystem = GetComponent<Weapon>();
+
 	}
 	
 	// Update is called once per frame
@@ -25,11 +30,19 @@ public class BasicShipController : MonoBehaviour {
 
 		if(Input.GetKey(KeyCode.LeftArrow))
 		{
-			engine.ApplyTorque(20.0f);
+            engine.ApplyTorque(1.0f * Time.deltaTime);
 		}
 		else if(Input.GetKey(KeyCode.RightArrow))
 		{
-			engine.ApplyTorque(-20.0f);
+			engine.ApplyTorque(-1.0f * Time.deltaTime);
 		}
+
+        if(Input.GetKeyDown(KeyCode.Space))
+        {
+            if(weaponSystem != null)
+            {
+                weaponSystem.Fire();
+            }
+        }
 	}
 }
