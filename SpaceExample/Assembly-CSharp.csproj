@@ -46,8 +46,6 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Bullet.cs" />
-     <Compile Include="Assets\HealthBehaviour.cs" />
      <Compile Include="Assets\Scripts\AIBehaviour.cs" />
      <Compile Include="Assets\Scripts\BasicShipController.cs" />
      <Compile Include="Assets\Scripts\CameraController.cs" />
@@ -55,12 +53,15 @@
      <Compile Include="Assets\Scripts\Code Behaviours\MoveToPoint.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\RotateTo.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\Stabilize.cs" />
+     <Compile Include="Assets\Scripts\HealthBehaviour.cs" />
      <Compile Include="Assets\Scripts\Selectable.cs" />
      <Compile Include="Assets\Scripts\SelectedCamera.cs" />
      <Compile Include="Assets\Scripts\ShipEngine.cs" />
      <Compile Include="Assets\Scripts\ShipSelector.cs" />
      <Compile Include="Assets\Scripts\SimpleShipControl.cs" />
-     <Compile Include="Assets\Scripts\Weapon.cs" />
+     <Compile Include="Assets\Scripts\Weapons\Bullet.cs" />
+     <Compile Include="Assets\Scripts\Weapons\LaserWeaponSystem.cs" />
+     <Compile Include="Assets\Scripts\Weapons\Weapon.cs" />
      <Compile Include="Assets\StartRotator.cs" />
  <Reference Include="kAICore">
  <HintPath>Assets\DLLs\kAICore.dll</HintPath>

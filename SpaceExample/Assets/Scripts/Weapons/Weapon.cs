@@ -3,7 +3,12 @@ using System.Collections;
 
 using kAI.Core;
 
-public class Weapon : MonoBehaviour {
+public interface IWeaponSystem
+{
+    void Fire();
+}
+
+public class Weapon : MonoBehaviour, IWeaponSystem {
 
     public GameObject projectilePrefab;
     public Transform projectileSpawnPoint;
