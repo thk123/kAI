@@ -50,11 +50,11 @@ public class CameraController : MonoBehaviour {
 
 			if(scrollValue > 0.0f)
 			{
-				transform.Translate(Vector3.forward, Space.Self);
+                camera.fieldOfView = Mathf.Max(camera.fieldOfView - 1, 10.0f);
 			}
 			else if(scrollValue < 0.0f)
 			{
-				transform.Translate(-1 * Vector3.forward, Space.Self);
+                camera.fieldOfView = Mathf.Min(camera.fieldOfView + 1, 130.0f);
 			}
 		}
 
