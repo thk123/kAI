@@ -61,6 +61,7 @@
      <None Include="Assets\kAIBehaviours\AITriggerBase.xml" />
      <None Include="Assets\kAIBehaviours\BaseBehaviour.xml" />
      <None Include="Assets\kAIBehaviours\TestFunctionBehaviour.xml" />
+     <None Include="Assets\DLLs\System.ServiceModel.Web.xml" />
      <None Include="Assets\kAIBehaviours\AIIdleBehaviour.xml" />
      <None Include="Assets\kAIBehaviours\SubBehaviour.xml" />
      <None Include="Assets\kAIBehaviours\SwordSwingBehaviour.xml" />
@@ -69,6 +70,12 @@
  </Reference>
  <Reference Include="MiscUtil">
  <HintPath>Assets\DLLs\MiscUtil.dll</HintPath>
+ </Reference>
+ <Reference Include="System.ServiceModel">
+ <HintPath>Assets\DLLs\System.ServiceModel.dll</HintPath>
+ </Reference>
+ <Reference Include="System.ServiceModel.Web">
+ <HintPath>Assets\DLLs\System.ServiceModel.Web.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

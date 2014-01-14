@@ -23,6 +23,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteTextRenderer", "Sprit
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kAIBehaviourLoadTest", "kAIBehaviourLoadTest\kAIBehaviourLoadTest.csproj", "{DAFA3AEE-5736-458C-837A-94C4D7AD1295}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ConsoleDebugger", "ConsoleDebugger\ConsoleDebugger.csproj", "{E12E965A-5A77-443C-82CB-BCFE9D69B85A}"
+EndProject
 Global
 	GlobalSection(TestCaseManagementSettings) = postSolution
 		CategoryFile = kAI.vsmdi
@@ -97,6 +99,16 @@ Global
 		{DAFA3AEE-5736-458C-837A-94C4D7AD1295}.Release|Mixed Platforms.Build.0 = Release|x86
 		{DAFA3AEE-5736-458C-837A-94C4D7AD1295}.Release|x86.ActiveCfg = Release|x86
 		{DAFA3AEE-5736-458C-837A-94C4D7AD1295}.Release|x86.Build.0 = Release|x86
+		{E12E965A-5A77-443C-82CB-BCFE9D69B85A}.Debug|Any CPU.ActiveCfg = Debug|x86
+		{E12E965A-5A77-443C-82CB-BCFE9D69B85A}.Debug|Mixed Platforms.ActiveCfg = Debug|x86
+		{E12E965A-5A77-443C-82CB-BCFE9D69B85A}.Debug|Mixed Platforms.Build.0 = Debug|x86
+		{E12E965A-5A77-443C-82CB-BCFE9D69B85A}.Debug|x86.ActiveCfg = Debug|x86
+		{E12E965A-5A77-443C-82CB-BCFE9D69B85A}.Debug|x86.Build.0 = Debug|x86
+		{E12E965A-5A77-443C-82CB-BCFE9D69B85A}.Release|Any CPU.ActiveCfg = Release|x86
+		{E12E965A-5A77-443C-82CB-BCFE9D69B85A}.Release|Mixed Platforms.ActiveCfg = Release|x86
+		{E12E965A-5A77-443C-82CB-BCFE9D69B85A}.Release|Mixed Platforms.Build.0 = Release|x86
+		{E12E965A-5A77-443C-82CB-BCFE9D69B85A}.Release|x86.ActiveCfg = Release|x86
+		{E12E965A-5A77-443C-82CB-BCFE9D69B85A}.Release|x86.Build.0 = Release|x86
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -22,7 +22,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
-    <TreatWarningsAsErrors>true</TreatWarningsAsErrors>
+    <TreatWarningsAsErrors>false</TreatWarningsAsErrors>
     <DocumentationFile>..\kAIDocs\gen\kAICore.xml</DocumentationFile>
     <DocumentationFile>bin\Debug\kAICore.XML</DocumentationFile>
   </PropertyGroup>
@@ -42,6 +42,8 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Runtime.Serialization" />
+    <Reference Include="System.ServiceModel" />
+    <Reference Include="System.ServiceModel.Web" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
@@ -53,6 +55,7 @@
     <Compile Include="BehaviourID.cs" />
     <Compile Include="Constant.cs" />
     <Compile Include="DataPort.cs" />
+    <Compile Include="Debugger\DebugServer.cs" />
     <Compile Include="FunctionConfiguration.cs" />
     <Compile Include="FunctionNode.cs" />
     <Compile Include="ILogger.cs" />
@@ -80,7 +83,8 @@
   <PropertyGroup>
     <PostBuildEvent>cp $(TargetPath) $(SolutionDir)kAI-Example\Assets\DLLs\$(TargetFileName)
 cp $(TargetDir)\MiscUtil.dll $(SolutionDir)kAI-Example\Assets\DLLs\MiscUtil.dll
-</PostBuildEvent>
+cp $(TargetPath) $(SolutionDir)SpaceExample\Assets\DLLs\$(TargetFileName)
+cp $(TargetDir)\MiscUtil.dll $(SolutionDir)SpaceExample\Assets\DLLs\MiscUtil.dll</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

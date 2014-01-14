@@ -1,6 +1,7 @@
 using UnityEngine;
 using UnityEditor;
 using kAI.Core;
+using kAI.Core.Debugger;
 using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
@@ -68,10 +69,16 @@ public class kAIUnityBehaviour : MonoBehaviour, kAIILogger
 
 			FileInfo lFile = new FileInfo(XmlBehaviourPath);
 			mXmlBehaviour = kAIXmlBehaviour.LoadFromFile(lFile, GetAssemblyByName);
+
+            DebugServer server = DebugServer.CreateServer(this);
+            DebugServer.Server.RegisterBehaviour(mXmlBehaviour);
 		}
 	}
 	
 	TestBehaviour ls;
+
+    bool updatedDebug = false;
+
 	// Use this for initialization
 	void Start () {
 		lObject = new object();
@@ -88,8 +95,15 @@ public class kAIUnityBehaviour : MonoBehaviour, kAIILogger
 		ls = new TestBehaviour(null);
 	}
 	
+   
 	// Update is called once per frame
 	void Update () {
+        if(!updatedDebug)
+        {
+            DebugServer.Server.RefreshBehaviour();
+            updatedDebug = true;
+        }
+
 		//mXmlBehaviour.Update(Time.deltaTime);
 		lock(lObject)
 		{
@@ -104,6 +118,11 @@ public class kAIUnityBehaviour : MonoBehaviour, kAIILogger
 			stopped = true;
 		}*/
 	}
+
+    void LateUpdate()
+    {
+        updatedDebug = false;
+    }
 	
 	public kAIPort GetPort(string lPortID)
 	{
