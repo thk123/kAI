@@ -24,6 +24,7 @@ public class SimpleShipControl : MonoBehaviour, kAIILogger {
 	Dictionary<SimpleShipController, kAICodeBehaviour> controllers;
 	// Use this for initialization
 	void Start () {
+
 		controllers = new Dictionary<SimpleShipController, kAICodeBehaviour>();
 
 		controllers.Add(SimpleShipController.Stabilize, new AIRotationalStabilize());
@@ -38,7 +39,9 @@ public class SimpleShipControl : MonoBehaviour, kAIILogger {
 		{
 			selectedMode.SetGlobal();
 			selectedMode.ForceActivation();
-			((kAIDataPort)selectedMode.GetPort("Data")).SetData(parameter);
+
+            kAIDataPort dataPort = (kAIDataPort)selectedMode.GetPort("Data");
+			dataPort.SetData(parameter);
 		}
 		else
 		{

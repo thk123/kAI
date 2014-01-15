@@ -25,7 +25,6 @@ public class AdvanceTo : kAICodeBehaviour
 	{
 		targetAngle = new kAIDataPort<float>("Data", kAIPort.ePortDirection.PortDirection_In, null);
 		AddExternalPort(targetAngle);
-
 	}
 	
 	protected override void InternalUpdate (float lDeltaTime, object lUserData)
@@ -37,7 +36,7 @@ public class AdvanceTo : kAICodeBehaviour
 			
 			if(firstRun)
 			{
-				ComputeForces(engine);
+				ComputeForces(targetAngle.Data, engine);
 				startTime = Time.fixedTime;
 				firstRun = false;
 			}
@@ -75,18 +74,43 @@ public class AdvanceTo : kAICodeBehaviour
 
 	}
 
-	void ComputeForces(ShipEngine engine)
+	void ComputeForces(float delta, ShipEngine engine)
 	{
-		// We want to minimize the time given the force of the engine
-		
-		float delta = targetAngle.Data;
+        float maxForce = engine.accelerationForce;
 
-		float maxForce = engine.accelerationForce;
+        // We want to minimize the time given the force of the engine
+        float currentVelocity = Vector2.Dot(engine.rigidbody2D.velocity, engine.transform.right);
+
+        LogMessage("Current velocity: " + currentVelocity);
+
+        float piDistance;
+        float hardDecelTime;
+
+        if(currentVelocity >= 0)
+        {
+            // the velocity is helping, great!
+
+            // this is how much distance is left to cover after we factor in the hard-deceleration time to offset this velocity
+            piDistance = delta - ((currentVelocity * currentVelocity) / (2 * maxForce));
+            hardDecelTime = currentVelocity / maxForce;
+            float piDist2 = 0.5f * hardDecelTime * currentVelocity;
+
+            LogMessage("Pi1: " + piDistance + ", Pi2: " + piDist2);
+            
+        }
+        else
+        {
+            throw new NotImplementedException();
+            // the velocity is hindering, fine, we need to offset this
+            piDistance = delta + ((currentVelocity * currentVelocity) / (2 * maxForce));
+        }
+
+
 
         // if we are under this limit, then the optimal acceleration is just the cos curve, compressed if we can do it in less time
-		if(delta <= 2 * maxForce)
+		if(piDistance <= 2 * maxForce)
 		{
-			totalTime = Mathf.Acos((maxForce - delta)/maxForce);
+			/*totalTime = Mathf.Acos((maxForce - delta)/maxForce);
             LogMessage("Time:" + totalTime);
 			forceFunction = new MathFunction(0.0f, totalTime);
 
@@ -95,13 +119,77 @@ public class AdvanceTo : kAICodeBehaviour
 
 			forceFunction.AddSegment((point) => {
 				return ((timeFactor * Mathf.Cos(point * timeFactor) * maxForce)); 
-			}, 0.0f, totalTime);
+			}, 0.0f, totalTime);*/
+
+            // pi squared, used in below formula
+            float pi2 = Mathf.PI * Mathf.PI;
+
+            // solution to the quadratic equation 2d^2 + udpi^2 -dpi^2, where d is the piDistance, and u is initial angular velocity
+            float piTime = (0.25f * Mathf.PI) * (Mathf.Sqrt(pi2 * Mathf.Pow(currentVelocity, 2) + (8 * piDistance)) - Mathf.PI * currentVelocity);
+
+            totalTime = piTime + hardDecelTime;
+
+            forceFunction = new MathFunction(0.0f, totalTime);
+
+            // The time factor represents how much we have compressed the cos curve
+            float timeFactor = Mathf.PI / piTime;
+
+            // the compressed cos curve
+            forceFunction.AddSegment((point) =>
+            {
+                return ((timeFactor * (Mathf.Cos((point * timeFactor)))));
+            }, 0.0f, piTime);
+
+            // the hard decleration time
+            forceFunction.AddSegment((point) =>
+            {
+                return -maxForce;
+            }, piTime, piTime + hardDecelTime);
 
 
 		}
 		else
 		{
-			Func<float, float> fullAccel = (point) => { return maxForce; };
+            LogMessage("Doing my thing");
+            Func<float, float> fullAccel = (point) => { return maxForce; };
+            Func<float, float> fullDeccel = (point) => { return -maxForce; };
+
+            
+
+            // we compute the time to do full accerlation (and deceleration)
+            /*float t0 = ((-Mathf.PI * maxForce) + (Mathf.Sqrt(
+                            (((Mathf.PI * Mathf.PI) - 8) * maxForce) + 4.0f * piDistance)) * Mathf.Sqrt(maxForce)) /
+                            (2.0f * maxForce);*/
+
+            float a = maxForce;
+            float b = (2 * currentVelocity) + (maxForce * Mathf.PI);
+            float c =  (2 * maxForce) + (Mathf.PI * currentVelocity) - piDistance;
+
+            float t0 = (-b + Mathf.Sqrt(Mathf.Pow(b, 2) - (4 * a * c))) / (2 * a);
+
+            LogMessage(t0.ToString());
+            LogMessage("x Pos:" + engine.transform.position.x);
+            //t0 = 0.445191f;
+
+            forceFunction = new MathFunction(0.0f, t0 + Mathf.PI + t0 + hardDecelTime);
+
+            // We do full acceleration between 0 and t0
+            forceFunction.AddSegment(fullAccel, 0.0f, t0);
+
+            // Do a cos acceleration as above between t0 and t0 + pi
+            forceFunction.AddSegment((lPoint) =>
+            {
+                return (Mathf.Cos(lPoint - t0) * maxForce);
+            }, t0, t0 + Mathf.PI);
+
+            // Then a full deceleration at the end 
+            forceFunction.AddSegment(fullDeccel, t0 + Mathf.PI, Mathf.PI + (2 * t0) + hardDecelTime);
+
+            // The total time is the time spend doing full acceleration, plus our cos section plus time spent doing full deceleration.
+            totalTime = t0 + Mathf.PI + t0 + hardDecelTime;
+
+            //throw new NotImplementedException();
+			/*Func<float, float> fullAccel = (point) => { return maxForce; };
 			Func<float, float> fullDeccel = (point) => { return -maxForce; };
 
             // we compute the time to do full accerlation (and deceleration)
@@ -123,7 +211,7 @@ public class AdvanceTo : kAICodeBehaviour
 			forceFunction.AddSegment(fullDeccel, t0 + Mathf.PI, Mathf.PI + (2 * t0));
 
             // The total time is the time spend doing full acceleration, plus our cos section plus time spent doing full deceleration.
-			totalTime = t0 + Mathf.PI + t0;
+			totalTime = t0 + Mathf.PI + t0;*/
 		}
 	
 		forceFunction.EndAddSegment();

@@ -62,6 +62,7 @@
      <Compile Include="Assets\Scripts\Weapons\Bullet.cs" />
      <Compile Include="Assets\Scripts\Weapons\LaserWeaponSystem.cs" />
      <Compile Include="Assets\Scripts\Weapons\Weapon.cs" />
+     <Compile Include="Assets\StartMover.cs" />
      <Compile Include="Assets\StartRotator.cs" />
  <Reference Include="kAICore">
  <HintPath>Assets\DLLs\kAICore.dll</HintPath>

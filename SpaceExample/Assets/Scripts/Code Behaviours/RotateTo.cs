@@ -89,53 +89,74 @@ public class AIRotateToPoint : kAICodeBehaviour
         // We want to minimize the time given the force of the engine
 
         // TODO: Lots of assumptions here: 
-        // - code for piDistance > 2*maxForce invalid
+        // - code for piDistance > 2*maxForce may be invalid, needs some maths work
         // - assume maxforce = 1
-        // - If we are going to fast need to support going round more than once
+        // - If we are going to fast need to support going round more than once or fuck it?
+        // - if it is shorter to go CCW will still go CW
+        //    - as an added note, need to work out which way to go factoring in current velocity. 
 
         float maxForce = engine.torqueForce ;
         Debug.Log("Angle: " + angle + ", Vel: " + currentAngularVelocity + ", mF: " + maxForce); ;
+
+        // Here we work out this distance left after assuming max deceleration to get rid of the 
+        // starting (angular) velocity. 
         float piDistance = angle - ((currentAngularVelocity * currentAngularVelocity) / (2 * maxForce));
+
+        if(piDistance < 0.0f)
+        {
+            throw new NotImplementedException("We need to go round more than once");
+        }
+
+        // The time required to zero the current angular velocity.
+        float hardDecelTime = currentAngularVelocity / maxForce;
         
         // if we are under this limit, then the optimal acceleration is just the cos curve, compressed if we can do it in less time
         if (piDistance <= 2 * maxForce)
         {
+            
 
-            float hardDecelTime = currentAngularVelocity / maxForce;
-
+            // pi squared, used in below formula
             float pi2 = Mathf.PI * Mathf.PI;
+
+            // solution to the quadratic equation 2d^2 + udpi^2 -dpi^2, where d is the piDistance, and u is initial angular velocity
             float piTime = (0.25f * Mathf.PI) * (Mathf.Sqrt(pi2 * Mathf.Pow(currentAngularVelocity, 2) + (8 * piDistance)) - Mathf.PI * currentAngularVelocity);
 
             totalTime = piTime + hardDecelTime;
             
-            forceFunction = new MathFunction(0.0f, piTime + hardDecelTime);
+            forceFunction = new MathFunction(0.0f, totalTime);
 
             // The time factor represents how much we have compressed the cos curve
             float timeFactor = Mathf.PI / piTime;
 
+            // the compressed cos curve
             forceFunction.AddSegment((point) =>
             {
-                return ((timeFactor * (Mathf.Cos((point * timeFactor)) ))); /*- (currentAngularVelocity / totalTime)*/
+                return ((timeFactor * (Mathf.Cos((point * timeFactor)) )));
             }, 0.0f, piTime);
 
+            // the hard decleration time
             forceFunction.AddSegment((point) =>
-                {
-                    return -maxForce;
-                }, piTime, piTime + hardDecelTime);
+            {
+                return -maxForce;
+            }, piTime, piTime + hardDecelTime);
 
 
         }
         else
         {
+            LogMessage("Doing my stuff");
+
+            // We do everything for piDistance then just add the decerlation on to the end. 
+
             Func<float, float> fullAccel = (point) => { return maxForce; };
             Func<float, float> fullDeccel = (point) => { return -maxForce; };
 
             // we compute the time to do full accerlation (and deceleration)
             float t0 = ((-Mathf.PI * maxForce) + (Mathf.Sqrt(
-                            (((Mathf.PI * Mathf.PI) - 8) * maxForce) + 4.0f * angle)) * Mathf.Sqrt(maxForce)) /
+                            (((Mathf.PI * Mathf.PI) - 8) * maxForce) + 4.0f * piDistance)) * Mathf.Sqrt(maxForce)) /
                             (2.0f * maxForce);
 
-            forceFunction = new MathFunction(0.0f, t0 + Mathf.PI + t0);
+            forceFunction = new MathFunction(0.0f, t0 + Mathf.PI + t0 + hardDecelTime);
 
             // We do full acceleration between 0 and t0
             forceFunction.AddSegment(fullAccel, 0.0f, t0);
@@ -147,10 +168,10 @@ public class AIRotateToPoint : kAICodeBehaviour
             }, t0, t0 + Mathf.PI);
 
             // Then a full deceleration at the end 
-            forceFunction.AddSegment(fullDeccel, t0 + Mathf.PI, Mathf.PI + (2 * t0));
+            forceFunction.AddSegment(fullDeccel, t0 + Mathf.PI, Mathf.PI + (2 * t0) + hardDecelTime);
 
             // The total time is the time spend doing full acceleration, plus our cos section plus time spent doing full deceleration.
-            totalTime = t0 + Mathf.PI + t0;
+            totalTime = t0 + Mathf.PI + t0 + hardDecelTime;
         }
 
         forceFunction.EndAddSegment();

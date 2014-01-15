@@ -6,13 +6,13 @@ public class BasicShipController : MonoBehaviour {
 
 	ShipEngine engine;
 
-    Weapon weaponSystem;
+    IWeaponSystem weaponSystem;
 
 	// Use this for initialization
 	void Start () {
 		engine = GetComponent<ShipEngine>();
 
-        weaponSystem = GetComponent<Weapon>();
+        weaponSystem = (IWeaponSystem)GetComponent(typeof(IWeaponSystem));
 
 	}
 	
