@@ -76,6 +76,9 @@ public class AdvanceTo : kAICodeBehaviour
 
 	void ComputeForces(float delta, ShipEngine engine)
 	{
+        // for whatever reason
+        delta = 0.5f * delta;
+
         float maxForce = engine.accelerationForce;
 
         // We want to minimize the time given the force of the engine

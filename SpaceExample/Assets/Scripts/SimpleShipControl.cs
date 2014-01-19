@@ -25,18 +25,21 @@ public class SimpleShipControl : MonoBehaviour, kAIILogger {
 	// Use this for initialization
 	void Start () {
 
-		controllers = new Dictionary<SimpleShipController, kAICodeBehaviour>();
+        kAIObject.GlobalLogger = this;
+        //kAIObject.ExceptionHandler = HandleException;
+        kAIObject.ExceptionOnAssert = true;
 
+		controllers = new Dictionary<SimpleShipController, kAICodeBehaviour>();
+        LogMessage("Calling constructors");
 		controllers.Add(SimpleShipController.Stabilize, new AIRotationalStabilize());
 		controllers.Add(SimpleShipController.RotateToAngle, new AIRotateToPoint());
 		controllers.Add(SimpleShipController.AdvanceToPoint, new AdvanceTo());
 
 
-		kAIObject.GlobalLogger = this;
-		//kAIObject.ExceptionHandler = HandleException;
-		kAIObject.ExceptionOnAssert = true;
+		
 		if(controllers.TryGetValue(Type, out selectedMode))
 		{
+
 			selectedMode.SetGlobal();
 			selectedMode.ForceActivation();
 

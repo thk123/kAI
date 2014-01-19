@@ -24,8 +24,9 @@ public class AIRotateToPoint : kAICodeBehaviour
 	public AIRotateToPoint() 
 		:base(null)
 	{
-        LogMessage("Constructing something");
 		targetAngle = new kAIDataPort<float>("Data", kAIPort.ePortDirection.PortDirection_In, null);
+
+        LogMessage("adding port");
 		AddExternalPort(targetAngle);
 	}
 
@@ -102,9 +103,10 @@ public class AIRotateToPoint : kAICodeBehaviour
         // starting (angular) velocity. 
         float piDistance = angle - ((currentAngularVelocity * currentAngularVelocity) / (2 * maxForce));
 
-        if(piDistance < 0.0f)
+        if(piDistance < 0.0f )
         {
-            throw new NotImplementedException("We need to go round more than once");
+            piDistance = 0.0f;
+            //throw new NotImplementedException("We need to go round more than once");
         }
 
         // The time required to zero the current angular velocity.

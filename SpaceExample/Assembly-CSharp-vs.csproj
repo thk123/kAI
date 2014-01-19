@@ -46,6 +46,9 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\AlternateMoveToPoint.cs" />
+     <Compile Include="Assets\AlternateRotator.cs" />
+     <Compile Include="Assets\Locomotor.cs" />
      <Compile Include="Assets\Scripts\AIBehaviour.cs" />
      <Compile Include="Assets\Scripts\BasicShipController.cs" />
      <Compile Include="Assets\Scripts\CameraController.cs" />
@@ -54,6 +57,8 @@
      <Compile Include="Assets\Scripts\Code Behaviours\RotateTo.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\Stabilize.cs" />
      <Compile Include="Assets\Scripts\HealthBehaviour.cs" />
+     <Compile Include="Assets\Scripts\MouseOrderController.cs" />
+     <Compile Include="Assets\Scripts\OrderFollower.cs" />
      <Compile Include="Assets\Scripts\Selectable.cs" />
      <Compile Include="Assets\Scripts\SelectedCamera.cs" />
      <Compile Include="Assets\Scripts\ShipEngine.cs" />
@@ -62,6 +67,7 @@
      <Compile Include="Assets\Scripts\Weapons\Bullet.cs" />
      <Compile Include="Assets\Scripts\Weapons\LaserWeaponSystem.cs" />
      <Compile Include="Assets\Scripts\Weapons\Weapon.cs" />
+     <Compile Include="Assets\SeekSteer.cs" />
      <Compile Include="Assets\StartMover.cs" />
      <Compile Include="Assets\StartRotator.cs" />
  <Reference Include="kAICore">

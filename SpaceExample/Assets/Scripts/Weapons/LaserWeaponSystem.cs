@@ -23,7 +23,7 @@ public class LaserWeaponSystem : MonoBehaviour, IWeaponSystem {
 	void Update () {
 	    if(currentFireDuration >= firingDuration)
         {
-            laserRenderer.SetVertexCount(0);
+            //laserRenderer.SetVertexCount(0);
         }
         else
         {
