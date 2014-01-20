@@ -19,7 +19,7 @@
 	<DebugType>full</DebugType>
 	<Optimize>false</Optimize>
 	<OutputPath>Temp\bin\Debug\</OutputPath>
-	<DefineConstants>DEBUG;TRACE;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_GENERICS;ENABLE_SUBSTANCE;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;UNITY_4_3_0;UNITY_4_3;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
+	<DefineConstants>DEBUG;TRACE;UNITY_STANDALONE_WIN;ENABLE_MICROPHONE;ENABLE_TEXTUREID_MAP;ENABLE_AUDIO_FMOD;UNITY_STANDALONE;ENABLE_MONO;ENABLE_SPRITES;ENABLE_TERRAIN;ENABLE_GENERICS;ENABLE_SUBSTANCE;INCLUDE_WP8SUPPORT;ENABLE_MOVIES;ENABLE_WWW;ENABLE_IMAGEEFFECTS;ENABLE_WEBCAM;INCLUDE_METROSUPPORT;RENDER_SOFTWARE_CURSOR;ENABLE_NETWORK;ENABLE_PHYSICS;ENABLE_CACHING;ENABLE_CLOTH;ENABLE_2D_PHYSICS;ENABLE_SHADOWS;ENABLE_AUDIO;ENABLE_NAVMESH_CARVING;ENABLE_DUCK_TYPING;ENABLE_SINGLE_INSTANCE_BUILD_SETTING;UNITY_4_3_3;UNITY_4_3;ENABLE_PROFILER;UNITY_EDITOR;UNITY_EDITOR_WIN</DefineConstants>
 	<ErrorReport>prompt</ErrorReport>
 	<WarningLevel>4</WarningLevel>
 	<NoWarn>0169</NoWarn>
@@ -46,30 +46,30 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\AlternateMoveToPoint.cs" />
-     <Compile Include="Assets\AlternateRotator.cs" />
-     <Compile Include="Assets\Locomotor.cs" />
-     <Compile Include="Assets\Scripts\AIBehaviour.cs" />
-     <Compile Include="Assets\Scripts\BasicShipController.cs" />
-     <Compile Include="Assets\Scripts\CameraController.cs" />
-     <Compile Include="Assets\Scripts\Code Behaviours\AdvanceTo.cs" />
-     <Compile Include="Assets\Scripts\Code Behaviours\MoveToPoint.cs" />
-     <Compile Include="Assets\Scripts\Code Behaviours\RotateTo.cs" />
-     <Compile Include="Assets\Scripts\Code Behaviours\Stabilize.cs" />
-     <Compile Include="Assets\Scripts\HealthBehaviour.cs" />
-     <Compile Include="Assets\Scripts\MouseOrderController.cs" />
-     <Compile Include="Assets\Scripts\OrderFollower.cs" />
-     <Compile Include="Assets\Scripts\Selectable.cs" />
-     <Compile Include="Assets\Scripts\SelectedCamera.cs" />
-     <Compile Include="Assets\Scripts\ShipEngine.cs" />
-     <Compile Include="Assets\Scripts\ShipSelector.cs" />
-     <Compile Include="Assets\Scripts\SimpleShipControl.cs" />
+     <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\AlternateMoveToPoint.cs" />
+     <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Debug\SimpleShipControl.cs" />
+     <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Old\AdvanceTo.cs" />
+     <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Old\AlternateRotator.cs" />
+     <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Old\MoveToPoint.cs" />
+     <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Old\RotateTo.cs" />
+     <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Old\Stabilize.cs" />
+     <Compile Include="Assets\Scripts\Debug\StartMover.cs" />
+     <Compile Include="Assets\Scripts\Debug\StartRotator.cs" />
+     <Compile Include="Assets\Scripts\Game\CameraController.cs" />
+     <Compile Include="Assets\Scripts\Game\HealthBehaviour.cs" />
+     <Compile Include="Assets\Scripts\Game\Locomotor.cs" />
+     <Compile Include="Assets\Scripts\Game\MouseOrderController.cs" />
+     <Compile Include="Assets\Scripts\Game\OrderFollower.cs" />
+     <Compile Include="Assets\Scripts\Game\SeekSteer.cs" />
+     <Compile Include="Assets\Scripts\Game\Selectable.cs" />
+     <Compile Include="Assets\Scripts\Game\SelectedCamera.cs" />
+     <Compile Include="Assets\Scripts\Game\ShipEngine.cs" />
+     <Compile Include="Assets\Scripts\Game\ShipSelector.cs" />
+     <Compile Include="Assets\Scripts\SimpleController\BasicShipController.cs" />
      <Compile Include="Assets\Scripts\Weapons\Bullet.cs" />
      <Compile Include="Assets\Scripts\Weapons\LaserWeaponSystem.cs" />
      <Compile Include="Assets\Scripts\Weapons\Weapon.cs" />
-     <Compile Include="Assets\SeekSteer.cs" />
-     <Compile Include="Assets\StartMover.cs" />
-     <Compile Include="Assets\StartRotator.cs" />
+     <Compile Include="Assets\Scripts\kAIScripts\AIBehaviour.cs" />
  <Reference Include="kAICore">
  <HintPath>Assets\DLLs\kAICore.dll</HintPath>
  </Reference>
