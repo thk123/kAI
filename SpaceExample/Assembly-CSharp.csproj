@@ -46,9 +46,11 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
-     <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\AlternateMoveToPoint.cs" />
+     <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Debug\SimpleOrderFollower.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Debug\SimpleShipControl.cs" />
+     <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\MoveTo.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Old\AdvanceTo.cs" />
+     <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Old\AlternateMoveToPoint.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Old\AlternateRotator.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Old\MoveToPoint.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Old\RotateTo.cs" />
