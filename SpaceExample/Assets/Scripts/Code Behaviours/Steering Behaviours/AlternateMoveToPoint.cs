@@ -6,8 +6,6 @@ public class AlternateMoveToPoint : MonoBehaviour, IOrderReciever {
 
     Vector2 target;
     ShipEngine engine;
-    float time;
-    float startTime;
 
     
     private float angleToGo;
@@ -16,8 +14,6 @@ public class AlternateMoveToPoint : MonoBehaviour, IOrderReciever {
 	void Start () {
         engine = GetComponent<ShipEngine>();
         target = transform.position;
-        time = 0.0f;
-        startTime = 0.0f;
 	}    
 
     static float Move(float currentVelocity, float distanceRemaining, float maxForce)
@@ -180,14 +176,8 @@ public class AlternateMoveToPoint : MonoBehaviour, IOrderReciever {
             torqueToApply = DecelerateSpin(angularVelocity, maxTorque);
         }
 
-        float oldTime = time;
-        time = Time.fixedTime - startTime;
-
-        float variableFixedDeltaTime = time - oldTime;
-        float fixedRatio = variableFixedDeltaTime / Time.fixedDeltaTime;
-
-        engine.ApplyAccelerateForce(forceToApply * fixedRatio);
-        engine.ApplyTorque(torqueToApply * fixedRatio * rigidbody2D.mass * collider2D.GetColliderRadius2D());
+        engine.ApplyAccelerateForce(forceToApply);
+        engine.ApplyTorque(torqueToApply * rigidbody2D.mass * collider2D.GetColliderRadius2D());
     }
 
     

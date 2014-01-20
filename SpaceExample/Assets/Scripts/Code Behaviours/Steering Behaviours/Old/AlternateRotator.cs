@@ -121,12 +121,12 @@ public class AlternateRotator : MonoBehaviour {
                     applyingForce = ((-currentVelocity * Mathf.Deg2Rad)) / Time.deltaTime;
                     if (Mathf.Abs(currentVelocity) > 0.0f)
                     {
-                        if (engine.HaltRotation())
+                       /* if (engine.HaltRotation())
                         {
                             applyingForce = 0.0f;
 
                             Destroy(this);
-                        }
+                        }*/
                     }
                 }
                 /*
@@ -151,12 +151,12 @@ public class AlternateRotator : MonoBehaviour {
             applyingForce = ((-currentVelocity * Mathf.Deg2Rad)) / Time.deltaTime;
             if (Mathf.Abs(currentVelocity) > 0.0f)
             {
-                if (engine.HaltRotation())
+               /* if (engine.HaltRotation())
                 {
                     applyingForce = 0.0f;
 
                     Destroy(this);
-                }
+                }*/
             }
         }
         engine.ApplyTorque(applyingForce * rigidbody2D.mass * collider2D.GetColliderRadius2D() * direction);

@@ -13,50 +13,43 @@ public class ShipEngine : MonoBehaviour {
     float lateralForceToApply;
 	public float torqueToApply;
 
-    public LineRenderer lineRender;
+    float time;
+    float startTime;
 
 	// Use this for initialization
 	void Start () {
 		forceToApply = 0.0f;
 		torqueToApply = 0.0f;
-        //rigidbody2D.hingeJoint = Quaternion.identity;
-        lineRender = GetComponent<LineRenderer>();
-        lineRender.SetVertexCount(3);
+
+        time = Time.fixedTime;
+        startTime = time;
         
 	}
-    int i = 0;
 	// Update is called once per frame
 	void Update () {
+       
 	}
 
 	void FixedUpdate()
 	{
-        // TODO: have removed cap on force to apply since if we miss a fixed update, we need to catch up
-        // should move this catch up handling in to here. 
-		//forceToApply = Mathf.Sign(forceToApply) * Mathf.Min(Mathf.Abs(forceToApply), accelerationForce);
+        float oldTime = time;
+        time = Time.fixedTime - startTime;
+
+        float variableFixedDeltaTime = time - oldTime;
+        float fixedRatio = variableFixedDeltaTime / Time.fixedDeltaTime;
+
+
+		forceToApply = Mathf.Sign(forceToApply) * Mathf.Min(Mathf.Abs(forceToApply), accelerationForce);
         Vector2 forceVector = forceToApply * transform.right;
-       // print(forceToApply);
 
-         lineRender.SetPosition(0, transform.position);
-         lineRender.SetPosition(1, transform.position + ((Vector3)forceVector));
-         lineRender.SetPosition(2, transform.position + (torqueToApply * transform.up));
-
-		rigidbody2D.AddForce(forceToApply * transform.right);
-        rigidbody2D.AddForce(lateralForceToApply * transform.up);
-        lateralForceToApply = 0.0f;
-        if(i == 60)
-        {
-            i = 0;
-        }
-        else
-        {
-            i++;
-        }
-
+		rigidbody2D.AddForce(forceToApply * transform.right * fixedRatio);
 		forceToApply = 0.0f;
 
-		//rigidbody2D.AddTorque(Mathf.Min(torqueToApply, torqueForce));
-        rigidbody2D.AddTorque(torqueToApply);
+        rigidbody2D.AddForce(lateralForceToApply * transform.up * fixedRatio);
+        lateralForceToApply = 0.0f;
+
+		torqueToApply = Mathf.Min(torqueToApply, torqueForce);
+        rigidbody2D.AddTorque(torqueToApply * fixedRatio );
 		torqueToApply = 0.0f;
 	}
 
@@ -72,40 +65,10 @@ public class ShipEngine : MonoBehaviour {
 
     }
 
-	public void ApplyDeccelerateForce(float requestedForce)
-	{
-		Debug.LogError("Something");
-		if(requestedForce < 0.0f)
-		{
-			requestedForce = decelerationForce;
-		}
-		
-		if(requestedForce > 0.0f)
-		{
-			rigidbody.AddForce(Mathf.Min (requestedForce, decelerationForce) * -1 * transform.right);
-		}
-	}
-
 	public void ApplyTorque(float requestedTorque)
 	{
 		torqueToApply += requestedTorque;
-	}
-
-    // this is a bit of a hack so we can stop rotation without having to calculate the precise force to halt
-    public bool HaltRotation()
-    {
-        if(Mathf.Abs(rigidbody2D.angularVelocity) < 1.0f)
-        {
-            // I believe the force is 
-            //float force = ((-currentVelocity * Mathf.Deg2Rad))/ Time.deltaTime; 
-            //but this doesn't quite get the right result
-            rigidbody2D.angularVelocity = 0.0f;
-            return true;
-        }
-
-        return false;
-    }
-	
+	}	
 }
 
 static class Extensions
