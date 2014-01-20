@@ -9,7 +9,7 @@ public class MoveTo : kAICodeBehaviour
     kAIDataPort<Vector2> currentTarget;
 	public MoveTo()
 	{
-        currentTarget = new kAIDataPort<Vector2>("Target", kAIPort.ePortDirection.PortDirection_Out);
+        currentTarget = new kAIDataPort<Vector2>("Target", kAIPort.ePortDirection.PortDirection_In);
         AddExternalPort(currentTarget);
 	}
 

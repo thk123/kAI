@@ -8,7 +8,11 @@ public class AIBehaviour : MonoBehaviour {
 
     public string XmlPath;
 
-    kAIXmlBehaviour mXmlBehaviour;
+    public kAIXmlBehaviour mXmlBehaviour
+    {
+        get;
+        private set;
+    }
 
     static bool firstTime = true;
 
@@ -33,11 +37,13 @@ public class AIBehaviour : MonoBehaviour {
             //DebugServer.Server.RefreshBehaviour();
             firstTime = false;
         }
-
+        
         mXmlBehaviour.Update(Time.deltaTime, this.gameObject);
 
         
 	}
+
+
 
     void LateUpdate()
     {

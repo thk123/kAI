@@ -4,26 +4,28 @@ using kAI.Core;
 
 public class OrderFollower : MonoBehaviour, IOrderReciever, kAIILogger
 {
-
-    MoveToPoint mover;
+    AIBehaviour slave;
+    /*MoveToPoint mover;*/
 	// Use this for initialization
 	void Start () {
-        kAIObject.ExceptionOnAssert = true;
+        /*kAIObject.ExceptionOnAssert = true;
         kAIObject.GlobalLogger = this;
-        mover = null;
+        mzver = null;*/
+        slave = GetComponent<AIBehaviour>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-        if (mover != null)
+        /*if (mover != null)
         {
             mover.Update(Time.fixedDeltaTime, gameObject);
-        }
+        }*/
 	}
 
     public void GiveOrder(Vector2 temp)
     {
-        if(mover == null)
+        ((kAIDataPort<Vector2>)slave.mXmlBehaviour.GetPort("Target")).Data = temp;
+        /*if(mover == null)
         {
             mover = new MoveToPoint();
             mover.SetGlobal();
@@ -32,7 +34,9 @@ public class OrderFollower : MonoBehaviour, IOrderReciever, kAIILogger
 
         kAIDataPort<Vector2> port = mover.targetPoint;
 
-        port.Data = temp;
+        port.Data = temp;*/
+
+
     }
     #region kAIILogger implementation
 

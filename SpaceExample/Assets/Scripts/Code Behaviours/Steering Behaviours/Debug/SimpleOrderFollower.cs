@@ -22,6 +22,7 @@ public class SimpleOrderFollower : MonoBehaviour, IOrderReciever {
 
     public void GiveOrder(Vector2 temp)
     {
+        
         ((kAIDataPort<Vector2>)mover.GetPort("Target")).Data = temp;
     }
 }
