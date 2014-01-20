@@ -9,25 +9,7 @@ public class AlternateMoveToPoint : MonoBehaviour, IOrderReciever {
     float time;
     float startTime;
 
-    string _debug;
     
-
-    string debugString
-    {
-        get
-        {
-            return _debug;
-        }
-        set
-        {
-            if(value != _debug)
-            {
-                oldDebugString = _debug;
-                _debug = value;
-            }
-        }
-    }
-    string oldDebugString;
     private float angleToGo;
 
 	// Use this for initialization
@@ -282,7 +264,6 @@ public class AlternateMoveToPoint : MonoBehaviour, IOrderReciever {
             {
                 torqueToApply = DecelerateSpin(angularVelocity, maxTorque);
                 forceToApply = Move(currentVelocity, distanceToGo * Mathf.Sign(forceScale), maxForce);
-                debugString = "Far away but on target";
             }
             else
             {
@@ -292,13 +273,11 @@ public class AlternateMoveToPoint : MonoBehaviour, IOrderReciever {
                 {*/
                     if (currentVelocity > 0.1f)
                     {
-                        debugString = ("Angle off, but moving, slow down");
                         forceToApply = Decelerate(currentVelocity, maxForce);
                         torqueToApply = Spin(angularVelocity, angleToGo, maxTorque);
                     }
                     else
                     {
-                        debugString =("Fix the angle");
                         torqueToApply = Spin(angularVelocity, angleToGo, maxTorque);
                         forceToApply = 0.0f;
                     }
@@ -313,7 +292,6 @@ public class AlternateMoveToPoint : MonoBehaviour, IOrderReciever {
         }
         else
         {
-            debugString = ("We have arrived");
             forceToApply = Decelerate(currentVelocity, maxForce);
             torqueToApply = DecelerateSpin(angularVelocity, maxTorque);
         }
@@ -499,10 +477,7 @@ public class AlternateMoveToPoint : MonoBehaviour, IOrderReciever {
 
 	}
 
-    void OnGUI()
-    {
-        GUI.TextArea(new Rect(Screen.width - 200.0f, 1.0f, 150.0f, 100.0f), debugString +"\n" +  (angleToGo * Mathf.Rad2Deg).ToString("0.0") + "\n" + oldDebugString);
-    }
+    
 
     public void GiveOrder(Vector2 temp)
     {

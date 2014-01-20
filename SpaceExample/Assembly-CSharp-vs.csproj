@@ -53,6 +53,7 @@
      <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Old\MoveToPoint.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Old\RotateTo.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Old\Stabilize.cs" />
+     <Compile Include="Assets\Scripts\Debug\DebugString.cs" />
      <Compile Include="Assets\Scripts\Debug\StartMover.cs" />
      <Compile Include="Assets\Scripts\Debug\StartRotator.cs" />
      <Compile Include="Assets\Scripts\Game\CameraController.cs" />
