@@ -49,7 +49,7 @@ public class ShipEngine : MonoBehaviour {
         lateralForceToApply = 0.0f;
 
 		torqueToApply = Mathf.Min(torqueToApply, torqueForce);
-        rigidbody2D.AddTorque(torqueToApply * fixedRatio );
+        rigidbody2D.AddTorque(torqueToApply * fixedRatio * rigidbody2D.mass * collider2D.GetColliderRadius2D());
 		torqueToApply = 0.0f;
 	}
 
@@ -73,6 +73,11 @@ public class ShipEngine : MonoBehaviour {
 
 static class Extensions
 {
+    public static Vector2 GetPosition2D(this Transform transform)
+    {
+        return transform.position;
+    }
+
     public static float GetColliderRadius2D(this Collider2D collider)
     {
         if(collider is BoxCollider2D)

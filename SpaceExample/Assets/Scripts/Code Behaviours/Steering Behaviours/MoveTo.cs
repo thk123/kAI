@@ -7,10 +7,15 @@ public class MoveTo : kAICodeBehaviour
 {
 
     kAIDataPort<Vector2> currentTarget;
+
+    kAITriggerPort onArrivalPort;
 	public MoveTo()
 	{
         currentTarget = new kAIDataPort<Vector2>("Target", kAIPort.ePortDirection.PortDirection_In);
         AddExternalPort(currentTarget);
+
+        onArrivalPort = new kAITriggerPort("Arrived", kAIPort.ePortDirection.PortDirection_Out);
+        AddExternalPort(onArrivalPort);
 	}
 
     protected override void InternalUpdate(float lDeltaTime, object lUserData)
@@ -86,10 +91,11 @@ public class MoveTo : kAICodeBehaviour
         {
             forceToApply = Decelerate(currentVelocity, maxForce);
             torqueToApply = DecelerateSpin(angularVelocity, maxTorque);
+            onArrivalPort.Trigger();
         }
 
         engine.ApplyAccelerateForce(forceToApply);
-        engine.ApplyTorque(torqueToApply * engine.rigidbody2D.mass * engine.collider2D.GetColliderRadius2D());
+        engine.ApplyTorque(torqueToApply);
     }
 
     static float Move(float currentVelocity, float distanceRemaining, float maxForce)

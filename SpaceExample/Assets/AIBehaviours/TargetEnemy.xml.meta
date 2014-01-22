@@ -1,0 +1,50 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XmlBehaviourMetaSave xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/kAI.Editor.Core">
+  <NodePositions>
+    <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+      <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
+        <d4p1:NodeID>DistanceToTarget</d4p1:NodeID>
+      </Node>
+      <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
+        <d4p1:x>-186</d4p1:x>
+        <d4p1:y>-250</d4p1:y>
+      </Position>
+    </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+    <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+      <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
+        <d4p1:NodeID>IfLessThanOrEqual</d4p1:NodeID>
+      </Node>
+      <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
+        <d4p1:x>187</d4p1:x>
+        <d4p1:y>-231</d4p1:y>
+      </Position>
+    </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+    <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+      <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
+        <d4p1:NodeID>ConstantSingle</d4p1:NodeID>
+      </Node>
+      <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
+        <d4p1:x>-235</d4p1:x>
+        <d4p1:y>-95</d4p1:y>
+      </Position>
+    </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+    <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+      <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
+        <d4p1:NodeID>Target</d4p1:NodeID>
+      </Node>
+      <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
+        <d4p1:x>880</d4p1:x>
+        <d4p1:y>-415</d4p1:y>
+      </Position>
+    </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+    <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+      <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
+        <d4p1:NodeID>MoveTowardTarget</d4p1:NodeID>
+      </Node>
+      <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
+        <d4p1:x>596</d4p1:x>
+        <d4p1:y>-87</d4p1:y>
+      </Position>
+    </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+  </NodePositions>
+</XmlBehaviourMetaSave>

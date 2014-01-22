@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent(typeof(LineRenderer))]
 public class LaserWeaponSystem : MonoBehaviour, IWeaponSystem {
 
     public float maxDistance;
@@ -8,7 +9,7 @@ public class LaserWeaponSystem : MonoBehaviour, IWeaponSystem {
     public float damagePerSecond;
 
 
-    public LineRenderer laserRenderer;
+    LineRenderer laserRenderer;
 
     public Transform laserStartPoint;
 
@@ -16,24 +17,26 @@ public class LaserWeaponSystem : MonoBehaviour, IWeaponSystem {
 
 	// Use this for initialization
 	void Start () {
-        currentFireDuration = firingDuration;	
+        currentFireDuration = firingDuration;
+        laserRenderer = GetComponent<LineRenderer>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 	    if(currentFireDuration >= firingDuration)
         {
-            //laserRenderer.SetVertexCount(0);
+            laserRenderer.SetVertexCount(0);
         }
         else
         {
             UpdateLaser();
-            //currentFireDuration += Time.deltaTime;
+            currentFireDuration += Time.deltaTime;
         }
 	}
 
     void UpdateLaser()
     {
+        
         RaycastHit2D result = Physics2D.Raycast(laserStartPoint.position, transform.right, maxDistance);
 
         if (result)
@@ -45,20 +48,26 @@ public class LaserWeaponSystem : MonoBehaviour, IWeaponSystem {
             HealthBehaviour health = result.collider.GetComponent<HealthBehaviour>();
             if(health != null)
             {
-                health.ApplyDamage(damagePerSecond * Time.deltaTime);
+                health.ApplyDamage(damagePerSecond * Time.deltaTime, transform.right);  
             }
 
         }
         else
         {
             laserRenderer.SetVertexCount(2);
-            laserRenderer.SetPosition(0, transform.position);
-            laserRenderer.SetPosition(1, transform.position + (laserStartPoint.right * maxDistance));
+            laserRenderer.SetPosition(0, laserStartPoint.position);
+            laserRenderer.SetPosition(1, laserStartPoint.position + (laserStartPoint.right * maxDistance));
         }
     }
 
     public void Fire()
     {
         currentFireDuration = 0.0f;        
+    }
+
+
+    public void SetSpawnPoint(Transform spawn)
+    {
+        laserStartPoint = spawn;
     }
 }

@@ -46,8 +46,10 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Boost.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Debug\SimpleOrderFollower.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Debug\SimpleShipControl.cs" />
+     <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Evade.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\MoveTo.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Old\AdvanceTo.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Old\AlternateMoveToPoint.cs" />
@@ -55,6 +57,8 @@
      <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Old\MoveToPoint.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Old\RotateTo.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Old\Stabilize.cs" />
+     <Compile Include="Assets\Scripts\Code Behaviours\Util\Timer.cs" />
+     <Compile Include="Assets\Scripts\DamageNotifier.cs" />
      <Compile Include="Assets\Scripts\Debug\DebugString.cs" />
      <Compile Include="Assets\Scripts\Debug\StartMover.cs" />
      <Compile Include="Assets\Scripts\Debug\StartRotator.cs" />
@@ -69,11 +73,18 @@
      <Compile Include="Assets\Scripts\Game\ShipEngine.cs" />
      <Compile Include="Assets\Scripts\Game\ShipSelector.cs" />
      <Compile Include="Assets\Scripts\SimpleController\BasicShipController.cs" />
+     <Compile Include="Assets\Scripts\SimpleShooter.cs" />
      <Compile Include="Assets\Scripts\Weapons\Bullet.cs" />
      <Compile Include="Assets\Scripts\Weapons\LaserWeaponSystem.cs" />
      <Compile Include="Assets\Scripts\Weapons\Weapon.cs" />
+     <Compile Include="Assets\Scripts\Weapons\WeaponSystemManager.cs" />
      <Compile Include="Assets\Scripts\kAIScripts\AIBehaviour.cs" />
+     <None Include="Assets\AIBehaviours\PointEvade.xml" />
      <None Include="Assets\AIBehaviours\SimpleMoveBehaviour.xml" />
+     <None Include="Assets\AIBehaviours\Target.xml" />
+     <None Include="Assets\AIBehaviours\MoveTowardTarget.xml" />
+     <None Include="Assets\AIBehaviours\TargetEnemy.xml" />
+     <None Include="Assets\AIBehaviours\SimpleEvadeBehaviour.xml" />
  <Reference Include="kAICore">
  <HintPath>Assets\DLLs\kAICore.dll</HintPath>
  </Reference>

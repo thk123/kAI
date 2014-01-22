@@ -79,6 +79,102 @@
         </d4p1:XmlBehaviourFile>
       </d2p1:Value>
     </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>Evade</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAICodeBehaviour.SerialObject">
+        <d4p1:BehaviourAssembly>Assembly-CSharp</d4p1:BehaviourAssembly>
+        <d4p1:BehaviourID>Evade</d4p1:BehaviourID>
+        <d4p1:BehaviourType>Evade</d4p1:BehaviourType>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>SimpleEvadeBehaviour</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAIXmlBehaviour.SerialObject">
+        <d4p1:BehaviourID>
+          <d4p1:BehaviourID>SimpleEvadeBehaviour</d4p1:BehaviourID>
+        </d4p1:BehaviourID>
+        <d4p1:XmlBehaviourFile>
+          <d4p1:Path>\SimpleEvadeBehaviour.xml</d4p1:Path>
+          <d4p1:RootID>BehaviourRoot</d4p1:RootID>
+        </d4p1:XmlBehaviourFile>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>Boost</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAICodeBehaviour.SerialObject">
+        <d4p1:BehaviourAssembly>Assembly-CSharp</d4p1:BehaviourAssembly>
+        <d4p1:BehaviourID>Boost</d4p1:BehaviourID>
+        <d4p1:BehaviourType>Boost</d4p1:BehaviourType>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>Timer</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAICodeBehaviour.SerialObject">
+        <d4p1:BehaviourAssembly>Assembly-CSharp</d4p1:BehaviourAssembly>
+        <d4p1:BehaviourID>Timer</d4p1:BehaviourID>
+        <d4p1:BehaviourType>Timer</d4p1:BehaviourType>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>PointEvade</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAIXmlBehaviour.SerialObject">
+        <d4p1:BehaviourID>
+          <d4p1:BehaviourID>PointEvade</d4p1:BehaviourID>
+        </d4p1:BehaviourID>
+        <d4p1:XmlBehaviourFile>
+          <d4p1:Path>\PointEvade.xml</d4p1:Path>
+          <d4p1:RootID>BehaviourRoot</d4p1:RootID>
+        </d4p1:XmlBehaviourFile>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>GenerateEvadePoint</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAICodeBehaviour.SerialObject">
+        <d4p1:BehaviourAssembly>Assembly-CSharp</d4p1:BehaviourAssembly>
+        <d4p1:BehaviourID>GenerateEvadePoint</d4p1:BehaviourID>
+        <d4p1:BehaviourType>GenerateEvadePoint</d4p1:BehaviourType>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>Target</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAIXmlBehaviour.SerialObject">
+        <d4p1:BehaviourID>
+          <d4p1:BehaviourID>Target</d4p1:BehaviourID>
+        </d4p1:BehaviourID>
+        <d4p1:XmlBehaviourFile>
+          <d4p1:Path>\Target.xml</d4p1:Path>
+          <d4p1:RootID>BehaviourRoot</d4p1:RootID>
+        </d4p1:XmlBehaviourFile>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>FireWeaponBehaviour</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAICodeBehaviour.SerialObject">
+        <d4p1:BehaviourAssembly>Assembly-CSharp</d4p1:BehaviourAssembly>
+        <d4p1:BehaviourID>FireWeaponBehaviour</d4p1:BehaviourID>
+        <d4p1:BehaviourType>FireWeaponBehaviour</d4p1:BehaviourType>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>MoveTowardTarget</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAIXmlBehaviour.SerialObject">
+        <d4p1:BehaviourID>
+          <d4p1:BehaviourID>MoveTowardTarget</d4p1:BehaviourID>
+        </d4p1:BehaviourID>
+        <d4p1:XmlBehaviourFile>
+          <d4p1:Path>\MoveTowardTarget.xml</d4p1:Path>
+          <d4p1:RootID>BehaviourRoot</d4p1:RootID>
+        </d4p1:XmlBehaviourFile>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>MoveToTargetCode</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAICodeBehaviour.SerialObject">
+        <d4p1:BehaviourAssembly>Assembly-CSharp</d4p1:BehaviourAssembly>
+        <d4p1:BehaviourID>MoveToTargetCode</d4p1:BehaviourID>
+        <d4p1:BehaviourType>MoveToTargetCode</d4p1:BehaviourType>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
   </NodeObjects>
   <ProjectDllPaths xmlns:d2p1="http://schemas.datacontract.org/2004/07/kAI.Core">
     <d2p1:FilePath>
@@ -121,6 +217,31 @@
       <MethodName>Sum</MethodName>
       <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
     </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>Assembly-CSharp</AssemblyName>
+      <MethodName>GenerateNewEvadePoint</MethodName>
+      <TypeName>EvadeFunctions</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>Assembly-CSharp</AssemblyName>
+      <MethodName>DistanceToTarget</MethodName>
+      <TypeName>WeaponFunctions</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>Assembly-CSharp</AssemblyName>
+      <MethodName>AngleToTarget</MethodName>
+      <TypeName>WeaponFunctions</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>kAICore</AssemblyName>
+      <MethodName>Abs</MethodName>
+      <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>Assembly-CSharp</AssemblyName>
+      <MethodName>GetObjectPosition</MethodName>
+      <TypeName>WeaponFunctions</TypeName>
+    </kAIProject.SerialMethodInfo>
   </ProjectFunctions>
   <ProjectTypes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
     <d2p1:string>System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</d2p1:string>
@@ -130,5 +251,6 @@
     <d2p1:string>System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</d2p1:string>
     <d2p1:string>System.UInt32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</d2p1:string>
     <d2p1:string>UnityEngine.Vector2, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</d2p1:string>
+    <d2p1:string>UnityEngine.GameObject, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</d2p1:string>
   </ProjectTypes>
 </kAIProject>

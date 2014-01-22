@@ -18,11 +18,10 @@ public class Bullet : MonoBehaviour {
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        print("Trigger");
         HealthBehaviour healthOther = other.GetComponent<HealthBehaviour>();
         if(healthOther != null)
         {
-            healthOther.ApplyDamage(damage);
+            healthOther.ApplyDamage(damage, Vector2.zero);
         }
         Destroy(gameObject);
     }

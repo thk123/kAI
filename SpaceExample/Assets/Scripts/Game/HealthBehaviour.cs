@@ -16,9 +16,10 @@ class HealthBehaviour : MonoBehaviour
         currentHealth = startingHealth;
     }
 
-    public void ApplyDamage(float damage)
+    public void ApplyDamage(float damage, Vector2 originOfDamage)
     {
         currentHealth -= damage;
+        SendMessage("OnDamage", originOfDamage, SendMessageOptions.DontRequireReceiver);
     }
 
     // Update is called once per frame

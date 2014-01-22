@@ -6,6 +6,8 @@ using kAI.Core;
 public interface IWeaponSystem
 {
     void Fire();
+
+    void SetSpawnPoint(Transform spawn);
 }
 
 public class Weapon : MonoBehaviour, IWeaponSystem {
@@ -31,6 +33,14 @@ public class Weapon : MonoBehaviour, IWeaponSystem {
         GameObject bullet = (GameObject)Instantiate(projectilePrefab, projectileSpawnPoint.position, transform.rotation);
         bullet.rigidbody2D.velocity = rigidbody2D.velocity;
         bullet.rigidbody2D.AddForce(projectileForce * transform.right);
+    }
+
+
+
+
+    public void SetSpawnPoint(Transform spawn)
+    {
+        projectileSpawnPoint = spawn;
     }
 }
 

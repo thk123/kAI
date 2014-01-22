@@ -4,7 +4,7 @@ using System.Collections;
 using System.IO;
 using System.Reflection;
 
-public class AIBehaviour : MonoBehaviour {
+public class AIBehaviour : MonoBehaviour, kAIILogger {
 
     public string XmlPath;
 
@@ -26,6 +26,7 @@ public class AIBehaviour : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
+        kAIObject.GlobalLogger = this;
         mXmlBehaviour.SetGlobal();
         mXmlBehaviour.ForceActivation();
 	}
@@ -79,4 +80,39 @@ public class AIBehaviour : MonoBehaviour {
         return null;
     }
 
+    public void LogCriticalError(string lError, params System.Collections.Generic.KeyValuePair<string, object>[] lDetails)
+    {
+        print(lError);
+        foreach (var kvp in lDetails)
+        {
+            print(kvp.Key + ": " + kvp.Value);
+        }
+    }
+
+    public void LogError(string lError, params System.Collections.Generic.KeyValuePair<string, object>[] lDetails)
+    {
+        print(lError);
+        foreach (var kvp in lDetails)
+        {
+            print(kvp.Key + ": " + kvp.Value);
+        }
+    }
+
+    public void LogMessage(string lMessage, params System.Collections.Generic.KeyValuePair<string, object>[] lDetails)
+    {
+        print(lMessage);
+        foreach(var kvp in lDetails)
+        {
+            print(kvp.Key + ": " + kvp.Value);
+        }
+    }
+
+    public void LogWarning(string lWarning, params System.Collections.Generic.KeyValuePair<string, object>[] lDetails)
+    {
+        print(lWarning);
+        foreach (var kvp in lDetails)
+        {
+            print(kvp.Key + ": " + kvp.Value);
+        }
+    }
 }

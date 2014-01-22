@@ -30,31 +30,104 @@ public class AIRotateToPoint : kAICodeBehaviour
 		AddExternalPort(targetAngle);
 	}
 
-    
+    protected override void OnActivate()
+    {
+        base.OnActivate();
+        currentTargetAngle = -1.0f;
+        LogMessage("RotateTo " + targetAngle.Data);
+        
+    }
+
+    // Calculates a torque to halt the current spin (not overshoot)
+    static float StopSpin(float currentAngularVelocity, float maxForce)
+    {
+        float forceToApply = ((-currentAngularVelocity)) / Time.deltaTime;
+        return forceToApply;
+    }
+
+
+    // Calculates a torque to slow down spin. 
+    static float DecelerateSpin(float currentVelocity, float maxForce)
+    {
+        float signOfMovement = Mathf.Sign(currentVelocity);
+        if (Mathf.Sign(currentVelocity - (signOfMovement * maxForce * Time.deltaTime)) != signOfMovement)
+        {
+            return StopSpin(currentVelocity, maxForce);
+        }
+        else
+        {
+            return -maxForce * signOfMovement;
+        }
+
+    }
+
+    // Calculates a force to spin the remaining anlge, slowing down when we need to 
+    static float Spin(float currentAngularVelocity, float angleRemaining, float maxForce)
+    {
+        float decelerationDistance = (currentAngularVelocity * currentAngularVelocity) / (2 * maxForce);
+
+        bool movingInRightDirection = Mathf.Sign(currentAngularVelocity * angleRemaining) > 0;
+
+        float directionOfForce;
+        if (movingInRightDirection)
+        {
+            if (decelerationDistance <= Mathf.Abs(angleRemaining))
+            {
+                directionOfForce = 1;
+            }
+            else
+            {
+                return DecelerateSpin(currentAngularVelocity, maxForce);
+            }
+        }
+        else
+        {
+            directionOfForce = -1;
+        }
+        return directionOfForce * maxForce * Mathf.Sign(currentAngularVelocity);
+    }
 
 	protected override void InternalUpdate (float lDeltaTime, object lUserData)
 	{
+        //LogMessage("Running the update");
         GameObject ship = lUserData as GameObject;
         if (ship != null)
         {
             engine = ship.GetComponent<ShipEngine>();
-            if (currentTargetAngle != targetAngle.Data)
+            float angularVelocity = ship.rigidbody2D.angularVelocity * Mathf.Deg2Rad;
+            float angleToGo = targetAngle.Data * Mathf.Deg2Rad;
+
+            float torqueToApply;
+            
+            if(Mathf.Abs(targetAngle.Data) < 1.0f)
             {
+                torqueToApply = DecelerateSpin(angularVelocity, engine.torqueForce);
+            }
+            else
+            {
+                torqueToApply = Spin(angularVelocity, angleToGo, engine.torqueForce);
+            }
+            LogMessage("Angle remaining: " + targetAngle.Data + " Applying force: " + torqueToApply);
+            engine.ApplyTorque(torqueToApply);
+
+            /*if (currentTargetAngle != targetAngle.Data)
+            {
+                
                 debugStartingAngle = ship.transform.eulerAngles.z;
-                Debug.Log("Angle: " + debugStartingAngle);
-                ComputeForces(targetAngle.Data, ship.rigidbody2D.angularVelocity * Mathf.Deg2Rad, engine);
+
+                ComputeForces(targetAngle.Data * Mathf.Deg2Rad, ship.rigidbody2D.angularVelocity * Mathf.Deg2Rad, engine);
                 startTime = Time.fixedTime;
                 currentTargetAngle = targetAngle.Data;
+
+                LogMessage("Computing forces, time: " + startTime+  "Angle: " + currentTargetAngle);
             }
 
             float oldTime = time;
             time = Time.fixedTime - startTime;
 
-            float variableFixedDeltaTime = time - oldTime;
-            float fixedRatio = variableFixedDeltaTime / Time.fixedDeltaTime;
             if (time <= totalTime)
             {
-                float applyingForce = forceFunction.GetValue(time) * fixedRatio;
+                float applyingForce = forceFunction.GetValue(time);
 
                 // The force is given in radians but for whatever reason the angular velocity is in degrees per second
                 // we convert the acceleration in to degrees per second squared to predict the next frames angularVelocity
@@ -67,7 +140,7 @@ public class AIRotateToPoint : kAICodeBehaviour
                    (currentAngularVelocity > 0.0f && angularVelocityPrediction < 0.0f)))
                 {
                     float ratio = Mathf.Abs((currentAngularVelocity / ((applyingForce * Mathf.Rad2Deg) * lDeltaTime)));
-                    applyingForce = applyingForce * ratio;
+                    applyingForce = applyingForce * ratio;*/
 
                     // This version is accurate to within 4 dp
                     /*float finishingAngle = ship.transform.eulerAngles.z;
@@ -77,11 +150,17 @@ public class AIRotateToPoint : kAICodeBehaviour
                     // We have reversed the direction so we must have arrived
                     // TODO: The time is short, we reach the target before we mean to
                     // This is possibly due to going to slow when we switch from cos to hard deceleration
+                    /*LogMessage("deactivating from the method");
                     Deactivate();
                 }
 
-                engine.ApplyTorque(applyingForce * ship.rigidbody2D.mass * ship.collider2D.GetColliderRadius2D());
+                engine.ApplyTorque(applyingForce);
             }
+            else
+            {
+                LogMessage("Deactivating due to no time: " + time + ", " + totalTime);
+                Deactivate();
+            }*/
         }      
 	}
 
@@ -95,6 +174,10 @@ public class AIRotateToPoint : kAICodeBehaviour
         // - If we are going to fast need to support going round more than once or fuck it?
         // - if it is shorter to go CCW will still go CW
         //    - as an added note, need to work out which way to go factoring in current velocity. 
+
+        float direction = Mathf.Sign(angle);
+        angle = Mathf.Abs(angle);
+
 
         float maxForce = engine.torqueForce ;
         Debug.Log("Angle: " + angle + ", Vel: " + currentAngularVelocity + ", mF: " + maxForce); ;
@@ -133,13 +216,13 @@ public class AIRotateToPoint : kAICodeBehaviour
             // the compressed cos curve
             forceFunction.AddSegment((point) =>
             {
-                return ((timeFactor * (Mathf.Cos((point * timeFactor)) )));
+                return ((timeFactor * (Mathf.Cos((point * timeFactor)) ))) * direction;
             }, 0.0f, piTime);
 
             // the hard decleration time
             forceFunction.AddSegment((point) =>
             {
-                return -maxForce;
+                return -maxForce * direction;
             }, piTime, piTime + hardDecelTime);
 
 
@@ -150,8 +233,8 @@ public class AIRotateToPoint : kAICodeBehaviour
 
             // We do everything for piDistance then just add the decerlation on to the end. 
 
-            Func<float, float> fullAccel = (point) => { return maxForce; };
-            Func<float, float> fullDeccel = (point) => { return -maxForce; };
+            Func<float, float> fullAccel = (point) => { return maxForce * direction; };
+            Func<float, float> fullDeccel = (point) => { return -maxForce * direction; };
 
             // we compute the time to do full accerlation (and deceleration)
             float t0 = ((-Mathf.PI * maxForce) + (Mathf.Sqrt(
@@ -166,7 +249,7 @@ public class AIRotateToPoint : kAICodeBehaviour
             // Do a cos acceleration as above between t0 and t0 + pi
             forceFunction.AddSegment((lPoint) =>
             {
-                return (Mathf.Cos(lPoint - t0) * maxForce);
+                return (Mathf.Cos(lPoint - t0) * maxForce) * direction;
             }, t0, t0 + Mathf.PI);
 
             // Then a full deceleration at the end 

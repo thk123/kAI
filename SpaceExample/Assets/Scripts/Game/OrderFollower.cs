@@ -24,7 +24,11 @@ public class OrderFollower : MonoBehaviour, IOrderReciever, kAIILogger
 
     public void GiveOrder(Vector2 temp)
     {
-        ((kAIDataPort<Vector2>)slave.mXmlBehaviour.GetPort("Target")).Data = temp;
+        kAIPort orderPort = slave.mXmlBehaviour.GetPort("Target");
+        if (orderPort != null)
+        {
+            ((kAIDataPort<Vector2>)orderPort).Data = temp;
+        }
         /*if(mover == null)
         {
             mover = new MoveToPoint();

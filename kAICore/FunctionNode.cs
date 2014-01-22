@@ -272,17 +272,17 @@ namespace kAI.Core
         public static bool IfLessThan<T>(T entry1, T entry2)
         {
             return Operator.LessThan<T>(entry1, entry2);
-        }
+        } 
 
         [StaticConstraint(StaticConstraint.StaticConstraintType.eConstraint_LessThan | StaticConstraint.StaticConstraintType.eConstraint_GreaterThan)]
         public static bool IfGreaterThan<T>(T entry1, T entry2)
         {
             return Operator.GreaterThan<T>(entry1, entry2);
         }
-
+         
         [StaticConstraint(StaticConstraint.StaticConstraintType.eConstraint_LessThan | StaticConstraint.StaticConstraintType.eConstraint_GreaterThan)]
         public static bool IfLessThanOrEqual<T>(T entry1, T entry2)
-        {
+        {  
             return Operator.LessThanOrEqual<T>(entry1, entry2);
         }
 
@@ -296,6 +296,11 @@ namespace kAI.Core
         public static T Sum<T>(T entry1, T entry2)
         {
             return Operator.Add<T>(entry1, entry2);
+        }
+
+        public static float Abs(float lValue)
+        {
+            return Math.Abs(lValue);
         }
     }
 
