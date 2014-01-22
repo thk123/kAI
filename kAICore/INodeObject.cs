@@ -102,6 +102,18 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// Try to get the port by ID
+        /// </summary>
+        /// <param name="lPortID">The ID to look for. </param>
+        /// <param name="lPort">The port associated with the ID. </param>
+        /// <returns>True if the port was found, false otherwise. </returns>
+        public bool TryGetPort(kAIPortID lPortID, out kAIPort lPort)
+        {
+            return mExternalPorts.TryGetValue(lPortID, out lPort);
+
+        }
+
+        /// <summary>
         /// The list of externally connectible ports. 
         /// </summary>
         /// <returns>A list of ports that can be connected to externally. </returns>

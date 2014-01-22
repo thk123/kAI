@@ -67,7 +67,15 @@ namespace kAI.Editor
                 kAIINodeSerialObject lTemplateBehaviour = lSelectedItem.SelectedItem as kAIINodeSerialObject;
                 if (lTemplateBehaviour != null)
                 {
-                    mNewBehaviour = lTemplateBehaviour.Instantiate(mProject.GetAssemblyByName) as kAIBehaviour;
+                    try
+                    {
+                        mNewBehaviour = lTemplateBehaviour.Instantiate(mProject.GetAssemblyByName) as kAIBehaviour;
+                    }
+                    catch (System.Exception ex)
+                    {
+                        GlobalServices.Logger.LogError("Failed to instantiate node: " + ex.ToString());
+                    }
+                    
 
                     if (mNewBehaviour != null)
                     {
@@ -75,7 +83,7 @@ namespace kAI.Editor
                     }
                     else
                     {
-                        //TODO: Error! 
+                        GlobalServices.Logger.LogError("Failed to instantiate node: Reason Unknown");
                     }                    
                 }
             }

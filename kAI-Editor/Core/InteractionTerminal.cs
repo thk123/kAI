@@ -139,7 +139,7 @@ namespace kAI.Editor.Core
         {
             try
             {
-                kAIPort lPort = mBehaviour.InternalPorts.First((lPortToCheck) => { return lPortToCheck.PortID == lPortName; });
+                kAIPort lPort = mBehaviour.GetInternalPort(lPortName);
                 kAITriggerPort lTriggerPort = lPort as kAITriggerPort;
                 if (lTriggerPort != null)
                 {

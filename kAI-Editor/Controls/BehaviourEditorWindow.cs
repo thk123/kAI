@@ -191,7 +191,15 @@ namespace kAI.Editor.Controls
 
                 foreach (Tuple<kAINodeID, kAIAbsolutePosition> lNodePosition in lXmlFile.GetPositions())
                 {
-                    mEditorImpl.SetNodePosition(lNodePosition.Item1, lNodePosition.Item2);
+                    try
+                    {
+                        mEditorImpl.SetNodePosition(lNodePosition.Item1, lNodePosition.Item2);
+                    }
+                    catch (System.Exception)
+                    {
+                        GlobalServices.Logger.LogWarning("Could position node as does not exist", new KeyValuePair<string, object>("Node ID", lNodePosition.Item1));
+                    }
+                    
                 }
             }
             else
@@ -285,9 +293,18 @@ namespace kAI.Editor.Controls
             lSettings.Indent = true;
 
             // Create the writer and write the file. 
-            XmlWriter lWriter = XmlWriter.Create(Behaviour.XmlLocation.GetFile().FullName + ".meta", lSettings);
-            lProjectSerialiser.WriteObject(lWriter, lMetaFile);
-            lWriter.Close();   
+            try
+            {
+                using (XmlWriter lWriter = XmlWriter.Create(Behaviour.XmlLocation.GetFile().FullName + ".meta", lSettings))
+                {
+                    lProjectSerialiser.WriteObject(lWriter, lMetaFile);
+                }   
+            }
+            catch (System.Exception ex)
+            {
+            	GlobalServices.Logger.LogWarning("Could not save meta file");
+            }
+            
 
         }
 

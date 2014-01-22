@@ -717,8 +717,7 @@ namespace kAI.Editor.Controls.DX
                 }
             }
 
-            kAIObject.Assert(null, false, "Could not find specified node in this behaviour");
-            return null;
+            throw new Exception("Could not position node, no node with ID " + lNodeID);
         }
 
         void InputManager_OnMouseUp(object sender, MouseEventArgs e)

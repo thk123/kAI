@@ -80,6 +80,8 @@
   <PropertyGroup>
     <PostBuildEvent>cp $(TargetPath) $(SolutionDir)kAI-Example\Assets\DLLs\$(TargetFileName)
 cp $(TargetDir)\MiscUtil.dll $(SolutionDir)kAI-Example\Assets\DLLs\MiscUtil.dll
+cp $(TargetPath) $(SolutionDir)SpaceExample\Assets\DLLs\$(TargetFileName)
+cp $(TargetDir)\MiscUtil.dll $(SolutionDir)SpaceExample\Assets\DLLs\MiscUtil.dll
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

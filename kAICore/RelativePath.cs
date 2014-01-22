@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.IO;
 using System.Runtime.Serialization;
+using System.Text.RegularExpressions;
 
 namespace kAI.Core
 {
@@ -246,6 +247,16 @@ namespace kAI.Core
                 {
                     throw new Exception("Already set directory for ID: " + lDirectoryID);
                 }
+            }
+        }
+
+        [OnDeserialized]
+        private void OnDeserialized(StreamingContext context)
+        {
+            Regex lGlobalPathMatcher = new Regex(@"\w:\\");
+            if(lGlobalPathMatcher.IsMatch(mPath))
+            {
+                RelativePathType = eRelativePathType.SeperatePath;   
             }
         }
 

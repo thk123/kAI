@@ -215,16 +215,17 @@ namespace kAI.Core
         {
             if (Active)
             {
-                InternalUpdate(lDeltaTime, lUserData);
-                /*try
+                //InternalUpdate(lDeltaTime, lUserData);
+
+                try
                 {
+                    InternalUpdate(lDeltaTime, lUserData);
                     
-                }*/
-                /*catch (System.Exception ex)
+                }
+                catch (System.Security.SecurityException ex)
                 {
-                    LogMessage("Failed to update code behaviour " + BehaviourID);
-                }*/
-                
+                    LogMessage("Failed to update code behaviour " + BehaviourID + ": " + ex.Message);
+                }
             }
             else if (mWasActive) // just been deactivated so we trigger the OnDeactivated Port
             {
@@ -271,8 +272,20 @@ namespace kAI.Core
         protected void Activate()
         {
             if (!Active)
-            {
-                LogMessage("Behaviour has been activated", new KeyValuePair<string, object>("Behaviour", BehaviourID));
+            {                
+                kAIPort lPort;
+                float debugValue;
+                if (TryGetPort("Data", out lPort))
+                {
+                    debugValue = ((kAIDataPort<float>)lPort).Data;
+                }
+                else
+                {
+                    debugValue = -1.0f;
+                }
+                
+                LogMessage("Behaviour has been activated", new KeyValuePair<string, object>("Behaviour", BehaviourID)
+                    , new KeyValuePair<string, object>("PortValue", debugValue));
                 Active = true;
                 OnActivate();
             }
@@ -430,7 +443,23 @@ namespace kAI.Core
             Type lBehaviourType = lAssemblyGetter((string)lCastSerialObject.BehaviourAssembly).GetType(lCastSerialObject.BehaviourType);
             //kAICodeBehaviour lNewBehaviour = new kAICodeBehaviour(lData[0]);
             ConstructorInfo lConstructor = lBehaviourType.GetConstructor(new Type[] { typeof(kAIILogger) });
-            object lBehaviour = lConstructor.Invoke(new Object[]{ null });
+            Object[] lParameters;
+
+            if (lConstructor == null)
+            {
+                lConstructor = lBehaviourType.GetConstructor(Type.EmptyTypes);
+                if (lConstructor == null)
+                {
+                    throw new Exception("Could not instantiate code behaviour - no valid constructor");
+                }
+                lParameters = new Object[0];
+            }
+            else
+            {
+                lParameters = new Object[] { null };
+            }
+
+            object lBehaviour = lConstructor.Invoke(lParameters);
             return (kAICodeBehaviour)lBehaviour;
         }
 

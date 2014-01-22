@@ -161,8 +161,24 @@ namespace kAI.Editor.Core
             public MethodInfo Instantiate(kAIXmlBehaviour.GetAssemblyByName lAssemblyResolver)
             {
                 Assembly lFunctionAssembly = lAssemblyResolver(AssemblyName);
+                if (lFunctionAssembly == null)
+                {
+                    throw new Exception("Could not find assembly");
+                }
+
                 Type lDeclType = lFunctionAssembly.GetType(TypeName);
-                return lDeclType.GetMethod(MethodName);
+                if (lDeclType == null)
+                {
+                    throw new Exception("Could not find type");
+                }
+
+                MethodInfo lMethod = lDeclType.GetMethod(MethodName);
+                if (lMethod == null)
+                {
+                    throw new Exception("Could not find method, has it been deleted");
+                }
+
+                return lMethod;
             }
         }
 
@@ -370,7 +386,7 @@ namespace kAI.Editor.Core
         }
 
 
-        /// <summary>
+        /// <summary>1
         /// Construct stuff that won't be loaded from the XML and hence won't be set up when we instantiate it. 
         /// </summary>
         /// <param name="lSouceFile">The file this project is loaded from. </param>
