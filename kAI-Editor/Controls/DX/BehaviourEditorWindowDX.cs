@@ -323,10 +323,21 @@ namespace kAI.Editor.Controls.DX
             List<kAIAbsolutePosition> lPoints = new List<kAIAbsolutePosition>();
 
             kAIEditorPortDX lStart = GetPort(lConnexion.StartPort);
-            lPoints.Add(lStart.GetConnexionPoint());
-
             kAIEditorPortDX lEnd = GetPort(lConnexion.EndPort);
-            lPoints.Add(lEnd.GetConnexionPoint());
+
+            kAIAbsolutePosition lStartPosition = lStart.GetConnexionPoint();
+            kAIAbsolutePosition lEndPosition = lEnd.GetConnexionPoint();
+            lPoints.Add(lStartPosition);
+            if(!lStartPosition.mIsFixed && !lEndPosition.mIsFixed )
+            {
+                kAIAbsolutePosition lMid1 = kAIAbsolutePosition.MidYFirstX(lStartPosition, lEndPosition);
+                kAIAbsolutePosition lMid2 = kAIAbsolutePosition.MidYSecondX(lStartPosition, lEndPosition);
+
+
+                lPoints.Add(lMid1);
+                lPoints.Add(lMid2);
+            }
+            lPoints.Add(lEndPosition);
 
             return lPoints;
         }

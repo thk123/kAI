@@ -34,6 +34,16 @@ namespace kAI.Editor.Controls.DX.Coordinates
             mIsFixed = lIsFixed;
         }
 
+        public static kAIAbsolutePosition MidYFirstX(kAIAbsolutePosition lFirst, kAIAbsolutePosition lSecond)
+        {
+            return new kAIAbsolutePosition(lFirst.mPoint.X, (int)(0.5f * (lFirst.mPoint.Y + lSecond.mPoint.Y)), lFirst.mIsFixed);
+        }
+
+        public static kAIAbsolutePosition MidYSecondX(kAIAbsolutePosition lFirst, kAIAbsolutePosition lSecond)
+        {
+            return new kAIAbsolutePosition(lSecond.mPoint.X, (int)(0.5f * (lFirst.mPoint.Y + lSecond.mPoint.Y)), lFirst.mIsFixed);
+        }
+
         public kAIAbsolutePosition Translate(int ldX, int ldY)
         {
             return new kAIAbsolutePosition(mPoint.X + ldX, mPoint.Y + ldY, mIsFixed);
