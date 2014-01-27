@@ -22,6 +22,17 @@ namespace kAI.Editor.Forms.ProjectProperties
                 lAllTheMethods.AddRange(lType.GetMethods());
             }
 
+            foreach (Assembly lAssembly in Project.ProjectDLLs)
+            {
+                lAllTheMethods.AddRange(lAssembly.GetExportedTypes().Where((f) => { return f.IsSealed && f.IsAbstract; }).Select((t) =>
+                {
+                    return t.GetMethods();
+                }).Aggregate((a, b) =>
+                {
+                    return a.Union(b).ToArray();
+                }));
+            }
+
             lAllTheMethods.AddRange(typeof(kAIFunctionNodes).GetMethods());
 
 
