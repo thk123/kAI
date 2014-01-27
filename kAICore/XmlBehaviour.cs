@@ -616,6 +616,38 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// Remove an internal port from the behaviour/ 
+        /// </summary>
+        /// <param name="lPort">The port to remove. </param>
+        public void RemoveInternalPort(kAIPort lPort)
+        {
+            RemoveInternalPort(lPort.PortID);
+        }
+
+        /// <summary>
+        /// Remove an internal port from this behaviour.
+        /// </summary>
+        /// <param name="lPortID">The ID of the port to remove. </param>
+        public void RemoveInternalPort(kAIPortID lPortID)
+        {
+            if (!mInternalPorts.ContainsKey(lPortID))
+            {
+                throw new kAIBehaviourPortNotFoundException(this, lPortID);
+            }
+            else
+            {
+                InternalPort lInternalPort = mInternalPorts[lPortID];
+                lInternalPort.Port.BreakAllConnexions();
+
+                if (lInternalPort.IsGloballyAccesible)
+                {
+                    LogWarning("Removing a globally accessible port can result in errors if the port is used in other behaviours");
+                }
+            }
+        }
+
+
+        /// <summary>
         /// Gets a port belonging to this behaviour. 
         /// </summary>
         /// <param name="lPortID">The ID of the port. </param>
@@ -784,6 +816,14 @@ namespace kAI.Core
             Deactivate();
         }
 
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <returns></returns>
+        public override string ToString()
+        {
+            return BehaviourID;
+        }
         
     }
 }
