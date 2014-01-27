@@ -593,9 +593,9 @@ namespace kAI.Core
                         }
                         else // The external port in an outward port, so should be trigger when the internal port is
                         {
-                            lExternalTrigger.OnTriggered += (lSender) =>
+                                ((kAITriggerPort)lPortToAdd).OnTriggered += (lSender) =>
                                 {
-                                    ((kAITriggerPort)GetPort(lSender.PortID)).Trigger();
+                                    lExternalTrigger.Trigger();
                                 };
                         }
                     }
