@@ -182,12 +182,31 @@ namespace kAI.Editor.Core
         {
             kAIPort lStartPort;
             {
-                lStartPort = mBehaviour.GetInternalPort(lStart);
+                try
+                {
+                    lStartPort = mBehaviour.GetInternalPort(lStart);
+                }
+                catch (System.Exception)
+                {
+                    GlobalServices.Logger.LogWarning("Could not find port: " + lStart);
+                    return false;
+                }
+                
             }
 
             kAIPort lEndPort;
             {
-                lEndPort = mBehaviour.GetInternalPort(lEnd);
+                try
+                {
+                    lEndPort = mBehaviour.GetInternalPort(lEnd);
+                }
+                catch (Exception)
+                {
+
+                    GlobalServices.Logger.LogWarning("Could not find port: " + lEnd);
+                    return false;
+                }
+                
             }
 
             kAIPort.ePortConnexionResult lResult = kAIPort.ConnectPorts(lStartPort, lEndPort);
