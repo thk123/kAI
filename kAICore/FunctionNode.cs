@@ -302,6 +302,15 @@ namespace kAI.Core
         {
             return Math.Abs(lValue);
         }
+
+        public static T AOrBChooser<T>(bool value, T trueValue, T falseValue)
+        {
+            kAIObject.LogMessage(null, "Checking " + value + " to compute either " + trueValue.ToString() + " or " + falseValue.ToString());
+            T result = value ? trueValue : falseValue;
+           //kAIObject.LogMessage(null, "Checking " + value + " getting " + result.ToString());
+
+            return result;
+        }
     }
 
     /// <summary>

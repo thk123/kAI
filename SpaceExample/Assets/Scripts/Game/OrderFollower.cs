@@ -29,6 +29,10 @@ public class OrderFollower : MonoBehaviour, IOrderReciever, kAIILogger
         {
             ((kAIDataPort<Vector2>)orderPort).Data = temp;
         }
+        else
+        {
+            print("Could not get port");
+        }
         /*if(mover == null)
         {
             mover = new MoveToPoint();

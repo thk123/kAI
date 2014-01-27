@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\Scripts\Code Behaviours\CheckAhead.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Boost.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Debug\SimpleOrderFollower.cs" />
      <Compile Include="Assets\Scripts\Code Behaviours\Steering Behaviours\Debug\SimpleShipControl.cs" />
@@ -84,6 +85,7 @@
      <None Include="Assets\AIBehaviours\Target.xml" />
      <None Include="Assets\AIBehaviours\MoveTowardTarget.xml" />
      <None Include="Assets\AIBehaviours\TargetEnemy.xml" />
+     <None Include="Assets\AIBehaviours\MoveToAvoid.xml" />
      <None Include="Assets\AIBehaviours\SimpleEvadeBehaviour.xml" />
  <Reference Include="kAICore">
  <HintPath>Assets\DLLs\kAICore.dll</HintPath>

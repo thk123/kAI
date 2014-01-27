@@ -4,6 +4,20 @@
   <InternalConnexions>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
+        <NodeID>InvalidNode</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Arrived</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>MoveTo</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>Arrived</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
         <NodeID>MoveTo</NodeID>
       </EndNodeID>
       <EndPortID>
@@ -71,6 +85,14 @@
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>Target</PortID>
       <PortIsTrigger>false</PortIsTrigger>
+    </kAIXmlBehaviour.InternalXml.SerialPort>
+    <kAIXmlBehaviour.InternalXml.SerialPort>
+      <IsGloballyAccesible>true</IsGloballyAccesible>
+      <PortDataType>System.Boolean</PortDataType>
+      <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
+      <PortDirection>PortDirection_In</PortDirection>
+      <PortID>Arrived</PortID>
+      <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
   </InternalPorts>
 </kAIXmlBehaviour>
