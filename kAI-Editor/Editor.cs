@@ -288,7 +288,15 @@ namespace kAI.Editor
 
                     if (lNodeObject.GetNodeFlavour() == eNodeFlavour.BehaviourXml)
                     {
-                        LoadBehaviour(kAIXmlBehaviour.Load(lNodeObject, lProject.GetAssemblyByName));
+                        try
+                        {
+                            LoadBehaviour(kAIXmlBehaviour.Load(lNodeObject, lProject.GetAssemblyByName));
+                        }
+                        catch (System.Exception ex)
+                        {
+                            GlobalServices.Logger.LogError("Error loading behaviour: " + lNodeObject.GetFriendlyName());
+                        }
+                        
                     }
                     else
                     {
