@@ -64,9 +64,12 @@
      <Compile Include="Assets\Scripts\Debug\StartMover.cs" />
      <Compile Include="Assets\Scripts\Debug\StartRotator.cs" />
      <Compile Include="Assets\Scripts\Game\CameraController.cs" />
+     <Compile Include="Assets\Scripts\Game\ConeChecker.cs" />
+     <Compile Include="Assets\Scripts\Game\ConeChecker3D.cs" />
      <Compile Include="Assets\Scripts\Game\HealthBehaviour.cs" />
      <Compile Include="Assets\Scripts\Game\Locomotor.cs" />
      <Compile Include="Assets\Scripts\Game\MouseOrderController.cs" />
+     <Compile Include="Assets\Scripts\Game\NeedConeChecker.cs" />
      <Compile Include="Assets\Scripts\Game\OrderFollower.cs" />
      <Compile Include="Assets\Scripts\Game\SeekSteer.cs" />
      <Compile Include="Assets\Scripts\Game\Selectable.cs" />
@@ -87,6 +90,7 @@
      <None Include="Assets\AIBehaviours\TargetEnemy.xml" />
      <None Include="Assets\AIBehaviours\MoveToAvoid.xml" />
      <None Include="Assets\AIBehaviours\SimpleEvadeBehaviour.xml" />
+     <None Include="Assets\AIBehaviours\MovingAvoid.xml" />
  <Reference Include="kAICore">
  <HintPath>Assets\DLLs\kAICore.dll</HintPath>
  </Reference>

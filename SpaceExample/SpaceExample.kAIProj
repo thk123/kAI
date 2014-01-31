@@ -207,6 +207,26 @@
         </d4p1:XmlBehaviourFile>
       </d2p1:Value>
     </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>MovingAvoid</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAIXmlBehaviour.SerialObject">
+        <d4p1:BehaviourID>
+          <d4p1:BehaviourID>MovingAvoid</d4p1:BehaviourID>
+        </d4p1:BehaviourID>
+        <d4p1:XmlBehaviourFile>
+          <d4p1:Path>\MovingAvoid.xml</d4p1:Path>
+          <d4p1:RootID>BehaviourRoot</d4p1:RootID>
+        </d4p1:XmlBehaviourFile>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>AvoidObject</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAICodeBehaviour.SerialObject">
+        <d4p1:BehaviourAssembly>Assembly-CSharp</d4p1:BehaviourAssembly>
+        <d4p1:BehaviourID>AvoidObject</d4p1:BehaviourID>
+        <d4p1:BehaviourType>AvoidObject</d4p1:BehaviourType>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
   </NodeObjects>
   <ProjectDllPaths xmlns:d2p1="http://schemas.datacontract.org/2004/07/kAI.Core">
     <d2p1:FilePath>
@@ -277,6 +297,16 @@
     <kAIProject.SerialMethodInfo>
       <AssemblyName>kAICore</AssemblyName>
       <MethodName>AOrBChooser</MethodName>
+      <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>Assembly-CSharp</AssemblyName>
+      <MethodName>ObjectOfCollision</MethodName>
+      <TypeName>CollisionAvoidanceFunctions</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>kAICore</AssemblyName>
+      <MethodName>IsNull</MethodName>
       <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
     </kAIProject.SerialMethodInfo>
   </ProjectFunctions>

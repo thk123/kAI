@@ -10,6 +10,7 @@ public class CheckAhead : kAICodeBehaviour {
 
     kAIDataPort<Vector2> newDestination;
 
+
     public CheckAhead()
         :base(null)
     {
@@ -50,9 +51,9 @@ public class CheckAhead : kAICodeBehaviour {
 
                 
 
-                if (result.HasValue && result.Value.transform != shipObject.transform)
+                if (result.HasValue)
                 {
-                    LogMessage(result.Value.transform.gameObject.name);
+                    
                     if (Mathf.Abs(Vector2.Dot(result.Value.rigidbody.velocity, shipObject.transform.up)) < 0.1f)
                     {
                         shouldAvoid = true;
@@ -67,6 +68,101 @@ public class CheckAhead : kAICodeBehaviour {
             }
 
             OnObstacle.Data = shouldAvoid;
+        }
+    }
+}
+
+
+public class AvoidObject : kAICodeBehaviour
+{
+    kAIDataPort<GameObject> objectToAvoid;
+
+    public AvoidObject()
+        :base(null)
+    {
+        objectToAvoid = new kAIDataPort<GameObject>("AvoidObject", kAIPort.ePortDirection.PortDirection_In);
+        AddExternalPort(objectToAvoid);
+
+
+    }
+
+    protected override void InternalUpdate(float lDeltaTime, object lUserData)
+    {
+        LogMessage("Updating avoid");
+        GameObject shipObject = lUserData as GameObject;
+        if(shipObject != null)
+        {
+            if(objectToAvoid.Data != null)
+            {
+                ShipEngine engine = shipObject.GetComponent<ShipEngine>();
+
+                GameObject shipToAvoid = objectToAvoid.Data;
+
+                Vector2 targetVelocity;
+                if(shipToAvoid.rigidbody2D != null)
+                {
+                    targetVelocity = shipToAvoid.rigidbody2D.velocity;
+                }
+                else
+                {
+                    targetVelocity = Vector2.zero;
+                }
+
+                float angleToApply = engine.torqueForce;
+
+                if(targetVelocity != Vector2.zero)
+                {
+                    
+                    float angle = Vector2.Angle(shipObject.rigidbody2D.velocity, targetVelocity);
+                    Vector3 crossVec = Vector3.Cross(shipObject.rigidbody2D.velocity, targetVelocity);
+
+                    if (crossVec.z < 0.0f)
+                    {
+                        angle = -angle;
+                    }
+
+                    LogMessage("Angle: " + angle);
+
+                    
+                    angleToApply = engine.torqueForce * Mathf.Sign(-angle);
+                    
+                }
+
+                //if (Mathf.Abs(shipObject.rigidbody2D.angularVelocity) <= 25.0f)
+                {
+                    engine.ApplyTorque(angleToApply);
+                }	
+                engine.ApplyAccelerateForce(1.0f);
+            }
+        }
+    }
+}
+
+public static class CollisionAvoidanceFunctions
+{
+    public static GameObject ObjectOfCollision(GameObject self)
+    {
+        //ConeChecker checker = self.transform.GetComponentInChildren<ConeChecker>();
+        /*NeedConeChecker checkerGetter = self.transform.GetComponent<NeedConeChecker>();
+        ConeChecker checker = checkerGetter.checker;
+        if(checker != null)
+        {
+            return checker.currentCollision;
+        }
+        else
+        {
+            throw new Exception("Could not get ConeChecker from child");
+        }*/
+
+        ConeChecker3D checkerGetter3D = self.GetComponentInChildren<ConeChecker3D>();
+
+        if (checkerGetter3D != null)
+        {
+            return checkerGetter3D.currentCollision;
+        }
+        else
+        {
+            throw new Exception("Could not get ConeChecker from child");
         }
     }
 }

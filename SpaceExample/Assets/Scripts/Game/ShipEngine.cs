@@ -50,6 +50,8 @@ public class ShipEngine : MonoBehaviour {
 
 		torqueToApply = Mathf.Min(torqueToApply, torqueForce);
         rigidbody2D.AddTorque(torqueToApply * fixedRatio * rigidbody2D.mass * collider2D.GetColliderRadius2D());
+
+        
 		torqueToApply = 0.0f;
 	}
 
@@ -111,4 +113,10 @@ static class Extensions
             throw new System.InvalidOperationException();
         }
     }
+
+    public static bool IsApproximaitely(this float aValue, float bValue, float error = float.Epsilon)
+    {
+        return Mathf.Abs(aValue - bValue) < error;
+    }
+
 }
