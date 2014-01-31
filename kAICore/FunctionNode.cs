@@ -311,6 +311,11 @@ namespace kAI.Core
 
             return result;
         }
+
+        public static bool IsNull<T>(T lObject)
+        {
+            return lObject == null;
+        }
     }
 
     /// <summary>
