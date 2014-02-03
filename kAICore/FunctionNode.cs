@@ -97,11 +97,15 @@ namespace kAI.Core
             }
         }
 
+        kAITriggerPort mExecutePort;
+
         List<kAIDataPort> lInParameters;
         kAIDataPort lOperandPort;
         List<kAIDataPort> lOutParameters;
 
         object lLastResult;
+
+        object mUserData;
 
         MethodInfo mMethod;
         kAIFunctionConfiguration mConfig;
@@ -115,6 +119,14 @@ namespace kAI.Core
             : base(lLogger)
         {
             Assert(lConfig.IsConfigured, "Need a fully configured configuration to create a function node. ");
+
+            // if we have an execute port, we add that
+            if (lConfig.ExectueTriggerPort)
+            {
+                mExecutePort = new kAITriggerPort("Execute", kAIPort.ePortDirection.PortDirection_In);
+                mExecutePort.OnTriggered += new kAITriggerPort.TriggerEvent(mExecutePort_OnTriggered);
+                AddExternalPort(mExecutePort);
+            }
 
 
             lInParameters = new List<kAIDataPort>();
@@ -201,6 +213,15 @@ namespace kAI.Core
         /// <param name="lUserData">The user data. </param>
         public override void Update(float lDeltaTime, object lUserData)
         {
+            mUserData = lUserData;
+            if (!mConfig.ExectueTriggerPort)
+            {
+                ExecuteFunction();
+            }
+        }
+
+        private void ExecuteFunction()
+        {
             int lParamCount = lInParameters.Count + lOutParameters.Count;
             if (mConfig.FirstParameterSelf)
             {
@@ -213,7 +234,7 @@ namespace kAI.Core
 
             if (mConfig.FirstParameterSelf)
             {
-                lParams[i] = lUserData;
+                lParams[i] = mUserData;
                 ++i;
             }
 
@@ -244,6 +265,12 @@ namespace kAI.Core
             mConfig.ReturnConfiguration.RunCode(this, lReturnObject, lLastResult);
 
             lLastResult = lReturnObject;
+        }
+
+
+        void mExecutePort_OnTriggered(kAIPort lSender)
+        {
+            ExecuteFunction();
         }
 
         /// <summary>

@@ -245,6 +245,12 @@ namespace kAI.Core
                 public bool IsFirstParameterSelf;
 
                 /// <summary>
+                /// Does the function have a port to execute it, or should it be executed every frame.
+                /// </summary>
+                [DataMember(IsRequired = false)]
+                public bool IsFunctionExecutable;
+
+                /// <summary>
                 /// Create a Serialised version of the specified function configuration. 
                 /// </summary>
                 /// <param name="lConfig">The configuration to serailise. </param>
@@ -262,6 +268,8 @@ namespace kAI.Core
                     ReturnConfiguration = new kAIReturnConfiguration.SerialObject(lConfig.ReturnConfiguration);
 
                     IsFirstParameterSelf = lConfig.FirstParameterSelf;
+
+                    IsFunctionExecutable = lConfig.ExectueTriggerPort;
                 }
 
                 /// <summary>
@@ -278,7 +286,7 @@ namespace kAI.Core
                     return new kAIFunctionConfiguration(lFunction, GenericConfiguration.Select<SerialType, Type>((lType) =>
                         {
                             return lType.Instantiate(lAssemblyResolver);
-                        }), IsFirstParameterSelf, ReturnConfiguration, lAssemblyResolver);
+                        }), IsFirstParameterSelf, IsFunctionExecutable, ReturnConfiguration, lAssemblyResolver);
                 }
             }
 
@@ -304,6 +312,19 @@ namespace kAI.Core
             /// Is the first parameter of the function the pointer passed in the update. 
             /// </summary>
             public bool FirstParameterSelf
+            {
+                get;
+                set;
+            }
+
+            /// <summary>
+            /// Should there be a trigger port that dictates when the function should be executed.
+            /// If true, the function will only be run on triggered
+            /// Otherwise, the function will be recomputed each frame.
+            /// Note: if your function requires access to the object passed in in the update,
+            /// this will only be avaliable after one update. 
+            /// </summary>
+            public bool ExectueTriggerPort
             {
                 get;
                 set;
@@ -413,6 +434,7 @@ namespace kAI.Core
                 ReturnConfiguration = new kAIReturnConfiguration(lMethod.ReturnType);
 
                 FirstParameterSelf = false;
+                ExectueTriggerPort = false;
 
                 if (IsConfigured && OnConfigured != null)
                 {
@@ -420,8 +442,8 @@ namespace kAI.Core
                 }
             }
 
-            private kAIFunctionConfiguration(MethodInfo lMethod, IEnumerable<Type> lConfiguredTypes, bool lIsFirstParamSelf, kAIReturnConfiguration.SerialObject lReturnConfig, kAIXmlBehaviour.GetAssemblyByName lAssemblyResolver)
-                :this(lMethod)
+            private kAIFunctionConfiguration(MethodInfo lMethod, IEnumerable<Type> lConfiguredTypes, bool lIsFirstParamSelf, bool lIsExecutionPort, kAIReturnConfiguration.SerialObject lReturnConfig, kAIXmlBehaviour.GetAssemblyByName lAssemblyResolver)
+                : this(lMethod)
             {
                 int lGenParamIndex = 0;
                 foreach (Type lType in lConfiguredTypes)
@@ -433,7 +455,7 @@ namespace kAI.Core
                 ReturnConfiguration = lReturnConfig.Instantiate(ReturnConfiguration.ReturnType, lAssemblyResolver);
 
                 FirstParameterSelf = lIsFirstParamSelf;
-
+                ExectueTriggerPort = lIsExecutionPort;
                 Assert(null, IsConfigured, "Loaded an in-complete configuration");
             }
 
