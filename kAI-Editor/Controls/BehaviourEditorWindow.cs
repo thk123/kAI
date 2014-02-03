@@ -100,16 +100,22 @@ namespace kAI.Editor.Controls
             MenuItem lAddConstantItem = new MenuItem("Add Constant...");
             lAddConstantItem.Click += new EventHandler(lAddConstantItem_Click);
 
+            MenuItem lAddLogicalMenuItem = new MenuItem("Add Logical Node...");
+            lAddLogicalMenuItem.Click += new EventHandler(lAddLogicalMenuItem_Click);
+
             GlobalContextMenu = new ContextMenu(new MenuItem[] {
                 lAddNodeMenuItem,
                 lAddFunctionItem,
-                lAddConstantItem
+                lAddConstantItem,
+                lAddLogicalMenuItem
             });
 
             GlobalContextMenu.Popup += new EventHandler(GlobalContextMenu_Popup);
 
             
         }
+
+        
 
         /// <summary>
         /// Initialise the behaviour composer inside the given control. 
@@ -422,6 +428,17 @@ namespace kAI.Editor.Controls
             if (lResult == DialogResult.OK)
             {
                 AddNode(lFunctionDesigner.FunctionNode, mMousePositionOnContext);
+            }
+        }
+
+        void lAddLogicalMenuItem_Click(object sender, EventArgs e)
+        {
+            SwitchNodeCreator lSwitchCreator = new SwitchNodeCreator();
+            DialogResult lResult = lSwitchCreator.ShowDialog();
+
+            if (lResult == DialogResult.OK)
+            {
+                AddNode(lSwitchCreator.mObject, mMousePositionOnContext);
             }
         }
     }    

@@ -63,6 +63,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RelativePath.cs" />
     <Compile Include="ReturnConfigurationDictionary.cs" />
+    <Compile Include="SwitchNode.cs" />
     <Compile Include="TriggerPort.cs" />
     <Compile Include="Util.cs" />
     <Compile Include="XmlBehaviour.Builder.cs" />

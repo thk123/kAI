@@ -66,6 +66,11 @@ namespace kAI.Core
         Constant,
 
         /// <summary>
+        /// This node is a logical node like a switch node.
+        /// </summary>
+        Logical,
+
+        /// <summary>
         /// The type is unknown. 
         /// </summary>
         UnknownType,
@@ -127,6 +132,7 @@ namespace kAI.Core
                 yield return typeof(kAIConstantIntNode.SerialObject);
                 yield return typeof(kAIConstantFloatNode.SerialObject);
                 yield return typeof(kAIConstantStringNode.SerialObject);
+                yield return typeof(kAISwitchNode<>.SerialObject);
             }
         }
 

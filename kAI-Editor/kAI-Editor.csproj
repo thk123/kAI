@@ -132,6 +132,12 @@
     <Compile Include="Controls\WinForms\SelectConnexionDialogue.Designer.cs">
       <DependentUpon>SelectConnexionDialogue.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\WinForms\SwitchNodeCreator.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\WinForms\SwitchNodeCreator.Designer.cs">
+      <DependentUpon>SwitchNodeCreator.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\WinForms\UILogger.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -242,6 +248,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\WinForms\SelectConnexionDialogue.resx">
       <DependentUpon>SelectConnexionDialogue.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WinForms\SwitchNodeCreator.resx">
+      <DependentUpon>SwitchNodeCreator.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\WinForms\UILogger.resx">
       <DependentUpon>UILogger.cs</DependentUpon>
