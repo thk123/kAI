@@ -20,16 +20,22 @@ public class ConeChecker3D : MonoBehaviour {
 
         print("7(T): " + WillBeCollision(Vector2.up, Vector2.zero, -Vector2.up, Vector2.up));
         print("8(T): " + WillBeCollision(Vector2.up, Vector2.zero, -Vector2.up, Vector2.up));
+
+        currentCollision = null;
 	}
 
     HashSet<GameObject> trackingObjects = new HashSet<GameObject>();
 
+    static float marginOfError = 0.1f;
 
     public GameObject currentCollision
     {
         get;
         private set;
     }
+
+    float evasionTimeLength = 0.5f;
+    float timeHad = 0.0f;
 
 	// Update is called once per frame
 	void Update () {
@@ -38,7 +44,17 @@ public class ConeChecker3D : MonoBehaviour {
 
         Vector2 ourVelocity = transform.parent.rigidbody2D.velocity;
 
-        currentCollision = null;
+        if (currentCollision != null)
+        {
+            if (timeHad > evasionTimeLength)
+            {
+                currentCollision = null;
+            }
+            else
+            {
+                timeHad += Time.deltaTime;
+            }
+        }
 
         foreach(GameObject trackingShip in trackingObjects)
         {
@@ -57,6 +73,7 @@ public class ConeChecker3D : MonoBehaviour {
 			if (WillBeCollision(transform.parent.GetPosition2D(), ourVelocity, theirVelocity, trackingShip.transform.GetPosition2D()))
             {
                 print("There will be a collision");
+                timeHad = 0.0f;
                 currentCollision = trackingShip.collider2D.gameObject;
             }
             else
@@ -111,7 +128,7 @@ public class ConeChecker3D : MonoBehaviour {
             if(xT >= 0.0f)
             {
                 // does the y values coincide at this point?
-                if ((velDifference.y * xT).IsApproximaitely(posDifference.y, 0.3f))
+                if ((velDifference.y * xT).IsApproximaitely(posDifference.y, marginOfError))
                 {
                     // they do
                     return true;
@@ -131,7 +148,7 @@ public class ConeChecker3D : MonoBehaviour {
         {
             if (velDifference.y != 0.0f)
             {
-                if (posDifference.x.IsApproximaitely(0.0f, 0.3f))
+                if (posDifference.x.IsApproximaitely(0.0f, marginOfError))
                 {
                     if(Mathf.Sign(firstVel.y) != Mathf.Sign(secondVel.y) 
 					   || (firstVel.y != 0 && secondVel.y == 0)

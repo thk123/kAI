@@ -78,6 +78,9 @@
      <Compile Include="Assets\Scripts\Game\ShipSelector.cs" />
      <Compile Include="Assets\Scripts\SimpleController\BasicShipController.cs" />
      <Compile Include="Assets\Scripts\SimpleShooter.cs" />
+     <Compile Include="Assets\Scripts\Squad\OrderSender.cs" />
+     <Compile Include="Assets\Scripts\Squad\SquadLeader.cs" />
+     <Compile Include="Assets\Scripts\Squad\SquadMember.cs" />
      <Compile Include="Assets\Scripts\Weapons\Bullet.cs" />
      <Compile Include="Assets\Scripts\Weapons\LaserWeaponSystem.cs" />
      <Compile Include="Assets\Scripts\Weapons\Weapon.cs" />
@@ -89,6 +92,7 @@
      <None Include="Assets\AIBehaviours\MoveTowardTarget.xml" />
      <None Include="Assets\AIBehaviours\TargetEnemy.xml" />
      <None Include="Assets\AIBehaviours\MoveToAvoid.xml" />
+     <None Include="Assets\AIBehaviours\SimpleSquadBehaviour.xml" />
      <None Include="Assets\AIBehaviours\SimpleEvadeBehaviour.xml" />
      <None Include="Assets\AIBehaviours\MovingAvoid.xml" />
  <Reference Include="kAICore">

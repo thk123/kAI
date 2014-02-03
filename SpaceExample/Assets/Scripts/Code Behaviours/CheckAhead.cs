@@ -128,7 +128,7 @@ public class AvoidObject : kAICodeBehaviour
                     
                 }
 
-                //if (Mathf.Abs(shipObject.rigidbody2D.angularVelocity) <= 25.0f)
+                if (Vector2.Angle(shipObject.transform.right, shipObject.rigidbody2D.velocity) < 45.0f)
                 {
                     engine.ApplyTorque(angleToApply);
                 }	
