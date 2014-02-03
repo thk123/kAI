@@ -90,9 +90,9 @@ namespace kAI.Editor.Forms.ProjectProperties
         {
             bool lAllowed = !lType.IsGenericType; // disallow generic types
 
-            lAllowed &= !lType.IsAbstract;
+           /* lAllowed &= !lType.IsAbstract;
             lAllowed &= !lType.IsInterface;
-            lAllowed &= !lType.IsNested;
+            lAllowed &= !lType.IsNested;*/
 
             return lAllowed;
         }
