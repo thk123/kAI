@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Scripts\CodeBehaviours\MoveTo.cs" />
+     <Compile Include="Assets\Scripts\CodeBehaviours\ShootTarget.cs" />
      <Compile Include="Assets\Scripts\Game\CameraController.cs" />
      <Compile Include="Assets\Scripts\Game\HealthBehaviour.cs" />
      <Compile Include="Assets\Scripts\Game\MouseOrderController.cs" />

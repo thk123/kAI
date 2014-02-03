@@ -26,7 +26,16 @@ public class ShipEngine : MonoBehaviour {
 
     public void SetDirection(Vector3 direction)
     {
+        SetLookAt(direction);
         currentDirection = direction.normalized * maxSpeed;
         currentDirection.y = 0;
+    }
+
+    internal void SetLookAt(Vector3 newLook)
+    {
+        if (newLook != Vector3.zero)
+        {
+            transform.rotation = Quaternion.LookRotation(newLook);
+        }
     }
 }

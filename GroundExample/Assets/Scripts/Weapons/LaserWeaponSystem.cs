@@ -90,4 +90,9 @@ public class LaserWeaponSystem : MonoBehaviour, IWeaponSystem {
     {
         laserStartPoint = spawn;
     }
+
+    public float Range
+    {
+        get { return maxDistance; }
+    }
 }

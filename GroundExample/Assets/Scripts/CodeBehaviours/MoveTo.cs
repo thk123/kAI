@@ -5,31 +5,46 @@ using System.Collections.Generic;
 
 using kAI.Core;
 
-public class MoveTo : MonoBehaviour, IOrderReciever {
+public class CodeBehaviourTester : MonoBehaviour
+{
+    protected kAICodeBehaviour codeBehaviour;
 
-    kAICodeBehaviour moveBeh;
+    protected void InitBehaviour()
+    {
+        codeBehaviour.SetGlobal();
+        codeBehaviour.ForceActivation();
+    }
+
+    
+    protected void UpdateBehaviour()
+    {
+        codeBehaviour.Update(Time.deltaTime, gameObject);
+    }
+}
+
+public class MoveTo : CodeBehaviourTester, IOrderReciever {
+
 
 	// Use this for initialization
 	void Start () 
 	{
-        moveBeh = new MoveToBehaviour();
-        moveBeh.SetGlobal();
-        moveBeh.ForceActivation();
+        codeBehaviour = new MoveToBehaviour();
+        InitBehaviour();
 
-        kAIPort lPort = moveBeh.GetPort("Point");
+        kAIPort lPort = codeBehaviour.GetPort("Point");
         ((kAIDataPort<Vector3>)lPort).Data = transform.position;
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-        moveBeh.Update(Time.deltaTime, gameObject);
+        UpdateBehaviour();
 	}
 
     public void GiveOrder(Vector3 temp)
     {
         //Vector3 actualMove = new Vector3(temp.x, transform.position.y, temp.y);
-        kAIPort lPort = moveBeh.GetPort("Point");
+        kAIPort lPort = codeBehaviour.GetPort("Point");
         temp.y = transform.position.y;
         ((kAIDataPort<Vector3>)lPort).Data = temp;
 
@@ -59,7 +74,7 @@ public class MoveToBehaviour : kAICodeBehaviour
 
             if((targetPositon - shipObject.transform.position).sqrMagnitude > 1.0f)
             {
-                shipObject.transform.rotation = Quaternion.LookRotation(targetPositon - shipObject.transform.position);
+               // shipObject.transform.rotation = Quaternion.LookRotation(targetPositon - shipObject.transform.position);
 
                 ShipEngine engine = shipObject.GetComponent<ShipEngine>();
                 engine.SetDirection(targetPositon - shipObject.transform.position);

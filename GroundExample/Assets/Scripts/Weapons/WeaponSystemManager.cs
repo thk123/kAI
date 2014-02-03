@@ -5,6 +5,11 @@ using kAI.Core;
 
 public interface IWeaponSystem
 {
+    float Range
+    {
+        get;
+    }
+
     void Fire();
 
     void SetSpawnPoint(Transform spawn);
