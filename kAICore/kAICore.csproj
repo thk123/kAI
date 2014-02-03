@@ -82,7 +82,8 @@
 cp $(TargetDir)\MiscUtil.dll $(SolutionDir)kAI-Example\Assets\DLLs\MiscUtil.dll
 cp $(TargetPath) $(SolutionDir)SpaceExample\Assets\DLLs\$(TargetFileName)
 cp $(TargetDir)\MiscUtil.dll $(SolutionDir)SpaceExample\Assets\DLLs\MiscUtil.dll
-</PostBuildEvent>
+cp $(TargetPath) $(SolutionDir)GroundExample\Assets\DLLs\$(TargetFileName)
+cp $(TargetDir)\MiscUtil.dll $(SolutionDir)GroundExample\Assets\DLLs\MiscUtil.dll</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
