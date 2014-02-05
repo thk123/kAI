@@ -55,11 +55,16 @@ public class MoveToBehaviour : kAICodeBehaviour
 {
     public kAIDataPort<Vector3> pointToMoveTo;
 
+    public kAIDataPort<Vector3> outComeVelocity;
+
     public MoveToBehaviour()
         :base(null)
     {
         pointToMoveTo = new kAIDataPort<Vector3>("Point", kAIPort.ePortDirection.PortDirection_In);
         AddExternalPort(pointToMoveTo);
+
+        outComeVelocity = new kAIDataPort<Vector3>("Velocity", kAIPort.ePortDirection.PortDirection_Out);
+        AddExternalPort(outComeVelocity);
     }
 
     protected override void InternalUpdate(float lDeltaTime, object lUserData)
@@ -67,22 +72,16 @@ public class MoveToBehaviour : kAICodeBehaviour
         GameObject shipObject = lUserData as GameObject;
         if(shipObject != null)
         {
-            // TODO: maybe rotate the ship then move, but not with physics, just like, over some frames
-
             
             Vector3 targetPositon = pointToMoveTo.Data;
 
             if((targetPositon - shipObject.transform.position).sqrMagnitude > 1.0f)
             {
-               // shipObject.transform.rotation = Quaternion.LookRotation(targetPositon - shipObject.transform.position);
-
-                ShipEngine engine = shipObject.GetComponent<ShipEngine>();
-                engine.SetDirection(targetPositon - shipObject.transform.position);
+                outComeVelocity.Data = targetPositon - shipObject.transform.position;
             }
             else 
             {
-                ShipEngine engine = shipObject.GetComponent<ShipEngine>();
-                engine.SetDirection(Vector3.zero);
+                outComeVelocity.Data = Vector3.zero;
             }
         }
     }

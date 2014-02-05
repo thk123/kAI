@@ -62,6 +62,8 @@
      <Compile Include="Assets\Scripts\Weapons\LaserWeaponSystem.cs" />
      <Compile Include="Assets\Scripts\Weapons\WeaponSystemManager.cs" />
      <Compile Include="Assets\Scripts\kAIScripts\AIBehaviour.cs" />
+     <None Include="Assets\AIBehaviours\HandleMoveOrder.xml" />
+     <None Include="Assets\AIBehaviours\StandardShipAI.xml" />
  <Reference Include="kAICore">
  <HintPath>Assets\DLLs\kAICore.dll</HintPath>
  </Reference>

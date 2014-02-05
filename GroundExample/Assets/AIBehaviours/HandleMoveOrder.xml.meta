@@ -1,0 +1,14 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<XmlBehaviourMetaSave xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/kAI.Editor.Core">
+  <NodePositions>
+    <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+      <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
+        <d4p1:NodeID>MoveToBehaviour</d4p1:NodeID>
+      </Node>
+      <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
+        <d4p1:x>-245</d4p1:x>
+        <d4p1:y>-196</d4p1:y>
+      </Position>
+    </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+  </NodePositions>
+</XmlBehaviourMetaSave>

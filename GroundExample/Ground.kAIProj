@@ -1,0 +1,170 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<kAIProject xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/kAI.Editor.Core">
+  <ProjectName>Ground</ProjectName>
+  <ProjectRoot xmlns:d2p1="http://schemas.datacontract.org/2004/07/System.IO">
+    <OriginalPath xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string" xmlns="">E:\dev\C#\kAI\GroundExample</OriginalPath>
+    <FullPath xmlns:d3p1="http://www.w3.org/2001/XMLSchema" i:type="d3p1:string" xmlns="">E:\dev\C#\kAI\GroundExample</FullPath>
+  </ProjectRoot>
+  <XmlBehaviourRoot xmlns:d2p1="http://schemas.datacontract.org/2004/07/kAI.Core">
+    <d2p1:Path>\Assets\AIBehaviours</d2p1:Path>
+    <d2p1:RootID>ProjectRoot</d2p1:RootID>
+  </XmlBehaviourRoot>
+  <AdditionalDLLPaths xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays" />
+  <NodeObjects xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>MoveToBehaviour</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAICodeBehaviour.SerialObject">
+        <d4p1:BehaviourAssembly>Assembly-CSharp</d4p1:BehaviourAssembly>
+        <d4p1:BehaviourID>MoveToBehaviour</d4p1:BehaviourID>
+        <d4p1:BehaviourType>MoveToBehaviour</d4p1:BehaviourType>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>kAIUnityAIBehaviour</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAICodeBehaviour.SerialObject">
+        <d4p1:BehaviourAssembly>Assembly-CSharp</d4p1:BehaviourAssembly>
+        <d4p1:BehaviourID>kAIUnityAIBehaviour</d4p1:BehaviourID>
+        <d4p1:BehaviourType>kAIUnityAIBehaviour</d4p1:BehaviourType>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>MoveWithVelocityBehaviour</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAICodeBehaviour.SerialObject">
+        <d4p1:BehaviourAssembly>Assembly-CSharp</d4p1:BehaviourAssembly>
+        <d4p1:BehaviourID>MoveWithVelocityBehaviour</d4p1:BehaviourID>
+        <d4p1:BehaviourType>MoveWithVelocityBehaviour</d4p1:BehaviourType>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>ShootTargetBehaviour</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAICodeBehaviour.SerialObject">
+        <d4p1:BehaviourAssembly>Assembly-CSharp</d4p1:BehaviourAssembly>
+        <d4p1:BehaviourID>ShootTargetBehaviour</d4p1:BehaviourID>
+        <d4p1:BehaviourType>ShootTargetBehaviour</d4p1:BehaviourType>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>FireWeaponBehaviour</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAICodeBehaviour.SerialObject">
+        <d4p1:BehaviourAssembly>Assembly-CSharp</d4p1:BehaviourAssembly>
+        <d4p1:BehaviourID>FireWeaponBehaviour</d4p1:BehaviourID>
+        <d4p1:BehaviourType>FireWeaponBehaviour</d4p1:BehaviourType>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>HandleMoveOrder</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAIXmlBehaviour.SerialObject">
+        <d4p1:BehaviourID>
+          <d4p1:BehaviourID>HandleMoveOrder</d4p1:BehaviourID>
+        </d4p1:BehaviourID>
+        <d4p1:XmlBehaviourFile>
+          <d4p1:Path>\HandleMoveOrder.xml</d4p1:Path>
+          <d4p1:RootID>BehaviourRoot</d4p1:RootID>
+        </d4p1:XmlBehaviourFile>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>StandardShipAI</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAIXmlBehaviour.SerialObject">
+        <d4p1:BehaviourID>
+          <d4p1:BehaviourID>StandardShipAI</d4p1:BehaviourID>
+        </d4p1:BehaviourID>
+        <d4p1:XmlBehaviourFile>
+          <d4p1:Path>\StandardShipAI.xml</d4p1:Path>
+          <d4p1:RootID>BehaviourRoot</d4p1:RootID>
+        </d4p1:XmlBehaviourFile>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>ShipEngineController</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAICodeBehaviour.SerialObject">
+        <d4p1:BehaviourAssembly>Assembly-CSharp</d4p1:BehaviourAssembly>
+        <d4p1:BehaviourID>ShipEngineController</d4p1:BehaviourID>
+        <d4p1:BehaviourType>ShipEngineController</d4p1:BehaviourType>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>OrderSwitcherBehaviour</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAICodeBehaviour.SerialObject">
+        <d4p1:BehaviourAssembly>Assembly-CSharp</d4p1:BehaviourAssembly>
+        <d4p1:BehaviourID>OrderSwitcherBehaviour</d4p1:BehaviourID>
+        <d4p1:BehaviourType>OrderSwitcherBehaviour</d4p1:BehaviourType>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>OrderDataExtractor</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAICodeBehaviour.SerialObject">
+        <d4p1:BehaviourAssembly>Assembly-CSharp</d4p1:BehaviourAssembly>
+        <d4p1:BehaviourID>OrderDataExtractor</d4p1:BehaviourID>
+        <d4p1:BehaviourType>OrderDataExtractor</d4p1:BehaviourType>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
+  </NodeObjects>
+  <ProjectDllPaths xmlns:d2p1="http://schemas.datacontract.org/2004/07/kAI.Core">
+    <d2p1:FilePath>
+      <d2p1:Path>\DLLs\UnityEngine.dll</d2p1:Path>
+      <d2p1:RootID>ProjectRoot</d2p1:RootID>
+    </d2p1:FilePath>
+    <d2p1:FilePath>
+      <d2p1:Path>\Library\ScriptAssemblies\Assembly-CSharp.dll</d2p1:Path>
+      <d2p1:RootID>ProjectRoot</d2p1:RootID>
+    </d2p1:FilePath>
+  </ProjectDllPaths>
+  <ProjectFunctions>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>kAICore</AssemblyName>
+      <MethodName>IfEquals</MethodName>
+      <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>kAICore</AssemblyName>
+      <MethodName>IfLessThan</MethodName>
+      <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>kAICore</AssemblyName>
+      <MethodName>IfGreaterThan</MethodName>
+      <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>kAICore</AssemblyName>
+      <MethodName>IfLessThanOrEqual</MethodName>
+      <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>kAICore</AssemblyName>
+      <MethodName>IfGreaterThanOrEqual</MethodName>
+      <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>kAICore</AssemblyName>
+      <MethodName>Sum</MethodName>
+      <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>kAICore</AssemblyName>
+      <MethodName>Abs</MethodName>
+      <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>kAICore</AssemblyName>
+      <MethodName>AOrBChooser</MethodName>
+      <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+    </kAIProject.SerialMethodInfo>
+    <kAIProject.SerialMethodInfo>
+      <AssemblyName>kAICore</AssemblyName>
+      <MethodName>IsNull</MethodName>
+      <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+    </kAIProject.SerialMethodInfo>
+  </ProjectFunctions>
+  <ProjectTypes xmlns:d2p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+    <d2p1:string>System.String, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</d2p1:string>
+    <d2p1:string>System.Char, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</d2p1:string>
+    <d2p1:string>System.Double, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</d2p1:string>
+    <d2p1:string>System.Int32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</d2p1:string>
+    <d2p1:string>System.Single, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</d2p1:string>
+    <d2p1:string>System.UInt32, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</d2p1:string>
+    <d2p1:string>UnityEngine.Vector3, UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</d2p1:string>
+    <d2p1:string>IndividualOrder, Assembly-CSharp, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null</d2p1:string>
+  </ProjectTypes>
+</kAIProject>
