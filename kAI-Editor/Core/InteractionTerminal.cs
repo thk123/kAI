@@ -216,6 +216,48 @@ namespace kAI.Editor.Core
         }
 
         [TerminalCommand()]
+        public static bool SetDataPort(string lPortID)
+        {
+            try
+            {
+                kAIDataPort lPort = mBehaviour.GetInternalPort(lPortID) as kAIDataPort;
+                if (lPort != null)
+                {
+                    Type dataType = lPort.DataType;
+                    object newVal;
+                    if (dataType.IsValueType)
+                    {
+                        newVal = Activator.CreateInstance(dataType);
+                    }
+                    else
+                    {
+                        newVal = null;
+                    }
+                    try
+                    {
+                        lPort.SetData(newVal);
+                    }
+                    catch (Exception)
+                    {
+                        return false;
+                    }
+                    return true;
+                }
+                else
+                {
+                    GlobalServices.Logger.LogWarning("Not a data port");
+                    return false;
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                GlobalServices.Logger.LogWarning("Could not find port: " + lPortID);
+                return false;
+            }
+        }
+
+        [TerminalCommand()]
         public static bool Help()
         {
             foreach (Tuple<Regex, MethodInfo> lMethod in mCommands)
@@ -236,6 +278,8 @@ namespace kAI.Editor.Core
 
             return true;
         }
+
+        
 
         public static void Deinit()
         {
