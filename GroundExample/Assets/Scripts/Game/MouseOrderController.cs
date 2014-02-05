@@ -30,10 +30,11 @@ public class MouseOrderController : MonoBehaviour {
             Vector3 mouseLocation = camera.ScreenToWorldPoint(mousePoint);
             if(selector.selectedShip != null)
             {
-                IOrderReciever receiever = (IOrderReciever)selector.selectedShip.GetComponent(typeof(IOrderReciever));
+                SquadMember receiever = selector.selectedShip.GetComponent<SquadMember>();
                 if (receiever != null)
                 {
-                    receiever.GiveOrder(mouseLocation);
+                    mouseLocation.y = receiever.transform.position.y;
+                    receiever.ReceiveIndividualOrder(IndividualOrder.CreateMoveOrder(mouseLocation));
                 }
             }
 

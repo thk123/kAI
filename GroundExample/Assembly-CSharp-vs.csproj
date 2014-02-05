@@ -56,6 +56,9 @@
      <Compile Include="Assets\Scripts\Game\SelectedCamera.cs" />
      <Compile Include="Assets\Scripts\Game\ShipEngine.cs" />
      <Compile Include="Assets\Scripts\Game\ShipSelector.cs" />
+     <Compile Include="Assets\Scripts\OrderSystem\IndividualOrder.cs" />
+     <Compile Include="Assets\Scripts\OrderSystem\OrderSender.cs" />
+     <Compile Include="Assets\Scripts\OrderSystem\SquadMember.cs" />
      <Compile Include="Assets\Scripts\Weapons\LaserWeaponSystem.cs" />
      <Compile Include="Assets\Scripts\Weapons\WeaponSystemManager.cs" />
      <Compile Include="Assets\Scripts\kAIScripts\AIBehaviour.cs" />
