@@ -176,6 +176,11 @@ namespace kAI.Core
 
         internal override void BindPorts(kAIDataPort lOtherEnd)
         {
+            if (PortDirection == kAIPort.ePortDirection.PortDirection_Out)
+            {
+                throw new Exception("Attempt to bind an outbound port, should bind in port to out port");
+            }
+
             kAIDataPort<T> lCastOtherEnd = lOtherEnd as kAIDataPort<T>;
             if (lCastOtherEnd != null)
             {

@@ -112,6 +112,15 @@ namespace kAI.Core
             /// </summary>
             public bool IsGloballyAccesible;
 
+            /// <summary>
+            /// Display the port string
+            /// </summary>
+            /// <returns>The string representaton of the Port.</returns>
+            public override string ToString()
+            {
+                return Port.ToString();
+            }
+
         }
 
         //TODO: move me to the project with a specific method exposed. 
@@ -593,16 +602,20 @@ namespace kAI.Core
                         }
                         else // The external port in an outward port, so should be trigger when the internal port is
                         {
-                                ((kAITriggerPort)lPortToAdd).OnTriggered += (lSender) =>
+                            ((kAITriggerPort)lPortToAdd).OnTriggered += (lSender) =>
                                 {
                                     lExternalTrigger.Trigger();
                                 };
                         }
                     }
                     else
-                    {
+                   { 
                         kAIDataPort lExternalDataPort = lExternalPort as kAIDataPort;
-                        lExternalDataPort.BindPorts((kAIDataPort)lPortToAdd);
+                        // we select the port which as an in direction as this is the one that will receive the data
+                        kAIDataPort lOutPort;
+                        kAIDataPort lInPort;
+                        kAIPort.OrderPorts<kAIDataPort>(lExternalDataPort, (kAIDataPort)lPortToAdd, out lOutPort, out lInPort);
+                        lInPort.BindPorts(lOutPort);
                     }
 
                     AddExternalPort(lExternalPort);

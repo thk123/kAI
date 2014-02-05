@@ -596,7 +596,7 @@ namespace kAI.Core
         /// <param name="lPortB">The other port. </param>
         /// <param name="lStartPort">The out direction port. </param>
         /// <param name="lEndPort">The in direction port. </param>
-        private static void OrderPorts(kAIPort lPortA, kAIPort lPortB, out kAIPort lStartPort, out kAIPort lEndPort)
+        public static void OrderPorts<T>(T lPortA, T lPortB, out T lStartPort, out T lEndPort) where T : kAIPort
         {
             Assert(null, IsDirectionOpposite(lPortA.PortDirection, lPortB.PortDirection), "Both ports are the same direction so can't order them. ");
             lStartPort = lPortA.PortDirection == ePortDirection.PortDirection_Out ? lPortA : lPortB;
