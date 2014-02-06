@@ -4,10 +4,10 @@
   <InternalConnexions>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
-        <NodeID>ShipEngineController</NodeID>
+        <NodeID>WeightedVectorAverage</NodeID>
       </EndNodeID>
       <EndPortID>
-        <PortID>Velocity</PortID>
+        <PortID>Vectors</PortID>
       </EndPortID>
       <StartNodeID>
         <NodeID>HandleMoveOrder</NodeID>
@@ -60,6 +60,34 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
+        <NodeID>ShipEngineController</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Velocity</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>WeightedVectorAverage</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>Result</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>WeightedVectorAverage</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Weights</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>ConstantSingle</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>Value</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
         <NodeID>OrderSwitcherBehaviour</NodeID>
       </EndNodeID>
       <EndPortID>
@@ -89,6 +117,20 @@
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
         <NodeID>ShipEngineController</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Activate</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>InvalidNode</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>OnActivate</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>WeightedVectorAverage</NodeID>
       </EndNodeID>
       <EndPortID>
         <PortID>Activate</PortID>
@@ -190,6 +232,32 @@
       <NodeType>OrderDataExtractor</NodeType>
       <NodeTypeAssembly>Assembly-CSharp</NodeTypeAssembly>
     </kAIXmlBehaviour.InternalXml.SerialNode>
+    <kAIXmlBehaviour.InternalXml.SerialNode>
+      <NodeContents i:type="kAICodeBehaviour.SerialObject">
+        <BehaviourAssembly>Assembly-CSharp</BehaviourAssembly>
+        <BehaviourID>WeightedVectorAverage</BehaviourID>
+        <BehaviourType>WeightedVectorAverage</BehaviourType>
+      </NodeContents>
+      <NodeID>
+        <NodeID>WeightedVectorAverage</NodeID>
+      </NodeID>
+      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
+      <NodeSerialType>kAI.Core.kAICodeBehaviour+SerialObject</NodeSerialType>
+      <NodeType>WeightedVectorAverage</NodeType>
+      <NodeTypeAssembly>Assembly-CSharp</NodeTypeAssembly>
+    </kAIXmlBehaviour.InternalXml.SerialNode>
+    <kAIXmlBehaviour.InternalXml.SerialNode>
+      <NodeContents i:type="kAIConstantFloatNode.SerialObject">
+        <Value>0</Value>
+      </NodeContents>
+      <NodeID>
+        <NodeID>ConstantSingle</NodeID>
+      </NodeID>
+      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
+      <NodeSerialType>kAI.Core.kAIConstantFloatNode+SerialObject</NodeSerialType>
+      <NodeType>kAI.Core.kAIConstantFloatNode</NodeType>
+      <NodeTypeAssembly>kAICore</NodeTypeAssembly>
+    </kAIXmlBehaviour.InternalXml.SerialNode>
   </InternalNodes>
   <InternalPorts>
     <kAIXmlBehaviour.InternalXml.SerialPort>
@@ -198,6 +266,7 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>OnActivate</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
       <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
     <kAIXmlBehaviour.InternalXml.SerialPort>
@@ -206,6 +275,7 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_In</PortDirection>
       <PortID>Deactivate</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
       <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
     <kAIXmlBehaviour.InternalXml.SerialPort>
@@ -214,6 +284,7 @@
       <PortDataTypeAssembly>Assembly-CSharp</PortDataTypeAssembly>
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>Order</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
       <PortIsTrigger>false</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
   </InternalPorts>

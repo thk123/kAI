@@ -86,3 +86,38 @@ public class ShipEngineController : kAIUnityAIBehaviour
         }
     }
 }
+
+public class WeightedVectorAverage : kAICodeBehaviour
+{
+    kAIEnumerableDataPort<Vector3> vectorsPort;
+    kAIEnumerableDataPort<float> weightsPort;
+
+    kAIDataPort<Vector3> resultPort;
+
+    public WeightedVectorAverage()
+        :base(null)
+    {
+        vectorsPort = new kAIEnumerableDataPort<Vector3>("Vectors", null);
+        AddExternalPort(vectorsPort);
+
+        weightsPort = new kAIEnumerableDataPort<float>("Weights", null);
+        AddExternalPort(weightsPort);
+
+        resultPort = new kAIDataPort<Vector3>("Result", kAIPort.ePortDirection.PortDirection_Out);
+        AddExternalPort(resultPort);
+    }
+
+
+    protected override void InternalUpdate(float lDeltaTime, object lUserData)
+    {
+        Vector3 resultVector = Vector3.zero;
+        IEnumerable<Vector3> vectors = vectorsPort.Values;
+        IEnumerable<float> weights = weightsPort.Values;
+        foreach(KeyValuePair<Vector3, float> entry in CoreUtil.MoveThroughPairwise(vectors, weights))
+        {
+            resultVector += (entry.Key * entry.Value);
+        }
+
+        resultPort.Data = resultVector;
+    }
+}
