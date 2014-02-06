@@ -273,19 +273,6 @@ namespace kAI.Core
         {
             if (!Active)
             {                
-                kAIPort lPort;
-                float debugValue;
-                if (TryGetPort("Data", out lPort))
-                {
-                    debugValue = ((kAIDataPort<float>)lPort).Data;
-                }
-                else
-                {
-                    debugValue = -1.0f;
-                }
-                
-                LogMessage("Behaviour has been activated", new KeyValuePair<string, object>("Behaviour", BehaviourID)
-                    , new KeyValuePair<string, object>("PortValue", debugValue));
                 Active = true;
                 OnActivate();
             }
