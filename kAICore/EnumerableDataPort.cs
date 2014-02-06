@@ -59,6 +59,17 @@ namespace kAI.Core
     {
         // A mapping between the port that send the value and the value, used if connected to multiple Ts
         Dictionary<kAIFQPortID, T> mValues;
+
+        /// <summary>
+        /// Gets all the objects stored at this port in an undefined order. 
+        /// </summary>
+        public IEnumerable<T> Values
+        {
+            get
+            {
+                return mValues.Values;
+            }
+        }
                 
         /// <summary>
         /// Create an enumerable data port that accepts connexions from data ports of type T.
@@ -134,7 +145,8 @@ namespace kAI.Core
                 {
                     throw new Exception("No port sender, this port has to be inbound, this makes no sense");
                 }
-                mValues.Add(lSender.FQPortID, (T)lObject);
+
+                mValues[lSender.FQPortID] = (T)lObject;
             }
             else 
             {

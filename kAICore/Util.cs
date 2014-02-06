@@ -143,6 +143,26 @@ namespace kAI.Core
             return lConstraints.ToArray();
         }
 
+        /// <summary>
+        /// Step through 2 enumerable sources at once. 
+        /// </summary>
+        /// <typeparam name="T">The type of the first source. </typeparam>
+        /// <typeparam name="U">The type of the second source. </typeparam>
+        /// <param name="lListA">The first enumerable source. </param>
+        /// <param name="lListB">The second enumerable source. </param>
+        /// <returns>A pair of entries from both lists. </returns>
+        public static IEnumerable<KeyValuePair<T, U>> MoveThroughPairwise<T, U>(IEnumerable<T> lListA, IEnumerable<U> lListB)
+        {
+            IEnumerator<T> lEnumeratorA = lListA.GetEnumerator();
+            IEnumerator<U> lEnumeratorB = lListB.GetEnumerator();
+
+            while (lEnumeratorA.MoveNext() & lEnumeratorB.MoveNext())
+            {
+                yield return new KeyValuePair<T, U>(lEnumeratorA.Current, lEnumeratorB.Current);
+            }
+
+        }
+
     }
 
     /// <summary>

@@ -116,7 +116,7 @@ namespace kAI.Core
                 }
                 else
                 {
-                    foreach (kAIDataPort<T> lConnectedPorts in mConnectingPorts.Values.Cast<kAIDataPort<T>>())
+                    foreach (kAIPort lConnectedPorts in mConnectingPorts.Values)
                     {
                         lConnectedPorts.SetData(value, this);
                     }
