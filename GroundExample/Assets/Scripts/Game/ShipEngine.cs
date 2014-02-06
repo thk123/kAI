@@ -42,6 +42,29 @@ public class ShipEngine : MonoBehaviour {
     }
 }
 
+public class EnumerablePortTest : kAICodeBehaviour
+{
+    kAIEnumerableDataPort<Vector3> someVectors;
+
+    public EnumerablePortTest()
+        :base(null)
+    {
+        someVectors = new kAIEnumerableDataPort<Vector3>("Vectors", null);
+        AddExternalPort(someVectors);
+    }
+
+    protected override void InternalUpdate(float lDeltaTime, object lUserData)
+    {
+        int i = 0;
+        foreach(Vector3 vector in (IEnumerable<Vector3>)someVectors.GetData())
+        {
+
+            LogMessage(i + ": " + vector.ToString());
+
+                ++i;
+        }
+    }
+}
 
 public class ShipEngineController : kAIUnityAIBehaviour
 {

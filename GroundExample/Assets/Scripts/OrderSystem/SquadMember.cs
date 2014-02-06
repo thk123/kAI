@@ -13,7 +13,7 @@ public class SquadMember : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        orderPort = (kAIDataPort<IndividualOrder>)GetComponent<AIBehaviour>().mXmlBehaviour.GetPort("Order");
+        //orderPort = (kAIDataPort<IndividualOrder>)GetComponent<AIBehaviour>().mXmlBehaviour.GetPort("Order");
 	}
 	
 	// Update is called once per frame
@@ -23,7 +23,7 @@ public class SquadMember : MonoBehaviour {
 
     public void ReceiveIndividualOrder(IndividualOrder order)
     {
-        orderPort.Data = order;
+     //   orderPort.Data = order;
     }
 
     //public void AddToSquad()
