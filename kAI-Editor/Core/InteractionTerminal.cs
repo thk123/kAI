@@ -235,7 +235,7 @@ namespace kAI.Editor.Core
                     }
                     try
                     {
-                        lPort.SetData(newVal);
+                        lPort.SetData(newVal, null);
                     }
                     catch (Exception)
                     {

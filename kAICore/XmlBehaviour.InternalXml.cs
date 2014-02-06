@@ -79,6 +79,9 @@ namespace kAI.Core
                 [DataMember()]
                 public bool PortIsTrigger;
 
+                [DataMember(IsRequired = false)]
+                public bool PortIsEnumerable;
+
                 [DataMember()]
                 public string PortDataTypeAssembly;
 
@@ -91,8 +94,14 @@ namespace kAI.Core
                     PortDirection = lPort.Port.PortDirection;
                     PortDataType = lPort.Port.DataType.DataType.FullName;
                     PortIsTrigger = lPort.Port.DataType == kAIPortType.TriggerType;
+                    PortIsEnumerable = lPort.Port is kAIEnumerableDataPort;
                     PortDataTypeAssembly = lPort.Port.DataType.DataType.Assembly.GetName().Name;
                     IsGloballyAccesible = lPort.IsGloballyAccesible;
+
+                    if (PortIsTrigger && PortIsEnumerable)
+                    {
+                        throw new Exception("Cannot have an enumerable trigger");
+                    }
                 }
             }
 
@@ -243,11 +252,22 @@ namespace kAI.Core
                     kAIPort lPort;
                     if (lInternalPort.PortIsTrigger)
                     {
+                        if (lInternalPort.PortIsEnumerable)
+                        {
+                            throw new Exception("Cannot have an enumerable trigger");
+                        }
                         lPort = new kAITriggerPort(lInternalPort.PortID, lInternalPort.PortDirection);
                     }
                     else
                     {
-                        lPort = kAIDataPort.CreateDataPort(lPortType, lInternalPort.PortID, lInternalPort.PortDirection);
+                        if (lInternalPort.PortIsEnumerable)
+                        {
+                            lPort = kAIEnumerableDataPort.CreateEnumerablePort(lPortType, lInternalPort.PortID);
+                        }
+                        else
+                        {
+                            lPort = kAIDataPort.CreateDataPort(lPortType, lInternalPort.PortID, lInternalPort.PortDirection);
+                        }
                     }
 
                     InternalPort lWrappedPort = new InternalPort { Port = lPort, IsGloballyAccesible = lInternalPort.IsGloballyAccesible };

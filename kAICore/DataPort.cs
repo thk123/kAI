@@ -31,17 +31,6 @@ namespace kAI.Core
         internal abstract void BindPorts(kAIDataPort lOtherEnd);
 
         /// <summary>
-        /// Get the data stored in this data port. 
-        /// </summary>
-        /// <returns>The current data in the port. </returns>
-        public abstract object GetData();
-
-        /// <summary>
-        /// Set the data in this data port. 
-        /// </summary>
-        /// <param name="lObject">The new value the data should have. </param>
-        public abstract void SetData(object lObject);
-        /// <summary>
         /// Create a data port of the given type. 
         /// </summary>
         /// <param name="lDataType">The type of the data port. </param>
@@ -65,27 +54,27 @@ namespace kAI.Core
     /// <typeparam name="T">The type of the data port. </typeparam>
     public class kAIDataPort<T> : kAIDataPort
     {
-        /*// <summary>
+        /*/// <summary>
         /// Some event has happened with the data. 
         /// </summary>
         /// <param name="lSender">The port whose data has been affected. </param>
         /// <param name="lData">The new value of the data. </param>
-        //public delegate void DataEvent(kAIPort lSender, T lData);
+        public delegate void DataEvent(kAIPort lSender, T lData);*/
 
-        /// <summary>
+        /*/// <summary>
         /// Occurs when the data goes from a default value to a non-default value. 
         /// </summary>
-        //public event DataEvent OnDataSet;
+        public event DataEvent OnDataSet;*/
 
-        /// <summary>
+        /*/// <summary>
         /// Occurs when the data changes from a non-default value to a non-default value. 
         /// </summary>
-        //public event DataEvent OnDataChanged;
+        public event DataEvent OnDataChanged;*/
 
-        /// <summary>
+        /*/// <summary>
         /// Occurs when the data changes from a non-default value to a default value. 
         /// </summary>
-        //public event DataEvent OnDataUnset;*/
+        public event DataEvent OnDataUnset;*/
 
         T mData;
 
@@ -129,14 +118,14 @@ namespace kAI.Core
                 {
                     foreach (kAIDataPort<T> lConnectedPorts in mConnectingPorts.Values.Cast<kAIDataPort<T>>())
                     {
-                        lConnectedPorts.Data = value;
+                        lConnectedPorts.SetData(value, this);
                     }
                 }
 
                 mData = value;
                 if (mBoundEnd != null)
                 {
-                    mBoundEnd.Data = value;
+                    mBoundEnd.SetData(value, this);
                 }
             }
 
@@ -169,7 +158,8 @@ namespace kAI.Core
         /// Set the data in this data port. 
         /// </summary>
         /// <param name="lData">The new value the data should have. </param>
-        public override void SetData(object lData)
+        /// <param name="lSender">The port who is setting the data. </param>
+        public override void SetData(object lData, kAIPort lSender)
         {
             Data = (T)lData;
         }
@@ -218,9 +208,7 @@ namespace kAI.Core
 
             if (PortDirection == kAIPort.ePortDirection.PortDirection_Out)
             {
-                kAIDataPort<T> lOtherEndCast = (kAIDataPort<T>)lOtherEnd;
-                Assert(lOtherEndCast, "Invalid port being connected to");
-                lOtherEndCast.Data = Data;
+                lOtherEnd.SetData(Data, this);
             }
         }
 

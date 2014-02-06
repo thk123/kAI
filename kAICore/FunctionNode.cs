@@ -258,7 +258,7 @@ namespace kAI.Core
 
             foreach (kAIDataPort lOutParamPort in lOutParameters)
             {
-                lOutParamPort.SetData(lParams[i]);
+                lOutParamPort.SetData(lParams[i], null);
                 ++i;
             }
 

@@ -152,7 +152,7 @@ namespace kAI.Core
                         if (lPropertyIndex == 0)
                         {
                             kAIDataPort lDataPort = (kAIDataPort)lFunctionNode.GetPort("DataReturn");
-                            lDataPort.SetData(lResult);
+                            lDataPort.SetData(lResult, null);
                         }
                         else
                         {

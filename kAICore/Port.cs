@@ -438,6 +438,25 @@ namespace kAI.Core
         }
 
         /// <summary>
+        /// Get the data stored in this data port. 
+        /// </summary>
+        /// <returns>The current data in the port. </returns>
+        public virtual object GetData()
+        {
+            throw new NotImplementedException("GetData should be implemented on ports that have data, otherwise shouldn't call me.");
+        }
+
+        /// <summary>
+        /// Set the data in this data port. 
+        /// </summary>
+        /// <param name="lObject">The new value the data should have. </param>
+        /// <param name="lSender">The port who is setting the data. </param>
+        public virtual void SetData(object lObject, kAIPort lSender)
+        {
+            throw new NotImplementedException("SetData should be implemented on ports that have data, otherwise shouldn't call me.");
+        }
+
+        /// <summary>
         /// Returns the URP of this port in the format:
         /// ":PortID" if the port is global
         /// "NodeID:PortID" if the port belongs to some node. 

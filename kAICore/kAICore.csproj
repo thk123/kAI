@@ -53,6 +53,7 @@
     <Compile Include="BehaviourID.cs" />
     <Compile Include="Constant.cs" />
     <Compile Include="DataPort.cs" />
+    <Compile Include="EnumerableDataPort.cs" />
     <Compile Include="FunctionConfiguration.cs" />
     <Compile Include="FunctionNode.cs" />
     <Compile Include="ILogger.cs" />
