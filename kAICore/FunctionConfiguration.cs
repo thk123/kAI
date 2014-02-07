@@ -413,22 +413,37 @@ namespace kAI.Core
                 {
                     ParameterTypes[lParamIndx] = lParams[lParamIndx].ParameterType;
 
-                    // If this parameter is generic
-                    if (lParams[lParamIndx].ParameterType.IsGenericParameter)
+                    if (lParams[lParamIndx].ParameterType.ContainsGenericParameters)
                     {
-                        // We look it up in the generic parameter list 
-                        int lGenericMatch = mGenericTypes.ToList().FindIndex((lType) => { return lType.Name == lParams[lParamIndx].ParameterType.Name; });
+                        // If this parameter is generic
+                        if (lParams[lParamIndx].ParameterType.IsGenericParameter)
+                        {
+                            // We look it up in the generic parameter list 
+                            int lGenericMatch = mGenericTypes.ToList().FindIndex((lType) => { return lType.Name == lParams[lParamIndx].ParameterType.Name; });
 
-                        // and add this parameter index to the set of parameters the generic parameter corresponds to. 
-                        mGenericMappings[lGenericMatch].Add(lParamIndx);
+                            // and add this parameter index to the set of parameters the generic parameter corresponds to. 
+                            mGenericMappings[lGenericMatch].Add(lParamIndx);
+                        }
+                        else
+                        {
+                            throw new Exception("Complex generic types (eg IEnumerable<T>) are not supported for function nodes. ");
+                        }
                     }
                 }
+
 
                 Type lReturnType = lMethod.ReturnType;
                 if (lReturnType.ContainsGenericParameters)
                 {
-                    int lGenericMatch = mGenericTypes.ToList().FindIndex((lType) => { return lType.Name == lReturnType.Name; });
-                    mGenericMappings[lGenericMatch].Add(-1);
+                    if (lReturnType.IsGenericParameter)
+                    {
+                        int lGenericMatch = mGenericTypes.ToList().FindIndex((lType) => { return lType.Name == lReturnType.Name; });
+                        mGenericMappings[lGenericMatch].Add(-1);
+                    }
+                    else
+                    {
+                        throw new Exception("Complex generic types (eg IEnumerable<T>) are not supported for function nodes. ");
+                    }
                 }
 
                 ReturnConfiguration = new kAIReturnConfiguration(lMethod.ReturnType);

@@ -193,7 +193,14 @@ namespace kAI.Editor.Core
             {
                 foreach (SerialMethodInfo lString in value)
                 {
-                    ProjectFunctions.Add(lString.Instantiate(GetAssemblyByName));
+                    try
+                    {
+                        ProjectFunctions.Add(lString.Instantiate(GetAssemblyByName));
+                    }
+                    catch(Exception e)
+                    {
+                        GlobalServices.Logger.LogWarning("Could not loading function: " + lString.MethodName + " because " + e.Message);
+                    }
 
                 }
             }

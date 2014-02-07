@@ -72,7 +72,15 @@ namespace kAI.Editor.Controls.WinForms
             ClearReturnsBox();
 
             mSelectedMethod = lMethod;
-            mConfig = new kAIFunctionNode.kAIFunctionConfiguration(mSelectedMethod);
+            try
+            {
+                mConfig = new kAIFunctionNode.kAIFunctionConfiguration(mSelectedMethod);
+            }
+            catch (System.Exception ex)
+            {
+                MessageBox.Show("Cannot select method \"" + lMethod.Name + "\" as contains generic parameter");
+                return;
+            }
 
             mConfig.OnConfigured += new EventHandler(mConfig_OnConfigured);
             mConfig.ReturnConfiguration.ReturnConfigurationChanged += new EventHandler(ReturnConfiguration_ReturnConfigurationChanged);
