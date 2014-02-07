@@ -89,19 +89,15 @@ public class ShipEngineController : kAIUnityAIBehaviour
 
 public class WeightedVectorAverage : kAICodeBehaviour
 {
-    kAIEnumerableDataPort<Vector3> vectorsPort;
-    kAIEnumerableDataPort<float> weightsPort;
+    kAIEnumerableDataPort<KeyValuePair<Vector3, float>> weightedVectorsPort;
 
     kAIDataPort<Vector3> resultPort;
 
     public WeightedVectorAverage()
         :base(null)
     {
-        vectorsPort = new kAIEnumerableDataPort<Vector3>("Vectors", null);
-        AddExternalPort(vectorsPort);
-
-        weightsPort = new kAIEnumerableDataPort<float>("Weights", null);
-        AddExternalPort(weightsPort);
+        weightedVectorsPort = new kAIEnumerableDataPort<KeyValuePair<Vector3, float>>("Vectors", null);
+        AddExternalPort(weightedVectorsPort);
 
         resultPort = new kAIDataPort<Vector3>("Result", kAIPort.ePortDirection.PortDirection_Out);
         AddExternalPort(resultPort);
@@ -111,9 +107,8 @@ public class WeightedVectorAverage : kAICodeBehaviour
     protected override void InternalUpdate(float lDeltaTime, object lUserData)
     {
         Vector3 resultVector = Vector3.zero;
-        IEnumerable<Vector3> vectors = vectorsPort.Values;
-        IEnumerable<float> weights = weightsPort.Values;
-        foreach(KeyValuePair<Vector3, float> entry in CoreUtil.MoveThroughPairwise(vectors, weights))
+
+        foreach(KeyValuePair<Vector3, float> entry in weightedVectorsPort.Values)
         {
             resultVector += (entry.Key * entry.Value);
         }

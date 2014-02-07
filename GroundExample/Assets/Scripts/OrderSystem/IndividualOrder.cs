@@ -145,4 +145,13 @@ public class OrderDataExtractor : kAICodeBehaviour
     }
 }
 
+public static class AIFunctions
+{
+    // TODO: Here we don't currently support complex generic return types, should specialise for now
+    public static KeyValuePair<Vector3, float> CombineVectorFloat(Vector3 lKeyValue, float lValueValue)
+    {
+        return new KeyValuePair<Vector3, float>(lKeyValue, lValueValue);
+    }
+}
+
 
