@@ -799,7 +799,7 @@ namespace kAI.Core
             }
             catch(System.IO.IOException)
             {
-                // TODOO: Error - File is already open elsewhere. 
+                kAIObject.GlobalLogger.LogError("Could not find file", new KeyValuePair<string, object>("Path:", lRealSerial.XmlBehaviourFile.GetFile().FullName));
             }
 
             return null;

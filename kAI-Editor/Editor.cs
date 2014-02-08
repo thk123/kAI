@@ -152,7 +152,11 @@ namespace kAI.Editor
             // If it was a kAI-Behaviour, we load it.
             if (lObject.GetNodeFlavour() == eNodeFlavour.BehaviourXml)
             {
-                LoadBehaviour(kAIXmlBehaviour.Load(lObject, mLoadedProject.GetAssemblyByName));
+                kAIXmlBehaviour lBehaviourToLoad = kAIXmlBehaviour.Load(lObject, mLoadedProject.GetAssemblyByName);
+                if (lBehaviourToLoad != null)
+                {
+                    LoadBehaviour(lBehaviourToLoad);
+                }
             }
             
         }
