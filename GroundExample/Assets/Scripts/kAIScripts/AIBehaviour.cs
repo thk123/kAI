@@ -18,8 +18,11 @@ public class AIBehaviour : MonoBehaviour, kAIILogger {
 
     void Awake()
     {
-        FileInfo lFile = new FileInfo(XmlPath);
-        mXmlBehaviour = kAIXmlBehaviour.LoadFromFile(lFile, GetAssemblyByName);
+        if(XmlPath != null && XmlPath != string.Empty)
+        {
+            FileInfo lFile = new FileInfo(XmlPath);
+            mXmlBehaviour = kAIXmlBehaviour.LoadFromFile(lFile, GetAssemblyByName);
+        }
 
         //DebugServer.Server.RegisterBehaviour(mXmlBehaviour);
     }
@@ -27,8 +30,11 @@ public class AIBehaviour : MonoBehaviour, kAIILogger {
 	// Use this for initialization
 	void Start () {
         kAIObject.GlobalLogger = this;
-        mXmlBehaviour.SetGlobal();
-        mXmlBehaviour.ForceActivation();
+        if (mXmlBehaviour != null)
+        {
+            mXmlBehaviour.SetGlobal();
+            mXmlBehaviour.ForceActivation();
+        }
 	}
 	
 	// Update is called once per frame
@@ -38,11 +44,29 @@ public class AIBehaviour : MonoBehaviour, kAIILogger {
             //DebugServer.Server.RefreshBehaviour();
             firstTime = false;
         }
-        
-        mXmlBehaviour.Update(Time.deltaTime, this.gameObject);
+        if (mXmlBehaviour != null)
+        {
+            mXmlBehaviour.Update(Time.deltaTime, this.gameObject);
+        }
 
         
 	}
+
+    public kAIPort GetPort(kAIPortID lPort)
+    {
+        try
+        {
+            if(mXmlBehaviour == null)
+            {
+                return null;
+            }
+            return mXmlBehaviour.GetPort(lPort);
+        }
+        catch
+        {
+            return null;
+        }
+    }
 
 
 

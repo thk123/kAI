@@ -23,6 +23,11 @@ public abstract class IndividualOrder
     {
         return new IndividualMoveOrder { Destination = destination };
     }
+
+    internal static IndividualOrder CreateAttackOrder(GameObject target)
+    {
+        return new IndividualAttackOrder { Target = target };
+    }
 }
 
 public class IndividualMoveOrder : IndividualOrder

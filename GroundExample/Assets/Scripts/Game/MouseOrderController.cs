@@ -23,20 +23,43 @@ public class MouseOrderController : MonoBehaviour {
 	void Update () {
 	    if(Input.GetMouseButtonUp(1))
         {
-            Vector3 mousePoint = Input.mousePosition;
-            mousePoint.z = transform.position.y - 33.0f;
-            Camera camera = GetComponent<Camera>();
-            //print("Camera: " + camera.name);
-            Vector3 mouseLocation = camera.ScreenToWorldPoint(mousePoint);
-            if(selector.selectedShip != null)
+            if (selector.selectedShip != null)
             {
                 SquadMember receiever = selector.selectedShip.GetComponent<SquadMember>();
+                Vector3 mousePoint = Input.mousePosition;
+                mousePoint.z = transform.position.y - 33.0f;
+                Camera camera = GetComponent<Camera>();
+                //print("Camera: " + camera.name);
+
+                // find out if we are attacking an enemy
+                Ray selectionRay = camera.ScreenPointToRay(Input.mousePosition);
+                RaycastHit info;
+
+                IndividualOrder order = null;
+                if (Physics.Raycast(selectionRay, out info))
+                {
+                    HealthBehaviour selectableObject = info.collider.gameObject.GetComponent<HealthBehaviour>();
+                    if (selectableObject != null)
+                    {
+                        order = IndividualOrder.CreateAttackOrder(selectableObject.gameObject);
+                    }
+                }
+
+                if (order == null)
+                {
+                    Vector3 mouseLocation = camera.ScreenToWorldPoint(mousePoint);
+                    mouseLocation.y = receiever.transform.position.y;
+                    order = IndividualOrder.CreateMoveOrder(mouseLocation);
+                }
+
+
+
                 if (receiever != null)
                 {
-                    mouseLocation.y = receiever.transform.position.y;
-                    receiever.ReceiveIndividualOrder(IndividualOrder.CreateMoveOrder(mouseLocation));
+                    receiever.ReceiveIndividualOrder(order);
                 }
             }
+            
 
             /*Vector3 mouseLocation = GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
             print("Mouse location: " + mouseLocation);

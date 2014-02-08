@@ -25,8 +25,6 @@ public class ShipSelector : MonoBehaviour {
 
 		if(Input.GetMouseButtonUp(0))
 		{
-		
-			print ("doing ray cast");
 			Ray selectionRay =  selectionCamera.ScreenPointToRay(Input.mousePosition);
             RaycastHit info;
 

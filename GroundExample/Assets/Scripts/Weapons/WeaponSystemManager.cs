@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using System;
 using System.Collections;
 
 using kAI.Core;
@@ -80,7 +81,6 @@ public static class WeaponFunctions
 {
     public static float DistanceToTarget(GameObject self, GameObject target)
     {
-        Debug.Log("DistanceToTarget");
         return (self.transform.position - target.transform.position).magnitude;
     }
 
@@ -106,6 +106,41 @@ public static class WeaponFunctions
         {
             return 0.0f;
         }
+    }
+
+    public static float GetWeaponRange(GameObject self)
+    {
+        WeaponSystemManager weaponSystem = self.GetComponent<WeaponSystemManager>();
+        if (weaponSystem != null)
+        {
+            return weaponSystem.MainWeapon.Range;
+        }
+        else
+        {
+            throw new Exception("Cannot compute if in range if no weapon system manager on object");
+        }
+    }
+
+    public static bool WeaponInRange(GameObject self, GameObject target)
+    {
+        float distToTarget = DistanceToTarget(self, target);
+        return distToTarget <= GetWeaponRange(self);
+    }
+
+    public static Vector3 GetObjectPosition(GameObject target)
+    {
+        return target.transform.position;
+    }
+
+    public static Vector3 PointNearTarget(GameObject self, GameObject target)
+    {
+        /*Vector3 path = target.transform.position - self.transform.position;
+        float pathLength = path.magnitude;
+        Vector3 point = path * ((pathLength - GetWeaponRange(self)) / pathLength);
+        point.y = self.transform.position.y;
+        return point;*/
+
+        return target.transform.position;
     }
 }
 

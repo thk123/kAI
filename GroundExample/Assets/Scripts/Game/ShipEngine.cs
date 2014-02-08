@@ -22,6 +22,7 @@ public class ShipEngine : MonoBehaviour {
 	void Update () 
 	{
         transform.position += currentDirection;
+        currentDirection = Vector3.zero;
 	}
 
     
@@ -74,6 +75,8 @@ public class ShipEngineController : kAIUnityAIBehaviour
             {
                 engine.SetLookAt(facePort.Data);
             }
+            velocityPort.Data = Vector3.zero;
+            facePort.Data = Vector3.zero;
         }
         else
         {
