@@ -325,6 +325,12 @@ namespace kAI.Core
             return Operator.Add<T>(entry1, entry2);
         }
 
+        [StaticConstraint(StaticConstraint.StaticConstraintType.eConstraint_Minus)]
+        public static T Subtract<T>(T entry1, T entry2)
+        {
+            return Operator.Subtract<T>(entry1, entry2);
+        }
+
         public static float Abs(float lValue)
         {
             return Math.Abs(lValue);
@@ -342,6 +348,11 @@ namespace kAI.Core
         public static bool IsNull<T>(T lObject)
         {
             return lObject == null;
+        }
+
+        public static T GetDefault<T>()
+        {
+            return default(T);
         }
     }
 
