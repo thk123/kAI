@@ -74,8 +74,8 @@ public class MoveToBehaviour : kAICodeBehaviour
         {
             
             Vector3 targetPositon = pointToMoveTo.Data;
-
-            if((targetPositon - shipObject.transform.position).sqrMagnitude > 1.0f)
+            
+            if((targetPositon - shipObject.transform.position).sqrMagnitude > 5.0f)
             {
                 outComeVelocity.Data = targetPositon - shipObject.transform.position;
             }

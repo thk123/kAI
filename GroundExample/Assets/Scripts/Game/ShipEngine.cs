@@ -15,20 +15,23 @@ public class ShipEngine : MonoBehaviour {
 	void Start () 
 	{
         currentDirection = Vector3.zero;
+        
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
         transform.position += currentDirection;
-
 	}
 
     
 
     public void SetDirection(Vector3 direction)
     {
-        SetLookAt(direction);
+        if (direction != Vector3.zero)
+        {
+            SetLookAt(direction);
+        }
         currentDirection = direction.normalized * maxSpeed;
         currentDirection.y = 0;
     }
@@ -66,18 +69,10 @@ public class ShipEngineController : kAIUnityAIBehaviour
         ShipEngine engine = lShipObject.GetComponent<ShipEngine>();
         if(engine != null)
         {
-            if (velocityPort.Data != Vector3.zero)
-            {
-                //LogMessage("Setting velocity: " + (velocityPort.Data).ToString());
-                engine.SetDirection(velocityPort.Data);
-            }
-            else if (facePort.Data != Vector3.zero)
+            engine.SetDirection(velocityPort.Data);
+            if(velocityPort.Data == Vector3.zero && facePort.Data != Vector3.zero)
             {
                 engine.SetLookAt(facePort.Data);
-            }
-            else
-            {
-                //LogMessage("Nothing receivedf");
             }
         }
         else
@@ -112,7 +107,6 @@ public class WeightedVectorAverage : kAICodeBehaviour
         {
             resultVector += (entry.Key * entry.Value);
         }
-
         resultPort.Data = resultVector;
     }
 }
