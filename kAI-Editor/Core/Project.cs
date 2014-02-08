@@ -23,6 +23,7 @@ namespace kAI.Editor.Core
         /// The extension of a project file. 
         /// </summary>
         public const string kProjectFileExtension = "kAIProj";
+        public const string kMetaExtension = "kAIMeta";
 
         public const string kProjectRootID = "ProjectRoot";
         public const string kBehaviourRootID = "BehaviourRoot";
@@ -173,6 +174,7 @@ namespace kAI.Editor.Core
                 }
 
                 MethodInfo lMethod = lDeclType.GetMethod(MethodName);
+                
                 if (lMethod == null)
                 {
                     throw new Exception("Could not find method, has it been deleted");
@@ -307,7 +309,7 @@ namespace kAI.Editor.Core
             }
 
             // Write the meta file
-            using (XmlWriter lWriter = XmlWriter.Create(ProjectFile.FullName + ".meta", lSettings))
+            using (XmlWriter lWriter = XmlWriter.Create(ProjectFile.FullName + "." + kMetaExtension, lSettings))
             {
                 MetaSaveFile lMetaSave = new MetaSaveFile();
                 lMetaSave.OpenBehaviour = lOpenBehaviour;
@@ -542,7 +544,7 @@ namespace kAI.Editor.Core
 
             lNewProject.Init(lProjectXml);
 
-            FileInfo lMetaFileInfo = new FileInfo(lProjectXml.FullName + ".meta");
+            FileInfo lMetaFileInfo = new FileInfo(lProjectXml.FullName + "." + kMetaExtension);
             if (lMetaFileInfo.Exists)
             {
                 using (FileStream lMetaStream = lMetaFileInfo.OpenRead())

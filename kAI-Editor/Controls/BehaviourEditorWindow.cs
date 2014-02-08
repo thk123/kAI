@@ -180,7 +180,7 @@ namespace kAI.Editor.Controls
             // Load the meta file
             XmlObjectSerializer lProjectDeserialiser = new DataContractSerializer(typeof(kAIXmlBehaviourMetaSaveFile), kAINode.NodeSerialTypes);
 
-            FileInfo lMetaPath = new FileInfo(Behaviour.XmlLocation.GetFile().FullName + ".meta");
+            FileInfo lMetaPath = new FileInfo(Behaviour.XmlLocation.GetFile().FullName + "." + kAIProject.kMetaExtension);
             if(lMetaPath.Exists)
             {
                 Stream lXmlStream = lMetaPath.OpenRead();
@@ -295,7 +295,7 @@ namespace kAI.Editor.Controls
             // Create the writer and write the file. 
             try
             {
-                using (XmlWriter lWriter = XmlWriter.Create(Behaviour.XmlLocation.GetFile().FullName + ".meta", lSettings))
+                using (XmlWriter lWriter = XmlWriter.Create(Behaviour.XmlLocation.GetFile().FullName + "." + kAIProject.kMetaExtension, lSettings))
                 {
                     lProjectSerialiser.WriteObject(lWriter, lMetaFile);
                 }   
