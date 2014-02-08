@@ -285,7 +285,7 @@ namespace kAI.Core
                     /// <param name="lCustom">The configuration dictionary we are creating. </param>
                     static void AddDefaultConfigToCustom<U>(kAIReturnConfigurationDictionary<U> lCustom)
                     {
-                        kAIDefaultReturnConfiguration lDefaultReturn = new kAIDefaultReturnConfiguration(typeof(T));
+                        kAIDefaultReturnConfiguration lDefaultReturn = new kAIDefaultReturnConfiguration(typeof(U));
 
                         int lDefaultPropertyIndex = 0;
                         foreach (string lPropertyName in lDefaultReturn.PropertyNames)
