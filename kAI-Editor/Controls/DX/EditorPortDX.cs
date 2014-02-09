@@ -173,11 +173,11 @@ namespace kAI.Editor.Controls.DX
 
             if (Port.PortDirection == kAIPort.ePortDirection.PortDirection_In)
             {
-                lXTranslation = 0;
+                lXTranslation = 5;
             }
             else // PortDirection == PortDirection_Out
             {
-                lXTranslation = (int)sPortSize.X;
+                lXTranslation = (int)sPortSize.X - 5;
             }
             
             lConnexionPoint = lConnexionPoint.Translate(lXTranslation, (int)(sPortSize.Y * 0.5f));
