@@ -142,6 +142,37 @@ public static class WeaponFunctions
 
         return target.transform.position;
     }
+
+    public static GameObject GetNearestTarget(GameObject self, float maxRange)
+    {
+        Collider[] nearbyObjects = Physics.OverlapSphere(self.transform.position, maxRange);
+
+        float nearestDistance =float.MaxValue;
+        GameObject nearestObject = null;
+        foreach(Collider nearCollider in nearbyObjects)
+        {
+            
+            if (nearCollider != self.collider)
+            {
+                GameObject nearObject = nearCollider.gameObject;
+                HealthBehaviour healthObj = nearObject.GetComponent<HealthBehaviour>();
+                if (healthObj != null)
+                {
+                    float dist2 = (nearObject.transform.position - self.transform.position).sqrMagnitude;
+                    if (dist2 < nearestDistance)
+                    {
+                        nearestObject = nearObject;
+                        nearestDistance = dist2;
+                    }
+                }
+            }
+        }
+        if (nearestObject != null)
+        {
+            //Debug.Log("Found nearest object, distance:" + nearestDistance);
+        }
+        return nearestObject;
+    }
 }
 
 public class FireWeaponBehaviour : kAICodeBehaviour

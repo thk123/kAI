@@ -64,6 +64,7 @@ public class OrderSwitcherBehaviour : kAICodeBehaviour
 
     kAITriggerPort moveOrderTrigger;
     kAITriggerPort attackOrderTrigger;
+    kAITriggerPort noOrderTrigger;
     kAIDataPort<IndividualOrder> orderPort;
 
     public OrderSwitcherBehaviour()
@@ -77,12 +78,16 @@ public class OrderSwitcherBehaviour : kAICodeBehaviour
         attackOrderTrigger = new kAITriggerPort("AttackOrder", kAIPort.ePortDirection.PortDirection_Out);
         AddExternalPort(attackOrderTrigger);
 
+        noOrderTrigger = new kAITriggerPort("Idle", kAIPort.ePortDirection.PortDirection_Out);
+        AddExternalPort(noOrderTrigger);
+
         orderPort = new kAIDataPort<IndividualOrder>("Order", kAIPort.ePortDirection.PortDirection_In);
         AddExternalPort(orderPort);
     }
 
     protected override void InternalUpdate(float lDeltaTime, object lUserData)
     {
+        bool lDidDoOrder = false;
         if(orderPort.Data != null)
         {
             if (lastOrderType != orderPort.Data.TypeOfOrder)
@@ -94,15 +99,22 @@ public class OrderSwitcherBehaviour : kAICodeBehaviour
                     case IndividualOrder.IndividualOrderType.eInvalid:
                         break;
                     case IndividualOrder.IndividualOrderType.eMoveDirectToPoint:
+                        lDidDoOrder = true;
                         moveOrderTrigger.Trigger();
                         break;
                     case IndividualOrder.IndividualOrderType.eAttackTarget:
+                        lDidDoOrder = true;
                         attackOrderTrigger.Trigger();
                         break;
                     default:
                         break;
                 }
             }
+        }
+
+        if(!lDidDoOrder)
+        {
+            noOrderTrigger.Trigger();
         }
     }
 }

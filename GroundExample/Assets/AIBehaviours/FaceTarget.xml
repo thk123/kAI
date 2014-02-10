@@ -4,13 +4,13 @@
   <InternalConnexions>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
-        <NodeID>Subtract</NodeID>
+        <NodeID>PathToTarget</NodeID>
       </EndNodeID>
       <EndPortID>
         <PortID>entry1</PortID>
       </EndPortID>
       <StartNodeID>
-        <NodeID>GetObjectPosition</NodeID>
+        <NodeID>GetTargetPosition</NodeID>
       </StartNodeID>
       <StartPortID>
         <PortID>DataReturn</PortID>
@@ -18,13 +18,13 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
-        <NodeID>Subtract</NodeID>
+        <NodeID>PathToTarget</NodeID>
       </EndNodeID>
       <EndPortID>
         <PortID>entry2</PortID>
       </EndPortID>
       <StartNodeID>
-        <NodeID>GetObjectPosition0</NodeID>
+        <NodeID>GetOwnPosition</NodeID>
       </StartNodeID>
       <StartPortID>
         <PortID>DataReturn</PortID>
@@ -38,7 +38,7 @@
         <PortID>FaceDirection</PortID>
       </EndPortID>
       <StartNodeID>
-        <NodeID>Subtract</NodeID>
+        <NodeID>PathToTarget</NodeID>
       </StartNodeID>
       <StartPortID>
         <PortID>DataReturn</PortID>
@@ -46,7 +46,7 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
-        <NodeID>GetObjectPosition</NodeID>
+        <NodeID>GetTargetPosition</NodeID>
       </EndNodeID>
       <EndPortID>
         <PortID>target</PortID>
@@ -77,7 +77,7 @@
         <TypeName>WeaponFunctions</TypeName>
       </NodeContents>
       <NodeID>
-        <NodeID>GetObjectPosition</NodeID>
+        <NodeID>GetTargetPosition</NodeID>
       </NodeID>
       <NodeSerialAssembly>kAICore</NodeSerialAssembly>
       <NodeSerialType>kAI.Core.kAIFunctionNode+SerialObject</NodeSerialType>
@@ -101,7 +101,7 @@
         <TypeName>WeaponFunctions</TypeName>
       </NodeContents>
       <NodeID>
-        <NodeID>GetObjectPosition0</NodeID>
+        <NodeID>GetOwnPosition</NodeID>
       </NodeID>
       <NodeSerialAssembly>kAICore</NodeSerialAssembly>
       <NodeSerialType>kAI.Core.kAIFunctionNode+SerialObject</NodeSerialType>
@@ -130,7 +130,7 @@
         <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
       </NodeContents>
       <NodeID>
-        <NodeID>Subtract</NodeID>
+        <NodeID>PathToTarget</NodeID>
       </NodeID>
       <NodeSerialAssembly>kAICore</NodeSerialAssembly>
       <NodeSerialType>kAI.Core.kAIFunctionNode+SerialObject</NodeSerialType>

@@ -3,83 +3,56 @@
   <NodePositions>
     <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
       <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
-        <d4p1:NodeID>HandleMoveOrder</d4p1:NodeID>
+        <d4p1:NodeID>GetNearestTarget</d4p1:NodeID>
       </Node>
       <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
-        <d4p1:x>186</d4p1:x>
-        <d4p1:y>-187</d4p1:y>
+        <d4p1:x>-249</d4p1:x>
+        <d4p1:y>-181</d4p1:y>
       </Position>
     </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
     <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
       <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
-        <d4p1:NodeID>ShipEngineController</d4p1:NodeID>
+        <d4p1:NodeID>MaxSeekRange</d4p1:NodeID>
       </Node>
       <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
-        <d4p1:x>1400</d4p1:x>
-        <d4p1:y>15</d4p1:y>
+        <d4p1:x>-521</d4p1:x>
+        <d4p1:y>-147</d4p1:y>
       </Position>
     </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
     <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
       <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
-        <d4p1:NodeID>OrderSwitcherBehaviour</d4p1:NodeID>
+        <d4p1:NodeID>IsNull</d4p1:NodeID>
       </Node>
       <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
-        <d4p1:x>-402</d4p1:x>
-        <d4p1:y>-304</d4p1:y>
+        <d4p1:x>179</d4p1:x>
+        <d4p1:y>-296</d4p1:y>
       </Position>
     </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
     <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
       <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
-        <d4p1:NodeID>OrderDataExtractor</d4p1:NodeID>
+        <d4p1:NodeID>IfGreaterThanOrEqual</d4p1:NodeID>
       </Node>
       <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
-        <d4p1:x>-256</d4p1:x>
-        <d4p1:y>2</d4p1:y>
+        <d4p1:x>124</d4p1:x>
+        <d4p1:y>-532</d4p1:y>
       </Position>
     </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
     <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
       <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
-        <d4p1:NodeID>ConstantSingle</d4p1:NodeID>
+        <d4p1:NodeID>HealthThreshold</d4p1:NodeID>
       </Node>
       <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
-        <d4p1:x>241</d4p1:x>
-        <d4p1:y>28</d4p1:y>
+        <d4p1:x>-151</d4p1:x>
+        <d4p1:y>-488</d4p1:y>
       </Position>
     </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
     <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
       <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
-        <d4p1:NodeID>CombineVectorFloat</d4p1:NodeID>
+        <d4p1:NodeID>And</d4p1:NodeID>
       </Node>
       <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
-        <d4p1:x>591</d4p1:x>
-        <d4p1:y>-35</d4p1:y>
-      </Position>
-    </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
-    <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
-      <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
-        <d4p1:NodeID>WeightedVectorAverage</d4p1:NodeID>
-      </Node>
-      <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
-        <d4p1:x>969</d4p1:x>
-        <d4p1:y>92</d4p1:y>
-      </Position>
-    </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
-    <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
-      <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
-        <d4p1:NodeID>SelfPreservation</d4p1:NodeID>
-      </Node>
-      <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
-        <d4p1:x>453</d4p1:x>
-        <d4p1:y>596</d4p1:y>
-      </Position>
-    </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
-    <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
-      <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
-        <d4p1:NodeID>FireWeaponBehaviour</d4p1:NodeID>
-      </Node>
-      <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
-        <d4p1:x>1306</d4p1:x>
-        <d4p1:y>-389</d4p1:y>
+        <d4p1:x>489</d4p1:x>
+        <d4p1:y>-565</d4p1:y>
       </Position>
     </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
     <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
@@ -87,35 +60,44 @@
         <d4p1:NodeID>HandleAttackOrder</d4p1:NodeID>
       </Node>
       <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
-        <d4p1:x>11</d4p1:x>
-        <d4p1:y>-397</d4p1:y>
+        <d4p1:x>941</d4p1:x>
+        <d4p1:y>-396</d4p1:y>
       </Position>
     </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
     <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
       <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
-        <d4p1:NodeID>CombineVectorFloat0</d4p1:NodeID>
+        <d4p1:NodeID>AOrBChooser</d4p1:NodeID>
       </Node>
       <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
-        <d4p1:x>552</d4p1:x>
-        <d4p1:y>-285</d4p1:y>
+        <d4p1:x>1208</d4p1:x>
+        <d4p1:y>-684</d4p1:y>
       </Position>
     </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
     <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
       <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
-        <d4p1:NodeID>IdleBehaviour</d4p1:NodeID>
+        <d4p1:NodeID>AOrBChooser0</d4p1:NodeID>
       </Node>
       <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
-        <d4p1:x>81</d4p1:x>
-        <d4p1:y>182</d4p1:y>
+        <d4p1:x>1230</d4p1:x>
+        <d4p1:y>-523</d4p1:y>
       </Position>
     </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
     <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
       <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
-        <d4p1:NodeID>CombineVectorFloat1</d4p1:NodeID>
+        <d4p1:NodeID>GetDefault</d4p1:NodeID>
       </Node>
       <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
-        <d4p1:x>581</d4p1:x>
-        <d4p1:y>220</d4p1:y>
+        <d4p1:x>778</d4p1:x>
+        <d4p1:y>-599</d4p1:y>
+      </Position>
+    </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+    <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
+      <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
+        <d4p1:NodeID>Not</d4p1:NodeID>
+      </Node>
+      <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
+        <d4p1:x>461</d4p1:x>
+        <d4p1:y>-326</d4p1:y>
       </Position>
     </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
   </NodePositions>
