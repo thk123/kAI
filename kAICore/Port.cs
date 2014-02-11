@@ -932,7 +932,7 @@ namespace kAI.Core
         /// <param name="lPortID">The ID of the port. </param>
         public kAIFQPortID(kAIPortID lPortID)
         {
-            NodeID = String.Empty;
+            NodeID = kAINodeID.InvalidNodeID;
             PortID = lPortID;
         }
 
