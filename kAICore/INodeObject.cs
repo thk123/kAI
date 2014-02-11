@@ -47,6 +47,7 @@ namespace kAI.Core
     /// <summary>
     /// Base class for an object that can be embedded in to a node. 
     /// </summary>
+    [Serializable]
     public abstract class kAINodeObject : kAIObject, kAIINodeObject
     {
         Dictionary<kAIPortID, kAIPort> mExternalPorts;

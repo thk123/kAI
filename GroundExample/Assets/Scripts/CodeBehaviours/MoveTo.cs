@@ -51,6 +51,7 @@ public class MoveTo : CodeBehaviourTester, IOrderReciever {
     }
 }
 
+[Serializable]
 public class MoveToBehaviour : kAICodeBehaviour
 {
     public kAIDataPort<Vector3> pointToMoveTo;

@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using kAI.Core;
 using UnityEngine;
 
+[Serializable]
 public abstract class IndividualOrder
 {
     public enum IndividualOrderType
@@ -30,6 +31,7 @@ public abstract class IndividualOrder
     }
 }
 
+[Serializable]
 public class IndividualMoveOrder : IndividualOrder
 {
     public Vector3 Destination
@@ -44,6 +46,7 @@ public class IndividualMoveOrder : IndividualOrder
     }    
 }
 
+[Serializable]
 public class IndividualAttackOrder : IndividualOrder
 {
     public GameObject Target
@@ -58,6 +61,7 @@ public class IndividualAttackOrder : IndividualOrder
     }
 }
 
+[Serializable]
 public class OrderSwitcherBehaviour : kAICodeBehaviour
 {
     IndividualOrder.IndividualOrderType lastOrderType;
@@ -119,6 +123,7 @@ public class OrderSwitcherBehaviour : kAICodeBehaviour
     }
 }
 
+[Serializable]
 public class OrderDataExtractor : kAICodeBehaviour
 {
     kAIDataPort<IndividualOrder> orderPort;
@@ -161,6 +166,7 @@ public class OrderDataExtractor : kAICodeBehaviour
         }
     }
 }
+
 
 public static class AIFunctions
 {

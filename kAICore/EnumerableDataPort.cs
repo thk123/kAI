@@ -12,6 +12,7 @@ namespace kAI.Core
     /// At the moment, this can only be used as an in bound port and only accessible
     /// via a code behaviour. 
     /// </summary>
+    [Serializable]
     public abstract class kAIEnumerableDataPort : kAIPort
     {
         /// <summary>
@@ -55,9 +56,11 @@ namespace kAI.Core
     /// via a code behaviour. 
     /// </summary>
     /// <typeparam name="T">The type we are creating an enumerable collection for. </typeparam>
+    [Serializable]
     public class kAIEnumerableDataPort<T> : kAIEnumerableDataPort
     {
         // A mapping between the port that send the value and the value, used if connected to multiple Ts
+        [NonSerialized]
         Dictionary<kAIFQPortID, T> mValues;
 
         /// <summary>

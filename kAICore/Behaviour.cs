@@ -30,6 +30,7 @@ namespace kAI.Core
     /// <summary>
     /// Represents a kAIBehaviour (can be code or XML). 
     /// </summary>
+    [Serializable]
     public abstract class kAIBehaviour : kAINodeObject
     {
         //External port IDs
@@ -293,6 +294,7 @@ namespace kAI.Core
     /// <summary>
     /// Represents a code behaviour (one with an external implementation).
     /// </summary>
+    [Serializable]
     public abstract class kAICodeBehaviour : kAIBehaviour
     {
 

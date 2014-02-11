@@ -46,7 +46,7 @@ public class ShipEngine : MonoBehaviour {
     }
 }
 
-
+[Serializable]
 public class ShipEngineController : kAIUnityAIBehaviour
 {
     kAIDataPort<Vector3> velocityPort;
@@ -85,6 +85,7 @@ public class ShipEngineController : kAIUnityAIBehaviour
     }
 }
 
+[Serializable]
 public class WeightedVectorAverage : kAICodeBehaviour
 {
     kAIEnumerableDataPort<KeyValuePair<Vector3, float>> weightedVectorsPort;

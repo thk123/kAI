@@ -10,6 +10,7 @@ namespace kAI.Core
     /// <summary>
     /// A constant node. 
     /// </summary>
+    [Serializable]
     public abstract class kAIConstantNode : kAINodeObject
     {
         Type mType;
@@ -70,6 +71,7 @@ namespace kAI.Core
     /// <summary>
     /// A constant integer value. 
     /// </summary>
+    [Serializable]
     public class kAIConstantIntNode : kAIConstantNode
     {
         /// <summary>
@@ -208,6 +210,7 @@ namespace kAI.Core
     /// <summary>
     /// A constant float value. 
     /// </summary>
+    [Serializable]
     public class kAIConstantFloatNode : kAIConstantNode
     {
         /// <summary>
@@ -345,6 +348,7 @@ namespace kAI.Core
     /// <summary>
     /// A constant string value. 
     /// </summary>
+    [Serializable]
     public class kAIConstantStringNode : kAIConstantNode
     {
         /// <summary>

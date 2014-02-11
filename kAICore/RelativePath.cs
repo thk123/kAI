@@ -13,6 +13,7 @@ namespace kAI.Core
     /// </summary>
     [DataContract()]
     [System.Diagnostics.DebuggerDisplay("{mPath}")]
+    [Serializable]
     public abstract class kAIRelativeObject
     {
         /// <summary>
@@ -266,6 +267,7 @@ namespace kAI.Core
     /// A path for some file relative to some file.  
     /// </summary>
     [DataContract(Name="FilePath")]
+    [Serializable]
     public class kAIRelativePath : kAIRelativeObject
     {
         /// <summary>
@@ -310,6 +312,7 @@ namespace kAI.Core
     /// A path for some file relative to some directory. 
     /// </summary>
     [DataContract(Name = "DirectoryPath")]
+    [Serializable]
     public class kAIRelativeDirectory : kAIRelativeObject
     {
         /// <summary>

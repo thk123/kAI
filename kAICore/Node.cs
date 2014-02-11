@@ -90,6 +90,7 @@ namespace kAI.Core
     /// <summary>
     /// A node within an XML behaviour. 
     /// </summary>
+    [Serializable]
     public class kAINode : kAIObject
     {
         /// <summary>
@@ -133,15 +134,26 @@ namespace kAI.Core
         /// <summary>
         /// A dictionary of externally connectible ports. 
         /// </summary>
+        //[NonSerialized]
         Dictionary<kAIPortID, kAIPort> mExternalPorts;
+
+        
+        kAIINodeObject mNodeObject;
 
         /// <summary>
         /// What object this node contains. 
         /// </summary>
+        
         public kAIINodeObject NodeContents
         {
-            get;
-            private set;
+            get
+            {
+                return mNodeObject;
+            }
+            private set
+            {
+                mNodeObject = value;
+            }
         }
 
         kAINodeID mNodeID;

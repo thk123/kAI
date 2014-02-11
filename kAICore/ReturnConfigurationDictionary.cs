@@ -72,6 +72,7 @@ namespace kAI.Core
                 /// <summary>
                 /// The default property set for all types. 
                 /// </summary>
+                [Serializable]
                 class kAIDefaultReturnConfiguration : kAIIReturnConfigurationDictionary
                 {
                     /// <summary>
@@ -169,6 +170,7 @@ namespace kAI.Core
                 /// <summary>
                 /// Wrapper for static method to create the dictionary. 
                 /// </summary>
+                [Serializable]
                 class kAIReturnConfigurationDictionary
                 {
                     /// <summary>
@@ -187,16 +189,19 @@ namespace kAI.Core
                 /// Represents a specialised set of return properties for a specific type. 
                 /// </summary>
                 /// <typeparam name="T">The type this is a specific set for. </typeparam>
+                [Serializable]
                 class kAIReturnConfigurationDictionary<T> : kAIIReturnConfigurationDictionary
                 {
                     /// <summary>
                     /// The actions to perform when the function is evaluated. 
                     /// </summary>
+                    [NonSerialized]
                     List<Action<kAINodeObject, T, T>> lEvaluateActions;
 
                     /// <summary>
                     /// Functions for generating ports that are required. 
                     /// </summary>
+                    [NonSerialized]
                     List<Func<kAIPort>> lAdditionalPorts;
 
                     /// <summary>

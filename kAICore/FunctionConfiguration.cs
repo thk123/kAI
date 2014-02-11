@@ -14,11 +14,13 @@ namespace kAI.Core
         /// Represents details about the function we are going to invoke
         /// e.g. the type of generic parametters. 
         /// </summary>
+        [Serializable]
         public partial class kAIFunctionConfiguration
         {
             /// <summary>
             /// Represents the settings for how the FunctionNode should handle returns. 
             /// </summary>
+            [Serializable]
             public partial class kAIReturnConfiguration
             {
                 /// <summary>

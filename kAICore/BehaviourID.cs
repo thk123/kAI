@@ -11,6 +11,7 @@ namespace kAI.Core
     /// Behaviours should have unique names. 
     /// </summary>
     [DataContract()]
+    [Serializable]
     public class kAIBehaviourID
     {
         /// <summary>

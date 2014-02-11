@@ -11,6 +11,7 @@ namespace kAI.Core
     /// Every object within an kAIXmlBehaviour has a unique node  ID. 
     /// </summary>
     [DataContract()]
+    [Serializable]
     public class kAINodeID
     {
         /// <summary>

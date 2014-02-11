@@ -1,0 +1,26 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<kAIXmlBehaviour xmlns:i="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://schemas.datacontract.org/2004/07/kAI.Core">
+  <BehaviourID>NewBehaviour</BehaviourID>
+  <InternalConnexions />
+  <InternalNodes />
+  <InternalPorts>
+    <kAIXmlBehaviour.InternalXml.SerialPort>
+      <IsGloballyAccesible>false</IsGloballyAccesible>
+      <PortDataType>System.Boolean</PortDataType>
+      <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
+      <PortDirection>PortDirection_Out</PortDirection>
+      <PortID>OnActivate</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
+      <PortIsTrigger>true</PortIsTrigger>
+    </kAIXmlBehaviour.InternalXml.SerialPort>
+    <kAIXmlBehaviour.InternalXml.SerialPort>
+      <IsGloballyAccesible>false</IsGloballyAccesible>
+      <PortDataType>System.Boolean</PortDataType>
+      <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
+      <PortDirection>PortDirection_In</PortDirection>
+      <PortID>Deactivate</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
+      <PortIsTrigger>true</PortIsTrigger>
+    </kAIXmlBehaviour.InternalXml.SerialPort>
+  </InternalPorts>
+</kAIXmlBehaviour>

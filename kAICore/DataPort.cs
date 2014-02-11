@@ -10,6 +10,7 @@ namespace kAI.Core
     /// A non-generic DataPort. 
     /// TODO: probably not needed accept to have the static constructor. 
     /// </summary>
+    [Serializable]
     public abstract class kAIDataPort : kAIPort
     {
         /// <summary>
@@ -52,6 +53,7 @@ namespace kAI.Core
     /// Represents a data port. 
     /// </summary>
     /// <typeparam name="T">The type of the data port. </typeparam>
+    [Serializable]
     public class kAIDataPort<T> : kAIDataPort
     {
         /*/// <summary>
@@ -76,7 +78,10 @@ namespace kAI.Core
         /// </summary>
         public event DataEvent OnDataUnset;*/
 
+        [NonSerialized]
         T mData;
+
+        string mDebugString;
 
         /// <summary>
         /// Get the data currently in this port. 
@@ -126,6 +131,15 @@ namespace kAI.Core
                 if (mBoundEnd != null)
                 {
                     mBoundEnd.SetData(value, this);
+                }
+
+                if (mData != null)
+                {
+                    mDebugString = mData.ToString();
+                }
+                else
+                {
+                    mDebugString = "[NULL]";
                 }
             }
 

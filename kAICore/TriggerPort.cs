@@ -8,6 +8,7 @@ namespace kAI.Core
     /// <summary>
     /// A port that can be triggered. 
     /// </summary>
+    [Serializable]
     public class kAITriggerPort : kAIPort
     {
 
@@ -21,6 +22,7 @@ namespace kAI.Core
         /// <summary>
         /// Occurs when this node gets triggered. 
         /// </summary>
+        [field: NonSerialized]
         public event TriggerEvent OnTriggered;
 
         bool mHasBeenTriggered;

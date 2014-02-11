@@ -175,6 +175,7 @@ public static class WeaponFunctions
     }
 }
 
+[Serializable]
 public class FireWeaponBehaviour : kAICodeBehaviour
 {
     bool shouldFire;

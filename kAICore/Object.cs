@@ -10,6 +10,7 @@ namespace kAI.Core
     /// The root class all kAI.Core Objects inherit from. Provides functions for logging messages and error
     /// </summary>
     [DataContract()]
+    [Serializable]
     public abstract class kAIObject
     {
         /// <summary>

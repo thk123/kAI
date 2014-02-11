@@ -29,6 +29,7 @@ public class MoveWithVelocity : CodeBehaviourTester {
     }
 }
 
+[Serializable]
 public abstract class kAIUnityAIBehaviour : kAICodeBehaviour
 {
 

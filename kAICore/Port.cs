@@ -10,11 +10,13 @@ namespace kAI.Core
     /// <summary>
     /// Represents a connectible port, can be from a behaviour, action, input, trigger etc.
     /// </summary>
+    [Serializable]
     public abstract class kAIPort : kAIObject
     {
         /// <summary>
         /// Represents a connexion between two ports. 
         /// </summary>
+        [Serializable]
         public class kAIConnexion : kAIObject
         {
             /// <summary>
@@ -71,11 +73,13 @@ namespace kAI.Core
         /// <summary>
         /// Occurs when something conects to this node. 
         /// </summary>
+        [field: NonSerialized]
         public event ConnexionEvent OnConnected;
 
         /// <summary>
         /// Occurs when something gets disconnected from this node. 
         /// </summary>
+        [field: NonSerialized]
         public event ConnexionEvent OnDisconnected;
 
         /// <summary>
@@ -637,6 +641,7 @@ namespace kAI.Core
     /// <summary>
     /// A class indicating the type of a given port. (Currently just a wrapper for System.Type)
     /// </summary>
+    [Serializable]
     public class kAIPortType
     {
         /// <summary>
@@ -767,6 +772,7 @@ namespace kAI.Core
     /// A simple wrapper class for port IDs 
     /// </summary>
     [DataContract()]
+    [Serializable]
     public class kAIPortID
     {
         /// <summary>
@@ -877,6 +883,7 @@ namespace kAI.Core
     /// A fully qualified port id which includes the node it belongs to (if any). 
     /// </summary>
     [DataContract()]
+    [Serializable]
     public class kAIFQPortID
     {
         /// <summary>

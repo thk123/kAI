@@ -11,6 +11,7 @@ namespace kAI.Core
     /// <summary>
     /// A node that operates on a function. 
     /// </summary>
+    [Serializable]
     public partial class kAIFunctionNode : kAINodeObject
     {
         /// <summary>
@@ -103,8 +104,10 @@ namespace kAI.Core
         kAIDataPort lOperandPort;
         List<kAIDataPort> lOutParameters;
 
+        [NonSerialized]
         object lLastResult;
 
+        [NonSerialized]
         object mUserData;
 
         MethodInfo mMethod;
@@ -316,7 +319,7 @@ namespace kAI.Core
         [StaticConstraint(StaticConstraint.StaticConstraintType.eConstraint_LessThan | StaticConstraint.StaticConstraintType.eConstraint_GreaterThan)]
         public static bool IfGreaterThanOrEqual<T>(T entry1, T entry2)
         {
-            return Operator.GreaterThanOrEqual<T>(entry1, entry2);
+            return Operator.GreaterThanOrEqual<T>(entry1, entry2);;
         }
 
         [StaticConstraint(StaticConstraint.StaticConstraintType.eConstraint_Plus)]
@@ -354,6 +357,7 @@ namespace kAI.Core
         {
             return default(T);
         }
+
     }
 
     /// <summary>
