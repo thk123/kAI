@@ -46,9 +46,6 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="Winterdom.IO.FileMap">
-      <HintPath>..\GroundExample\DLLs\Winterdom.IO.FileMap.dll</HintPath>
-    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviour.cs" />
@@ -90,6 +87,16 @@
   <ItemGroup>
     <Compile Include="INodeObject.cs" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\FileMap\FileMap.csproj">
+      <Project>{844CB30E-2F9E-4B34-A601-702D3A394F3E}</Project>
+      <Name>FileMap</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ThreadMessaging\ThreadMessaging.csproj">
+      <Project>{002B0EF1-2373-46F9-BB22-64C772764C1F}</Project>
+      <Name>ThreadMessaging</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>cp $(TargetPath) $(SolutionDir)kAI-Example\Assets\DLLs\$(TargetFileName)
@@ -98,6 +105,8 @@ cp $(TargetPath) $(SolutionDir)SpaceExample\Assets\DLLs\$(TargetFileName)
 cp $(TargetDir)\MiscUtil.dll $(SolutionDir)SpaceExample\Assets\DLLs\MiscUtil.dll
 cp $(TargetDir)\MiscUtil.dll $(SolutionDir)GroundExample\Assets\DLLs\MiscUtil.dll
 cp $(TargetPath) $(SolutionDir)GroundExample\Assets\DLLs\$(TargetFileName)
+cp $(TargetDir)\ThreadMessaging.dll $(SolutionDir)GroundExample\Assets\DLLs\ThreadMessaging.dll
+cp $(TargetDir)\Winterdom.IO.FileMap.dll $(SolutionDir)GroundExample\Assets\DLLs\Winterdom.IO.FileMap.dll
 </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

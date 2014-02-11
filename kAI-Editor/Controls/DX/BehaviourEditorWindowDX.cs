@@ -18,6 +18,8 @@ using SpriteTextRenderer;
 
 using kAI.Core;
 using kAI.Editor.Controls.DX.Coordinates;
+
+using kAI.Core.Debug;
 using System.Drawing;
 
 namespace kAI.Editor.Controls.DX
@@ -39,6 +41,8 @@ namespace kAI.Editor.Controls.DX
             OutPort_Hover,
             NodeLowerTexture,
             NodeUpperTexture, 
+            EnabledIcon,
+            DisabledIcon,
             TextureCount
         }
 
@@ -279,6 +283,8 @@ namespace kAI.Editor.Controls.DX
             mTextures[(int)eTextureID.OutPort_Hover] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "OutPort_Hover.png"));
             mTextures[(int)eTextureID.NodeLowerTexture] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "NodeLower.png"));
             mTextures[(int)eTextureID.NodeUpperTexture] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "NodeUpper.png"));
+            mTextures[(int)eTextureID.DisabledIcon] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "DisabledIcon.png"));
+            mTextures[(int)eTextureID.EnabledIcon] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "EnabledIcon.png"));
 
         }
 
@@ -711,24 +717,21 @@ namespace kAI.Editor.Controls.DX
         /// <returns>The EditorPort that represents this port. </returns>
         private kAIEditorPortDX GetPort(kAIPort lPort)
         {
-            if (lPort.OwningNode == null)
+            return GetPort(lPort.FQPortID);
+        }
+
+        private kAIEditorPortDX GetPort(kAIFQPortID lPortId)
+        {
+            if (lPortId.NodeID == kAINodeID.InvalidNodeID)
             {
-                foreach (kAIEditorPortDX lEditorPort in mPorts)
-                {
-                    if (lEditorPort.Port.PortID == lPort.PortID)
-                    {
-                        return lEditorPort;
-                    }
-                }
+                return mPorts.Find((lPort) => { return lPort.Port.PortID == lPortId.PortID; });
             }
             else
             {
-                kAIEditorNodeDX lOwningNode = GetNode(lPort.OwningNode);
-                return lOwningNode.GetExternalPort(lPort);
+                kAIEditorNodeDX lOwningNode = GetNode(lPortId.NodeID);
+                return lOwningNode.GetExternalPort(lPortId.PortID);
             }
-
-            kAIObject.Assert(null, false, "Could not find specified port in this behaviour");
-            return null;
+            
         }
 
         private kAIEditorNodeDX GetNode(kAINode lNode)
@@ -781,5 +784,16 @@ namespace kAI.Editor.Controls.DX
                 ObjectSelected(obj);
             }
         }
+
+
+
+        public void SetDebugInfo(kAI.Core.Debug.kAIXmlBehaviourDebugInfo lDebugInfo)
+        {
+            foreach (kAINodeDebugInfo lNodeDebugInfo in lDebugInfo.InternalNodes)
+            {
+                GetNode(lNodeDebugInfo.NodeID).SetDebugInfo(lNodeDebugInfo);
+            }
+        }
+
     }
 }

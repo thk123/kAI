@@ -13,6 +13,7 @@ using SlimDX;
 using SpriteTextRenderer;
 using SlimDX.Direct3D11;
 using kAI.Editor.Core;
+using kAI.Core.Debug;
 
 
 namespace kAI.Editor.Controls.DX
@@ -55,6 +56,8 @@ namespace kAI.Editor.Controls.DX
         }
 
         kAIAbsolutePosition mPosition;
+
+        kAINodeDebugInfo mDebugInfo;
 
         /// <summary>
         /// The position of the node in absolute pixels. 
@@ -202,6 +205,26 @@ namespace kAI.Editor.Controls.DX
             {
                 lEditorPort.Render2D(lEditorWindow);
             }
+
+            if(mDebugInfo != null)
+            {
+                kAIBehaviourDebugInfo lDebugInfoBehaviour = mDebugInfo.Contents as kAIBehaviourDebugInfo;
+                if (lDebugInfoBehaviour != null)
+                {
+                    ShaderResourceView lTexture;
+                    if (lDebugInfoBehaviour.Active)
+                    {
+                        lTexture = lEditorWindow.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.EnabledIcon);
+                    }
+                    else
+                    {
+                        lTexture = lEditorWindow.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.DisabledIcon);
+                    }
+
+                    lEditorWindow.SpriteRenderer.Draw(lTexture,
+                    new Vector2(lFormPosition.mPoint.X - 16, lFormPosition.mPoint.Y - 16), new Vector2(32, 32), CoordinateType.Absolute);
+                }
+            }
         }
 
 
@@ -286,17 +309,14 @@ namespace kAI.Editor.Controls.DX
         /// <returns>The EditorPort (visual representation) of the specified port. </returns>
         public kAIEditorPortDX GetExternalPort(kAIPort lPort)
         {
-            foreach (kAIEditorPortDX lEditorPort in mExternalPorts)
-            {
-                if (lEditorPort.Port.PortID == lPort.PortID)
-                {
-                    return lEditorPort;
-                }
-            }
-
-            kAIObject.Assert(null, false, "Could not find specified external port on this node.");
-            return null;
+            return GetExternalPort(lPort.PortID);
         }
+
+        public kAIEditorPortDX GetExternalPort(kAIPortID lPortID)
+        {
+            return mExternalPorts.Find((lPort) => { return lPort.Port.PortID == lPortID; });
+        }
+
 
         public void SetPosition(kAIAbsolutePosition lAbsolutePosition)
         {
@@ -394,6 +414,11 @@ namespace kAI.Editor.Controls.DX
         void lNode_OnExternalPortAdded(kAINode lSender, kAIPort lNewPort)
         {
             AddExternalPort(lNewPort);
-        }  
+        }
+
+        internal void SetDebugInfo(kAI.Core.Debug.kAINodeDebugInfo lNodeDebugInfo)
+        {
+            mDebugInfo = lNodeDebugInfo;
+        }
     }
 }

@@ -62,6 +62,7 @@
      <Compile Include="Assets\Scripts\Weapons\LaserWeaponSystem.cs" />
      <Compile Include="Assets\Scripts\Weapons\WeaponSystemManager.cs" />
      <Compile Include="Assets\Scripts\kAIScripts\AIBehaviour.cs" />
+     <Compile Include="Assets\Scripts\kAIScripts\kAIDebugBehaviour.cs" />
      <None Include="Assets\AIBehaviours\HandleMoveOrder.xml" />
      <None Include="Assets\AIBehaviours\FaceTarget.xml" />
      <None Include="Assets\AIBehaviours\IdleBehaviour.xml" />
@@ -73,6 +74,12 @@
  </Reference>
  <Reference Include="MiscUtil">
  <HintPath>Assets\DLLs\MiscUtil.dll</HintPath>
+ </Reference>
+ <Reference Include="ThreadMessaging">
+ <HintPath>Assets\DLLs\ThreadMessaging.dll</HintPath>
+ </Reference>
+ <Reference Include="Winterdom.IO.FileMap">
+ <HintPath>Assets\DLLs\Winterdom.IO.FileMap.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

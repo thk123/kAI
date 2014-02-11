@@ -26,7 +26,7 @@ namespace kAI.Core.Debug
         /// <param name="lPort">The port to make the debug info for. </param>
         public kAIPortDebugInfo(kAIPort lPort)
         {
-            PortID = lPort.PortID;
+            PortID = lPort.FQPortID;
         }
     }
 }

@@ -1,0 +1,40 @@
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ThreadMessaging", "ThreadMessaging.csproj", "{002B0EF1-2373-46F9-BB22-64C772764C1F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ChannelTest", "ChannelTest\ChannelTest.csproj", "{467AAC38-6769-45BB-8CD8-E2C3EE199E05}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PizzaDemo", "PizzaDemo\PizzaDemo.csproj", "{704431DB-0FC2-481A-8BF1-8FFD5685D89A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ProcessTest", "..\ThreadMessaging.Demos.1.1\ProcessTest\ProcessTest.csproj", "{9DA1BE46-0F2A-4C08-B7D8-F9E0E0CE4299}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug2|Any CPU = Debug2|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{002B0EF1-2373-46F9-BB22-64C772764C1F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{002B0EF1-2373-46F9-BB22-64C772764C1F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{002B0EF1-2373-46F9-BB22-64C772764C1F}.Debug2|Any CPU.ActiveCfg = Debug2|Any CPU
+		{002B0EF1-2373-46F9-BB22-64C772764C1F}.Debug2|Any CPU.Build.0 = Debug2|Any CPU
+		{002B0EF1-2373-46F9-BB22-64C772764C1F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{002B0EF1-2373-46F9-BB22-64C772764C1F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{467AAC38-6769-45BB-8CD8-E2C3EE199E05}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{467AAC38-6769-45BB-8CD8-E2C3EE199E05}.Debug2|Any CPU.ActiveCfg = Debug|Any CPU
+		{467AAC38-6769-45BB-8CD8-E2C3EE199E05}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{704431DB-0FC2-481A-8BF1-8FFD5685D89A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{704431DB-0FC2-481A-8BF1-8FFD5685D89A}.Debug2|Any CPU.ActiveCfg = Debug|Any CPU
+		{704431DB-0FC2-481A-8BF1-8FFD5685D89A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DA1BE46-0F2A-4C08-B7D8-F9E0E0CE4299}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9DA1BE46-0F2A-4C08-B7D8-F9E0E0CE4299}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9DA1BE46-0F2A-4C08-B7D8-F9E0E0CE4299}.Debug2|Any CPU.ActiveCfg = Debug2|Any CPU
+		{9DA1BE46-0F2A-4C08-B7D8-F9E0E0CE4299}.Debug2|Any CPU.Build.0 = Debug2|Any CPU
+		{9DA1BE46-0F2A-4C08-B7D8-F9E0E0CE4299}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9DA1BE46-0F2A-4C08-B7D8-F9E0E0CE4299}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

@@ -293,6 +293,10 @@
     </Compile>
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\FileMap\FileMap.csproj">
+      <Project>{844CB30E-2F9E-4B34-A601-702D3A394F3E}</Project>
+      <Name>FileMap</Name>
+    </ProjectReference>
     <ProjectReference Include="..\kAICore\kAICore.csproj">
       <Project>{A15829D4-123C-473F-9964-92D73DD4A8B1}</Project>
       <Name>kAICore</Name>
@@ -300,6 +304,10 @@
     <ProjectReference Include="..\SpriteTextRenderer\SpriteTextRenderer\SpriteTextRenderer.csproj">
       <Project>{1F50D114-1B5C-4822-B3AA-659A0B3CF62E}</Project>
       <Name>SpriteTextRenderer</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\ThreadMessaging\ThreadMessaging.csproj">
+      <Project>{002B0EF1-2373-46F9-BB22-64C772764C1F}</Project>
+      <Name>ThreadMessaging</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
@@ -334,6 +342,12 @@
     <None Include="Assets\kaiLogo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Assets\DisabledIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Assets\EnabledIcon.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
     <Content Include="Assets\Node.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

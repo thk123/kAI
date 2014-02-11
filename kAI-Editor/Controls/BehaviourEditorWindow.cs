@@ -7,12 +7,19 @@ using System.Windows.Forms;
 using System.Runtime.Serialization;
 using System.Xml;
 
-
+using System.Runtime.Serialization.Formatters.Binary;
 using kAI.Core;
 using kAI.Editor.Core;
 using System.Drawing;
 using kAI.Editor.Controls.DX.Coordinates;
 using kAI.Editor.Controls.WinForms;
+
+using kAI.Core.Debug;
+
+using Winterdom.IO.FileMap;
+using ThreadMessaging;
+
+using MemoryMappedFile = Winterdom.IO.FileMap.MemoryMappedFile;
 
 namespace kAI.Editor.Controls
 {
@@ -41,6 +48,8 @@ namespace kAI.Editor.Controls
 
         bool CanConnect();
 
+        void SetDebugInfo(kAIXmlBehaviourDebugInfo lDebugInfo);
+
         IEnumerable<Tuple<kAINodeID, kAIAbsolutePosition>> GetNodePositions();
 
         event Action<kAI.Editor.ObjectProperties.kAIIPropertyEntry> ObjectSelected;
@@ -55,6 +64,9 @@ namespace kAI.Editor.Controls
         Point mMousePositionOnContext;
 
         Editor mEditor;
+
+        MemoryMappedFile mMemoryFile;
+        ProcessSemaphore semaphore;
 
         static Random sRandom = new Random();
 
@@ -108,7 +120,8 @@ namespace kAI.Editor.Controls
 
             GlobalContextMenu.Popup += new EventHandler(GlobalContextMenu_Popup);
 
-            
+            semaphore = null;
+            mMemoryFile = null;
         }
 
         /// <summary>
@@ -329,6 +342,7 @@ namespace kAI.Editor.Controls
         /// </summary>
         public void Update()
         {
+            UpdateDebugInfo();
             mEditorImpl.EditorUpdate();
         }
 
@@ -422,6 +436,35 @@ namespace kAI.Editor.Controls
             if (lResult == DialogResult.OK)
             {
                 AddNode(lFunctionDesigner.FunctionNode, mMousePositionOnContext);
+            }
+        }
+
+        internal void ConnectDebugger(string lMemoryMappedFile)
+        {
+            if (mMemoryFile == null)
+            {
+                mMemoryFile = MemoryMappedFile.Open(MapAccess.FileMapRead, lMemoryMappedFile);
+                semaphore = new ProcessSemaphore("kAIDebug.Semaphore", 1, 1);
+            }
+
+            UpdateDebugInfo();
+        }
+
+        void UpdateDebugInfo()
+        {
+           if(mMemoryFile != null)
+            {
+                // obtain lock
+                semaphore.Acquire();
+                using (Stream inStream = mMemoryFile.MapView(MapAccess.FileMapRead, 0, 1024 * 1024 ))
+                {
+                    BinaryFormatter writer = new BinaryFormatter();
+                    //object something = writer.Deserialize(inStream);
+                    kAIXmlBehaviourDebugInfo behaviour = (kAIXmlBehaviourDebugInfo)writer.Deserialize(inStream);
+
+                    mEditorImpl.SetDebugInfo(behaviour);
+                }
+                semaphore.Release();
             }
         }
     }    

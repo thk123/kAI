@@ -460,5 +460,10 @@ namespace kAI.Editor
             mPropertiesWindow.Disposed -= mPropertiesWindow_Disposed;
             mPropertiesWindow = null;
         }
+
+        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            mBehaviourEditor.ConnectDebugger("kAIDebug.MMFile");
+        }
     }
 }
