@@ -338,7 +338,6 @@ namespace kAI.Core
 
         public static T AOrBChooser<T>(bool value, T trueValue, T falseValue)
         {
-            kAIObject.LogMessage(null, "Checking " + value + " to compute either " + trueValue.ToString() + " or " + falseValue.ToString());
             T result = value ? trueValue : falseValue;
            //kAIObject.LogMessage(null, "Checking " + value + " getting " + result.ToString());
 
@@ -353,6 +352,20 @@ namespace kAI.Core
         public static T GetDefault<T>()
         {
             return default(T);
+        }
+        public static bool And(bool entry1, bool entry2)
+        {
+            return entry1 && entry2;
+        }
+
+        public static bool Or(bool entry1, bool entry2)
+        {
+            return entry1 || entry2;
+        }
+
+        public static bool Not(bool entry)
+        {
+            return !entry;
         }
     }
 
