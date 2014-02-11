@@ -16,6 +16,7 @@ namespace kAI.Core
     /// <summary>
     /// An XML behaviour (ie one created by the editor).
     /// </summary>
+    [Serializable]
     public partial class kAIXmlBehaviour : kAIBehaviour
     {
         /// <summary>
@@ -100,6 +101,7 @@ namespace kAI.Core
         /// Wraps an internal port with extra information, 
         /// specifically whether is has an associated external port. 
         /// </summary>
+        [Serializable]
         private struct InternalPort
         {
             /// <summary>
@@ -150,14 +152,16 @@ namespace kAI.Core
         /// <summary>
         /// Nodes within this XML behaviour. 
         /// </summary>
+        //[NonSerialized]
         Dictionary<kAINodeID, kAINode> mInternalNodes;
 
         /// <summary>
         /// Ports within this XML behaviour.
         /// </summary>
+        //[NonSerialized]
         Dictionary<kAIPortID, InternalPort> mInternalPorts;
 
-        kAIDebugInfo mDebugInfo;
+        //kAIDebugInfo mDebugInfo;
 
 
         /// <summary>
@@ -214,23 +218,6 @@ namespace kAI.Core
             }
         }
 
-        
-        /// <summary>
-        /// Get the DebugInfo for this behaviour. 
-        /// </summary>
-        public kAIDebugInfo DebugInfo
-        {
-            get
-            {
-                if (mDebugInfo == null)
-                {
-                    mDebugInfo = new kAIDebugInfo(this);
-                }
-
-                return mDebugInfo;
-            }
-        }
-
         /// <summary>
         /// The dictionary of default internal port IDs and the functions to create them.
         /// </summary>
@@ -281,6 +268,7 @@ namespace kAI.Core
         /// <summary>
         /// Triggered when a new internal port is added to this behaviour.
         /// </summary>
+        [field: NonSerialized]
         public event InternalPortAdded OnInternalPortAdded;
 
         /// <summary>
@@ -293,7 +281,7 @@ namespace kAI.Core
         {
             mInternalNodes = new Dictionary<kAINodeID, kAINode>();
             mInternalPorts = new Dictionary<kAIPortID, InternalPort>();
-            mDebugInfo = null;
+            //mDebugInfo = null;
         }
 
 
@@ -534,11 +522,6 @@ namespace kAI.Core
                 // This calls the update on the node contents (if this is a behaviour, this will only happen if the behaviour 
                 // is active). 
                 lNode.NodeContents.Update(lDeltaTime, lUserData);
-            }
-
-            if (mDebugInfo != null)
-            {
-                mDebugInfo.Update();
             }
         }
 
@@ -813,6 +796,8 @@ namespace kAI.Core
             base.OnActivate();
             // Trigger the activate port. 
             ((kAITriggerPort)mInternalPorts[kOnActivatePortID].Port).Trigger();
+
+            LogMessage(BehaviourID + " Activated");
         }
 
         /// <summary>
@@ -836,6 +821,15 @@ namespace kAI.Core
         public override string ToString()
         {
             return BehaviourID;
+        }
+
+        /// <summary>
+        /// Generate the debug info for this XML behaviour. 
+        /// </summary>
+        /// <returns>The debug info for this XML behaviour. </returns>
+        public override Debug.kAINodeObjectDebugInfo GenerateDebugInfo()
+        {
+            return new Debug.kAIXmlBehaviourDebugInfo(this);
         }
         
     }

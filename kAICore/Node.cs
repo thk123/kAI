@@ -276,5 +276,14 @@ namespace kAI.Core
         {
             return NodeID + "[" + mOwningBehaviour.BehaviourID + "]";
         }
+
+        /// <summary>
+        /// Generate the debug info for this node. 
+        /// </summary>
+        /// <returns>A complete set of debug information for this node. </returns>
+        public Debug.kAINodeDebugInfo GenerateDebugInfo()
+        {
+            return new Debug.kAINodeDebugInfo(this);
+        }
     }
 }

@@ -527,6 +527,15 @@ namespace kAI.Core
                 return ParameterTypes[lParamIndex];
             }
         }
+
+        /// <summary>
+        /// Generate the debug info for this function node. 
+        /// </summary>
+        /// <returns>The debug info for this function node. </returns>
+        public override Debug.kAINodeObjectDebugInfo GenerateDebugInfo()
+        {
+            return new Debug.kAINodeObjectDebugInfo(this);
+        }
     }
 
 }

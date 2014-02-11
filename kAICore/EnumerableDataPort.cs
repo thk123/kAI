@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Xml;
 using System.Reflection;
+using kAI.Core.Debug;
 
 namespace kAI.Core
 {
@@ -46,6 +47,7 @@ namespace kAI.Core
 
             return (kAIEnumerableDataPort)lDataPortConstructor.Invoke(new object[] { lPortID, null });
         }
+
     }
 
     /// <summary>
@@ -88,6 +90,7 @@ namespace kAI.Core
         /// </summary>
         public override void Release()
         {}
+
 
         /// <summary>
         /// Would create the opposite direction port, ie if this was an internal XML port would create the external one.
@@ -171,6 +174,14 @@ namespace kAI.Core
             }
         }
 
+        /// <summary>
+        /// Generate the debug info for this enumerable data port. 
+        /// </summary>
+        /// <returns>The debug info for this enumerable data port. </returns>
+        public override Debug.kAIPortDebugInfo GenerateDebugInfo()
+        {
+            return new kAIEnumerablePortDebugInfo(this, Values.Select<T, string>((lItem) => { return lItem.ToString(); } ));
+        }
         
     }
 

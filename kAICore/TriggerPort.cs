@@ -25,6 +25,8 @@ namespace kAI.Core
 
         bool mHasBeenTriggered;
 
+        DateTime mLastTrigger;
+
         /// <summary>
         /// Create a new trigger port. 
         /// </summary>
@@ -34,7 +36,16 @@ namespace kAI.Core
         public kAITriggerPort(kAIPortID lPortID, ePortDirection lPortDirection, kAIILogger lLogger = null)
             : base(lPortID, lPortDirection, kAIPortType.TriggerType, lLogger)
         {
+            OnTriggered += new TriggerEvent(kAITriggerPort_OnTriggered);
 
+            mLastTrigger = new DateTime(0);
+        }
+
+        
+
+        void kAITriggerPort_OnTriggered(kAIPort lSender)
+        {
+            mLastTrigger = DateTime.Now;
         }
 
         /// <summary>
@@ -106,6 +117,15 @@ namespace kAI.Core
             {
                 return !mOwningBehaviour.InReleasePhase;
             }
+        }
+
+        /// <summary>
+        /// Generate the debug info for this trigger port. 
+        /// </summary>
+        /// <returns>The debug info for this trigger port. </returns>
+        public override Debug.kAIPortDebugInfo GenerateDebugInfo()
+        {
+            return new Debug.kAITriggerPortDebugInfo(mLastTrigger, this);
         }
     }
 }

@@ -42,6 +42,12 @@ namespace kAI.Core
         /// <param name="lDeltaTime">The time passed since last update. </param>
         /// <param name="lUserData">The user data.</param>
         void Update(float lDeltaTime, object lUserData);
+
+        /// <summary>
+        /// Generates the NodeObjects debug info at the current time. 
+        /// </summary>
+        /// <returns>A complete set of debug info for this node contents. </returns>
+        Debug.kAINodeObjectDebugInfo GenerateDebugInfo();
     }
 
     /// <summary>
@@ -147,5 +153,11 @@ namespace kAI.Core
         /// <param name="lDeltaTime"></param>
         /// <param name="lUserData"></param>
         public abstract void Update(float lDeltaTime, object lUserData);
+
+        /// <summary>
+        /// Generate the debug info for this node object.  
+        /// </summary>
+        /// <returns>The debug info for this node object. </returns>
+        public abstract Debug.kAINodeObjectDebugInfo GenerateDebugInfo();
     }
 }

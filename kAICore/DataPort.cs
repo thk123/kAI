@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Reflection;
+using kAI.Core.Debug;
 
 namespace kAI.Core
 {
@@ -45,6 +46,15 @@ namespace kAI.Core
                             typeof(kAIPortID), typeof(kAIPort.ePortDirection), typeof(kAIILogger) });
 
             return (kAIDataPort)lDataPortConstructor.Invoke(new object[] { lPortID, lPortDirection, null });
+        }
+
+        /// <summary>
+        /// Generate the debug info for this data port. 
+        /// </summary>
+        /// <returns>The debug info for this data port. </returns>
+        public override Debug.kAIPortDebugInfo GenerateDebugInfo()
+        {
+            return new kAIDataPortDebugInfo(this);
         }
     }
 

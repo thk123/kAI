@@ -5,11 +5,13 @@ using System.Text;
 
 namespace kAI.Core
 {
+    
     public partial class kAIXmlBehaviour
     {
         /// <summary>
-        /// Represents an XML Behaviours information for presentation and debugging. 
+        /// DEPRECATED: Represents an XML Behaviours information for presentation and debugging. 
         /// </summary>
+        [Serializable]
         public class kAIDebugInfo
         {
             /// <summary>
@@ -30,7 +32,7 @@ namespace kAI.Core
                 private set;
             }
 
-            kAIXmlBehaviour mBehaviour;
+            string xmlBehaviourID;
 
             /// <summary>
             /// Create a debug info based off an XML Behaviour.
@@ -38,10 +40,11 @@ namespace kAI.Core
             /// <param name="lBehaviour"></param>
             internal kAIDebugInfo(kAIXmlBehaviour lBehaviour)
             {
-                mBehaviour = lBehaviour;
+                //mBehaviour = lBehaviour;
                 ActiveNodes = new List<string>();
                 ActiveBehaviours = new List<kAIDebugInfo>();
-                Update();
+
+                xmlBehaviourID = lBehaviour.BehaviourID;
             }
 
             /// <summary>
@@ -52,7 +55,7 @@ namespace kAI.Core
                 ActiveNodes.Clear();
                 ActiveBehaviours.Clear();
 
-                foreach (kAINode lNode in mBehaviour.InternalNodes)
+                /*foreach (kAINode lNode in mBehaviour.InternalNodes)
                 {
                     if (lNode.NodeContents is kAIBehaviour)
                     {
@@ -66,7 +69,7 @@ namespace kAI.Core
                             }
                         }   
                     }
-                }
+                }*/
             }
         }
     }

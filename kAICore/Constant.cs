@@ -65,6 +65,15 @@ namespace kAI.Core
         {
             return lSerialObject.Instantiate(lAssemblyResolver);
         }
+
+        /// <summary>
+        /// Generate debug info for this constant node. 
+        /// </summary>
+        /// <returns>The debug info for this constant node. </returns>
+        public override Debug.kAINodeObjectDebugInfo GenerateDebugInfo()
+        {
+            return new Debug.kAIConstantNodeDebugInfo(this);
+        }
     }
 
     /// <summary>

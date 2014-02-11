@@ -46,6 +46,9 @@
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
+    <Reference Include="Winterdom.IO.FileMap">
+      <HintPath>..\GroundExample\DLLs\Winterdom.IO.FileMap.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Behaviour.cs" />
@@ -53,6 +56,16 @@
     <Compile Include="BehaviourID.cs" />
     <Compile Include="Constant.cs" />
     <Compile Include="DataPort.cs" />
+    <Compile Include="Debug\BehaviourDebugInfo.cs" />
+    <Compile Include="Debug\ConstantNodeDebugInfo.cs" />
+    <Compile Include="Debug\DataPortDebugInfo.cs" />
+    <Compile Include="Debug\DebugInfo.cs" />
+    <Compile Include="Debug\EnumerablePortDebugInfo.cs" />
+    <Compile Include="Debug\NodeDebugInfo.cs" />
+    <Compile Include="Debug\NodeObjectDebugInfo.cs" />
+    <Compile Include="Debug\PortDebugInfo.cs" />
+    <Compile Include="Debug\TriggerPortDebugInfo.cs" />
+    <Compile Include="Debug\XmlBehaviourDebugInfo.cs" />
     <Compile Include="EnumerableDataPort.cs" />
     <Compile Include="FunctionConfiguration.cs" />
     <Compile Include="FunctionNode.cs" />
@@ -83,8 +96,9 @@
 cp $(TargetDir)\MiscUtil.dll $(SolutionDir)kAI-Example\Assets\DLLs\MiscUtil.dll
 cp $(TargetPath) $(SolutionDir)SpaceExample\Assets\DLLs\$(TargetFileName)
 cp $(TargetDir)\MiscUtil.dll $(SolutionDir)SpaceExample\Assets\DLLs\MiscUtil.dll
+cp $(TargetDir)\MiscUtil.dll $(SolutionDir)GroundExample\Assets\DLLs\MiscUtil.dll
 cp $(TargetPath) $(SolutionDir)GroundExample\Assets\DLLs\$(TargetFileName)
-cp $(TargetDir)\MiscUtil.dll $(SolutionDir)GroundExample\Assets\DLLs\MiscUtil.dll</PostBuildEvent>
+</PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

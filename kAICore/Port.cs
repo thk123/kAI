@@ -340,6 +340,13 @@ namespace kAI.Core
         internal abstract kAIPort CreateOppositePort();
 
         /// <summary>
+        /// Generates the debug infomation for this port. 
+        /// </summary>
+        /// <returns>A complete set of debug information about this port. </returns>
+        public abstract Debug.kAIPortDebugInfo GenerateDebugInfo();
+
+
+        /// <summary>
         /// Determine if this port is connected to another specified port. 
         /// This port must be an outbound port. 
         /// </summary>
@@ -632,6 +639,8 @@ namespace kAI.Core
         {
             return lDataA == lDataB;
         }
+
+        
     }
 
     /// <summary>

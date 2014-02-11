@@ -461,6 +461,15 @@ namespace kAI.Core
 
             return new SerialObject(lType);
         }
+
+        /// <summary>
+        /// Generate debug info for this code behaviour.
+        /// </summary>
+        /// <returns>The debug info for this behaviour. </returns>
+        public override Debug.kAINodeObjectDebugInfo GenerateDebugInfo()
+        {
+            return new Debug.kAIBehaviourDebugInfo(this);
+        }
     }
 }
 
