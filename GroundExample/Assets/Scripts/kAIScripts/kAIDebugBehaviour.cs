@@ -13,37 +13,42 @@ using MemoryMappedFile = Winterdom.IO.FileMap.MemoryMappedFile;
 public class kAIDebugBehaviour : MonoBehaviour {
 
     kAIXmlBehaviour behaviour;
-
-    MemoryMappedFile debugFile;
+    kAIBehaviourDebugStore store;
+    /*MemoryMappedFile debugFile;
 
     kAIXmlBehaviourDebugInfo DebugInfo;
-	ProcessSemaphore semaphore = null;
+	ProcessSemaphore semaphore = null;*/
 	// Use this for initialization
 	void Start () 
 	{
         behaviour = GetComponent<AIBehaviour>().mXmlBehaviour;
-		debugFile = MemoryMappedFile.Create(MapProtection.PageReadWrite, 1024 * 1024 * 1024, "kAIDebug.MMFile");
-		semaphore = new ProcessSemaphore("kAIDebug.Semaphore", 1, 1);
-        
+        if (!kAIDebugServer.IsInit)
+        {
+            print("Init Debug Server");
+            kAIDebugServer.Init("Unity" + System.Diagnostics.Process.GetCurrentProcess().Id);
+        }
+
+        store =  kAIDebugServer.AddBehaviour(behaviour, gameObject.name);
 	}
 		
 	// Update is called once per frame
 	void Update () 
 	{
-		semaphore.Acquire();
-        Stream stream = debugFile.MapView(MapAccess.FileMapWrite, 0, 1024 * 1024 * 1024);
+        store.Update();
+		/*semaphore.Acquire();
+        Stream stream = debugFile.MapView(MapAccess.FileMapWrite, 0, 1024 * 1024 * 1024);*/
         
-        BinaryFormatter writer = new BinaryFormatter();
+        //BinaryFormatter writer = new BinaryFormatter();
       //  Stream stream2 = new FileStream("C:\\test.bin", FileMode.OpenOrCreate);
         /*StreamWriter twriter = new StreamWriter("E:\\test2.txt");
         BinaryFormatter writer = new BinaryFormatter();
         Sertool.Sertool.OutputSerializationInformation(behaviour, twriter);
         twriter.Close();*/
         //print(twriter.GetStringBuilder().ToString());
-        DebugInfo = (kAIXmlBehaviourDebugInfo)behaviour.GenerateDebugInfo();
+        /*DebugInfo = (kAIXmlBehaviourDebugInfo)behaviour.GenerateDebugInfo();
         writer.Serialize(stream, DebugInfo);
         stream.Flush();
-        stream.Close();
+        stream.Close();*/
 
         /*using (Stream inStream = MemoryMappedFile.Open(MapAccess.FileMapRead, "Debug").MapView(MapAccess.FileMapRead, 0, 1024 * 1024 * 1024))
         {
@@ -52,7 +57,7 @@ public class kAIDebugBehaviour : MonoBehaviour {
             kAIBehaviour b = (kAIBehaviour)vf.Deserialize(inStream);
              Console.WriteLine(b.BehaviourID);
         }*/
-		semaphore.Release();
+		//semaphore.Release();
 
 	}
 
