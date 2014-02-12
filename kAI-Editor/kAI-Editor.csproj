@@ -90,6 +90,12 @@
     <Compile Include="Controls\WinForms\ConstantNodeCreator.Designer.cs">
       <DependentUpon>ConstantNodeCreator.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\WinForms\Debug\DebugWindow.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Controls\WinForms\Debug\DebugWindow.Designer.cs">
+      <DependentUpon>DebugWindow.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\WinForms\DLLEntry.cs">
       <SubType>UserControl</SubType>
     </Compile>
@@ -221,6 +227,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\WinForms\ConstantNodeCreator.resx">
       <DependentUpon>ConstantNodeCreator.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WinForms\Debug\DebugWindow.resx">
+      <DependentUpon>DebugWindow.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Controls\WinForms\DLLEntry.resx">
       <DependentUpon>DLLEntry.cs</DependentUpon>

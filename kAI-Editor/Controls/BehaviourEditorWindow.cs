@@ -20,6 +20,7 @@ using Winterdom.IO.FileMap;
 using ThreadMessaging;
 
 using MemoryMappedFile = Winterdom.IO.FileMap.MemoryMappedFile;
+using kAI.Editor.Controls.WinForms.Debug;
 
 namespace kAI.Editor.Controls
 {
@@ -65,9 +66,6 @@ namespace kAI.Editor.Controls
 
         Editor mEditor;
 
-        MemoryMappedFile mMemoryFile;
-        ProcessSemaphore semaphore;
-
         static Random sRandom = new Random();
 
         public ContextMenu GlobalContextMenu
@@ -84,6 +82,10 @@ namespace kAI.Editor.Controls
             get;
             private set;
         }
+
+        kAIDebugger mDebugger;
+
+        DebugWindow mDebugWindow;
 
         /// <summary>
         /// Happens when something is selected within the behaviour editor. 
@@ -120,8 +122,8 @@ namespace kAI.Editor.Controls
 
             GlobalContextMenu.Popup += new EventHandler(GlobalContextMenu_Popup);
 
-            semaphore = null;
-            mMemoryFile = null;
+            mDebugger = null;
+            mDebugWindow = null;
         }
 
         /// <summary>
@@ -441,30 +443,28 @@ namespace kAI.Editor.Controls
 
         internal void ConnectDebugger(string lMemoryMappedFile)
         {
-            if (mMemoryFile == null)
+            if (mDebugger == null)
             {
-                mMemoryFile = MemoryMappedFile.Open(MapAccess.FileMapRead, lMemoryMappedFile);
-                semaphore = new ProcessSemaphore("kAIDebug.Semaphore", 1, 1);
+                mDebugger = new kAIDebugger("TODO");
+                mDebugWindow = new DebugWindow();
             }
-
             UpdateDebugInfo();
         }
 
+        
+
         void UpdateDebugInfo()
         {
-           if(mMemoryFile != null)
+            if (mDebugger != null)
             {
-                // obtain lock
-                semaphore.Acquire();
-                using (Stream inStream = mMemoryFile.MapView(MapAccess.FileMapRead, 0, 1024 * 1024 ))
-                {
-                    BinaryFormatter writer = new BinaryFormatter();
-                    //object something = writer.Deserialize(inStream);
-                    kAIXmlBehaviourDebugInfo behaviour = (kAIXmlBehaviourDebugInfo)writer.Deserialize(inStream);
+                mDebugWindow.Show();
+                mDebugWindow.SetEntries(mDebugger.GetAvaliableBehaviours());
 
-                    mEditorImpl.SetDebugInfo(behaviour);
+                if (mDebugWindow.HasSelectedEntry)
+                {
+                    kAIXmlBehaviourDebugInfo lDebugInfo = mDebugger.LoadEntry(mDebugWindow.SelectedEntry);
+                    mEditorImpl.SetDebugInfo(lDebugInfo);
                 }
-                semaphore.Release();
             }
         }
     }    
