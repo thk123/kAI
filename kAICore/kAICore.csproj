@@ -54,9 +54,12 @@
     <Compile Include="Constant.cs" />
     <Compile Include="DataPort.cs" />
     <Compile Include="Debug\BehaviourDebugInfo.cs" />
+    <Compile Include="Debug\BehaviourDebugStore.cs" />
     <Compile Include="Debug\ConstantNodeDebugInfo.cs" />
     <Compile Include="Debug\DataPortDebugInfo.cs" />
+    <Compile Include="Debug\Debugger.cs" />
     <Compile Include="Debug\DebugInfo.cs" />
+    <Compile Include="Debug\DebugServer.cs" />
     <Compile Include="Debug\EnumerablePortDebugInfo.cs" />
     <Compile Include="Debug\NodeDebugInfo.cs" />
     <Compile Include="Debug\NodeObjectDebugInfo.cs" />
