@@ -7,6 +7,7 @@ using System.Windows.Forms;
 using kAI.Core;
 using System.Collections.ObjectModel;
 using System.ComponentModel;
+using kAI.Core.Debug;
 
 namespace kAI.Editor.ObjectProperties
 {
@@ -22,6 +23,8 @@ namespace kAI.Editor.ObjectProperties
         {
             // The object being represented. 
             kAIINodeObject mNodeObject;
+
+            kAINodeObjectDebugInfo mDebugInfo;
 
             /// <summary>
             /// The type of the contents. 
@@ -54,13 +57,23 @@ namespace kAI.Editor.ObjectProperties
                 }
             }
 
+            /*[TypeConverterAttribute(typeof(ExpandableObjectConverter))]
+            public kAIDebugInfo DebugInfo
+            {
+                get
+                {
+                    
+                }
+            }*/
+
             /// <summary>
             /// Create something representing a specific content of a node. 
             /// </summary>
             /// <param name="lContents">The thing inside the node. </param>
-            public kAINodeContentsProperties(kAIINodeObject lContents)
+            public kAINodeContentsProperties(kAIINodeObject lContents,kAINodeObjectDebugInfo lDebugInfo)
             {
                 mNodeObject = lContents;
+                mDebugInfo = lDebugInfo;
             }
 
             /// <summary>
@@ -75,6 +88,8 @@ namespace kAI.Editor.ObjectProperties
 
         // The node being represented by this property set. 
         kAINode mNode;
+
+        kAINodeDebugInfo mDebugInfo;
 
         /// <summary>
         /// The name of the node. 
@@ -101,7 +116,7 @@ namespace kAI.Editor.ObjectProperties
         {
             get
             {
-                return new kAINodeContentsProperties(mNode.NodeContents);
+                return new kAINodeContentsProperties(mNode.NodeContents, (mDebugInfo == null ? null : mDebugInfo.Contents));
             }
         }
 
@@ -118,10 +133,19 @@ namespace kAI.Editor.ObjectProperties
             }
         }
 
+        [TypeConverterAttribute(typeof(ExpandableObjectConverter))]
+        public kAINodeDebugInfo DebugInfo
+        {
+            get
+            {
+                return mDebugInfo;
+            }
+        }
 
-        public kAINodeProperties(kAINode lNode)
+        public kAINodeProperties(kAINode lNode, kAINodeDebugInfo lDebugInfo)
         {
             mNode = lNode;
+            mDebugInfo = lDebugInfo;
         }
 
         static kAINodeProperties()

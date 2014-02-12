@@ -342,7 +342,7 @@ namespace kAI.Editor.Controls.DX
         {
             if (OnSelected != null)
             {
-                OnSelected(new kAINodeProperties(Node));
+                OnSelected(new kAINodeProperties(Node, mDebugInfo));
             }
         }
 
@@ -419,6 +419,14 @@ namespace kAI.Editor.Controls.DX
         internal void SetDebugInfo(kAI.Core.Debug.kAINodeDebugInfo lNodeDebugInfo)
         {
             mDebugInfo = lNodeDebugInfo;
+
+            foreach (kAIEditorPortDX lEditorPort in mExternalPorts)
+            {
+                lEditorPort.SetDebugInfo(lNodeDebugInfo.ExternalPorts.Find((lPortInfo) =>
+                    {
+                        return lPortInfo.PortID == lEditorPort.Port.FQPortID;
+                    }));
+            }
         }
     }
 }

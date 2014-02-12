@@ -5,6 +5,7 @@ using System.Text;
 using System.ComponentModel;
 
 using kAI.Core;
+using kAI.Core.Debug;
 
 namespace kAI.Editor.ObjectProperties
 {
@@ -85,15 +86,27 @@ namespace kAI.Editor.ObjectProperties
             }
         }
 
+        [TypeConverterAttribute(typeof(ExpandableObjectConverter))]
+        public kAIPortDebugInfo DebugInfo
+        {
+            get
+            {
+                return mDebugInfo;
+            }
+        }
+
         kAIPort mPort;
+
+        kAIPortDebugInfo mDebugInfo;
 
         /// <summary>
         /// Create a PortProperties basic off a specific port. 
         /// </summary>
         /// <param name="lPort">The port to show the properties for. </param>
-        public kAIPortProperties(kAIPort lPort)
+        public kAIPortProperties(kAIPort lPort, kAIPortDebugInfo lDebugInfo)
         {
             mPort = lPort;
+            mDebugInfo = lDebugInfo;
         }
     }
 }

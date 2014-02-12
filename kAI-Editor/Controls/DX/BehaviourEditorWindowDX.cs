@@ -793,6 +793,11 @@ namespace kAI.Editor.Controls.DX
             {
                 GetNode(lNodeDebugInfo.NodeID).SetDebugInfo(lNodeDebugInfo);
             }
+
+            foreach (kAIPortDebugInfo lPortDebugInfo in lDebugInfo.InternalPorts)
+            {
+                GetPort(lPortDebugInfo.PortID).SetDebugInfo(lPortDebugInfo);
+            }
         }
 
     }

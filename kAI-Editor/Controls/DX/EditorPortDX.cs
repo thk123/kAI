@@ -12,6 +12,7 @@ using SlimDX.Direct3D11;
 using kAI.Editor.Controls.DX.Coordinates;
 using kAI.Editor.Controls.WinForms;
 using kAI.Editor.ObjectProperties;
+using kAI.Core.Debug;
 
 namespace kAI.Editor.Controls.DX
 {
@@ -59,6 +60,8 @@ namespace kAI.Editor.Controls.DX
             get;
             private set;
         }
+
+        kAIPortDebugInfo mDebugInfo;
 
         /// <summary>
         /// Triggered when this port is selected. 
@@ -385,8 +388,13 @@ namespace kAI.Editor.Controls.DX
         {
             if (OnSelected != null)
             {
-                OnSelected(new kAIPortProperties(Port));
+                OnSelected(new kAIPortProperties(Port, mDebugInfo));
             }
+        }
+
+        internal void SetDebugInfo(kAIPortDebugInfo lDebugInfo)
+        {
+            mDebugInfo = lDebugInfo;
         }
     }
 }
