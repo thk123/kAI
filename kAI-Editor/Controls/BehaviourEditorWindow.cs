@@ -463,7 +463,14 @@ namespace kAI.Editor.Controls
                 if (mDebugWindow.HasSelectedEntry)
                 {
                     kAIXmlBehaviourDebugInfo lDebugInfo = mDebugger.LoadEntry(mDebugWindow.SelectedEntry);
-                    mEditorImpl.SetDebugInfo(lDebugInfo);
+                    if (lDebugInfo != null)
+                    {
+                        mEditorImpl.SetDebugInfo(lDebugInfo);
+                        mDebugWindow.Close();
+                        mDebugWindow = null;
+                        mDebugger.Dispose();
+                        mDebugger = null;
+                    }
                 }
             }
         }

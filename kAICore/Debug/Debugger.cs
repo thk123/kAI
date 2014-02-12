@@ -64,23 +64,27 @@ namespace kAI.Core.Debug
             ProcessSemaphore lBehaviourLock = new ProcessSemaphore(lEntry.LockID, 1, 1);
             lBehaviourLock.Acquire();
             {
-                MemoryMappedFile lFile = MemoryMappedFile.Open(MapAccess.FileMapRead, lEntry.FileID);
-                using (Stream inStream = lFile.MapView(MapAccess.FileMapRead, 0, kAIBehaviourDebugStore.kBehaviourFileSize))
+                try
                 {
-                    BinaryFormatter writer = new BinaryFormatter();
-                    //object something = writer.Deserialize(inStream);
-                    try
+                    MemoryMappedFile lFile = MemoryMappedFile.Open(MapAccess.FileMapRead, lEntry.FileID);
+                    using (Stream inStream = lFile.MapView(MapAccess.FileMapRead, 0, kAIBehaviourDebugStore.kBehaviourFileSize))
                     {
+                        BinaryFormatter writer = new BinaryFormatter();
+                        //object something = writer.Deserialize(inStream);
                         lBehaviour = (kAIXmlBehaviourDebugInfo)writer.Deserialize(inStream);
+
                     }
-                    catch (System.Exception e)
-                    {
-                        kAIObject.LogWarning(null, "Could not load info: " + e.Message);
-                    }
-                    
+                }
+                catch(FileMapIOException e)
+                {
+                    kAIObject.GlobalLogger.LogError("IO Exception reading debug file: " + e.Message);
+                }
+                finally
+                {
+                    lBehaviourLock.Release();
                 }
             }
-            lBehaviourLock.Release();
+            
 
             return lBehaviour;
         }

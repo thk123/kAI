@@ -304,6 +304,22 @@ namespace kAI.Editor.Controls.DX
             lContainerEditor.SpriteRenderer.Draw(lTexture, new Vector2(lFormPosition.mPoint.X, lFormPosition.mPoint.Y), sPortSize, SpriteTextRenderer.CoordinateType.Absolute);
             lContainerEditor.TextRenderer.DrawString(Port.PortID, lLabelPosition, new Color4(lLabelColour));
 
+            if (mDebugInfo != null)
+            {
+                kAITriggerPortDebugInfo lTriggerInfo = mDebugInfo as kAITriggerPortDebugInfo;
+                if(lTriggerInfo != null)
+                {
+                    TimeSpan lTimeSinceLastTrigger = DateTime.Now - lTriggerInfo.LastTimeTriggered;
+
+                    if (lTimeSinceLastTrigger <= new TimeSpan(0, 0, 0, 0, 500))
+                    {
+                        float lAlpha = 1.0f - ((float)lTimeSinceLastTrigger.Milliseconds / 500.0f);
+                        lContainerEditor.SpriteRenderer.Draw(lContainerEditor.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.EnabledIcon),
+                            new Vector2(lFormPosition.mPoint.X - 8, lFormPosition.mPoint.Y - 8), new Vector2(16, 16), new Color4(lAlpha ,1,1,1), SpriteTextRenderer.CoordinateType.Absolute);
+                    }
+                }
+            }
+
             foreach (kAIEditorConnexionDX lConnexion in mConnexions)
             {
                 lConnexion.Render2D();
