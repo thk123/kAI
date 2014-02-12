@@ -466,6 +466,9 @@ namespace kAI.Editor.Controls
                     if (lDebugInfo != null)
                     {
                         mEditorImpl.SetDebugInfo(lDebugInfo);
+                    }
+                    else
+                    {
                         mDebugWindow.Close();
                         mDebugWindow = null;
                         mDebugger.Dispose();
