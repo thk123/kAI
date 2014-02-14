@@ -454,11 +454,18 @@ namespace kAI.Editor.Controls
 
         void mDebugWindow_OnEntrySelected(kAIBehaviourEntry lEntry)
         {
+            mNodeNest = new List<kAINodeID>();
+
             kAIXmlBehaviourDebugInfo lDebugInfo = mDebugger.LoadEntry(lEntry);
             ApplyDebugInfo(lDebugInfo);
+            mLoadedEntry = lEntry;
+
+            
         }
 
-        
+        kAIBehaviourEntry mLoadedEntry;
+
+        List<kAINodeID> mNodeNest;
 
         void UpdateDebugInfo()
         {
@@ -466,15 +473,31 @@ namespace kAI.Editor.Controls
             {
                 mDebugWindow.Show();
                 mDebugWindow.SetEntries(mDebugger.GetAvaliableBehaviours());
+                if(mDebugWindow.HasSelectedEntry)
+                {
+                    kAIXmlBehaviourDebugInfo lDebugInfo = mDebugger.LoadEntry(mLoadedEntry);
+                    ApplyDebugInfo(lDebugInfo);
+                }
             }
         }
 
-        public void ApplyDebugInfo(kAIXmlBehaviourDebugInfo lDebugInfo)
+        void ApplyDebugInfo(kAIXmlBehaviourDebugInfo lDebugInfo)
         {
             
             if (lDebugInfo != null)
             {
-                mEditorImpl.SetDebugInfo(lDebugInfo);
+                kAIXmlBehaviourDebugInfo lActualDebugInfo = lDebugInfo;
+
+                foreach (kAINodeID lNodeID in mNodeNest)
+                {
+                    lActualDebugInfo = lDebugInfo.InternalNodes.Find((lNode) => { return lNode.NodeID == lNodeID; }).Contents as kAIXmlBehaviourDebugInfo;
+                    if (lActualDebugInfo == null)
+                    {
+                        GlobalServices.Logger.LogError("Could not load debug info on account of node not existing " + lNodeID);
+                    }
+                }
+
+                mEditorImpl.SetDebugInfo(lActualDebugInfo);
             }
             else
             {
@@ -483,6 +506,11 @@ namespace kAI.Editor.Controls
                 mDebugger.Dispose();
                 mDebugger = null;
             }
+        }
+
+        public void EnterNode(kAINodeID lNode)
+        {
+            mNodeNest.Add(lNode);
         }
     }    
 }
