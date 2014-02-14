@@ -447,8 +447,15 @@ namespace kAI.Editor.Controls
             {
                 mDebugger = new kAIDebugger("TODO");
                 mDebugWindow = new DebugWindow();
+                mDebugWindow.OnEntrySelected += new Action<kAIBehaviourEntry>(mDebugWindow_OnEntrySelected);
             }
             UpdateDebugInfo();
+        }
+
+        void mDebugWindow_OnEntrySelected(kAIBehaviourEntry lEntry)
+        {
+            kAIXmlBehaviourDebugInfo lDebugInfo = mDebugger.LoadEntry(lEntry);
+            ApplyDebugInfo(lDebugInfo);
         }
 
         
@@ -459,22 +466,22 @@ namespace kAI.Editor.Controls
             {
                 mDebugWindow.Show();
                 mDebugWindow.SetEntries(mDebugger.GetAvaliableBehaviours());
+            }
+        }
 
-                if (mDebugWindow.HasSelectedEntry)
-                {
-                    kAIXmlBehaviourDebugInfo lDebugInfo = mDebugger.LoadEntry(mDebugWindow.SelectedEntry);
-                    if (lDebugInfo != null)
-                    {
-                        mEditorImpl.SetDebugInfo(lDebugInfo);
-                    }
-                    else
-                    {
-                        mDebugWindow.Close();
-                        mDebugWindow = null;
-                        mDebugger.Dispose();
-                        mDebugger = null;
-                    }
-                }
+        public void ApplyDebugInfo(kAIXmlBehaviourDebugInfo lDebugInfo)
+        {
+            
+            if (lDebugInfo != null)
+            {
+                mEditorImpl.SetDebugInfo(lDebugInfo);
+            }
+            else
+            {
+                mDebugWindow.Close();
+                mDebugWindow = null;
+                mDebugger.Dispose();
+                mDebugger = null;
             }
         }
     }    

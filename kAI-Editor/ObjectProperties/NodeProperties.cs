@@ -57,14 +57,14 @@ namespace kAI.Editor.ObjectProperties
                 }
             }
 
-            /*[TypeConverterAttribute(typeof(ExpandableObjectConverter))]
+            [TypeConverterAttribute(typeof(ExpandableObjectConverter))]
             public kAIDebugInfo DebugInfo
             {
                 get
                 {
-                    
+                    return mDebugInfo;
                 }
-            }*/
+            }
 
             /// <summary>
             /// Create something representing a specific content of a node. 

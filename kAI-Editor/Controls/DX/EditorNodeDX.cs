@@ -354,6 +354,7 @@ namespace kAI.Editor.Controls.DX
             if (lObject.GetNodeFlavour() == eNodeFlavour.BehaviourXml)
             {
                 mEditorWindow.Editor.LoadBehaviour(kAIXmlBehaviour.Load(lObject, GlobalServices.LoadedProject.GetAssemblyByName));
+                mEditorWindow.Editor.ApplyDebugInfo(mDebugInfo.Contents as kAIXmlBehaviourDebugInfo);
             }
         }
 
