@@ -320,6 +320,11 @@ namespace kAI.Core
                 kAIRelativeObject.AddPathID(XmlLocationID, XmlLocation.GetFile().Directory);
             }
 
+            foreach (Func<kAIXmlBehaviour, kAIPort> lPortCreator in sDefaultInternalPorts)
+            {
+                AddInternalPort(lPortCreator(this), false);
+            }
+
             ConstructFromInternalXml(lSource, lAssemblyGetter);
         }
 
@@ -336,6 +341,11 @@ namespace kAI.Core
             // We are loading directly from a file, so we don't know our path relative to the project
             XmlLocation = null;
             kAIRelativeObject.AddPathID(XmlLocationID, lFile.Directory);
+
+            foreach (Func<kAIXmlBehaviour, kAIPort> lPortCreator in sDefaultInternalPorts)
+            {
+                AddInternalPort(lPortCreator(this), false);
+            }
 
             ConstructFromInternalXml(lSource, lAssemblyGetter);
         }

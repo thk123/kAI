@@ -247,32 +247,35 @@ namespace kAI.Core
             {
                 foreach (SerialPort lInternalPort in InternalPorts)
                 {
-                    Assembly lPortTypeAssembly = lAssemblyGetter(lInternalPort.PortDataTypeAssembly);
-                    Type lPortType = lPortTypeAssembly.GetType(lInternalPort.PortDataType);
-                    kAIPort lPort;
-                    if (lInternalPort.PortIsTrigger)
+                    if (!sDefaultInternalPortNames.Contains(lInternalPort.PortID))
                     {
-                        if (lInternalPort.PortIsEnumerable)
+                        Assembly lPortTypeAssembly = lAssemblyGetter(lInternalPort.PortDataTypeAssembly);
+                        Type lPortType = lPortTypeAssembly.GetType(lInternalPort.PortDataType);
+                        kAIPort lPort;
+                        if (lInternalPort.PortIsTrigger)
                         {
-                            throw new Exception("Cannot have an enumerable trigger");
-                        }
-                        lPort = new kAITriggerPort(lInternalPort.PortID, lInternalPort.PortDirection);
-                    }
-                    else
-                    {
-                        if (lInternalPort.PortIsEnumerable)
-                        {
-                            lPort = kAIEnumerableDataPort.CreateEnumerablePort(lPortType, lInternalPort.PortID);
+                            if (lInternalPort.PortIsEnumerable)
+                            {
+                                throw new Exception("Cannot have an enumerable trigger");
+                            }
+                            lPort = new kAITriggerPort(lInternalPort.PortID, lInternalPort.PortDirection);
                         }
                         else
                         {
-                            lPort = kAIDataPort.CreateDataPort(lPortType, lInternalPort.PortID, lInternalPort.PortDirection);
+                            if (lInternalPort.PortIsEnumerable)
+                            {
+                                lPort = kAIEnumerableDataPort.CreateEnumerablePort(lPortType, lInternalPort.PortID);
+                            }
+                            else
+                            {
+                                lPort = kAIDataPort.CreateDataPort(lPortType, lInternalPort.PortID, lInternalPort.PortDirection);
+                            }
                         }
+
+                        InternalPort lWrappedPort = new InternalPort { Port = lPort, IsGloballyAccesible = lInternalPort.IsGloballyAccesible };
+
+                        yield return lWrappedPort;
                     }
-
-                    InternalPort lWrappedPort = new InternalPort { Port = lPort, IsGloballyAccesible = lInternalPort.IsGloballyAccesible };
-
-                    yield return lWrappedPort;
                 }
             }
 
