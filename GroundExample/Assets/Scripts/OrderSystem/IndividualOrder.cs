@@ -12,6 +12,7 @@ public abstract class IndividualOrder
         //eMoveInFormation,
         eMoveDirectToPoint,
         eAttackTarget, 
+        eIdle,
     }
 
     public abstract IndividualOrderType TypeOfOrder
@@ -65,7 +66,11 @@ public class OrderSwitcherBehaviour : kAICodeBehaviour
     kAITriggerPort moveOrderTrigger;
     kAITriggerPort attackOrderTrigger;
     kAITriggerPort noOrderTrigger;
+    kAITriggerPort clearOrderTrigger;
+
     kAIDataPort<IndividualOrder> orderPort;
+
+    bool lPerformingOrder = false;
 
     public OrderSwitcherBehaviour()
         :base(null)
@@ -81,41 +86,101 @@ public class OrderSwitcherBehaviour : kAICodeBehaviour
         noOrderTrigger = new kAITriggerPort("Idle", kAIPort.ePortDirection.PortDirection_Out);
         AddExternalPort(noOrderTrigger);
 
+        clearOrderTrigger = new kAITriggerPort("OrderCompleted", kAIPort.ePortDirection.PortDirection_In);
+        clearOrderTrigger.OnTriggered += clearOrderTrigger_OnTriggered;
+        AddExternalPort(clearOrderTrigger);
+
+
         orderPort = new kAIDataPort<IndividualOrder>("Order", kAIPort.ePortDirection.PortDirection_In);
         AddExternalPort(orderPort);
     }
 
+    void clearOrderTrigger_OnTriggered(kAIPort lSender)
+    {
+        lPerformingOrder = false;
+    }
+
     protected override void InternalUpdate(float lDeltaTime, object lUserData)
     {
-        bool lDidDoOrder = false;
-        if(orderPort.Data != null)
+        if (lPerformingOrder)
         {
-            if (lastOrderType != orderPort.Data.TypeOfOrder)
-            {
-                lastOrderType = orderPort.Data.TypeOfOrder;
+            // doing an order 
 
-                switch (lastOrderType)
-                {
-                    case IndividualOrder.IndividualOrderType.eInvalid:
-                        break;
-                    case IndividualOrder.IndividualOrderType.eMoveDirectToPoint:
-                        lDidDoOrder = true;
-                        moveOrderTrigger.Trigger();
-                        break;
-                    case IndividualOrder.IndividualOrderType.eAttackTarget:
-                        lDidDoOrder = true;
-                        attackOrderTrigger.Trigger();
-                        break;
-                    default:
-                        break;
-                }
+            if (orderPort.Data != null)
+            {
+                // we've just received an order, override
+                ActivateOder(orderPort.Data.TypeOfOrder);
+            }
+            // else no order so we continue with current order
+        }
+        else
+        {
+            // no order being performed
+            if (orderPort.Data != null)
+            {
+                // we've just received an order, override
+                ActivateOder(orderPort.Data.TypeOfOrder);
+            }
+            else
+            {
+                // no order so we activate idle
+                ActivateOder(IndividualOrder.IndividualOrderType.eIdle);
             }
         }
 
-        if(!lDidDoOrder)
+       
+            
+        
+    }
+
+    void ActivateOder(IndividualOrder.IndividualOrderType order)
+    {
+        if(order != lastOrderType)
         {
-            noOrderTrigger.Trigger();
+            switch (order)
+            {
+                case IndividualOrder.IndividualOrderType.eInvalid:
+                    break;
+                case IndividualOrder.IndividualOrderType.eMoveDirectToPoint:
+                    moveOrderTrigger.Trigger();
+                    lPerformingOrder = true;
+                    break;
+                case IndividualOrder.IndividualOrderType.eAttackTarget:
+                    attackOrderTrigger.Trigger();
+                    lPerformingOrder = true;
+                    break;
+                case IndividualOrder.IndividualOrderType.eIdle:
+                    noOrderTrigger.Trigger();
+                    break;
+                default:
+                    break;
+            }
         }
+
+        lastOrderType = order;
+    }
+
+
+
+    public override kAI.Core.Debug.kAINodeObjectDebugInfo GenerateDebugInfo()
+    {
+        return new OrderSwitcherDebugInfo(this, lPerformingOrder);
+    }
+}
+
+[Serializable]
+public class OrderSwitcherDebugInfo : kAI.Core.Debug.kAIBehaviourDebugInfo
+{
+    public bool PerformingOrder
+    {
+        get;
+        private set;
+    }
+
+    public OrderSwitcherDebugInfo(OrderSwitcherBehaviour lBehaviour, bool lPerformingOrder)
+        :base(lBehaviour)
+    {
+        PerformingOrder = lPerformingOrder;
     }
 }
 

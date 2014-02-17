@@ -82,6 +82,7 @@ public class MoveToBehaviour : kAICodeBehaviour
             else 
             {
                 outComeVelocity.Data = Vector3.zero;
+                Deactivate();
             }
         }
     }
