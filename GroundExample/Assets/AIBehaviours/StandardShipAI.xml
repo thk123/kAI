@@ -228,6 +228,34 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
+        <NodeID>CombineVectorFloat2</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>lKeyValue</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>SelfPreservation</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>FleeVector</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>CombineVectorFloat2</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>lValueValue</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>SelfPreservation</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>FleeWeight</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
         <NodeID>OrderSwitcherBehaviour</NodeID>
       </EndNodeID>
       <EndPortID>
@@ -340,6 +368,20 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
+        <NodeID>WeightedVectorAverage</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Vectors</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>CombineVectorFloat2</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>DataReturn</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
         <NodeID>OrderSwitcherBehaviour</NodeID>
       </EndNodeID>
       <EndPortID>
@@ -410,6 +452,20 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
+        <NodeID>SelfPreservation</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Activate</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>InvalidNode</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>OnActivate</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
         <NodeID>OrderSwitcherBehaviour</NodeID>
       </EndNodeID>
       <EndPortID>
@@ -439,6 +495,20 @@
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
         <NodeID>IdleBehaviour</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Health</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>InvalidNode</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>Health</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>SelfPreservation</NodeID>
       </EndNodeID>
       <EndPortID>
         <PortID>Health</PortID>
@@ -672,6 +742,30 @@
       </NodeContents>
       <NodeID>
         <NodeID>CombineVectorFloat1</NodeID>
+      </NodeID>
+      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
+      <NodeSerialType>kAI.Core.kAIFunctionNode+SerialObject</NodeSerialType>
+      <NodeType>kAI.Core.kAIFunctionNode</NodeType>
+      <NodeTypeAssembly>kAICore</NodeTypeAssembly>
+    </kAIXmlBehaviour.InternalXml.SerialNode>
+    <kAIXmlBehaviour.InternalXml.SerialNode>
+      <NodeContents i:type="kAIFunctionNode.SerialObject">
+        <AssemblyName>Assembly-CSharp</AssemblyName>
+        <FunctionConfiguraion>
+          <GenericConfiguration />
+          <IsFirstParameterSelf>false</IsFirstParameterSelf>
+          <IsFunctionExecutable>false</IsFunctionExecutable>
+          <ReturnConfiguration>
+            <PropertyEnabled xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+              <d7p1:boolean>true</d7p1:boolean>
+            </PropertyEnabled>
+          </ReturnConfiguration>
+        </FunctionConfiguraion>
+        <MethodName>CombineVectorFloat</MethodName>
+        <TypeName>AIFunctions</TypeName>
+      </NodeContents>
+      <NodeID>
+        <NodeID>CombineVectorFloat2</NodeID>
       </NodeID>
       <NodeSerialAssembly>kAICore</NodeSerialAssembly>
       <NodeSerialType>kAI.Core.kAIFunctionNode+SerialObject</NodeSerialType>
