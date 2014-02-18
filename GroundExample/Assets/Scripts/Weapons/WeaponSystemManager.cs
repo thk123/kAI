@@ -155,8 +155,8 @@ public static class WeaponFunctions
             if (nearCollider != self.collider)
             {
                 GameObject nearObject = nearCollider.gameObject;
-                HealthBehaviour healthObj = nearObject.GetComponent<HealthBehaviour>();
-                if (healthObj != null)
+                FactionBehaviour healthObj = nearObject.GetComponent<FactionBehaviour>();
+                if (healthObj != null && healthObj.IsEnemy(self))
                 {
                     float dist2 = (nearObject.transform.position - self.transform.position).sqrMagnitude;
                     if (dist2 < nearestDistance)

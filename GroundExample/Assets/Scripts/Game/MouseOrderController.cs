@@ -38,10 +38,14 @@ public class MouseOrderController : MonoBehaviour {
                 IndividualOrder order = null;
                 if (Physics.Raycast(selectionRay, out info))
                 {
-                    HealthBehaviour selectableObject = info.collider.gameObject.GetComponent<HealthBehaviour>();
-                    if (selectableObject != null)
+                    FactionBehaviour selectableObject = info.collider.gameObject.GetComponent<FactionBehaviour>();
+                    if (selectableObject != null && selectableObject.IsEnemy(selector.selectedShip.gameObject))
                     {
                         order = IndividualOrder.CreateAttackOrder(selectableObject.gameObject);
+                    }
+                    else
+                    {
+                        // TODO: make a defend order?
                     }
                 }
 
