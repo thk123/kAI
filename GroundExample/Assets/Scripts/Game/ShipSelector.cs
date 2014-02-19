@@ -8,7 +8,7 @@ public class ShipSelector : MonoBehaviour {
 	
 	public SelectedCamera selectedCamera;
 
-	public Selectable selectedShip
+	public SquadLeader selectedShip
 	{
 		get;
 		private set;
@@ -34,7 +34,7 @@ public class ShipSelector : MonoBehaviour {
 				Selectable selectableObject = info.collider.gameObject.GetComponent<Selectable>();
 				if(selectableObject != null)
 				{
-					if(selectedShip != null)
+					/*if(selectedShip != null)
 					{
 						selectedShip.Deselect();
 					}
@@ -42,7 +42,13 @@ public class ShipSelector : MonoBehaviour {
 					selectableObject.Select();
 
 					selectedCamera.SelectObject(selectedShip.gameObject);
-					return;
+					return;*/
+
+                    SquadLeader leader =selectableObject.transform.parent.GetComponent<SquadLeader>();
+                    selectedCamera.SelectObject(leader);
+
+                    selectedShip = leader;
+                    return;
 				}
 			}
 

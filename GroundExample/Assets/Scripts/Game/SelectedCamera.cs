@@ -6,26 +6,33 @@ public class SelectedCamera : MonoBehaviour {
 	public GameObject NothingSelected;
 	public Vector3 offset;
 
-	GameObject selected;
+	SquadLeader selected;
 
 	// Use this for initialization
 	void Start () {
-		selected = NothingSelected;
+        selected = null;
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		transform.position = selected.transform.position + offset;
-		transform.LookAt(selected.transform);
+        if (selected != null)
+        {
+            transform.position = selected.SquadPosition + offset;
+            transform.LookAt(selected.SquadPosition);
+        }
+        else
+        {
+            transform.position = NothingSelected.transform.position;
+        }
 	}
 
-	public void SelectObject(GameObject newSelected)
+	public void SelectObject(SquadLeader newSelected)
 	{
 		selected = newSelected;
 	}
 
 	public void DeselectObject()
 	{
-		selected = NothingSelected;
+        selected = null;
 	}
 }

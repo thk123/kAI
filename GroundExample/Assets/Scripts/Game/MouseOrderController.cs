@@ -25,50 +25,43 @@ public class MouseOrderController : MonoBehaviour {
         {
             if (selector.selectedShip != null)
             {
-                SquadMember receiever = selector.selectedShip.GetComponent<SquadMember>();
-                Vector3 mousePoint = Input.mousePosition;
-                mousePoint.z = transform.position.y - 33.0f;
-                Camera camera = GetComponent<Camera>();
-                //print("Camera: " + camera.name);
-
-                // find out if we are attacking an enemy
-                Ray selectionRay = camera.ScreenPointToRay(Input.mousePosition);
-                RaycastHit info;
-
-                IndividualOrder order = null;
-                if (Physics.Raycast(selectionRay, out info))
-                {
-                    FactionBehaviour selectableObject = info.collider.gameObject.GetComponent<FactionBehaviour>();
-                    if (selectableObject != null && selectableObject.IsEnemy(selector.selectedShip.gameObject))
-                    {
-                        order = IndividualOrder.CreateAttackOrder(selectableObject.gameObject);
-                    }
-                    else
-                    {
-                        // TODO: make a defend order?
-                    }
-                }
-
-                if (order == null)
-                {
-                    Vector3 mouseLocation = camera.ScreenToWorldPoint(mousePoint);
-                    mouseLocation.y = receiever.transform.position.y;
-                    order = IndividualOrder.CreateMoveOrder(mouseLocation);
-                }
-
-
-
-                if (receiever != null)
-                {
-                    receiever.ReceiveIndividualOrder(order);
-                }
+                selector.selectedShip.IssueOrder(CreateOrder());
             }
-            
-
-            /*Vector3 mouseLocation = GetComponent<Camera>().ScreenToWorldPoint(Input.mousePosition);
-            print("Mouse location: " + mouseLocation);
-            Debug.Break();
-            */
         }
 	}
+
+    IndividualOrder CreateOrder()
+    {
+        Vector3 mousePoint = Input.mousePosition;
+        mousePoint.z = transform.position.y - 33.0f;
+        Camera camera = GetComponent<Camera>();
+
+        // find out if we are attacking an enemy
+        Ray selectionRay = camera.ScreenPointToRay(Input.mousePosition);
+        RaycastHit info;
+
+        IndividualOrder order = null;
+        if (Physics.Raycast(selectionRay, out info))
+        {
+            FactionBehaviour selectableObject = info.collider.gameObject.GetComponent<FactionBehaviour>();
+            if (selectableObject != null && selectableObject.IsEnemy(selector.selectedShip.gameObject))
+            {
+                order = IndividualOrder.CreateAttackOrder(selectableObject.gameObject);
+            }
+            else
+            {
+                // TODO: make a defend order?
+            }
+        }
+
+        if (order == null)
+        {
+            Vector3 mouseLocation = camera.ScreenToWorldPoint(mousePoint);
+            order = IndividualOrder.CreateMoveOrder(mouseLocation);
+        }
+
+
+        return order;
+       
+    }
 }

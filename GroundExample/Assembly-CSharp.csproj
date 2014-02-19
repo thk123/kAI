@@ -60,6 +60,7 @@
      <Compile Include="Assets\Scripts\Game\ShipSelector.cs" />
      <Compile Include="Assets\Scripts\OrderSystem\IndividualOrder.cs" />
      <Compile Include="Assets\Scripts\OrderSystem\OrderSender.cs" />
+     <Compile Include="Assets\Scripts\OrderSystem\SquadLeader.cs" />
      <Compile Include="Assets\Scripts\OrderSystem\SquadMember.cs" />
      <Compile Include="Assets\Scripts\Weapons\LaserWeaponSystem.cs" />
      <Compile Include="Assets\Scripts\Weapons\WeaponSystemManager.cs" />
@@ -67,6 +68,7 @@
      <Compile Include="Assets\Scripts\kAIScripts\kAIDebugBehaviour.cs" />
      <None Include="Assets\AIBehaviours\HandleMoveOrder.xml" />
      <None Include="Assets\AIBehaviours\FaceTarget.xml" />
+     <None Include="Assets\AIBehaviours\SquadAI.xml" />
      <None Include="Assets\AIBehaviours\IdleBehaviour.xml" />
      <None Include="Assets\AIBehaviours\StandardShipAI.xml" />
      <None Include="Assets\AIBehaviours\SelfPreservation.xml" />

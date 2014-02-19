@@ -214,7 +214,9 @@ public class OrderDataExtractor : kAICodeBehaviour
                     break;
                 case IndividualOrder.IndividualOrderType.eMoveDirectToPoint:
                     IndividualMoveOrder moveOrder = (IndividualMoveOrder)orderPort.Data;
-                    destinationPort.Data = moveOrder.Destination;
+                    Vector3 destination = moveOrder.Destination;
+                    destination.y = (lUserData as GameObject).transform.position.y;
+                    destinationPort.Data = destination;
                     break;
                 case IndividualOrder.IndividualOrderType.eAttackTarget:
                     IndividualAttackOrder attackOrder = (IndividualAttackOrder)orderPort.Data;
