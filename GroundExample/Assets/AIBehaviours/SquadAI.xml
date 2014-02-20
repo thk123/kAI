@@ -18,6 +18,62 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
+        <NodeID>ArrowFormation</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Members</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>GetSquadMemebers</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>DataReturn</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>ArrowFormation</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Activate</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>OrderSwitcherBehaviour</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>MoveOrder</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>ArrowFormation</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Destination</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>OrderDataExtractor</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>Destination</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>IssueOrder</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Order</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>ArrowFormation</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>Orders</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
         <NodeID>IssueOrder</NodeID>
       </EndNodeID>
       <EndPortID>
@@ -32,7 +88,49 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
-        <NodeID>IssueOrder</NodeID>
+        <NodeID>OrderSwitcherBehaviour</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Activate</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>InvalidNode</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>OnActivate</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>OrderDataExtractor</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Activate</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>InvalidNode</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>OnActivate</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>OrderSwitcherBehaviour</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Order</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>InvalidNode</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>Order</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>OrderDataExtractor</NodeID>
       </EndNodeID>
       <EndPortID>
         <PortID>Order</PortID>
@@ -82,6 +180,48 @@
       <NodeSerialAssembly>kAICore</NodeSerialAssembly>
       <NodeSerialType>kAI.Core.kAICodeBehaviour+SerialObject</NodeSerialType>
       <NodeType>IssueOrder</NodeType>
+      <NodeTypeAssembly>Assembly-CSharp</NodeTypeAssembly>
+    </kAIXmlBehaviour.InternalXml.SerialNode>
+    <kAIXmlBehaviour.InternalXml.SerialNode>
+      <NodeContents i:type="kAICodeBehaviour.SerialObject">
+        <BehaviourAssembly>Assembly-CSharp</BehaviourAssembly>
+        <BehaviourID>OrderSwitcherBehaviour</BehaviourID>
+        <BehaviourType>OrderSwitcherBehaviour</BehaviourType>
+      </NodeContents>
+      <NodeID>
+        <NodeID>OrderSwitcherBehaviour</NodeID>
+      </NodeID>
+      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
+      <NodeSerialType>kAI.Core.kAICodeBehaviour+SerialObject</NodeSerialType>
+      <NodeType>OrderSwitcherBehaviour</NodeType>
+      <NodeTypeAssembly>Assembly-CSharp</NodeTypeAssembly>
+    </kAIXmlBehaviour.InternalXml.SerialNode>
+    <kAIXmlBehaviour.InternalXml.SerialNode>
+      <NodeContents i:type="kAICodeBehaviour.SerialObject">
+        <BehaviourAssembly>Assembly-CSharp</BehaviourAssembly>
+        <BehaviourID>OrderDataExtractor</BehaviourID>
+        <BehaviourType>OrderDataExtractor</BehaviourType>
+      </NodeContents>
+      <NodeID>
+        <NodeID>OrderDataExtractor</NodeID>
+      </NodeID>
+      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
+      <NodeSerialType>kAI.Core.kAICodeBehaviour+SerialObject</NodeSerialType>
+      <NodeType>OrderDataExtractor</NodeType>
+      <NodeTypeAssembly>Assembly-CSharp</NodeTypeAssembly>
+    </kAIXmlBehaviour.InternalXml.SerialNode>
+    <kAIXmlBehaviour.InternalXml.SerialNode>
+      <NodeContents i:type="kAICodeBehaviour.SerialObject">
+        <BehaviourAssembly>Assembly-CSharp</BehaviourAssembly>
+        <BehaviourID>ArrowFormation</BehaviourID>
+        <BehaviourType>ArrowFormation</BehaviourType>
+      </NodeContents>
+      <NodeID>
+        <NodeID>ArrowFormation</NodeID>
+      </NodeID>
+      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
+      <NodeSerialType>kAI.Core.kAICodeBehaviour+SerialObject</NodeSerialType>
+      <NodeType>ArrowFormation</NodeType>
       <NodeTypeAssembly>Assembly-CSharp</NodeTypeAssembly>
     </kAIXmlBehaviour.InternalXml.SerialNode>
   </InternalNodes>

@@ -62,7 +62,7 @@ public class SquadLeader : MonoBehaviour {
 public class IssueOrder : kAICodeBehaviour
 {
     kAIDataPort<List<SquadMember>> memebersPorts;
-    kAIDataPort<IndividualOrder> orderPort;
+    kAIDataPort<List<IndividualOrder>> orderPort;
 
     public IssueOrder()
         : base()
@@ -70,15 +70,18 @@ public class IssueOrder : kAICodeBehaviour
         memebersPorts = new kAIDataPort<List<SquadMember>>("Member", kAIPort.ePortDirection.PortDirection_In);
         AddExternalPort(memebersPorts);
 
-        orderPort = new kAIDataPort<IndividualOrder>("Order", kAIPort.ePortDirection.PortDirection_In);
+        orderPort = new kAIDataPort<List<IndividualOrder>>("Order", kAIPort.ePortDirection.PortDirection_In);
         AddExternalPort(orderPort);
     }
 
     protected override void InternalUpdate(float lDeltaTime, object lUserData)
     {
-        foreach (SquadMember member in memebersPorts.Data)
+        if(memebersPorts.Data != null && orderPort.Data != null)
         {
-            member.ReceiveIndividualOrder(orderPort.Data);
+            foreach (var lOrderPairs in CoreUtil.MoveThroughPairwise(memebersPorts.Data, orderPort.Data))
+            {
+                lOrderPairs.Key.ReceiveIndividualOrder(lOrderPairs.Value);
+            }
         }
     }
 }

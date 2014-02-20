@@ -42,7 +42,12 @@ public class IndividualMoveOrder : IndividualOrder
     public override IndividualOrderType TypeOfOrder
     {
         get { return IndividualOrderType.eMoveDirectToPoint; }
-    }    
+    }
+
+    public override string ToString()
+    {
+        return Destination.ToString();
+    } 
 }
 
 public class IndividualAttackOrder : IndividualOrder

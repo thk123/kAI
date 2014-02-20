@@ -7,20 +7,6 @@
         <NodeID>InvalidNode</NodeID>
       </EndNodeID>
       <EndPortID>
-        <PortID>Deactivate</PortID>
-      </EndPortID>
-      <StartNodeID>
-        <NodeID>MoveToBehaviour</NodeID>
-      </StartNodeID>
-      <StartPortID>
-        <PortID>OnDeactivated</PortID>
-      </StartPortID>
-    </kAIXmlBehaviour.InternalXml.SerialConnexion>
-    <kAIXmlBehaviour.InternalXml.SerialConnexion>
-      <EndNodeID>
-        <NodeID>InvalidNode</NodeID>
-      </EndNodeID>
-      <EndPortID>
         <PortID>Velocity</PortID>
       </EndPortID>
       <StartNodeID>
