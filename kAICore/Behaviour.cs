@@ -211,7 +211,7 @@ namespace kAI.Core
         /// </summary>
         /// <param name="lDeltaTime">The time in seconds that has passed since the last frame. </param>
         /// <param name="lUserData">The user data. </param>
-        public override void Update(float lDeltaTime, object lUserData)
+        public override sealed void Update(float lDeltaTime, object lUserData)
         {
             if (Active)
             {
