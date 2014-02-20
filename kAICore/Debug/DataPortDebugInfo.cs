@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -35,7 +36,20 @@ namespace kAI.Core.Debug
             }
             else
             {
-                CurrentData = lPort.GetData().ToString();
+                IEnumerable enumeratignData = lData as IEnumerable;
+                if (enumeratignData != null)
+                {
+                    StringBuilder listData = new StringBuilder();
+                    foreach (object o in enumeratignData)
+                    {
+                        listData.Append(o.ToString() + ", ");
+                    }
+                    CurrentData = listData.ToString();
+                }
+                else
+                {
+                    CurrentData = lPort.GetData().ToString();
+                }
             }
         }
     }
