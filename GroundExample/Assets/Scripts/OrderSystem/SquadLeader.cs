@@ -110,11 +110,13 @@ public static class SquadLeaderFunctions
         {
             lValue += lEntry;
             ++length;
+            
         }
 
         if (length > 0)
         {
-            return (1 / length) * lValue;
+            Vector3 lOutVector = (1.0f / (float)length) * lValue;
+            return lOutVector;
         }
         else
         {
