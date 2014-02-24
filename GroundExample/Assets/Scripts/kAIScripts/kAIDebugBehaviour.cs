@@ -14,6 +14,12 @@ public class kAIDebugBehaviour : MonoBehaviour {
 
     kAIXmlBehaviour behaviour;
     kAIBehaviourDebugStore store;
+
+    static int nextId = 0;
+    static int updateIndex = 0;
+    int myId;
+    bool updatedLastFrame = false;
+
     /*MemoryMappedFile debugFile;
 
     kAIXmlBehaviourDebugInfo DebugInfo;
@@ -29,6 +35,9 @@ public class kAIDebugBehaviour : MonoBehaviour {
         }
 
         store =  kAIDebugServer.AddBehaviour(behaviour, gameObject.GetFullName());
+
+        myId = nextId;
+        ++nextId;
 	}
 		
 	// Update is called once per frame
@@ -36,7 +45,22 @@ public class kAIDebugBehaviour : MonoBehaviour {
 	{
         if (store != null)
         {
-            store.Update();
+            if (updateIndex == myId)
+            {
+                if (updatedLastFrame)
+                {
+                    ++updateIndex;
+                    updateIndex = updateIndex % nextId;
+                    updatedLastFrame = false;
+                }
+                else
+                {
+                    store.Update();
+                    updatedLastFrame = true;
+                }
+
+
+            }
         }
 		/*semaphore.Acquire();
         Stream stream = debugFile.MapView(MapAccess.FileMapWrite, 0, 1024 * 1024 * 1024);*/
