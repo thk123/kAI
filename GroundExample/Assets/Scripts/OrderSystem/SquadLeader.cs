@@ -4,6 +4,7 @@ using System.Collections;
 using System.Collections.Generic;
 using MiscUtil;
 using kAI.Core;
+using System.Text;
 
 [RequireComponent(typeof(AIBehaviour))]
 public class SquadLeader : MonoBehaviour {
@@ -120,6 +121,28 @@ public static class SquadLeaderFunctions
             return Vector3.zero;
         }
     }
+
+    public static string GetFullName(this GameObject lObject)
+    {
+        StringBuilder sb = new StringBuilder();
+        do 
+        {
+            sb.Append(lObject.name);
+            if(lObject.transform.parent != null)
+            {
+                lObject = lObject.transform.parent.gameObject;
+            
+                sb.Append(".");
+            }
+            else
+            {
+                lObject = null;
+            }
+        } while (lObject != null);
+
+        return sb.ToString();
+    }
+
 }
 
 

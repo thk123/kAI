@@ -28,13 +28,16 @@ public class kAIDebugBehaviour : MonoBehaviour {
             kAIDebugServer.Init("Unity" + System.Diagnostics.Process.GetCurrentProcess().Id);
         }
 
-        store =  kAIDebugServer.AddBehaviour(behaviour, gameObject.name);
+        store =  kAIDebugServer.AddBehaviour(behaviour, gameObject.GetFullName());
 	}
 		
 	// Update is called once per frame
 	void Update () 
 	{
-        store.Update();
+        if (store != null)
+        {
+            store.Update();
+        }
 		/*semaphore.Acquire();
         Stream stream = debugFile.MapView(MapAccess.FileMapWrite, 0, 1024 * 1024 * 1024);*/
         
