@@ -58,6 +58,11 @@ public class SquadLeader : MonoBehaviour {
         orderPort.Data = order;
         count = 1;
     }
+
+    internal GameObject GetFaction()
+    {
+        return squadMembers[0].gameObject;
+    }
 }
 
 public class IssueOrder : kAICodeBehaviour

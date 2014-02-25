@@ -44,7 +44,7 @@ public class MouseOrderController : MonoBehaviour {
         if (Physics.Raycast(selectionRay, out info))
         {
             FactionBehaviour selectableObject = info.collider.gameObject.GetComponent<FactionBehaviour>();
-            if (selectableObject != null && selectableObject.IsEnemy(selector.selectedShip.gameObject))
+            if (selectableObject != null && selectableObject.IsEnemy(selector.selectedShip.GetFaction()))
             {
                 order = IndividualOrder.CreateAttackOrder(selectableObject.gameObject);
             }
