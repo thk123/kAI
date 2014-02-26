@@ -30,26 +30,29 @@ public abstract class Formation : kAICodeBehaviour
 
     protected override void InternalUpdate(float lDeltaTime, object lUserData)
     {
-        List<IndividualOrder> orders = new List<IndividualOrder>(membersPort.Data.Count);
-        Vector3 dest = destinationPort.Data;
-        dest.y = membersPort.Data[0].transform.position.y;
-        Vector3 direction = dest - membersPort.Data[0].transform.position;
-        if (direction.sqrMagnitude == 0.0f)
+        if(membersPort.Data.Count > 0)
         {
-            direction = membersPort.Data[0].transform.forward;
-            
-        }
-
-        {
-            for (int i = 0; i < membersPort.Data.Count; ++i)
+            List<IndividualOrder> orders = new List<IndividualOrder>(membersPort.Data.Count);
+            Vector3 dest = destinationPort.Data;
+            dest.y = membersPort.Data[0].transform.position.y;
+            Vector3 direction = dest - membersPort.Data[0].transform.position;
+            if (direction.sqrMagnitude == 0.0f)
             {
-                if (membersPort.Data[i] != null)
-                {
-                    orders.Add(CreateOrder(i, membersPort.Data[i], dest, direction));
-                }
+                direction = membersPort.Data[0].transform.forward;
+
             }
 
-            orderPort.Data = orders;
+            {
+                for (int i = 0; i < membersPort.Data.Count; ++i)
+                {
+                    if (membersPort.Data[i] != null)
+                    {
+                        orders.Add(CreateOrder(i, membersPort.Data[i], dest, direction));
+                    }
+                }
+
+                orderPort.Data = orders;
+            }
         }
 
        // Debug.Break();

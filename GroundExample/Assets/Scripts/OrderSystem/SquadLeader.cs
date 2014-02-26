@@ -23,7 +23,7 @@ public class SquadLeader : MonoBehaviour {
     {
         get
         {
-            return squadMembers.Select<SquadMember, Vector3>((element) => { return element.gameObject.transform.position; }).Average();
+            return squadMembers.Select<SquadMember, Vector3>((element) => { if (element != null) return element.gameObject.transform.position; else return Vector3.zero; }).Average();
         }
     }
 
