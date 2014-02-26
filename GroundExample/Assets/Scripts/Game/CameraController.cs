@@ -7,7 +7,7 @@ public class CameraController : MonoBehaviour {
 
 	Vector3 cameraPanLeft;
 	Vector3 cameraPanForward;
-
+    float zoom = 1.0f;
 	public bool locked;
 
 	// Use this for initialization
@@ -27,23 +27,23 @@ public class CameraController : MonoBehaviour {
 		{
 			if(Input.mousePosition.x <= 10.0f)
 			{
-				transform.Translate(cameraPanningSpeed * cameraPanLeft, Space.World);
+				transform.Translate(cameraPanningSpeed * cameraPanLeft * zoom, Space.World);
 			}
 
 
 			if(Input.mousePosition.x >= Screen.width - 10.0f )
 			{
-				transform.Translate(cameraPanningSpeed * -1 * cameraPanLeft, Space.World);
+				transform.Translate(cameraPanningSpeed * -1 * cameraPanLeft * zoom, Space.World);
 			}
 
 			if(Input.mousePosition.y <= 10.0f)
 			{
-				transform.Translate(-1 * cameraPanningSpeed * cameraPanForward, Space.World);
+                transform.Translate(-1 * cameraPanningSpeed * cameraPanForward * zoom, Space.World);
 			}
 
 			if(Input.mousePosition.y >= Screen.height - 10.0f)
 			{
-				transform.Translate(cameraPanningSpeed * cameraPanForward, Space.World);
+				transform.Translate(cameraPanningSpeed * cameraPanForward * zoom, Space.World);
 			}
 
 			float scrollValue = Input.GetAxis("Mouse ScrollWheel");
@@ -51,10 +51,12 @@ public class CameraController : MonoBehaviour {
 			if(scrollValue > 0.0f)
 			{
                 camera.fieldOfView = Mathf.Max(camera.fieldOfView - 1, 10.0f);
+                zoom = ((camera.fieldOfView - 10.0f) / 120.0f) + 0.5f;
 			}
 			else if(scrollValue < 0.0f)
 			{
                 camera.fieldOfView = Mathf.Min(camera.fieldOfView + 1, 130.0f);
+                zoom = ((camera.fieldOfView - 10.0f) / 120.0f) + 0.5f;
 			}
 		}
 

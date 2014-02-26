@@ -192,7 +192,6 @@ public class FireWeaponBehaviour : kAICodeBehaviour
 
     void fireTrigger_OnTriggered(kAIPort lSender)
     {
-        LogMessage("Fire trigger");
         shouldFire = true;
     }
 
