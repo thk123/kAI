@@ -32,7 +32,6 @@ public class SquadLeader : MonoBehaviour {
 	{
         squadMembers = new List<SquadMember>();
         squadMembers.AddRange(transform.GetComponentsInChildren<SquadMember>());
-        print(squadMembers.Count);
         mAiBehaviour = GetComponent<AIBehaviour>();
         orderPort = (kAIDataPort<IndividualOrder>)mAiBehaviour.GetPort("Order");
 	}

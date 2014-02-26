@@ -47,6 +47,7 @@
   </ItemGroup>
   <ItemGroup>
      <Compile Include="Assets\Formations\ArrowFormation.cs" />
+     <Compile Include="Assets\Formations\AttackFormation.cs" />
      <Compile Include="Assets\Scripts\CodeBehaviours\Flee.cs" />
      <Compile Include="Assets\Scripts\CodeBehaviours\MoveTo.cs" />
      <Compile Include="Assets\Scripts\CodeBehaviours\MoveWithVelocity.cs" />

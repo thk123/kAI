@@ -32,6 +32,20 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
+        <NodeID>AttackFormation</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Members</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>GetSquadMemebers</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>DataReturn</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
         <NodeID>ArrowFormation</NodeID>
       </EndNodeID>
       <EndPortID>
@@ -42,6 +56,48 @@
       </StartNodeID>
       <StartPortID>
         <PortID>MoveOrder</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>AttackFormation</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Deactivate</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>OrderSwitcherBehaviour</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>MoveOrder</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>ArrowFormation</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Deactivate</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>OrderSwitcherBehaviour</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>AttackOrder</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>AttackFormation</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Activate</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>OrderSwitcherBehaviour</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>AttackOrder</PortID>
       </StartPortID>
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
@@ -60,6 +116,20 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
+        <NodeID>AttackFormation</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Target</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>OrderDataExtractor</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>Target</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
         <NodeID>IssueOrder</NodeID>
       </EndNodeID>
       <EndPortID>
@@ -70,6 +140,34 @@
       </StartNodeID>
       <StartPortID>
         <PortID>Orders</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>IssueOrder</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Order</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>AttackFormation</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>Orders</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>AttackFormation</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Range</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>ConstantSingle</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>Value</PortID>
       </StartPortID>
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
@@ -223,6 +321,32 @@
       <NodeSerialType>kAI.Core.kAICodeBehaviour+SerialObject</NodeSerialType>
       <NodeType>ArrowFormation</NodeType>
       <NodeTypeAssembly>Assembly-CSharp</NodeTypeAssembly>
+    </kAIXmlBehaviour.InternalXml.SerialNode>
+    <kAIXmlBehaviour.InternalXml.SerialNode>
+      <NodeContents i:type="kAICodeBehaviour.SerialObject">
+        <BehaviourAssembly>Assembly-CSharp</BehaviourAssembly>
+        <BehaviourID>AttackFormation</BehaviourID>
+        <BehaviourType>AttackFormation</BehaviourType>
+      </NodeContents>
+      <NodeID>
+        <NodeID>AttackFormation</NodeID>
+      </NodeID>
+      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
+      <NodeSerialType>kAI.Core.kAICodeBehaviour+SerialObject</NodeSerialType>
+      <NodeType>AttackFormation</NodeType>
+      <NodeTypeAssembly>Assembly-CSharp</NodeTypeAssembly>
+    </kAIXmlBehaviour.InternalXml.SerialNode>
+    <kAIXmlBehaviour.InternalXml.SerialNode>
+      <NodeContents i:type="kAIConstantFloatNode.SerialObject">
+        <Value>50</Value>
+      </NodeContents>
+      <NodeID>
+        <NodeID>ConstantSingle</NodeID>
+      </NodeID>
+      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
+      <NodeSerialType>kAI.Core.kAIConstantFloatNode+SerialObject</NodeSerialType>
+      <NodeType>kAI.Core.kAIConstantFloatNode</NodeType>
+      <NodeTypeAssembly>kAICore</NodeTypeAssembly>
     </kAIXmlBehaviour.InternalXml.SerialNode>
   </InternalNodes>
   <InternalPorts>

@@ -43,7 +43,10 @@ public abstract class Formation : kAICodeBehaviour
         {
             for (int i = 0; i < membersPort.Data.Count; ++i)
             {
-                orders.Add(CreateOrder(i, membersPort.Data[i], dest, direction));
+                if (membersPort.Data[i] != null)
+                {
+                    orders.Add(CreateOrder(i, membersPort.Data[i], dest, direction));
+                }
             }
 
             orderPort.Data = orders;
