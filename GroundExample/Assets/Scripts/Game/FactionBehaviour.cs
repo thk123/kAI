@@ -12,18 +12,21 @@ public class FactionBehaviour : MonoBehaviour {
         eFactionComputer,
     }
 
+    public static Color HumanColour = Color.blue;
+    public static Color ComputerColour = Color.red;
+
     public eFactions Faction;
 
 	// Use this for initialization
 	void Start () 
 	{
-	
+	    
 	}
 	
 	// Update is called once per frame
 	void Update () 
 	{
-	
+        GetComponentInChildren<MeshRenderer>().material.color = Faction == eFactions.eFactionHuman ? HumanColour : ComputerColour;
 	}
 
     public bool IsEnemy(GameObject other)

@@ -207,6 +207,14 @@
         <d4p1:BehaviourType>LineFormation</d4p1:BehaviourType>
       </d2p1:Value>
     </d2p1:KeyValueOfstringanyType>
+    <d2p1:KeyValueOfstringanyType>
+      <d2p1:Key>AttackFormation</d2p1:Key>
+      <d2p1:Value xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core" i:type="d4p1:kAICodeBehaviour.SerialObject">
+        <d4p1:BehaviourAssembly>Assembly-CSharp</d4p1:BehaviourAssembly>
+        <d4p1:BehaviourID>AttackFormation</d4p1:BehaviourID>
+        <d4p1:BehaviourType>AttackFormation</d4p1:BehaviourType>
+      </d2p1:Value>
+    </d2p1:KeyValueOfstringanyType>
   </NodeObjects>
   <ProjectDllPaths xmlns:d2p1="http://schemas.datacontract.org/2004/07/kAI.Core">
     <d2p1:FilePath>
