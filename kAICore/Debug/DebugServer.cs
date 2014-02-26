@@ -68,8 +68,6 @@ namespace kAI.Core.Debug
         /// <returns>The debug store to update with new debug info. </returns>
         public static kAIBehaviourDebugStore AddBehaviour(kAIXmlBehaviour lBehaviour, string objectID)
         {
-            kAIObject.LogMessage(null, "Hello");
-            kAIObject.LogMessage(null, "Behaviours: " + (behaviours == null ? "null" : behaviours.ToString()));
             if (behaviours.ContainsKey(objectID))
             {
                 kAIObject.LogWarning(null, "Could not add behaviour as ID: " + objectID + " already exists");

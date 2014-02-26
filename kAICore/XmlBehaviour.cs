@@ -806,8 +806,6 @@ namespace kAI.Core
             base.OnActivate();
             // Trigger the activate port. 
             ((kAITriggerPort)mInternalPorts[kOnActivatePortID].Port).Trigger();
-
-            LogMessage(BehaviourID + " Activated");
         }
 
         /// <summary>
