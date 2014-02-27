@@ -39,6 +39,7 @@
             // 
             // toolStrip1
             // 
+            this.toolStrip1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.connectDebugBtn,
             this.disconnectDebugBtn,
@@ -88,6 +89,7 @@
             // 
             // treeView1
             // 
+            this.treeView1.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(224)))), ((int)(((byte)(224)))), ((int)(((byte)(224)))));
             this.treeView1.Dock = System.Windows.Forms.DockStyle.Fill;
             this.treeView1.Enabled = false;
             this.treeView1.Location = new System.Drawing.Point(0, 25);
