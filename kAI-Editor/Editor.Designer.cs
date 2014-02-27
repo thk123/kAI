@@ -30,7 +30,6 @@
         {
             this.MainEditor = new System.Windows.Forms.SplitContainer();
             this.splitContainer1 = new System.Windows.Forms.SplitContainer();
-            this.uiLogger1 = new kAI.Editor.Controls.WinForms.UILogger();
             this.fileToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.openProjectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -50,13 +49,20 @@
             this.showPropertiesGridToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.debugToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.connectToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.splitContainer2 = new System.Windows.Forms.SplitContainer();
+            this.uiLogger1 = new kAI.Editor.Controls.WinForms.UILogger();
+            this.debugControl1 = new kAI.Editor.Controls.WinForms.DebugControl();
             ((System.ComponentModel.ISupportInitialize)(this.MainEditor)).BeginInit();
+            this.MainEditor.Panel1.SuspendLayout();
             this.MainEditor.Panel2.SuspendLayout();
             this.MainEditor.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.splitContainer1)).BeginInit();
             this.splitContainer1.Panel2.SuspendLayout();
             this.splitContainer1.SuspendLayout();
             this.menuStrip1.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).BeginInit();
+            this.splitContainer2.Panel2.SuspendLayout();
+            this.splitContainer2.SuspendLayout();
             this.SuspendLayout();
             // 
             // MainEditor
@@ -68,6 +74,7 @@
             // MainEditor.Panel1
             // 
             this.MainEditor.Panel1.BackColor = System.Drawing.Color.Gray;
+            this.MainEditor.Panel1.Controls.Add(this.splitContainer2);
             // 
             // MainEditor.Panel2
             // 
@@ -95,16 +102,6 @@
             this.splitContainer1.Size = new System.Drawing.Size(973, 616);
             this.splitContainer1.SplitterDistance = 429;
             this.splitContainer1.TabIndex = 0;
-            // 
-            // uiLogger1
-            // 
-            this.uiLogger1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
-            this.uiLogger1.BackColor = System.Drawing.Color.Gray;
-            this.uiLogger1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.uiLogger1.Location = new System.Drawing.Point(0, 0);
-            this.uiLogger1.Name = "uiLogger1";
-            this.uiLogger1.Size = new System.Drawing.Size(973, 183);
-            this.uiLogger1.TabIndex = 0;
             // 
             // fileToolStripMenuItem
             // 
@@ -257,9 +254,41 @@
             // connectToolStripMenuItem
             // 
             this.connectToolStripMenuItem.Name = "connectToolStripMenuItem";
-            this.connectToolStripMenuItem.Size = new System.Drawing.Size(152, 22);
+            this.connectToolStripMenuItem.Size = new System.Drawing.Size(119, 22);
             this.connectToolStripMenuItem.Text = "Connect";
             this.connectToolStripMenuItem.Click += new System.EventHandler(this.connectToolStripMenuItem_Click);
+            // 
+            // splitContainer2
+            // 
+            this.splitContainer2.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.splitContainer2.Location = new System.Drawing.Point(0, 0);
+            this.splitContainer2.Name = "splitContainer2";
+            this.splitContainer2.Orientation = System.Windows.Forms.Orientation.Horizontal;
+            // 
+            // splitContainer2.Panel2
+            // 
+            this.splitContainer2.Panel2.Controls.Add(this.debugControl1);
+            this.splitContainer2.Size = new System.Drawing.Size(249, 616);
+            this.splitContainer2.SplitterDistance = 441;
+            this.splitContainer2.TabIndex = 0;
+            // 
+            // uiLogger1
+            // 
+            this.uiLogger1.AutoSizeMode = System.Windows.Forms.AutoSizeMode.GrowAndShrink;
+            this.uiLogger1.BackColor = System.Drawing.Color.Gray;
+            this.uiLogger1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.uiLogger1.Location = new System.Drawing.Point(0, 0);
+            this.uiLogger1.Name = "uiLogger1";
+            this.uiLogger1.Size = new System.Drawing.Size(973, 183);
+            this.uiLogger1.TabIndex = 0;
+            // 
+            // debugControl1
+            // 
+            this.debugControl1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.debugControl1.Location = new System.Drawing.Point(0, 0);
+            this.debugControl1.Name = "debugControl1";
+            this.debugControl1.Size = new System.Drawing.Size(249, 171);
+            this.debugControl1.TabIndex = 0;
             // 
             // Editor
             // 
@@ -277,6 +306,7 @@
             this.Text = "kAI Editor";
             this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.Editor_FormClosed);
+            this.MainEditor.Panel1.ResumeLayout(false);
             this.MainEditor.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.MainEditor)).EndInit();
             this.MainEditor.ResumeLayout(false);
@@ -285,6 +315,9 @@
             this.splitContainer1.ResumeLayout(false);
             this.menuStrip1.ResumeLayout(false);
             this.menuStrip1.PerformLayout();
+            this.splitContainer2.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.splitContainer2)).EndInit();
+            this.splitContainer2.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -314,6 +347,8 @@
         private System.Windows.Forms.ToolStripMenuItem showPropertiesGridToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem debugToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem connectToolStripMenuItem;
+        private System.Windows.Forms.SplitContainer splitContainer2;
+        private Controls.WinForms.DebugControl debugControl1;
 
     }
 }

@@ -59,6 +59,17 @@ namespace kAI.Core.Debug
         }
 
         /// <summary>
+        /// The ID of the behaviour
+        /// </summary>
+        public kAIBehaviourID BehaviourID
+        {
+            get
+            {
+                return mBehaviour.BehaviourID;
+            }
+        }
+
+        /// <summary>
         /// Create a debug store to manage the memory mapped file for this behaviour.
         /// </summary>
         /// <param name="lBehaviour">The behaviour we are tracking. </param>

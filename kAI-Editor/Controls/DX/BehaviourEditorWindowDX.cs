@@ -786,7 +786,7 @@ namespace kAI.Editor.Controls.DX
         }
 
 
-
+            
         public void SetDebugInfo(kAI.Core.Debug.kAIXmlBehaviourDebugInfo lDebugInfo)
         {
             foreach (kAINodeDebugInfo lNodeDebugInfo in lDebugInfo.InternalNodes)

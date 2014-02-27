@@ -100,14 +100,14 @@ namespace kAI.Editor
             mIsProjectLoaded = true;
 
             // Remove all old controls from the right hand window
-            MainEditor.Panel1.Controls.Clear();
+            splitContainer2.Panel1.Controls.Clear();
 
             SetEnabledSetControls(mProjectLoadedControls, true);
 
             mBehaviourTree = new BehaviourTree(lProject);
             mBehaviourTree.Dock = DockStyle.Fill;
             mBehaviourTree.OnBehaviourDoubleClick += new BehaviourTree.NodeEvent(mBehaviourTree_OnBehaviourDoubleClick);
-            MainEditor.Panel1.Controls.Add(mBehaviourTree);
+            splitContainer2.Panel1.Controls.Add(mBehaviourTree);
 
             GlobalServices.LoadedProject = mLoadedProject;
         }
@@ -196,6 +196,8 @@ namespace kAI.Editor
                 mBehaviourEditor.Init(lEditorControl);
                 
                 CreatePropertiesWindow();
+
+                GlobalServices.BehaviourComposor = mBehaviourEditor;
             }
         }
 
@@ -223,6 +225,7 @@ namespace kAI.Editor
             {
                 mBehaviourEditor.Destroy();
                 mBehaviourEditor = null;
+                GlobalServices.BehaviourComposor = null;
                 splitContainer1.Panel1.Controls.Clear();
             }
 

@@ -88,7 +88,7 @@ namespace kAI.Core.Debug
         /// <param name="lStore">The debug store to add. </param>
         static void AddToList(kAIBehaviourDebugStore lStore)
         {
-            kAIBehaviourEntry lEntry = new kAIBehaviourEntry { EntryID = lStore.ID, FileID = lStore.MapID, LockID = lStore.LockID };
+            kAIBehaviourEntry lEntry = new kAIBehaviourEntry { EntryID = lStore.ID, FileID = lStore.MapID, LockID = lStore.LockID, BehaviourID = lStore.BehaviourID };
 
             behaviours.Add(lStore.ID, lEntry);
 
@@ -135,6 +135,11 @@ namespace kAI.Core.Debug
         /// The ID of the memory mapped file which will contain a <see cref="kAIXmlBehaviourDebugInfo"/>
         /// </summary>
         public string FileID;
+
+        /// <summary>
+        /// The BehaviourID of the object
+        /// </summary>
+        public string BehaviourID;
 
         /// <summary>
         /// Gets a string represenation of the object. 

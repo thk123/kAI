@@ -39,6 +39,7 @@ namespace kAI.Core.Debug
         public IEnumerable<kAIBehaviourEntry> GetAvaliableBehaviours()
         {
             IEnumerable<kAIBehaviourEntry> lBehaviourList;
+            
             mMainFileLock.Acquire();
             {
                 using (Stream inStream = mMainFile.MapView(MapAccess.FileMapRead, 0, kAIDebugServer.kMainFileSize))

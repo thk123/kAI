@@ -92,6 +92,8 @@ namespace kAI.Editor.Controls
         /// </summary>
         public event Action<kAI.Editor.ObjectProperties.kAIIPropertyEntry> ObjectSelected;
 
+        public event Action OnUpdate;
+
         /// <summary>
         /// Creates a behaviour editor window using the specified implementation
         /// </summary>
@@ -344,8 +346,13 @@ namespace kAI.Editor.Controls
         /// </summary>
         public void Update()
         {
-            UpdateDebugInfo();
+            //UpdateDebugInfo();
             mEditorImpl.EditorUpdate();
+
+            if (OnUpdate != null)
+            {
+                OnUpdate();
+            }
         }
 
         /// <summary>
@@ -471,6 +478,10 @@ namespace kAI.Editor.Controls
         {
             if (mDebugger != null)
             {
+                if (mDebugWindow.IsDisposed)
+                {
+                    mDebugWindow = new DebugWindow();
+                }
                 mDebugWindow.Show();
                 mDebugWindow.SetEntries(mDebugger.GetAvaliableBehaviours());
                 if(mDebugWindow.HasSelectedEntry)
@@ -481,10 +492,11 @@ namespace kAI.Editor.Controls
             }
         }
 
-        void ApplyDebugInfo(kAIXmlBehaviourDebugInfo lDebugInfo)
+        public void ApplyDebugInfo(kAIXmlBehaviourDebugInfo lDebugInfo)
         {
+            mEditorImpl.SetDebugInfo(lDebugInfo);
             
-            if (lDebugInfo != null)
+            /*if (lDebugInfo != null)
             {
                 kAIXmlBehaviourDebugInfo lActualDebugInfo = lDebugInfo;
 
@@ -505,7 +517,7 @@ namespace kAI.Editor.Controls
                 mDebugWindow = null;
                 mDebugger.Dispose();
                 mDebugger = null;
-            }
+            }*/
         }
 
         public void EnterNode(kAINodeID lNode)
