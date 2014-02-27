@@ -296,7 +296,7 @@
     </kAIXmlBehaviour.InternalXml.SerialNode>
     <kAIXmlBehaviour.InternalXml.SerialNode>
       <NodeContents i:type="kAIConstantFloatNode.SerialObject">
-        <Value>500</Value>
+        <Value>10</Value>
       </NodeContents>
       <NodeID>
         <NodeID>MaxSeekRange</NodeID>

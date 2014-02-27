@@ -86,4 +86,10 @@ public class MoveToBehaviour : kAICodeBehaviour
             }
         }
     }
+
+    protected override void OnDeactivate()
+    {
+        base.OnDeactivate();
+        outComeVelocity.Data = Vector3.zero;
+    }
 }

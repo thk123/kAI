@@ -7,6 +7,20 @@
         <NodeID>InvalidNode</NodeID>
       </EndNodeID>
       <EndPortID>
+        <PortID>Deactivate</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>MoveToBehaviour</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>OnDeactivated</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>InvalidNode</NodeID>
+      </EndNodeID>
+      <EndPortID>
         <PortID>Velocity</PortID>
       </EndPortID>
       <StartNodeID>
@@ -42,6 +56,20 @@
       </StartNodeID>
       <StartPortID>
         <PortID>Target</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>MoveToBehaviour</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Deactivate</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>InvalidNode</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>ZeroVector</PortID>
       </StartPortID>
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
   </InternalConnexions>
@@ -97,6 +125,15 @@
       <PortID>Velocity</PortID>
       <PortIsEnumerable>false</PortIsEnumerable>
       <PortIsTrigger>false</PortIsTrigger>
+    </kAIXmlBehaviour.InternalXml.SerialPort>
+    <kAIXmlBehaviour.InternalXml.SerialPort>
+      <IsGloballyAccesible>true</IsGloballyAccesible>
+      <PortDataType>System.Boolean</PortDataType>
+      <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
+      <PortDirection>PortDirection_Out</PortDirection>
+      <PortID>ZeroVector</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
+      <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
   </InternalPorts>
 </kAIXmlBehaviour>

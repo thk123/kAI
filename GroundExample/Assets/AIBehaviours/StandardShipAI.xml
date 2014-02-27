@@ -60,20 +60,6 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
-        <NodeID>HandleMoveOrder</NodeID>
-      </EndNodeID>
-      <EndPortID>
-        <PortID>Deactivate</PortID>
-      </EndPortID>
-      <StartNodeID>
-        <NodeID>OrderSwitcherBehaviour</NodeID>
-      </StartNodeID>
-      <StartPortID>
-        <PortID>AttackOrder</PortID>
-      </StartPortID>
-    </kAIXmlBehaviour.InternalXml.SerialConnexion>
-    <kAIXmlBehaviour.InternalXml.SerialConnexion>
-      <EndNodeID>
         <NodeID>HandleAttackOrder</NodeID>
       </EndNodeID>
       <EndPortID>
@@ -92,6 +78,20 @@
       </EndNodeID>
       <EndPortID>
         <PortID>Deactivate</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>OrderSwitcherBehaviour</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>AttackOrder</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>HandleMoveOrder</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>ZeroVector</PortID>
       </EndPortID>
       <StartNodeID>
         <NodeID>OrderSwitcherBehaviour</NodeID>

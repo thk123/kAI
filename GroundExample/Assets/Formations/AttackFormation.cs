@@ -31,14 +31,14 @@ public class AttackFormation : Formation
         }
         //TODO: this doesn't work, keeps switching between move and attack
         // changing to a broader error margin helped but didn't fix
-        if ((memeber.gameObject.transform.position - targetPort.Data.transform.position).sqrMagnitude < (weaponRangePort.Data * weaponRangePort.Data) + 100.0f)
+        if ((memeber.gameObject.transform.position - targetPort.Data.transform.position).sqrMagnitude < (weaponRangePort.Data * weaponRangePort.Data) + (160.0f * 160.0f))
         {
             return IndividualOrder.CreateAttackOrder(targetPort.Data);
         }
         else
         {
             Vector3 pathToTarget = direction;
-            Vector3 straightDistanceOffTarget =(weaponRangePort.Data * pathToTarget.normalized);
+            Vector3 straightDistanceOffTarget =(150.0f * pathToTarget.normalized);
             if (index == 0)
             {
                 Vector3 targetPosition = target.transform.position + straightDistanceOffTarget;
