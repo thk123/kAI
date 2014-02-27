@@ -75,6 +75,7 @@ namespace kAI.Editor
             kAIObject.GlobalLogger.LogMessage("kAI Editor loaded");
             GlobalServices.Logger = uiLogger1;
             GlobalServices.Editor = this;
+            GlobalServices.Debugger = debugControl1;
 
             CommandLineHandler.TakeActions();
         }
@@ -464,9 +465,5 @@ namespace kAI.Editor
             mPropertiesWindow = null;
         }
 
-        private void connectToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            mBehaviourEditor.ConnectDebugger("kAIDebug.MMFile");
-        }
     }
 }

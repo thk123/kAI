@@ -90,6 +90,12 @@
     <Compile Include="Controls\WinForms\ConstantNodeCreator.Designer.cs">
       <DependentUpon>ConstantNodeCreator.cs</DependentUpon>
     </Compile>
+    <Compile Include="Controls\WinForms\DebugControl.cs">
+      <SubType>UserControl</SubType>
+    </Compile>
+    <Compile Include="Controls\WinForms\DebugControl.Designer.cs">
+      <DependentUpon>DebugControl.cs</DependentUpon>
+    </Compile>
     <Compile Include="Controls\WinForms\Debug\DebugWindow.cs">
       <SubType>Form</SubType>
     </Compile>
@@ -228,6 +234,9 @@
     <EmbeddedResource Include="Controls\WinForms\ConstantNodeCreator.resx">
       <DependentUpon>ConstantNodeCreator.cs</DependentUpon>
     </EmbeddedResource>
+    <EmbeddedResource Include="Controls\WinForms\DebugControl.resx">
+      <DependentUpon>DebugControl.cs</DependentUpon>
+    </EmbeddedResource>
     <EmbeddedResource Include="Controls\WinForms\Debug\DebugWindow.resx">
       <DependentUpon>DebugWindow.cs</DependentUpon>
     </EmbeddedResource>
@@ -351,6 +360,8 @@
     <None Include="Assets\kaiLogo.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <Content Include="Assets\DebugConnectIcon.png" />
+    <Content Include="Assets\DebugDisconnectIcon.png" />
     <Content Include="Assets\DisabledIcon.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>

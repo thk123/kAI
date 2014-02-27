@@ -357,7 +357,7 @@ namespace kAI.Editor.Controls.DX
 
                 if (mDebugInfo != null)
                 {
-                    mEditorWindow.Editor.EnterNode(Node.NodeID);
+                    GlobalServices.Debugger.PushChildNode(Node.NodeID);
                 }
             }
         }

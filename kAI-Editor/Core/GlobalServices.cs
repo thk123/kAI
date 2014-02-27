@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using kAI.Core;
 using kAI.Editor.Controls;
+using kAI.Editor.Controls.WinForms;
 
 namespace kAI.Editor.Core
 {
@@ -16,5 +17,7 @@ namespace kAI.Editor.Core
         public static Editor Editor;
 
         public static kAIBehaviourEditorWindow BehaviourComposor;
+
+        public static DebugControl Debugger;
     }
 }

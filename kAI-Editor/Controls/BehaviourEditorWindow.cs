@@ -83,10 +83,6 @@ namespace kAI.Editor.Controls
             private set;
         }
 
-        kAIDebugger mDebugger;
-
-        DebugWindow mDebugWindow;
-
         /// <summary>
         /// Happens when something is selected within the behaviour editor. 
         /// </summary>
@@ -123,9 +119,6 @@ namespace kAI.Editor.Controls
             });
 
             GlobalContextMenu.Popup += new EventHandler(GlobalContextMenu_Popup);
-
-            mDebugger = null;
-            mDebugWindow = null;
         }
 
         /// <summary>
@@ -346,7 +339,6 @@ namespace kAI.Editor.Controls
         /// </summary>
         public void Update()
         {
-            //UpdateDebugInfo();
             mEditorImpl.EditorUpdate();
 
             if (OnUpdate != null)
@@ -448,81 +440,14 @@ namespace kAI.Editor.Controls
             }
         }
 
-        internal void ConnectDebugger(string lMemoryMappedFile)
-        {
-            if (mDebugger == null)
-            {
-                mDebugger = new kAIDebugger("TODO");
-                mDebugWindow = new DebugWindow();
-                mDebugWindow.OnEntrySelected += new Action<kAIBehaviourEntry>(mDebugWindow_OnEntrySelected);
-            }
-            UpdateDebugInfo();
-        }
-
-        void mDebugWindow_OnEntrySelected(kAIBehaviourEntry lEntry)
-        {
-            mNodeNest = new List<kAINodeID>();
-
-            kAIXmlBehaviourDebugInfo lDebugInfo = mDebugger.LoadEntry(lEntry);
-            ApplyDebugInfo(lDebugInfo);
-            mLoadedEntry = lEntry;
-
-            
-        }
-
         kAIBehaviourEntry mLoadedEntry;
 
         List<kAINodeID> mNodeNest;
 
-        void UpdateDebugInfo()
-        {
-            if (mDebugger != null)
-            {
-                if (mDebugWindow.IsDisposed)
-                {
-                    mDebugWindow = new DebugWindow();
-                }
-                mDebugWindow.Show();
-                mDebugWindow.SetEntries(mDebugger.GetAvaliableBehaviours());
-                if(mDebugWindow.HasSelectedEntry)
-                {
-                    kAIXmlBehaviourDebugInfo lDebugInfo = mDebugger.LoadEntry(mLoadedEntry);
-                    ApplyDebugInfo(lDebugInfo);
-                }
-            }
-        }
 
         public void ApplyDebugInfo(kAIXmlBehaviourDebugInfo lDebugInfo)
         {
             mEditorImpl.SetDebugInfo(lDebugInfo);
-            
-            /*if (lDebugInfo != null)
-            {
-                kAIXmlBehaviourDebugInfo lActualDebugInfo = lDebugInfo;
-
-                foreach (kAINodeID lNodeID in mNodeNest)
-                {
-                    lActualDebugInfo = lDebugInfo.InternalNodes.Find((lNode) => { return lNode.NodeID == lNodeID; }).Contents as kAIXmlBehaviourDebugInfo;
-                    if (lActualDebugInfo == null)
-                    {
-                        GlobalServices.Logger.LogError("Could not load debug info on account of node not existing " + lNodeID);
-                    }
-                }
-
-                mEditorImpl.SetDebugInfo(lActualDebugInfo);
-            }
-            else
-            {
-                mDebugWindow.Close();
-                mDebugWindow = null;
-                mDebugger.Dispose();
-                mDebugger = null;
-            }*/
-        }
-
-        public void EnterNode(kAINodeID lNode)
-        {
-            mNodeNest.Add(lNode);
         }
     }    
 }
