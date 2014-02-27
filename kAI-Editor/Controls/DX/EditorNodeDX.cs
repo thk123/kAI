@@ -433,5 +433,14 @@ namespace kAI.Editor.Controls.DX
                     }));
             }
         }
+
+        internal void ClearDebugInfo()
+        {
+            mDebugInfo = null;
+            foreach (kAIEditorPortDX lEditorPort in mExternalPorts)
+            {
+                lEditorPort.ClearDebugInfo();
+           } 
+        }
     }
 }

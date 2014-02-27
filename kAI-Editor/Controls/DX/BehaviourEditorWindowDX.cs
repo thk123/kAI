@@ -800,5 +800,17 @@ namespace kAI.Editor.Controls.DX
             }
         }
 
+        public void ClearDebugInfo()
+        {
+            foreach (kAIEditorNodeDX lNode in mNodes)
+            {
+                lNode.ClearDebugInfo();
+            }
+
+            foreach (kAIEditorPortDX lPort in mPorts)
+            {
+                lPort.ClearDebugInfo();
+            }
+        }
     }
 }

@@ -54,6 +54,8 @@ namespace kAI.Editor.Controls
         IEnumerable<Tuple<kAINodeID, kAIAbsolutePosition>> GetNodePositions();
 
         event Action<kAI.Editor.ObjectProperties.kAIIPropertyEntry> ObjectSelected;
+
+        void ClearDebugInfo();
     }
 
     class kAIBehaviourEditorWindow
@@ -448,6 +450,11 @@ namespace kAI.Editor.Controls
         public void ApplyDebugInfo(kAIXmlBehaviourDebugInfo lDebugInfo)
         {
             mEditorImpl.SetDebugInfo(lDebugInfo);
+        }
+
+        public void ClearDebugInfo()
+        {
+            mEditorImpl.ClearDebugInfo();
         }
     }    
 }

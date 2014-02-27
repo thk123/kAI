@@ -412,5 +412,10 @@ namespace kAI.Editor.Controls.DX
         {
             mDebugInfo = lDebugInfo;
         }
+
+        internal void ClearDebugInfo()
+        {
+            mDebugInfo = null;
+        }
     }
 }

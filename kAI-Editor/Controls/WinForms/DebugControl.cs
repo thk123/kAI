@@ -128,7 +128,7 @@ namespace kAI.Editor.Controls.WinForms
         private void disconnectDebugBtn_Click(object sender, EventArgs e)
         {
             mDebugger.Dispose();
-            //TODO: disconnect debug info from display
+            GlobalServices.BehaviourComposor.ClearDebugInfo();
             mDebugger = null;
             mCurrentEntry = null;
             treeView1.Nodes.Clear();
