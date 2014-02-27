@@ -103,19 +103,26 @@ namespace kAI.Editor.Controls.WinForms
                 
 
                 kAIXmlBehaviourDebugInfo lDebugInfo = mDebugger.LoadEntry(mCurrentEntry.Value);
-                kAIXmlBehaviourDebugInfo lActualDebugInfo = lDebugInfo;
-                foreach (kAINodeID lNodeID in mNodeNest)
+                if(lDebugInfo != null)
                 {
-                    lActualDebugInfo = lDebugInfo.InternalNodes.Find((lNode) => { return lNode.NodeID == lNodeID; }).Contents as kAIXmlBehaviourDebugInfo;
-                }
+                    kAIXmlBehaviourDebugInfo lActualDebugInfo = lDebugInfo;
+                    foreach (kAINodeID lNodeID in mNodeNest)
+                    {
+                        lActualDebugInfo = lDebugInfo.InternalNodes.Find((lNode) => { return lNode.NodeID == lNodeID; }).Contents as kAIXmlBehaviourDebugInfo;
+                    }
 
-                if (GlobalServices.BehaviourComposor.Behaviour.BehaviourID != lActualDebugInfo.BehaviourID)
+                    if (GlobalServices.BehaviourComposor.Behaviour.BehaviourID != lActualDebugInfo.BehaviourID)
+                    {
+                        kAIINodeSerialObject lXmlBehaviour = GlobalServices.LoadedProject.NodeObjects[lActualDebugInfo.BehaviourID];
+                        GlobalServices.BehaviourComposor.LoadBehaviour(kAIXmlBehaviour.Load(lXmlBehaviour, GlobalServices.LoadedProject.GetAssemblyByName));
+                    }
+
+                    GlobalServices.BehaviourComposor.ApplyDebugInfo(lActualDebugInfo);
+                }
+                else
                 {
-                    kAIINodeSerialObject lXmlBehaviour = GlobalServices.LoadedProject.NodeObjects[lActualDebugInfo.BehaviourID];
-                    GlobalServices.BehaviourComposor.LoadBehaviour(kAIXmlBehaviour.Load(lXmlBehaviour, GlobalServices.LoadedProject.GetAssemblyByName));
+                    DisconnectDebugger();
                 }
-
-                GlobalServices.BehaviourComposor.ApplyDebugInfo(lActualDebugInfo);
             }
         }
 
@@ -127,11 +134,23 @@ namespace kAI.Editor.Controls.WinForms
 
         private void disconnectDebugBtn_Click(object sender, EventArgs e)
         {
+            DisconnectDebugger();
+        }
+
+        void DisconnectDebugger()
+        {
             mDebugger.Dispose();
             GlobalServices.BehaviourComposor.ClearDebugInfo();
             mDebugger = null;
             mCurrentEntry = null;
             treeView1.Nodes.Clear();
+
+            treeView1.Enabled = false;
+            treeView1.AfterSelect -= new TreeViewEventHandler(treeView1_AfterSelect);
+
+            disconnectDebugBtn.Enabled = false;
+
+            GlobalServices.BehaviourComposor.OnUpdate -= new Action(BehaviourComposor_OnUpdate);
         }
 
         private void toolStrip1_Resize(object sender, EventArgs e)
