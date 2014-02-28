@@ -114,10 +114,10 @@ public class AIBehaviour : MonoBehaviour, kAIILogger {
             print(kvp.Key + ": " + kvp.Value);
         }
 
-        if (kAIDebugServer.IsInit)
+        /*if (kAIDebugServer.IsInit)
         {
             kAIDebugServer.AddMessage(lError, lDetails);
-        }
+        }*/
     }
 
     public void LogError(string lError, params System.Collections.Generic.KeyValuePair<string, object>[] lDetails)
@@ -128,10 +128,10 @@ public class AIBehaviour : MonoBehaviour, kAIILogger {
             print(kvp.Key + ": " + kvp.Value);
         }
 
-        if (kAIDebugServer.IsInit)
+        /*if (kAIDebugServer.IsInit)
         {
             kAIDebugServer.AddMessage(lError, lDetails);
-        }
+        }*/
     }
 
     public void LogMessage(string lMessage, params System.Collections.Generic.KeyValuePair<string, object>[] lDetails)
@@ -141,10 +141,10 @@ public class AIBehaviour : MonoBehaviour, kAIILogger {
         {
             print(kvp.Key + ": " + kvp.Value);
         }
-        if (kAIDebugServer.IsInit)
+        /*if (kAIDebugServer.IsInit)
         {
             kAIDebugServer.AddMessage(lMessage, lDetails);
-        }
+        }*/
     }
 
     public void LogWarning(string lWarning, params System.Collections.Generic.KeyValuePair<string, object>[] lDetails)
@@ -155,9 +155,9 @@ public class AIBehaviour : MonoBehaviour, kAIILogger {
             print(kvp.Key + ": " + kvp.Value);
         }
 
-        if (kAIDebugServer.IsInit)
+        /*if (kAIDebugServer.IsInit)
         {
             kAIDebugServer.AddMessage(lWarning, lDetails);
-        }
+        }*/
     }
 }
