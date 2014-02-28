@@ -81,6 +81,16 @@ public static class WeaponFunctions
 {
     public static float DistanceToTarget(GameObject self, GameObject target)
     {
+        if (self == null)
+        {
+            kAIObject.LogWarning(null, "Self null in Distance To Target");
+            return float.MaxValue;
+        }
+        if (target == null)
+        {
+            kAIObject.LogWarning(null, "Target null in DistnaceToTarget (" + self.GetFullName() + ")");
+            return float.MaxValue;
+        }
         return (self.transform.position - target.transform.position).magnitude;
     }
 
@@ -129,6 +139,10 @@ public static class WeaponFunctions
 
     public static Vector3 GetObjectPosition(GameObject target)
     {
+        if (target == null)
+        {
+            return Vector3.zero;
+        }
         return target.transform.position;
     }
 
@@ -139,7 +153,10 @@ public static class WeaponFunctions
         Vector3 point = path * ((pathLength - GetWeaponRange(self)) / pathLength);
         point.y = self.transform.position.y;
         return point;*/
-
+        if (target == null)
+        {
+            return self.transform.position;
+        }
         return target.transform.position;
     }
 

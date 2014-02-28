@@ -24,8 +24,8 @@
         <d4p1:NodeID>IsNull</d4p1:NodeID>
       </Node>
       <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
-        <d4p1:x>179</d4p1:x>
-        <d4p1:y>-296</d4p1:y>
+        <d4p1:x>229</d4p1:x>
+        <d4p1:y>-278</d4p1:y>
       </Position>
     </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
     <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
@@ -60,8 +60,8 @@
         <d4p1:NodeID>HandleAttackOrder</d4p1:NodeID>
       </Node>
       <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
-        <d4p1:x>941</d4p1:x>
-        <d4p1:y>-396</d4p1:y>
+        <d4p1:x>946</d4p1:x>
+        <d4p1:y>-475</d4p1:y>
       </Position>
     </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
     <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
@@ -96,8 +96,8 @@
         <d4p1:NodeID>Not</d4p1:NodeID>
       </Node>
       <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
-        <d4p1:x>461</d4p1:x>
-        <d4p1:y>-326</d4p1:y>
+        <d4p1:x>607</d4p1:x>
+        <d4p1:y>-347</d4p1:y>
       </Position>
     </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
   </NodePositions>

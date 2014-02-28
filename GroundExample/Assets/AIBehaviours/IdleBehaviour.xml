@@ -60,6 +60,20 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
+        <NodeID>HandleAttackOrder</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Deactivate</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>IsNull</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>OnTrue</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
         <NodeID>And</NodeID>
       </EndNodeID>
       <EndPortID>
@@ -296,7 +310,7 @@
     </kAIXmlBehaviour.InternalXml.SerialNode>
     <kAIXmlBehaviour.InternalXml.SerialNode>
       <NodeContents i:type="kAIConstantFloatNode.SerialObject">
-        <Value>10</Value>
+        <Value>50</Value>
       </NodeContents>
       <NodeID>
         <NodeID>MaxSeekRange</NodeID>

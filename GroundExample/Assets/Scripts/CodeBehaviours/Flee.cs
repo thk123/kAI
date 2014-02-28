@@ -32,6 +32,16 @@ public class FleeBehaviour : kAIUnityAIBehaviour
 
     public static Vector3 GetFleePosition(GameObject self)
     {
-        return Vector3.zero;
+        GameObject result = WeaponFunctions.GetNearestTarget(self, 300.0f);
+        if (result != null)
+        {
+            Vector3 vectorAwayFromTarget = self.transform.position - result.transform.position;
+            return self.transform.position + vectorAwayFromTarget;
+        }
+        else
+        {
+            // We are fare enough away, we chill
+            return self.transform.position;
+        }
     }
 }
