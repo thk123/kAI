@@ -254,7 +254,7 @@ namespace kAI.Editor.Controls.WinForms
                 NodeEntryNode lCurrentNode = (NodeEntryNode)parentNode;
                 lNodes.Push(lCurrentNode.mInfo.NodeID);
                 lRootNode = parentNode.Parent as BehaviourEntryNode;
-
+                parentNode = parentNode.Parent as NodeEntryNode;
             } while (lRootNode == null);
 
             control.SetSelectedDebugInfo(lRootNode.Entry);
