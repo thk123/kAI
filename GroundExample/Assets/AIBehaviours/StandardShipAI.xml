@@ -228,6 +228,20 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
+        <NodeID>IfEquals</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>entry1</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>SelfPreservation</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>FleeVector</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
         <NodeID>CombineVectorFloat2</NodeID>
       </EndNodeID>
       <EndPortID>
@@ -361,6 +375,34 @@
       </EndPortID>
       <StartNodeID>
         <NodeID>CombineVectorFloat2</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>DataReturn</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>InvalidNode</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Fleeing</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>IfEquals</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>OnBecomeFalse</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>IfEquals</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>entry2</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>GetDefault</NodeID>
       </StartNodeID>
       <StartPortID>
         <PortID>DataReturn</PortID>
@@ -758,6 +800,68 @@
       <NodeType>kAI.Core.kAIFunctionNode</NodeType>
       <NodeTypeAssembly>kAICore</NodeTypeAssembly>
     </kAIXmlBehaviour.InternalXml.SerialNode>
+    <kAIXmlBehaviour.InternalXml.SerialNode>
+      <NodeContents i:type="kAIFunctionNode.SerialObject">
+        <AssemblyName>kAICore</AssemblyName>
+        <FunctionConfiguraion>
+          <GenericConfiguration>
+            <SerialType>
+              <AssemblyName>UnityEngine</AssemblyName>
+              <TypeName>UnityEngine.Vector3</TypeName>
+            </SerialType>
+          </GenericConfiguration>
+          <IsFirstParameterSelf>false</IsFirstParameterSelf>
+          <IsFunctionExecutable>false</IsFunctionExecutable>
+          <ReturnConfiguration>
+            <PropertyEnabled xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+              <d7p1:boolean>false</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
+              <d7p1:boolean>true</d7p1:boolean>
+              <d7p1:boolean>true</d7p1:boolean>
+            </PropertyEnabled>
+          </ReturnConfiguration>
+        </FunctionConfiguraion>
+        <MethodName>IfEquals</MethodName>
+        <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+      </NodeContents>
+      <NodeID>
+        <NodeID>IfEquals</NodeID>
+      </NodeID>
+      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
+      <NodeSerialType>kAI.Core.kAIFunctionNode+SerialObject</NodeSerialType>
+      <NodeType>kAI.Core.kAIFunctionNode</NodeType>
+      <NodeTypeAssembly>kAICore</NodeTypeAssembly>
+    </kAIXmlBehaviour.InternalXml.SerialNode>
+    <kAIXmlBehaviour.InternalXml.SerialNode>
+      <NodeContents i:type="kAIFunctionNode.SerialObject">
+        <AssemblyName>kAICore</AssemblyName>
+        <FunctionConfiguraion>
+          <GenericConfiguration>
+            <SerialType>
+              <AssemblyName>UnityEngine</AssemblyName>
+              <TypeName>UnityEngine.Vector3</TypeName>
+            </SerialType>
+          </GenericConfiguration>
+          <IsFirstParameterSelf>false</IsFirstParameterSelf>
+          <IsFunctionExecutable>false</IsFunctionExecutable>
+          <ReturnConfiguration>
+            <PropertyEnabled xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+              <d7p1:boolean>true</d7p1:boolean>
+            </PropertyEnabled>
+          </ReturnConfiguration>
+        </FunctionConfiguraion>
+        <MethodName>GetDefault</MethodName>
+        <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+      </NodeContents>
+      <NodeID>
+        <NodeID>GetDefault</NodeID>
+      </NodeID>
+      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
+      <NodeSerialType>kAI.Core.kAIFunctionNode+SerialObject</NodeSerialType>
+      <NodeType>kAI.Core.kAIFunctionNode</NodeType>
+      <NodeTypeAssembly>kAICore</NodeTypeAssembly>
+    </kAIXmlBehaviour.InternalXml.SerialNode>
   </InternalNodes>
   <InternalPorts>
     <kAIXmlBehaviour.InternalXml.SerialPort>
@@ -795,6 +899,15 @@
       <PortID>Health</PortID>
       <PortIsEnumerable>false</PortIsEnumerable>
       <PortIsTrigger>false</PortIsTrigger>
+    </kAIXmlBehaviour.InternalXml.SerialPort>
+    <kAIXmlBehaviour.InternalXml.SerialPort>
+      <IsGloballyAccesible>true</IsGloballyAccesible>
+      <PortDataType>System.Boolean</PortDataType>
+      <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
+      <PortDirection>PortDirection_In</PortDirection>
+      <PortID>Fleeing</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
+      <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
   </InternalPorts>
 </kAIXmlBehaviour>

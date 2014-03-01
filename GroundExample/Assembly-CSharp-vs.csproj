@@ -52,6 +52,7 @@
      <Compile Include="Assets\Scripts\CodeBehaviours\MoveTo.cs" />
      <Compile Include="Assets\Scripts\CodeBehaviours\MoveWithVelocity.cs" />
      <Compile Include="Assets\Scripts\CodeBehaviours\ShootTarget.cs" />
+     <Compile Include="Assets\Scripts\CodeBehaviours\TargetTracker.cs" />
      <Compile Include="Assets\Scripts\Game\CameraController.cs" />
      <Compile Include="Assets\Scripts\Game\FactionBehaviour.cs" />
      <Compile Include="Assets\Scripts\Game\HealthBehaviour.cs" />

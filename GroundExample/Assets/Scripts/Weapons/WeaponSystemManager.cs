@@ -190,6 +190,24 @@ public static class WeaponFunctions
         }
         return nearestObject;
     }
+
+    public static GameObject GetRandomSquadMember(SquadLeader squadLeader)
+    {
+        if (squadLeader != null)
+        {
+            GameObject lObject = squadLeader.squadMembers[UnityEngine.Random.Range(0, squadLeader.squadMembers.Count)].gameObject;
+            if (lObject == null)
+            {
+                kAIObject.LogMessage(null, "No member found:" + squadLeader.squadMembers.Count);
+            }
+            return lObject;
+        }
+        else
+        {
+            kAIObject.LogWarning(null, "No squad leader");
+            return null;
+        }
+    }
 }
 
 public class FireWeaponBehaviour : kAICodeBehaviour

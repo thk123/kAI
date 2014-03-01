@@ -46,4 +46,11 @@ class HealthBehaviour : MonoBehaviour
             Destroy(gameObject);
         }
     }
+
+    public float CurrentHealth {
+        get
+        {
+            return currentHealth / startingHealth;
+        }
+    }
 }
