@@ -73,6 +73,7 @@
     <Compile Include="Controls\DX\EditorConnexionDX.cs" />
     <Compile Include="Controls\DX\EditorPortDX.cs" />
     <Compile Include="Controls\DX\InputManagerDX.cs" />
+    <Compile Include="Execeptions\EditorExceptions.cs" />
     <Compile Include="Controls\DX\NodeCoordinate.cs" />
     <Compile Include="Controls\DX\EditorNodeDX.cs" />
     <Compile Include="Controls\PortConnexionCreator.cs" />

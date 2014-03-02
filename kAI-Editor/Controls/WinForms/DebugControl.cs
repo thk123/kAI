@@ -137,7 +137,7 @@ namespace kAI.Editor.Controls.WinForms
             DisconnectDebugger();
         }
 
-        void DisconnectDebugger()
+        public void DisconnectDebugger()
         {
             mDebugger.Dispose();
             GlobalServices.BehaviourComposor.ClearDebugInfo();

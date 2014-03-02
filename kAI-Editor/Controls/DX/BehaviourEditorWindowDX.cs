@@ -21,6 +21,8 @@ using kAI.Editor.Controls.DX.Coordinates;
 
 using kAI.Core.Debug;
 using System.Drawing;
+using kAI.Editor.Core;
+using kAI.Editor.Exceptions;
 
 namespace kAI.Editor.Controls.DX
 {
@@ -749,7 +751,7 @@ namespace kAI.Editor.Controls.DX
                 }
             }
 
-            throw new Exception("Could not position node, no node with ID " + lNodeID);
+            throw new kAIEditorNodeNotFoundException(lNodeID);
         }
 
         void InputManager_OnMouseUp(object sender, MouseEventArgs e)
@@ -791,7 +793,16 @@ namespace kAI.Editor.Controls.DX
         {
             foreach (kAINodeDebugInfo lNodeDebugInfo in lDebugInfo.InternalNodes)
             {
-                GetNode(lNodeDebugInfo.NodeID).SetDebugInfo(lNodeDebugInfo);
+                try
+                {
+                    GetNode(lNodeDebugInfo.NodeID).SetDebugInfo(lNodeDebugInfo);
+                }
+                catch (kAIEditorNodeNotFoundException e)
+                {
+                    GlobalServices.Logger.LogError("Could not find node with ID: " + e.NodeID + ", disconnecting debugger...");
+                    GlobalServices.Debugger.DisconnectDebugger();
+                    return;
+                }                
             }
 
             foreach (kAIPortDebugInfo lPortDebugInfo in lDebugInfo.InternalPorts)
