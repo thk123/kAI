@@ -14,22 +14,35 @@ class HealthBehaviour : MonoBehaviour
 
     kAIDataPort<float> healthPort;
 
+    kAIDataPort<GameObject> lastAttackPort;
+
     // Use this for initialization
     void Start()
     {
         currentHealth = startingHealth;
         AIBehaviour behaviour = GetComponent<AIBehaviour>();
         healthPort = behaviour.GetPort("Health") as kAIDataPort<float>;
+        lastAttackPort = behaviour.GetPort("LastAttacker") as kAIDataPort<GameObject>;
         if(healthPort == null)
         {
             Debug.LogWarning("No health port on AI behaviour");
         }
+
+        if (lastAttackPort == null)
+        {
+            Debug.LogWarning("No on damage trigger");
+        }
     }
 
-    public void ApplyDamage(float damage, Vector2 originOfDamage)
+    public void ApplyDamage(float damage, Vector2 originOfDamage, GameObject sourceOfPain)
     {
         currentHealth -= damage;
         SendMessage("OnDamage", originOfDamage, SendMessageOptions.DontRequireReceiver);
+
+        if (lastAttackPort != null)
+        {
+            lastAttackPort.Data = sourceOfPain;
+        }
     }
 
     // Update is called once per frame

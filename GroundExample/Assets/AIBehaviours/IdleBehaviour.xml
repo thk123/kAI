@@ -4,7 +4,7 @@
   <InternalConnexions>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
-        <NodeID>IsNull</NodeID>
+        <NodeID>NearestTargetNull</NodeID>
       </EndNodeID>
       <EndPortID>
         <PortID>lObject</PortID>
@@ -18,10 +18,10 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
-        <NodeID>HandleAttackOrder</NodeID>
+        <NodeID>AttackLastAttacker</NodeID>
       </EndNodeID>
       <EndPortID>
-        <PortID>Target</PortID>
+        <PortID>trueValue</PortID>
       </EndPortID>
       <StartNodeID>
         <NodeID>GetNearestTarget</NodeID>
@@ -46,13 +46,13 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
-        <NodeID>Not</NodeID>
+        <NodeID>IsNearestNullNot</NodeID>
       </EndNodeID>
       <EndPortID>
         <PortID>entry</PortID>
       </EndPortID>
       <StartNodeID>
-        <NodeID>IsNull</NodeID>
+        <NodeID>NearestTargetNull</NodeID>
       </StartNodeID>
       <StartPortID>
         <PortID>DataReturn</PortID>
@@ -60,21 +60,7 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
-        <NodeID>HandleAttackOrder</NodeID>
-      </EndNodeID>
-      <EndPortID>
-        <PortID>Deactivate</PortID>
-      </EndPortID>
-      <StartNodeID>
-        <NodeID>IsNull</NodeID>
-      </StartNodeID>
-      <StartPortID>
-        <PortID>OnTrue</PortID>
-      </StartPortID>
-    </kAIXmlBehaviour.InternalXml.SerialConnexion>
-    <kAIXmlBehaviour.InternalXml.SerialConnexion>
-      <EndNodeID>
-        <NodeID>And</NodeID>
+        <NodeID>HaveTargetAndHealth</NodeID>
       </EndNodeID>
       <EndPortID>
         <PortID>entry1</PortID>
@@ -108,7 +94,7 @@
         <PortID>value</PortID>
       </EndPortID>
       <StartNodeID>
-        <NodeID>And</NodeID>
+        <NodeID>HaveTargetAndHealth</NodeID>
       </StartNodeID>
       <StartPortID>
         <PortID>DataReturn</PortID>
@@ -122,7 +108,7 @@
         <PortID>value</PortID>
       </EndPortID>
       <StartNodeID>
-        <NodeID>And</NodeID>
+        <NodeID>HaveTargetAndHealth</NodeID>
       </StartNodeID>
       <StartPortID>
         <PortID>DataReturn</PortID>
@@ -136,7 +122,7 @@
         <PortID>Activate</PortID>
       </EndPortID>
       <StartNodeID>
-        <NodeID>And</NodeID>
+        <NodeID>HaveTargetAndHealth</NodeID>
       </StartNodeID>
       <StartPortID>
         <PortID>OnTrue</PortID>
@@ -150,7 +136,7 @@
         <PortID>Deactivate</PortID>
       </EndPortID>
       <StartNodeID>
-        <NodeID>And</NodeID>
+        <NodeID>HaveTargetAndHealth</NodeID>
       </StartNodeID>
       <StartPortID>
         <PortID>OnFalse</PortID>
@@ -256,13 +242,97 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
-        <NodeID>And</NodeID>
+        <NodeID>EitherNearOrLastAttacker</NodeID>
       </EndNodeID>
       <EndPortID>
         <PortID>entry2</PortID>
       </EndPortID>
       <StartNodeID>
-        <NodeID>Not</NodeID>
+        <NodeID>IsNearestNullNot</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>DataReturn</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>IsLastNullNot</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>entry</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>LastAttackerNull</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>DataReturn</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>AttackLastAttacker</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>value</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>LastAttackerNull</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>DataReturn</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>HandleAttackOrder</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Activate</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>LastAttackerNull</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>OnTrue</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>EitherNearOrLastAttacker</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>entry1</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>IsLastNullNot</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>DataReturn</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>HaveTargetAndHealth</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>entry2</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>EitherNearOrLastAttacker</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>DataReturn</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>HandleAttackOrder</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Target</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>AttackLastAttacker</NodeID>
       </StartNodeID>
       <StartPortID>
         <PortID>DataReturn</PortID>
@@ -280,6 +350,34 @@
       </StartNodeID>
       <StartPortID>
         <PortID>Health</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>LastAttackerNull</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>lObject</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>InvalidNode</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>LastAttacker</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>AttackLastAttacker</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>falseValue</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>InvalidNode</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>LastAttacker</PortID>
       </StartPortID>
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
   </InternalConnexions>
@@ -310,7 +408,7 @@
     </kAIXmlBehaviour.InternalXml.SerialNode>
     <kAIXmlBehaviour.InternalXml.SerialNode>
       <NodeContents i:type="kAIConstantFloatNode.SerialObject">
-        <Value>50</Value>
+        <Value>60</Value>
       </NodeContents>
       <NodeID>
         <NodeID>MaxSeekRange</NodeID>
@@ -346,7 +444,7 @@
         <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
       </NodeContents>
       <NodeID>
-        <NodeID>IsNull</NodeID>
+        <NodeID>NearestTargetNull</NodeID>
       </NodeID>
       <NodeSerialAssembly>kAICore</NodeSerialAssembly>
       <NodeSerialType>kAI.Core.kAIFunctionNode+SerialObject</NodeSerialType>
@@ -419,7 +517,7 @@
         <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
       </NodeContents>
       <NodeID>
-        <NodeID>And</NodeID>
+        <NodeID>HaveTargetAndHealth</NodeID>
       </NodeID>
       <NodeSerialAssembly>kAICore</NodeSerialAssembly>
       <NodeSerialType>kAI.Core.kAIFunctionNode+SerialObject</NodeSerialType>
@@ -552,7 +650,125 @@
         <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
       </NodeContents>
       <NodeID>
-        <NodeID>Not</NodeID>
+        <NodeID>IsNearestNullNot</NodeID>
+      </NodeID>
+      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
+      <NodeSerialType>kAI.Core.kAIFunctionNode+SerialObject</NodeSerialType>
+      <NodeType>kAI.Core.kAIFunctionNode</NodeType>
+      <NodeTypeAssembly>kAICore</NodeTypeAssembly>
+    </kAIXmlBehaviour.InternalXml.SerialNode>
+    <kAIXmlBehaviour.InternalXml.SerialNode>
+      <NodeContents i:type="kAIFunctionNode.SerialObject">
+        <AssemblyName>kAICore</AssemblyName>
+        <FunctionConfiguraion>
+          <GenericConfiguration>
+            <SerialType>
+              <AssemblyName>UnityEngine</AssemblyName>
+              <TypeName>UnityEngine.GameObject</TypeName>
+            </SerialType>
+          </GenericConfiguration>
+          <IsFirstParameterSelf>false</IsFirstParameterSelf>
+          <IsFunctionExecutable>false</IsFunctionExecutable>
+          <ReturnConfiguration>
+            <PropertyEnabled xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+              <d7p1:boolean>true</d7p1:boolean>
+              <d7p1:boolean>true</d7p1:boolean>
+              <d7p1:boolean>true</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
+            </PropertyEnabled>
+          </ReturnConfiguration>
+        </FunctionConfiguraion>
+        <MethodName>IsNull</MethodName>
+        <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+      </NodeContents>
+      <NodeID>
+        <NodeID>LastAttackerNull</NodeID>
+      </NodeID>
+      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
+      <NodeSerialType>kAI.Core.kAIFunctionNode+SerialObject</NodeSerialType>
+      <NodeType>kAI.Core.kAIFunctionNode</NodeType>
+      <NodeTypeAssembly>kAICore</NodeTypeAssembly>
+    </kAIXmlBehaviour.InternalXml.SerialNode>
+    <kAIXmlBehaviour.InternalXml.SerialNode>
+      <NodeContents i:type="kAIFunctionNode.SerialObject">
+        <AssemblyName>kAICore</AssemblyName>
+        <FunctionConfiguraion>
+          <GenericConfiguration />
+          <IsFirstParameterSelf>false</IsFirstParameterSelf>
+          <IsFunctionExecutable>false</IsFunctionExecutable>
+          <ReturnConfiguration>
+            <PropertyEnabled xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+              <d7p1:boolean>true</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
+            </PropertyEnabled>
+          </ReturnConfiguration>
+        </FunctionConfiguraion>
+        <MethodName>Not</MethodName>
+        <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+      </NodeContents>
+      <NodeID>
+        <NodeID>IsLastNullNot</NodeID>
+      </NodeID>
+      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
+      <NodeSerialType>kAI.Core.kAIFunctionNode+SerialObject</NodeSerialType>
+      <NodeType>kAI.Core.kAIFunctionNode</NodeType>
+      <NodeTypeAssembly>kAICore</NodeTypeAssembly>
+    </kAIXmlBehaviour.InternalXml.SerialNode>
+    <kAIXmlBehaviour.InternalXml.SerialNode>
+      <NodeContents i:type="kAIFunctionNode.SerialObject">
+        <AssemblyName>kAICore</AssemblyName>
+        <FunctionConfiguraion>
+          <GenericConfiguration />
+          <IsFirstParameterSelf>false</IsFirstParameterSelf>
+          <IsFunctionExecutable>false</IsFunctionExecutable>
+          <ReturnConfiguration>
+            <PropertyEnabled xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+              <d7p1:boolean>true</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
+            </PropertyEnabled>
+          </ReturnConfiguration>
+        </FunctionConfiguraion>
+        <MethodName>Or</MethodName>
+        <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+      </NodeContents>
+      <NodeID>
+        <NodeID>EitherNearOrLastAttacker</NodeID>
+      </NodeID>
+      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
+      <NodeSerialType>kAI.Core.kAIFunctionNode+SerialObject</NodeSerialType>
+      <NodeType>kAI.Core.kAIFunctionNode</NodeType>
+      <NodeTypeAssembly>kAICore</NodeTypeAssembly>
+    </kAIXmlBehaviour.InternalXml.SerialNode>
+    <kAIXmlBehaviour.InternalXml.SerialNode>
+      <NodeContents i:type="kAIFunctionNode.SerialObject">
+        <AssemblyName>kAICore</AssemblyName>
+        <FunctionConfiguraion>
+          <GenericConfiguration>
+            <SerialType>
+              <AssemblyName>UnityEngine</AssemblyName>
+              <TypeName>UnityEngine.GameObject</TypeName>
+            </SerialType>
+          </GenericConfiguration>
+          <IsFirstParameterSelf>false</IsFirstParameterSelf>
+          <IsFunctionExecutable>false</IsFunctionExecutable>
+          <ReturnConfiguration>
+            <PropertyEnabled xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+              <d7p1:boolean>true</d7p1:boolean>
+            </PropertyEnabled>
+          </ReturnConfiguration>
+        </FunctionConfiguraion>
+        <MethodName>AOrBChooser</MethodName>
+        <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+      </NodeContents>
+      <NodeID>
+        <NodeID>AttackLastAttacker</NodeID>
       </NodeID>
       <NodeSerialAssembly>kAICore</NodeSerialAssembly>
       <NodeSerialType>kAI.Core.kAIFunctionNode+SerialObject</NodeSerialType>
@@ -612,6 +828,15 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>Health</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
+      <PortIsTrigger>false</PortIsTrigger>
+    </kAIXmlBehaviour.InternalXml.SerialPort>
+    <kAIXmlBehaviour.InternalXml.SerialPort>
+      <IsGloballyAccesible>true</IsGloballyAccesible>
+      <PortDataType>UnityEngine.GameObject</PortDataType>
+      <PortDataTypeAssembly>UnityEngine</PortDataTypeAssembly>
+      <PortDirection>PortDirection_Out</PortDirection>
+      <PortID>LastAttacker</PortID>
       <PortIsEnumerable>false</PortIsEnumerable>
       <PortIsTrigger>false</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>

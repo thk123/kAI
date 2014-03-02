@@ -47,7 +47,7 @@ public class LaserWeaponSystem : MonoBehaviour, IWeaponSystem {
             HealthBehaviour health = result.collider.GetComponent<HealthBehaviour>();
             if (health != null)
             {
-                health.ApplyDamage(damagePerSecond * Time.deltaTime, transform.forward);
+                health.ApplyDamage(damagePerSecond * Time.deltaTime, transform.forward, transform.parent.gameObject);
             }
 
         }
