@@ -87,8 +87,8 @@
         <d4p1:NodeID>HandleAttackOrder</d4p1:NodeID>
       </Node>
       <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
-        <d4p1:x>11</d4p1:x>
-        <d4p1:y>-397</d4p1:y>
+        <d4p1:x>325</d4p1:x>
+        <d4p1:y>-526</d4p1:y>
       </Position>
     </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
     <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
@@ -105,8 +105,8 @@
         <d4p1:NodeID>IdleBehaviour</d4p1:NodeID>
       </Node>
       <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
-        <d4p1:x>81</d4p1:x>
-        <d4p1:y>182</d4p1:y>
+        <d4p1:x>843</d4p1:x>
+        <d4p1:y>-237</d4p1:y>
       </Position>
     </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
     <kAIXmlBehaviourMetaSaveFile.kAINodePoint>

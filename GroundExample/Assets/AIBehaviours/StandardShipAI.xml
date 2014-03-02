@@ -340,6 +340,20 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
+        <NodeID>ShipEngineController</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>FaceTo</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>IdleBehaviour</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>Face</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
         <NodeID>FireWeaponBehaviour</NodeID>
       </EndNodeID>
       <EndPortID>
