@@ -144,7 +144,29 @@ public class PickTargetFromSquadBehaviour : kAICodeBehaviour
 
     private void SelectTarget()
     {
-        mTargetPort.Data = WeaponFunctions.GetRandomSquadMember(mSquadLeaderPort.Data);
+        GameObject lSelectedTarget = WeaponFunctions.GetRandomSquadMember(mSquadLeaderPort.Data);
+        if (lSelectedTarget != null)
+        {
+            SquadMember lMember = lSelectedTarget.GetComponent<SquadMember>();
+            if (lMember != null)
+            {
+                if (lMember.IsFleeing)
+                {
+                    lSelectedTarget = null;
+                    LogMessage("Target is fleeing");
+                }
+            }
+            else
+            {
+                LogWarning("No SquadMember behaviour");
+            }
+        }
+        else
+        {
+            LogWarning("Target is null");
+            UnityEngine.Debug.Break();
+        }
+        mTargetPort.Data = lSelectedTarget;
     }
 
     protected override void InternalUpdate(float lDeltaTime, object lUserData)

@@ -13,8 +13,17 @@ public class SquadMember : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        orderPort = (kAIDataPort<IndividualOrder>)GetComponent<AIBehaviour>().GetPort("Order");
+        AIBehaviour lBehaviour = GetComponent<AIBehaviour>();
+        orderPort = (kAIDataPort<IndividualOrder>)lBehaviour.GetPort("Order");
+        kAITriggerPort lTrigger = (kAITriggerPort)lBehaviour.GetPort("Fleeing");
+        lTrigger.OnTriggered += new kAITriggerPort.TriggerEvent(lTrigger_OnTriggered);
+        IsFleeing = false;
 	}
+
+    void lTrigger_OnTriggered(kAIPort lSender)
+    {
+        IsFleeing = true;
+    }
 	
 	// Update is called once per frame
 	void Update () {
@@ -38,4 +47,10 @@ public class SquadMember : MonoBehaviour {
     }
 
     //public void AddToSquad()
+
+    public bool IsFleeing 
+    { 
+        get; 
+        private set; 
+    }
 }
