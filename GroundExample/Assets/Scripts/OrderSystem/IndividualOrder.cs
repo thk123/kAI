@@ -29,6 +29,11 @@ public abstract class IndividualOrder
     {
         return new IndividualAttackOrder { Target = target };
     }
+
+    public override bool Equals(object obj)
+    {
+        throw new NotImplementedException();
+    }
 }
 
 public class IndividualMoveOrder : IndividualOrder
@@ -47,7 +52,23 @@ public class IndividualMoveOrder : IndividualOrder
     public override string ToString()
     {
         return Destination.ToString();
-    } 
+    }
+
+    public override bool Equals(object obj)
+    {
+        IndividualMoveOrder other = obj as IndividualMoveOrder;
+      //  kAIObject.LogMessage(null, "Calling my equals");
+        if (other == null)
+        {
+           // kAIObject.LogMessage(null, "Failied on type check");
+            return false;
+        }
+        else
+        {
+            //kAIObject.LogMessage(null, "Target:" + Destination + "/" + other.Destination);
+            return other.Destination.x == Destination.x && other.Destination.z == Destination.z;
+        }
+    }
 }
 
 public class IndividualAttackOrder : IndividualOrder
@@ -62,132 +83,25 @@ public class IndividualAttackOrder : IndividualOrder
     {
         get { return IndividualOrderType.eAttackTarget; }
     }
-}
 
-public class OrderSwitcherBehaviour : kAICodeBehaviour
-{
-    IndividualOrder.IndividualOrderType lastOrderType;
-
-    kAITriggerPort moveOrderTrigger;
-    kAITriggerPort attackOrderTrigger;
-    kAITriggerPort noOrderTrigger;
-    kAITriggerPort clearOrderTrigger;
-
-    kAIDataPort<IndividualOrder> orderPort;
-
-    bool lPerformingOrder = false;
-
-    public OrderSwitcherBehaviour()
-        :base(null)
+    public override bool Equals(object obj)
     {
-        lastOrderType = IndividualOrder.IndividualOrderType.eInvalid;
-
-        moveOrderTrigger = new kAITriggerPort("MoveOrder", kAIPort.ePortDirection.PortDirection_Out);
-        AddExternalPort(moveOrderTrigger);
-
-        attackOrderTrigger = new kAITriggerPort("AttackOrder", kAIPort.ePortDirection.PortDirection_Out);
-        AddExternalPort(attackOrderTrigger);
-
-        noOrderTrigger = new kAITriggerPort("Idle", kAIPort.ePortDirection.PortDirection_Out);
-        AddExternalPort(noOrderTrigger);
-
-        clearOrderTrigger = new kAITriggerPort("OrderCompleted", kAIPort.ePortDirection.PortDirection_In);
-        clearOrderTrigger.OnTriggered += clearOrderTrigger_OnTriggered;
-        AddExternalPort(clearOrderTrigger);
-
-
-        orderPort = new kAIDataPort<IndividualOrder>("Order", kAIPort.ePortDirection.PortDirection_In);
-        AddExternalPort(orderPort);
-    }
-
-    void clearOrderTrigger_OnTriggered(kAIPort lSender)
-    {
-        lPerformingOrder = false;
-    }
-
-    protected override void InternalUpdate(float lDeltaTime, object lUserData)
-    {
-        if (lPerformingOrder)
+        
+        IndividualAttackOrder other = obj as IndividualAttackOrder;
+        if (other == null)
         {
-            // doing an order 
-
-            if (orderPort.Data != null)
-            {
-                // we've just received an order, override
-                ActivateOder(orderPort.Data.TypeOfOrder);
-            }
-            // else no order so we continue with current order
+            
+            return false;
         }
         else
         {
-            // no order being performed
-            if (orderPort.Data != null)
-            {
-                // we've just received an order, override
-                ActivateOder(orderPort.Data.TypeOfOrder);
-            }
-            else
-            {
-                // no order so we activate idle
-                ActivateOder(IndividualOrder.IndividualOrderType.eIdle);
-            }
-        }
-
-       
             
-        
-    }
-
-    void ActivateOder(IndividualOrder.IndividualOrderType order)
-    {
-        if(order != lastOrderType)
-        {
-            switch (order)
-            {
-                case IndividualOrder.IndividualOrderType.eInvalid:
-                    break;
-                case IndividualOrder.IndividualOrderType.eMoveDirectToPoint:
-                    moveOrderTrigger.Trigger();
-                    lPerformingOrder = true;
-                    break;
-                case IndividualOrder.IndividualOrderType.eAttackTarget:
-                    attackOrderTrigger.Trigger();
-                    lPerformingOrder = true;
-                    break;
-                case IndividualOrder.IndividualOrderType.eIdle:
-                    noOrderTrigger.Trigger();
-                    break;
-                default:
-                    break;
-            }
+            return other.Target == Target;
         }
-
-        lastOrderType = order;
-    }
-
-
-
-    public override kAI.Core.Debug.kAINodeObjectDebugInfo GenerateDebugInfo()
-    {
-        return new OrderSwitcherDebugInfo(this, lPerformingOrder);
     }
 }
 
-[Serializable]
-public class OrderSwitcherDebugInfo : kAI.Core.Debug.kAIBehaviourDebugInfo
-{
-    public bool PerformingOrder
-    {
-        get;
-        private set;
-    }
 
-    public OrderSwitcherDebugInfo(OrderSwitcherBehaviour lBehaviour, bool lPerformingOrder)
-        :base(lBehaviour)
-    {
-        PerformingOrder = lPerformingOrder;
-    }
-}
 
 public class OrderDataExtractor : kAICodeBehaviour
 {

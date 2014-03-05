@@ -214,34 +214,6 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
-        <NodeID>AOrBChooser</NodeID>
-      </EndNodeID>
-      <EndPortID>
-        <PortID>falseValue</PortID>
-      </EndPortID>
-      <StartNodeID>
-        <NodeID>GetDefault</NodeID>
-      </StartNodeID>
-      <StartPortID>
-        <PortID>DataReturn</PortID>
-      </StartPortID>
-    </kAIXmlBehaviour.InternalXml.SerialConnexion>
-    <kAIXmlBehaviour.InternalXml.SerialConnexion>
-      <EndNodeID>
-        <NodeID>AOrBChooser0</NodeID>
-      </EndNodeID>
-      <EndPortID>
-        <PortID>falseValue</PortID>
-      </EndPortID>
-      <StartNodeID>
-        <NodeID>GetDefault</NodeID>
-      </StartNodeID>
-      <StartPortID>
-        <PortID>DataReturn</PortID>
-      </StartPortID>
-    </kAIXmlBehaviour.InternalXml.SerialConnexion>
-    <kAIXmlBehaviour.InternalXml.SerialConnexion>
-      <EndNodeID>
         <NodeID>EitherNearOrLastAttacker</NodeID>
       </EndNodeID>
       <EndPortID>
@@ -336,6 +308,48 @@
       </StartNodeID>
       <StartPortID>
         <PortID>DataReturn</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>AOrBChooser</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>falseValue</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>GetDefault</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>DataReturn</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>AOrBChooser0</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>falseValue</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>GetDefault</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>DataReturn</PortID>
+      </StartPortID>
+    </kAIXmlBehaviour.InternalXml.SerialConnexion>
+    <kAIXmlBehaviour.InternalXml.SerialConnexion>
+      <EndNodeID>
+        <NodeID>IndividualFigureofEight</NodeID>
+      </EndNodeID>
+      <EndPortID>
+        <PortID>Activate</PortID>
+      </EndPortID>
+      <StartNodeID>
+        <NodeID>InvalidNode</NodeID>
+      </StartNodeID>
+      <StartPortID>
+        <PortID>OnActivate</PortID>
       </StartPortID>
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
@@ -604,35 +618,6 @@
       <NodeContents i:type="kAIFunctionNode.SerialObject">
         <AssemblyName>kAICore</AssemblyName>
         <FunctionConfiguraion>
-          <GenericConfiguration>
-            <SerialType>
-              <AssemblyName>UnityEngine</AssemblyName>
-              <TypeName>UnityEngine.Vector3</TypeName>
-            </SerialType>
-          </GenericConfiguration>
-          <IsFirstParameterSelf>false</IsFirstParameterSelf>
-          <IsFunctionExecutable>false</IsFunctionExecutable>
-          <ReturnConfiguration>
-            <PropertyEnabled xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
-              <d7p1:boolean>true</d7p1:boolean>
-            </PropertyEnabled>
-          </ReturnConfiguration>
-        </FunctionConfiguraion>
-        <MethodName>GetDefault</MethodName>
-        <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
-      </NodeContents>
-      <NodeID>
-        <NodeID>GetDefault</NodeID>
-      </NodeID>
-      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
-      <NodeSerialType>kAI.Core.kAIFunctionNode+SerialObject</NodeSerialType>
-      <NodeType>kAI.Core.kAIFunctionNode</NodeType>
-      <NodeTypeAssembly>kAICore</NodeTypeAssembly>
-    </kAIXmlBehaviour.InternalXml.SerialNode>
-    <kAIXmlBehaviour.InternalXml.SerialNode>
-      <NodeContents i:type="kAIFunctionNode.SerialObject">
-        <AssemblyName>kAICore</AssemblyName>
-        <FunctionConfiguraion>
           <GenericConfiguration />
           <IsFirstParameterSelf>false</IsFirstParameterSelf>
           <IsFunctionExecutable>false</IsFunctionExecutable>
@@ -769,6 +754,49 @@
       </NodeContents>
       <NodeID>
         <NodeID>AttackLastAttacker</NodeID>
+      </NodeID>
+      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
+      <NodeSerialType>kAI.Core.kAIFunctionNode+SerialObject</NodeSerialType>
+      <NodeType>kAI.Core.kAIFunctionNode</NodeType>
+      <NodeTypeAssembly>kAICore</NodeTypeAssembly>
+    </kAIXmlBehaviour.InternalXml.SerialNode>
+    <kAIXmlBehaviour.InternalXml.SerialNode>
+      <NodeContents i:type="kAICodeBehaviour.SerialObject">
+        <BehaviourAssembly>Assembly-CSharp</BehaviourAssembly>
+        <BehaviourID>IndividualFigureofEight</BehaviourID>
+        <BehaviourType>IndividualFigureofEight</BehaviourType>
+      </NodeContents>
+      <NodeID>
+        <NodeID>IndividualFigureofEight</NodeID>
+      </NodeID>
+      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
+      <NodeSerialType>kAI.Core.kAICodeBehaviour+SerialObject</NodeSerialType>
+      <NodeType>IndividualFigureofEight</NodeType>
+      <NodeTypeAssembly>Assembly-CSharp</NodeTypeAssembly>
+    </kAIXmlBehaviour.InternalXml.SerialNode>
+    <kAIXmlBehaviour.InternalXml.SerialNode>
+      <NodeContents i:type="kAIFunctionNode.SerialObject">
+        <AssemblyName>kAICore</AssemblyName>
+        <FunctionConfiguraion>
+          <GenericConfiguration>
+            <SerialType>
+              <AssemblyName>UnityEngine</AssemblyName>
+              <TypeName>UnityEngine.Vector3</TypeName>
+            </SerialType>
+          </GenericConfiguration>
+          <IsFirstParameterSelf>false</IsFirstParameterSelf>
+          <IsFunctionExecutable>false</IsFunctionExecutable>
+          <ReturnConfiguration>
+            <PropertyEnabled xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
+              <d7p1:boolean>true</d7p1:boolean>
+            </PropertyEnabled>
+          </ReturnConfiguration>
+        </FunctionConfiguraion>
+        <MethodName>GetDefault</MethodName>
+        <TypeName>kAI.Core.kAIFunctionNodes</TypeName>
+      </NodeContents>
+      <NodeID>
+        <NodeID>GetDefault</NodeID>
       </NodeID>
       <NodeSerialAssembly>kAICore</NodeSerialAssembly>
       <NodeSerialType>kAI.Core.kAIFunctionNode+SerialObject</NodeSerialType>

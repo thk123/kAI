@@ -164,7 +164,6 @@ public class PickTargetFromSquadBehaviour : kAICodeBehaviour
         else
         {
             LogWarning("Target is null");
-            UnityEngine.Debug.Break();
         }
         mTargetPort.Data = lSelectedTarget;
     }
