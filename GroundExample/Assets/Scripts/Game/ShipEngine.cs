@@ -22,10 +22,13 @@ public class ShipEngine : MonoBehaviour {
 	void Update () 
 	{
         transform.position += currentDirection;
-        RaycastHit lInfo;
-        if (Physics.Raycast(new Ray(transform.position, -50 * Vector3.up), out lInfo))
+        RaycastHit[] lInfos = Physics.RaycastAll(new Ray(transform.position, -50 * Vector3.up));
+        foreach(RaycastHit lInfo in lInfos)
         {
-            transform.position = new Vector3(transform.position.x, lInfo.point.y + 30.0f, transform.position.z);
+            if (lInfo.collider.GetComponent<Terrain>() != null)
+            {
+                transform.position = new Vector3(transform.position.x, lInfo.point.y + 30.0f, transform.position.z);
+            }
         }
         currentDirection = Vector3.zero;
 	}
