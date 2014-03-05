@@ -72,7 +72,15 @@ namespace kAI.Editor.Core
             {
                 foreach (kAIRelativePath lDLLPath in value)
                 {
-                    LoadDLL(lDLLPath);
+                    try
+                    {
+                        LoadDLL(lDLLPath);
+                    }
+                    catch (System.IO.FileNotFoundException ex)
+                    {
+                        GlobalServices.Logger.LogCriticalError("Could not load DLL");
+                    }
+                    
                 }
 
                 mProjectDLLPaths = value;
@@ -125,8 +133,14 @@ namespace kAI.Editor.Core
             {
                 foreach (string lString in value)
                 {
-                    ProjectTypes.Add(Type.GetType(lString, (lAssemblyName) => { return GetAssemblyByName(lAssemblyName.Name); }, null, true));
-
+                    try
+                    {
+                        ProjectTypes.Add(Type.GetType(lString, (lAssemblyName) => { return GetAssemblyByName(lAssemblyName.Name); }, null, true));
+                    }
+                    catch (FileNotFoundException ex)
+                    {
+                        GlobalServices.Logger.LogError("Could not load type " + lString, new KeyValuePair<string, object>("DLL missing", ex.Message));
+                    }
                 }
             }
         }
@@ -250,7 +264,14 @@ namespace kAI.Editor.Core
             {
                 foreach (KeyValuePair<string, kAIRelativePath> lAdditionalPath in value)
                 {
-                    LoadDLL(lAdditionalPath.Value);
+                    try
+                    {
+                        LoadDLL(lAdditionalPath.Value);
+                    }
+                    catch (FileNotFoundException)
+                    {
+                        GlobalServices.Logger.LogError("Could not load DLL: " + lAdditionalPath.Key);
+                    }
                 }
 
                 mAdditionalDllPathsInt = value;
@@ -485,18 +506,24 @@ namespace kAI.Editor.Core
         {
             OpenFileDialog lOFD = new OpenFileDialog();
             lOFD.Title = "Find missing DLL: " + lAssemblyFullName;
-            if (lOFD.ShowDialog() == DialogResult.OK)
+            while (lOFD.ShowDialog() == DialogResult.OK)
             {
                 FileInfo lDllPathUnRel = new FileInfo(lOFD.FileName);
                 lDllPath = new kAIRelativePath(lDllPathUnRel, ProjectRoot, kProjectRootID);
-                return LoadAssemblyFromFilePath(lDllPath);
+                try
+                {
+                    return LoadAssemblyFromFilePath(lDllPath);
+                }
+                catch (System.IO.FileNotFoundException ex)
+                {
+                	MessageBox.Show("Invalid DLL: "  + ex.Message);
+                }
+                
                 
             }
-            else
-            {
-                lDllPath = null;
-                return null;
-            }
+
+            lDllPath = null;
+            return null;
         }
 
         /// <summary>
@@ -507,12 +534,19 @@ namespace kAI.Editor.Core
         private Assembly LoadAssemblyFromFilePath(kAIRelativePath lDllPath)
         {
             // Load using standard assembly load to ensure assembly image is all correct etc.
-            Assembly lLoadedAssembly = Assembly.LoadFrom(lDllPath.GetFile().FullName);
+            try
+            {
+                Assembly lLoadedAssembly = Assembly.LoadFrom(lDllPath.GetFile().FullName);
+                // Force the loading of the dll
+                lLoadedAssembly.GetExportedTypes();
 
-            // Force the loading of the dll
-            lLoadedAssembly.GetExportedTypes();
-
-            return lLoadedAssembly;
+                return lLoadedAssembly;
+            }
+            catch (System.IO.FileNotFoundException ex)
+            {
+                GlobalServices.Logger.LogCriticalError("Could not find DLL");
+                throw ex;
+            }
         }
 
         [OnDeserializing]

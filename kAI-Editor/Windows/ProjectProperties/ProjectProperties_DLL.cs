@@ -72,6 +72,10 @@ namespace kAI.Editor.Forms.ProjectProperties
                 {
                     MessageBox.Show("Enter a valid DLL path.");
                 }
+                catch (FileNotFoundException)
+                {
+                    MessageBox.Show("Could not find file");
+                }
             }
             //TODO: More exception handling
            
