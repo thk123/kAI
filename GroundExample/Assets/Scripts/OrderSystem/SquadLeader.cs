@@ -130,23 +130,30 @@ public static class SquadLeaderFunctions
 
     public static string GetFullName(this GameObject lObject)
     {
-        StringBuilder sb = new StringBuilder();
-        do 
+        if (lObject == null)
         {
-            sb.Append(lObject.name);
-            if(lObject.transform.parent != null)
+            return "[null]";
+        }
+        else
+        {
+            StringBuilder sb = new StringBuilder();
+            do
             {
-                lObject = lObject.transform.parent.gameObject;
-            
-                sb.Append(".");
-            }
-            else
-            {
-                lObject = null;
-            }
-        } while (lObject != null);
+                sb.Append(lObject.name);
+                if (lObject.transform.parent != null)
+                {
+                    lObject = lObject.transform.parent.gameObject;
 
-        return sb.ToString();
+                    sb.Append(".");
+                }
+                else
+                {
+                    lObject = null;
+                }
+            } while (lObject != null);
+
+            return sb.ToString();
+        }
     }
 
 }
