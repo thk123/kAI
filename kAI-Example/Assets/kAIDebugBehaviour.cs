@@ -18,7 +18,7 @@ public class kAIDebugBehaviour : MonoBehaviour {
 	
 	}
 	
-	void OnGUI()
+	/*void OnGUI()
 	{
 		int i = 0;
 		foreach(string s in mBehaviour.DebugInfo.ActiveNodes)
@@ -26,5 +26,5 @@ public class kAIDebugBehaviour : MonoBehaviour {
 			GUI.Box(new Rect(10, 10 + 60*i, 200, 50), s);	
 			++i;
 		}
-	}
+	}*/
 }

@@ -52,3 +52,4 @@ ThreadMessaging/obj*
 ThreadMessaging/UpgradeLog*.XML
 ThreadMessaging/Backup1*
 FileMap/Winterdom.snk
+kAI-Example/obj/*

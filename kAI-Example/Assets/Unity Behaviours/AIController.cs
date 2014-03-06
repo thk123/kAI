@@ -18,7 +18,7 @@ public class AIController : MonoBehaviour {
 	
 	public float lowHealthThreshhold = 25.0f;
 
-	kAIDataPort lHealthPort;
+	kAIDataPort<float> lHealthPort;
 	
 	// Use this for initialization
 	void Start () {
@@ -27,11 +27,11 @@ public class AIController : MonoBehaviour {
 		swordController = GetComponentInChildren<SwordController>();
 		health = GetComponent<HealthBehaviour>();
 		
-//		aiInterface.GetPort("SwingSword").OnTriggered += SwingSword_OnTriggerered;
+//		aiInterface.GetPort("SwingSword ").OnTriggered += SwingSword_OnTriggerered;
 		
 		aiInterface.SetData<GameObject>("Target", enemy);
 
-		lHealthPort = (kAIDataPort)aiInterface.GetPort ("CharHealth");
+		lHealthPort = (kAIDataPort<float>)aiInterface.GetPort ("CharHealth");
 	}
 	
 	void SwingSword_OnTriggerered(kAIPort lSender)
@@ -66,7 +66,7 @@ public class AIController : MonoBehaviour {
 			
 		}*/
 		
-		lHealthPort.SetData(health.CurrentHealth);
+		lHealthPort.Data = health.CurrentHealth;
 	}
 
 	public GameObject GetTarget()
