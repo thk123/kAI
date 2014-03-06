@@ -41,7 +41,15 @@ class HealthBehaviour : MonoBehaviour
 
         if (lastAttackPort != null)
         {
-            lastAttackPort.Data = sourceOfPain;
+            FactionBehaviour lFaction = sourceOfPain.GetComponent<FactionBehaviour>();
+            if (lFaction == null || lFaction.IsEnemy(gameObject))
+            {
+                lastAttackPort.Data = sourceOfPain;
+            }
+            else
+            {
+                kAIObject.LogMessage(null, "OI, don't shoot me, I'm an ally");
+            }
         }
     }
 
