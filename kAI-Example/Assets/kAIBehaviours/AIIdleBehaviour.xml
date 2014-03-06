@@ -54,6 +54,7 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>OnActivate</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
       <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
     <kAIXmlBehaviour.InternalXml.SerialPort>
@@ -62,6 +63,7 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_In</PortDirection>
       <PortID>Deactivate</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
       <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
     <kAIXmlBehaviour.InternalXml.SerialPort>
@@ -70,6 +72,7 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>PlayerBehind</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
       <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
     <kAIXmlBehaviour.InternalXml.SerialPort>
@@ -78,6 +81,7 @@
       <PortDataTypeAssembly>UnityEngine</PortDataTypeAssembly>
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>Target</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
       <PortIsTrigger>false</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
   </InternalPorts>

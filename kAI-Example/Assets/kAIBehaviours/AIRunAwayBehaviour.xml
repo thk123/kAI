@@ -108,6 +108,7 @@
         <FunctionConfiguraion>
           <GenericConfiguration />
           <IsFirstParameterSelf>true</IsFirstParameterSelf>
+          <IsFunctionExecutable>false</IsFunctionExecutable>
           <ReturnConfiguration>
             <PropertyEnabled xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
               <d7p1:boolean>false</d7p1:boolean>
@@ -149,6 +150,7 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>OnActivate</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
       <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
     <kAIXmlBehaviour.InternalXml.SerialPort>
@@ -157,6 +159,7 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_In</PortDirection>
       <PortID>Deactivate</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
       <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
     <kAIXmlBehaviour.InternalXml.SerialPort>
@@ -165,6 +168,7 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>PlayerNotNear</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
       <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
     <kAIXmlBehaviour.InternalXml.SerialPort>
@@ -173,6 +177,7 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>PlayerNear</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
       <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
     <kAIXmlBehaviour.InternalXml.SerialPort>
@@ -181,6 +186,7 @@
       <PortDataTypeAssembly>UnityEngine</PortDataTypeAssembly>
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>Target</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
       <PortIsTrigger>false</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
   </InternalPorts>

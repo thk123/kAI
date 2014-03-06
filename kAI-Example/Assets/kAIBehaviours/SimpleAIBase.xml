@@ -94,7 +94,7 @@
         <PortID>lDist</PortID>
       </EndPortID>
       <StartNodeID>
-        <NodeID>ConstantSingle</NodeID>
+        <NodeID>NearDistance</NodeID>
       </StartNodeID>
       <StartPortID>
         <PortID>Value</PortID>
@@ -233,6 +233,7 @@
             </SerialType>
           </GenericConfiguration>
           <IsFirstParameterSelf>false</IsFirstParameterSelf>
+          <IsFunctionExecutable>false</IsFunctionExecutable>
           <ReturnConfiguration>
             <PropertyEnabled xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
               <d7p1:boolean>false</d7p1:boolean>
@@ -272,6 +273,7 @@
         <FunctionConfiguraion>
           <GenericConfiguration />
           <IsFirstParameterSelf>true</IsFirstParameterSelf>
+          <IsFunctionExecutable>false</IsFunctionExecutable>
           <ReturnConfiguration>
             <PropertyEnabled xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
               <d7p1:boolean>false</d7p1:boolean>
@@ -298,7 +300,7 @@
         <Value>5</Value>
       </NodeContents>
       <NodeID>
-        <NodeID>ConstantSingle</NodeID>
+        <NodeID>NearDistance</NodeID>
       </NodeID>
       <NodeSerialAssembly>kAICore</NodeSerialAssembly>
       <NodeSerialType>kAI.Core.kAIConstantFloatNode+SerialObject</NodeSerialType>
@@ -313,6 +315,7 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>OnActivate</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
       <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
     <kAIXmlBehaviour.InternalXml.SerialPort>
@@ -321,6 +324,7 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_In</PortDirection>
       <PortID>Deactivate</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
       <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
     <kAIXmlBehaviour.InternalXml.SerialPort>
@@ -329,6 +333,7 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_In</PortDirection>
       <PortID>SwingSword</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
       <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
     <kAIXmlBehaviour.InternalXml.SerialPort>
@@ -337,6 +342,7 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>PlayerNear</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
       <PortIsTrigger>true</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
     <kAIXmlBehaviour.InternalXml.SerialPort>
@@ -345,6 +351,7 @@
       <PortDataTypeAssembly>UnityEngine</PortDataTypeAssembly>
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>Target</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
       <PortIsTrigger>false</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
     <kAIXmlBehaviour.InternalXml.SerialPort>
@@ -353,6 +360,7 @@
       <PortDataTypeAssembly>mscorlib</PortDataTypeAssembly>
       <PortDirection>PortDirection_Out</PortDirection>
       <PortID>CharHealth</PortID>
+      <PortIsEnumerable>false</PortIsEnumerable>
       <PortIsTrigger>false</PortIsTrigger>
     </kAIXmlBehaviour.InternalXml.SerialPort>
   </InternalPorts>
