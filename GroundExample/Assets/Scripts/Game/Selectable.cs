@@ -5,35 +5,35 @@ public class Selectable : MonoBehaviour {
 
 	bool selected;
 
-	Rect boxRectangle;
+	/*Rect boxRectangle;
 
-	MeshRenderer mesh;
+	MeshRenderer mesh;*/
 
 	// Use this for initialization
 	void Start () {
 		selected = false;
-		mesh = GetComponentInChildren<MeshRenderer>();
+		//mesh = GetComponentInChildren<MeshRenderer>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		if(selected)
+		/*if(selected)
 		{
 			Bounds bounds = mesh.bounds;
 			Vector3 maxPoint = Camera.main.WorldToScreenPoint(bounds.max);
 			Vector3 minPoint = Camera.main.WorldToScreenPoint(bounds.min);
 
 			boxRectangle = new Rect(maxPoint.x, maxPoint.z, maxPoint.x - minPoint.x, maxPoint.z - minPoint.z);
-		}
+		}*/
 	}
 
 	void OnGUI()
 	{
-		if(selected)
+		/*if(selected)
 		{
 			
 			GUI.Box(boxRectangle, new GUIContent());
-		}
+		}*/
 	}
 
 	public void Select()

@@ -60,6 +60,7 @@
      <Compile Include="Assets\Scripts\Game\MouseOrderController.cs" />
      <Compile Include="Assets\Scripts\Game\Selectable.cs" />
      <Compile Include="Assets\Scripts\Game\SelectedCamera.cs" />
+     <Compile Include="Assets\Scripts\Game\SelectionBox.cs" />
      <Compile Include="Assets\Scripts\Game\ShipEngine.cs" />
      <Compile Include="Assets\Scripts\Game\ShipSelector.cs" />
      <Compile Include="Assets\Scripts\OrderSystem\IndividualOrder.cs" />

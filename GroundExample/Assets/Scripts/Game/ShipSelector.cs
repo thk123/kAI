@@ -31,6 +31,15 @@ public class ShipSelector : MonoBehaviour {
 
             if (Physics.Raycast(selectionRay, out info))
 			{
+                if (selectedShip != null)
+                {
+                    SelectionBox lBox = selectedShip.GetComponent<SelectionBox>();
+                    if (lBox != null)
+                    {
+                        lBox.Selected = false;
+                    }
+                }
+
 				Selectable selectableObject = info.collider.gameObject.GetComponent<Selectable>();
 				if(selectableObject != null)
 				{
@@ -44,14 +53,22 @@ public class ShipSelector : MonoBehaviour {
 					selectedCamera.SelectObject(selectedShip.gameObject);
 					return;*/
 
-                    SquadLeader leader =selectableObject.transform.parent.GetComponent<SquadLeader>();
+
+                    SquadLeader leader = selectableObject.transform.parent.GetComponent<SquadLeader>();
                     selectedCamera.SelectObject(leader);
 
+                    SelectionBox lBox = leader.GetComponent<SelectionBox>();
+                    if (lBox != null)
+                    {
+                        lBox.Selected = true;
+                    }
                     selectedShip = leader;
                     return;
 				}
 			}
 
+            
+            selectedShip = null;
 			selectedCamera.DeselectObject();
 		}
 	}
