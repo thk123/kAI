@@ -153,18 +153,10 @@ public class PickTargetFromSquadBehaviour : kAICodeBehaviour
                 if (lMember.IsFleeing)
                 {
                     lSelectedTarget = null;
-                    LogMessage("Target is fleeing");
                 }
             }
-            else
-            {
-                LogWarning("No SquadMember behaviour");
-            }
         }
-        else
-        {
-            LogWarning("Target is null");
-        }
+
         mTargetPort.Data = lSelectedTarget;
     }
 

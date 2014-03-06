@@ -48,7 +48,10 @@ class HealthBehaviour : MonoBehaviour
             }
             else
             {
-                kAIObject.LogMessage(null, "OI, don't shoot me, I'm an ally");
+                if (lFaction.Faction == FactionBehaviour.eFactions.eFactionHuman)
+                {
+                    kAIObject.LogMessage(null, "OI, don't shoot me, I'm an ally");
+                }
             }
         }
     }
