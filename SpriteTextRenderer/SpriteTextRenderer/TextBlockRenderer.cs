@@ -442,7 +442,7 @@ namespace SpriteTextRenderer
 
         static void AssertDevice()
         {
-            if (D3DDevice10 != null)
+            if (D3DDevice10 != null && D3DDevice10.ComPointer != IntPtr.Zero)
                 return;
             D3DDevice10 = new SlimDX.Direct3D10_1.Device1(DeviceCreationFlags.BgraSupport, SlimDX.Direct3D10_1.FeatureLevel.Level_10_0);
             WriteFactory = new SlimDX.DirectWrite.Factory(SlimDX.DirectWrite.FactoryType.Shared);
