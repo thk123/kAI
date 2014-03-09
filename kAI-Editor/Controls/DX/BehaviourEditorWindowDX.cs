@@ -764,7 +764,7 @@ namespace kAI.Editor.Controls.DX
         {
             mCameraPosition = mCameraPosition.Translate(mLastMousePoint.X - e.X, mLastMousePoint.Y - e.Y);
             mLastMousePoint = e.Location;
-        }
+       } 
 
         void InputManager_OnMouseDown(object sender, MouseEventArgs e)
         {

@@ -318,6 +318,26 @@ namespace kAI.Editor.Controls.DX
                             new Vector2(lFormPosition.mPoint.X - 8, lFormPosition.mPoint.Y - 8), new Vector2(16, 16), new Color4(lAlpha ,1,1,1), SpriteTextRenderer.CoordinateType.Absolute);
                     }
                 }
+                else
+                {
+                    kAIDataPortDebugInfo lDataInfo = mDebugInfo as kAIDataPortDebugInfo;
+                    if(lDataInfo != null)
+                    {
+                        string lDefaultText = Port.DataType.DataType.GetDefault() == null ? "[NULL]" : Port.DataType.DataType.GetDefault().ToString();
+                        if (lDataInfo.CurrentData == lDefaultText || lDataInfo.CurrentData == "false")
+                        {
+                            float lAlpha = 1.0f;
+                            lContainerEditor.SpriteRenderer.Draw(lContainerEditor.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.DisabledIcon),
+                                new Vector2(lFormPosition.mPoint.X - 8, lFormPosition.mPoint.Y - 8), new Vector2(16, 16), new Color4(lAlpha, 1, 1, 1), SpriteTextRenderer.CoordinateType.Absolute);
+                        }
+                        else
+                        {
+                            float lAlpha = 1.0f;
+                            lContainerEditor.SpriteRenderer.Draw(lContainerEditor.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.EnabledIcon),
+                                new Vector2(lFormPosition.mPoint.X - 8, lFormPosition.mPoint.Y - 8), new Vector2(16, 16), new Color4(lAlpha, 1, 1, 1), SpriteTextRenderer.CoordinateType.Absolute);
+                        }
+                    }
+                }
             }
 
             foreach (kAIEditorConnexionDX lConnexion in mConnexions)
@@ -384,7 +404,6 @@ namespace kAI.Editor.Controls.DX
 
         void OnMouseDown(object sender, MouseEventArgs e)
         {
-            kAI.Editor.Core.GlobalServices.Logger.LogMessage("OnMouseDown" + e.Button);
             if (e.Button == MouseButtons.Left)
             {
                 mDidLeftClick = true;

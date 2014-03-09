@@ -36,7 +36,7 @@ public class AIController : MonoBehaviour {
 	
 	void SwingSword_OnTriggerered(kAIPort lSender)
 	{
-		swordController.SwingSword();
+		swordController.SwingSword(); 
 		wasSwingingSword = swordController.swordSwinging;
 	}
 	

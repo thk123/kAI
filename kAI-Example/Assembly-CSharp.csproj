@@ -70,11 +70,11 @@
  <Reference Include="MiscUtil">
  <HintPath>Assets\DLLs\MiscUtil.dll</HintPath>
  </Reference>
- <Reference Include="Winterdom.IO.FileMap">
- <HintPath>Assets\DLLs\Winterdom.IO.FileMap.dll</HintPath>
- </Reference>
  <Reference Include="ThreadMessaging">
  <HintPath>Assets\DLLs\ThreadMessaging.dll</HintPath>
+ </Reference>
+ <Reference Include="Winterdom.IO.FileMap">
+ <HintPath>Assets\DLLs\Winterdom.IO.FileMap.dll</HintPath>
  </Reference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
