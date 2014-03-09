@@ -113,6 +113,26 @@ namespace kAI.Editor
             GlobalServices.LoadedProject = mLoadedProject;
         }
 
+        /// <summary>
+        /// Close the currently open project. 
+        /// </summary>
+        private void UnloadProject()
+        {
+            System.Diagnostics.Debug.Assert(mLoadedProject != null);
+
+            UnloadBehaviour();
+
+            kAIRelativePath.ClearConfiguredDirectories();
+
+            splitContainer2.Panel1.Controls.Clear();
+
+            SetEnabledSetControls(mProjectLoadedControls, false);
+
+            mLoadedProject = null;
+            GlobalServices.LoadedProject = null;
+            mIsProjectLoaded = false;
+        }
+
         private void LoadBehaviour(kAIXmlBehaviour lBehaviour)
         {
             CreateBehaviourEditorWindow();
@@ -131,22 +151,7 @@ namespace kAI.Editor
             kAIInteractionTerminal.Deinit();
         }
 
-        /// <summary>
-        /// Close the currently open project. 
-        /// </summary>
-        private void CloseProject()
-        {
-            System.Diagnostics.Debug.Assert(mLoadedProject != null);
 
-            UnloadBehaviour();
-
-            MainEditor.Panel1.Controls.Clear();
-
-            SetEnabledSetControls(mProjectLoadedControls, false);
-
-            mLoadedProject = null;
-            GlobalServices.LoadedProject = null;
-        }
 
         void mBehaviourTree_OnBehaviourDoubleClick(kAIINodeSerialObject lObject)
         {
@@ -283,6 +288,11 @@ namespace kAI.Editor
                 return;
             }
 
+            if (mLoadedProject != null)
+            {
+                UnloadProject();
+            }
+
             kAIBehaviourID lBehaviourToLoad;
             kAIProject lProject = kAIProject.Load(lProjectFile, out lBehaviourToLoad);
 
@@ -302,7 +312,7 @@ namespace kAI.Editor
                         }
                         catch (System.Exception ex)
                         {
-                            GlobalServices.Logger.LogError("Error loading behaviour: " + lNodeObject.GetFriendlyName());
+                            GlobalServices.Logger.LogError("Error loading behaviour: " + lNodeObject.GetFriendlyName(), new KeyValuePair<string, object>("Exception", ex.Message));
                         }
                         
                     }
@@ -338,7 +348,7 @@ namespace kAI.Editor
 
         private void closeProjectToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            CloseProject();
+            UnloadProject();
         }
 
         private void createNewXmlBehaviourToolStripMenuItem_Click(object sender, EventArgs e)

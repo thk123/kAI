@@ -250,6 +250,14 @@ namespace kAI.Core
             }
         }
 
+        /// <summary>
+        /// Clear the relative path directories for identifying full paths from relative paths.
+        /// </summary>
+        public static void ClearConfiguredDirectories()
+        {
+            sRootDirectories.Clear();
+        }
+
         [OnDeserialized]
         private void OnDeserialized(StreamingContext context)
         {
