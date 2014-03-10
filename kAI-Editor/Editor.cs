@@ -105,10 +105,14 @@ namespace kAI.Editor
 
             SetEnabledSetControls(mProjectLoadedControls, true);
 
+            Text = "kAI Editor - " + lProject.ProjectName;
+
             mBehaviourTree = new BehaviourTree(lProject);
             mBehaviourTree.Dock = DockStyle.Fill;
             mBehaviourTree.OnBehaviourDoubleClick += new BehaviourTree.NodeEvent(mBehaviourTree_OnBehaviourDoubleClick);
             splitContainer2.Panel1.Controls.Add(mBehaviourTree);
+
+            
 
             GlobalServices.LoadedProject = mLoadedProject;
         }
@@ -128,6 +132,8 @@ namespace kAI.Editor
 
             SetEnabledSetControls(mProjectLoadedControls, false);
 
+            Text = "kAI Editor";
+
             mLoadedProject = null;
             GlobalServices.LoadedProject = null;
             mIsProjectLoaded = false;
@@ -140,6 +146,8 @@ namespace kAI.Editor
             SetEnabledSetControls(mBehaviourLoadedControls, true);
 
             kAIInteractionTerminal.Init(lBehaviour);
+
+            Text = "kAI Editor - " + GlobalServices.LoadedProject.ProjectName + " [" + lBehaviour.BehaviourID + "]";
         }
 
         private void UnloadBehaviour()
@@ -147,6 +155,8 @@ namespace kAI.Editor
             mBehaviourEditor.UnloadBehaviour();
             DestroyBehaviourEditorWindow();
             SetEnabledSetControls(mBehaviourLoadedControls, false);
+
+            Text = "kAI Editor - " + GlobalServices.LoadedProject.ProjectName;
 
             kAIInteractionTerminal.Deinit();
         }
