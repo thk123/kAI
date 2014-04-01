@@ -94,7 +94,6 @@ namespace kAI.Editor.Controls.DX
         Device device;
 
         VertexShader vertexShader;
-        GeometryShader geomShader;
         PixelShader pixelShader;
 
         /// <summary>
@@ -232,15 +231,9 @@ namespace kAI.Editor.Controls.DX
             using (var bytecode = ShaderBytecode.CompileFromFile(lAssetsFolder + "triangle.fx", "PShader", "ps_4_0", ShaderFlags.None, EffectFlags.None))
                 pixelShader = new PixelShader(device, bytecode);
 
-            using (var bytecode = ShaderBytecode.CompileFromFile(lAssetsFolder + "triangle.fx", "mainGS", "gs_4_0", ShaderFlags.None, EffectFlags.None))
-            {
-                geomShader = new GeometryShader(device, bytecode);
-            }
-
             // set the shaders
             mContext.VertexShader.Set(vertexShader);
             mContext.PixelShader.Set(pixelShader);
-            mContext.GeometryShader.Set(geomShader);
 
             // prevent DXGI handling of alt+enter, which doesn't work properly with Winforms
             using (var factory = mSwapChain.GetParent<Factory>())
@@ -344,7 +337,7 @@ namespace kAI.Editor.Controls.DX
             kAIAbsolutePosition lEndPosition = lEnd.GetConnexionPoint();
             lPoints.Add(lStartPosition);
 
-           /* kAIAbsolutePosition lStartIn;
+            kAIAbsolutePosition lStartIn;
             kAIAbsolutePosition lEndIn;
 
             if (lStart.Port.PortDirection == kAIPort.ePortDirection.PortDirection_Out)
@@ -369,7 +362,7 @@ namespace kAI.Editor.Controls.DX
                 lPoints.Add(lMid1);
                 lPoints.Add(lMid2);
             }
-            lPoints.Add(lEndIn);*/
+            lPoints.Add(lEndIn);
             lPoints.Add(lEndPosition);
 
             return lPoints;
@@ -620,10 +613,9 @@ namespace kAI.Editor.Controls.DX
             mContext.InputAssembler.InputLayout = layout;
 
             mContext.InputAssembler.PrimitiveTopology = PrimitiveTopology.LineStrip;
-            
 
             // TODO: would somehow like to set the geometry shader to some kind of beizure curve
-            mContext.GeometryShader.Set(geomShader);
+            mContext.GeometryShader.Set(null);
             mContext.VertexShader.Set(vertexShader);
             mContext.PixelShader.Set(pixelShader);
 
@@ -640,7 +632,7 @@ namespace kAI.Editor.Controls.DX
             layout.Dispose();
         }
 
-        public void RenderLine(List<kAIAbsolutePosition> lPoints, float thickness = 0.002f)
+        public void RenderLine(List<kAIAbsolutePosition> lPoints)
         {
             // TODO: move the line renderer in to own class then can cause exception if function called at the wrong time
             DataStream lVertices = new DataStream(12 * (lPoints.Count), true, true);
@@ -653,31 +645,6 @@ namespace kAI.Editor.Controls.DX
             }
 
             lVertices.Position = 0;
-
-            {
-                using(var resolution = new DataStream(16, true, true))
-                {
-                    // Fill the stream with width/height info - I'm using a renderform
-                    resolution.Write(thickness);
-                    // Rewind the stream
-                    resolution.Position = 0;
-                    // Create and bind a buffer
-                    using (var buffer = new Buffer(device,     //Device
-                                                                     resolution, //Stream
-                                                                     16,         // Size
-                        // Flags
-                                                                     ResourceUsage.Dynamic,
-                                                                     BindFlags.ConstantBuffer,
-                                                                     CpuAccessFlags.Write,
-                                                                     ResourceOptionFlags.None,
-                                                                     4))
-                    {
-                        mContext.GeometryShader.SetConstantBuffer(buffer, 0); // Register
-
-                    }
-                }
-            }
-            
 
             Buffer lVertexBuffer = new Buffer(device, lVertices, 12 * (lPoints.Count), ResourceUsage.Default, BindFlags.VertexBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
             mContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(lVertexBuffer, 12, 0));

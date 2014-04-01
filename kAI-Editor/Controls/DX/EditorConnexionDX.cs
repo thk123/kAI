@@ -63,9 +63,7 @@ namespace kAI.Editor.Controls.DX
                 mPath = mEditor.GetPointPath(mConnexion);
             }
 
-            float thickness = Start is kAITriggerPort ? 0.001f : 0.01f;
-
-            mEditor.RenderLine(mPath, thickness);
+            mEditor.RenderLine(mPath);
         }
     }
 }
