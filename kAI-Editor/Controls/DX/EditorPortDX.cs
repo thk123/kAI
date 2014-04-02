@@ -244,9 +244,18 @@ namespace kAI.Editor.Controls.DX
             Vector2 lStringSize = lContainerEditor.TextRenderer.MeasureString(Port.PortID.ToString()).Size;
             if (Port.PortDirection == kAIPort.ePortDirection.PortDirection_In)
             {
-                lTexture = mIsHovering ?
-                    lContainerEditor.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.InPort_Hover) :
-                    lContainerEditor.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.InPort);
+                if (Port is kAITriggerPort)
+                {
+                    lTexture = mIsHovering ?
+                        lContainerEditor.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.InPort_Hover) :
+                        lContainerEditor.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.InPort);
+                }
+                else // is a data port 
+                {
+                    lTexture = mIsHovering ?
+                        lContainerEditor.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.InPortData_Hover) :
+                        lContainerEditor.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.InPortData);
+                }
 
                 // The offset of the label from the position of the port. 
                 float lXPosition;
@@ -273,9 +282,18 @@ namespace kAI.Editor.Controls.DX
             }
             else // PortDirection == PortDirection_Out
             {
-                lTexture = mIsHovering ?
-                    lContainerEditor.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.OutPort_Hover) :
-                    lContainerEditor.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.OutPort);
+                if (Port is kAITriggerPort)
+                {
+                    lTexture = mIsHovering ?
+                       lContainerEditor.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.OutPort_Hover) :
+                       lContainerEditor.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.OutPort);
+                }
+                else // is a data port 
+                {
+                    lTexture = mIsHovering ?
+                       lContainerEditor.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.OutPortData_Hover) :
+                       lContainerEditor.GetTexture(kAIBehaviourEditorWindowDX.eTextureID.OutPortData);
+                }
 
                 // The offset of the label from the position of the port. 
                 float lXPosition;

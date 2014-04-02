@@ -41,6 +41,10 @@ namespace kAI.Editor.Controls.DX
             InPort_Hover,
             OutPort,
             OutPort_Hover,
+            InPortData,
+            InPortData_Hover,
+            OutPortData,
+            OutPortData_Hover,
             NodeLowerTexture,
             NodeUpperTexture, 
             EnabledIcon,
@@ -287,6 +291,13 @@ namespace kAI.Editor.Controls.DX
             mTextures[(int)eTextureID.InPort_Hover] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "InPort_Hover.png"));
             mTextures[(int)eTextureID.OutPort] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "OutPort.png"));
             mTextures[(int)eTextureID.OutPort_Hover] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "OutPort_Hover.png"));
+
+            mTextures[(int)eTextureID.InPortData] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "InPortData.png"));
+            mTextures[(int)eTextureID.InPortData_Hover] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "InPortData_Hover.png"));
+            mTextures[(int)eTextureID.OutPortData] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "OutPortData.png"));
+            mTextures[(int)eTextureID.OutPortData_Hover] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "OutPortData_Hover.png"));//_hober
+
+
             mTextures[(int)eTextureID.NodeLowerTexture] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "NodeLower.png"));
             mTextures[(int)eTextureID.NodeUpperTexture] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "NodeUpper.png"));
             mTextures[(int)eTextureID.DisabledIcon] = new ShaderResourceView(device, Texture2D.FromFile(device, lAssetsFolder + "DisabledIcon.png"));
