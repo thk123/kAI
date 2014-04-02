@@ -325,6 +325,52 @@ namespace kAI.Editor.Controls.DX
         }
 
         /// <summary>
+        /// Gets the rectangles in this tree for debug display. 
+        /// </summary>
+        /// <returns>
+        /// A Tuple:
+        /// The first entry is the rectangle
+        /// The second entry is the depth in the tree (starting at 0)
+        /// The third is the child index (-1 for the root) e.g. what position in the parents array is this node
+        /// </returns>
+        public IEnumerable<Tuple<Rectangle, int, int>> GetRectangles()
+        {
+            return GetRectangles(0, -1);
+        }
+
+
+        IEnumerable<Tuple<Rectangle, int, int>> GetRectangles(int depth, int childNumber)
+        {
+            List<Tuple<Rectangle, int, int>> rectangles = new List<Tuple<Rectangle, int, int>>();
+            if (lDataEntries > 0)
+            {
+                
+                rectangles.Add(new Tuple<Rectangle, int, int>(Rectangle, depth, childNumber));
+
+
+                int counter = 0;
+
+                foreach (kAIRTree<T> lSubTree in mRootNodes)
+                {
+                    //if(counter == 2)
+                    {
+                        if (lSubTree != null)
+                        {
+                            rectangles.AddRange(lSubTree.GetRectangles(depth + 1, counter));
+                        }
+                    }
+                    ++counter;
+                }
+            }
+            else
+            {
+                GlobalServices.Logger.LogMessage("rectangle with no entries??");
+            }
+
+            return rectangles;
+        }
+
+        /// <summary>
         /// Clears out this tree of rectangles.
         /// </summary>
         public void Clear()

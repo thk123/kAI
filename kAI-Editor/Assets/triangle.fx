@@ -1,13 +1,25 @@
 
-float4 VShader(float4 position : POSITION) : SV_POSITION
+struct VS_INPUT
 {
+	float4 position : POSITION;
+	float4 col : COLOR0;
+};
 
+struct VS_OUTPUT
+{
+	float4 position : SV_POSITION;
+	float4 col : COLOR0;
+};
 
-	return position;
-	
+VS_OUTPUT VShader(VS_INPUT input)
+{
+	VS_OUTPUT result;
+	result.position = input.position;
+	result.col  = input.col;
+	return result;
 }
 
-float4 PShader(float4 position : SV_POSITION) : SV_Target
+float4 PShader(VS_OUTPUT input) : SV_Target
 {
-	return float4(0.251f,0.251f,0.251f,1);
+	return input.col;
 }

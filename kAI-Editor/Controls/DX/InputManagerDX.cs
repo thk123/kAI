@@ -262,6 +262,18 @@ namespace kAI.Editor.Controls.DX
 
         }
 
+        public IEnumerable<Tuple<Rectangle, int,int>> GetRectangles()
+        {
+            foreach (var x in mMovingMouseEventListeners.GetRectangles())
+            {
+                yield return x;
+            }
+            /*foreach (var x in mFixedMouseEventListeners.GetRectangles())
+            {
+                yield return x;
+            }*/
+        }
+
         private void UpdateTrees(kAIRelativePosition lRelativePoint, kAIAbsolutePosition lAbsolutePoint, object sender, MouseEventArgs e)
         {
             MouseOnSomething = false;

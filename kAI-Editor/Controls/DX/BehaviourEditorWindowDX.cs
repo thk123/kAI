@@ -96,6 +96,10 @@ namespace kAI.Editor.Controls.DX
         VertexShader vertexShader;
         PixelShader pixelShader;
 
+        // Counters used for debugging the R-Tree rectangles
+        int mRTreeDebugDepthShow = 0;
+        int mRTreeDebugCounter = 0;
+
         /// <summary>
         /// The SpriteRenderer to use for rendering standard 2D textures. 
         /// </summary>
@@ -561,10 +565,10 @@ namespace kAI.Editor.Controls.DX
             // 2D render using SlimDX SpriteTextRenderer http://sdxspritetext.codeplex.com/
             Render2D();
 
-            LineRender();
+            LineRender();            
 
             // Swap the back and front buffers
-            mSwapChain.Present(0, PresentFlags.None);       
+            mSwapChain.Present(0, PresentFlags.None);    
     
         }
 
@@ -605,7 +609,7 @@ namespace kAI.Editor.Controls.DX
 
         private void LineRender()
         {
-            var elements = new[] { new InputElement("POSITION", 0, Format.R32G32B32_Float, 0) };
+            var elements = new[] { new InputElement("POSITION", 0, Format.R32G32B32A32_Float, 0), new InputElement("COLOR", 0, Format.R32G32B32A32_Float, 0) };
             var layout = new InputLayout(mContext.Device, inputSignature, elements);
             // configure the Input Assembler portion of the pipeline with the vertex data
 
@@ -629,25 +633,88 @@ namespace kAI.Editor.Controls.DX
                 lNode.LineRender();
             }
 
+            RenderRTreeRects();
+
             layout.Dispose();
         }
 
-        public void RenderLine(List<kAIAbsolutePosition> lPoints)
+        void RenderRTreeRects()
+        {
+            int lMaxDepth = 0;
+
+            foreach (Tuple<Rectangle, int, int> lRect in InputManager.GetRectangles())
+            {
+
+                List<kAIAbsolutePosition> lRectangleVerts = new List<kAIAbsolutePosition>
+                { 
+                    new kAIAbsolutePosition(lRect.Item1.Left, lRect.Item1.Top, false), 
+                    new kAIAbsolutePosition(lRect.Item1.Right, lRect.Item1.Top, false),
+                    new kAIAbsolutePosition(lRect.Item1.Right, lRect.Item1.Bottom, false),
+                    new kAIAbsolutePosition(lRect.Item1.Left, lRect.Item1.Bottom, false),
+                    new kAIAbsolutePosition(lRect.Item1.Left, lRect.Item1.Top, false)
+                };
+
+
+                if (lRect.Item2 == mRTreeDebugDepthShow)
+                {
+                    switch (lRect.Item3)
+                    {
+                        case -1:
+                        case 0:
+                            RenderLine(lRectangleVerts, Color.Red);
+                            break;
+
+                        case 1:
+                            RenderLine(lRectangleVerts, Color.Green);
+                            break;
+
+                        case 2:
+                            RenderLine(lRectangleVerts, Color.Blue);
+                            break;
+
+                        case 3:
+                            RenderLine(lRectangleVerts, Color.White);
+                            break;
+
+                        default:
+                            RenderLine(lRectangleVerts, Color.Yellow);
+                            break;
+                    }
+
+                }
+
+                lMaxDepth = Math.Max(lRect.Item2, lMaxDepth);
+            }
+            
+            if (mRTreeDebugCounter == 5000)
+            {
+                ++mRTreeDebugDepthShow;
+                mRTreeDebugDepthShow %= (lMaxDepth + 1);
+                mRTreeDebugCounter = 0;
+            }
+            else
+            {
+                ++mRTreeDebugCounter;
+            }
+        }
+
+        public void RenderLine(List<kAIAbsolutePosition> lPoints, Color4 colour = default(Color4))
         {
             // TODO: move the line renderer in to own class then can cause exception if function called at the wrong time
-            DataStream lVertices = new DataStream(12 * (lPoints.Count), true, true);
+            DataStream lVertices = new DataStream(32 * (lPoints.Count), true, true);
 
             foreach (kAIAbsolutePosition lPoint in lPoints)
             {
                 // TODO: These points aren't correct
                 kAINormalisedPosition lNormalised = new kAINormalisedPosition(lPoint, CameraPosition, ParentControl);
-                lVertices.Write(lNormalised.GetAsV3());
+                lVertices.Write(new Vector4(lNormalised.GetAsV3(), 1.0f));
+                lVertices.Write(colour.ToVector4());
             }
 
             lVertices.Position = 0;
 
-            Buffer lVertexBuffer = new Buffer(device, lVertices, 12 * (lPoints.Count), ResourceUsage.Default, BindFlags.VertexBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
-            mContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(lVertexBuffer, 12, 0));
+            Buffer lVertexBuffer = new Buffer(device, lVertices, 32 * (lPoints.Count), ResourceUsage.Default, BindFlags.VertexBuffer, CpuAccessFlags.None, ResourceOptionFlags.None, 0);
+            mContext.InputAssembler.SetVertexBuffers(0, new VertexBufferBinding(lVertexBuffer, 32, 0));
             mContext.Draw(lPoints.Count , 0);
 
             lVertices.Dispose();
