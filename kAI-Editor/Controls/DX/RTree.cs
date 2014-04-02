@@ -6,6 +6,7 @@ using System.Drawing;
 
 using kAI.Core;
 using kAI.Editor.Core.Util;
+using kAI.Editor.Core;
 
 namespace kAI.Editor.Controls.DX
 {
@@ -90,7 +91,37 @@ namespace kAI.Editor.Controls.DX
             }
         }
 
-        
+     /*We cannot check rectangle validity since if we are adding to a leaf node, 
+      * the leaf node enters a state of invalidity for a period*/
+        /*void CheckRectangleValidity()
+        {
+            Rectangle expexetedRect;
+            if (Contents == null)
+            {
+                expexetedRect = Rectangle.Empty;
+            }
+            else
+            {
+                expexetedRect = Rectangle;
+            }
+
+            foreach (var child in mRootNodes)
+            {
+                if (child != null)
+                {
+                    if (expexetedRect == Rectangle.Empty)
+                    {
+                        expexetedRect = child.Rectangle;
+                    }
+                    else
+                    {
+                        expexetedRect = Rectangle.Union(expexetedRect, child.Rectangle);
+                    }
+                }
+            }
+
+            kAIObject.Assert(null, Rectangle.Equals(expexetedRect), "expected rectangle not equal");
+        }*/
 
         /// <summary>
         /// Add a new entry to the tree. 
@@ -115,15 +146,27 @@ namespace kAI.Editor.Controls.DX
             {
                 // We are resizing this rectangle so it does not represent the object, so we add that
                 Rectangle lOldRectangle = Rectangle;
-
-                // Create the new rectangle
-                Rectangle = Rectangle.Union(Rectangle, lRectangle);
+                if (Rectangle == Rectangle.Empty)
+                {
+                    Rectangle = lRectangle;
+                }
+                else
+                {
+                    // Create the new rectangle
+                    Rectangle = Rectangle.Union(Rectangle, lRectangle);
+                }
+                
 
                 // If we were a precise match, we now are not and must push ourselves down in to the tree
                 if (Contents != null)
                 {
-                    AddRectangle(lOldRectangle, Contents);
+
+                    T lOldContents = Contents;
                     Contents = null;
+
+                    AddRectangle(lOldRectangle, lOldContents);
+                    
+                    
                 }
             }
 
@@ -132,7 +175,7 @@ namespace kAI.Editor.Controls.DX
 
             // if the heuristic choose make a new node, make a new node. 
             if (mRootNodes[lChosenRectangleID] == null)
-            {
+            {                
                 mRootNodes[lChosenRectangleID] = new kAIRTree<T>(lRectangle, lContents);
                 ++mNumberOfNodes;
             }
@@ -178,11 +221,15 @@ namespace kAI.Editor.Controls.DX
         /// <returns>The data associated with the rectangle (or null if the rectangle can't be found). </returns>
         public T RemoveRectangle(Rectangle lRectangle)
         {
+
             if(Contents != null && lRectangle.Equals(Rectangle))
             {
                 T lContents = Contents;
                 Contents = null;
                 --lDataEntries;
+
+                Rectangle = Rectangle.Empty;
+
                 return lContents;
             }
 
@@ -205,17 +252,52 @@ namespace kAI.Editor.Controls.DX
                             }
                             mRootNodes[mNumberOfNodes - 1] = null;
                             --mNumberOfNodes;
+
                             
                         }
 
+                        OptimizeRectangles();
+
                         // We are removing an entry, so we drop the data count and pass it on up
                         --lDataEntries;
+
                         return lResult;
 
                     }
                 }
             }
+
             return null;
+        }
+
+        private void OptimizeRectangles()
+        {
+            Rectangle lOptimalRect;
+            if (Contents == null)
+            {
+                lOptimalRect = Rectangle.Empty;
+            }
+            else
+            {
+                lOptimalRect = Rectangle;
+            }
+
+            foreach (kAIRTree<T> lChild in mRootNodes)
+            {
+                if (lChild != null)
+                {
+                    if (lOptimalRect == Rectangle.Empty)
+                    {
+                        lOptimalRect = lChild.Rectangle;
+                    }
+                    else
+                    {
+                        lOptimalRect = Rectangle.Union(lOptimalRect, lChild.Rectangle);
+                    }
+                }
+            }
+
+            Rectangle = lOptimalRect;
         }
 
         /// <summary>
@@ -270,6 +352,8 @@ namespace kAI.Editor.Controls.DX
                 return Rectangle.ToString() + "[ - ]";
             }
         }
+
+        
 
         /// <summary>
         /// A heuristic for choosing a rectangle from a list.
