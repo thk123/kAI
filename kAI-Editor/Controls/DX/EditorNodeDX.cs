@@ -131,7 +131,10 @@ namespace kAI.Editor.Controls.DX
             MenuItem lDeleteNode = new MenuItem("Delete Node");
             lDeleteNode.Click += new EventHandler(lDeleteNode_Click);
 
-            mAddedRectangle = new Rectangle(Position.mPoint, Size.mSize);
+            Size lRenderSize = Size.mSize;
+            lRenderSize.Height += (int)kHeaderHeight;
+
+            mAddedRectangle = new Rectangle(Position.mPoint, lRenderSize);
 
             lEditorWindow.InputManager.AddClickListenArea(mAddedRectangle,
                 new kAIMouseEventResponders
@@ -385,7 +388,9 @@ namespace kAI.Editor.Controls.DX
 
         void FinalisePosition()
         {
-            Rectangle lNewRectanlge = new Rectangle(Position.mPoint, Size.mSize);
+            Size lRenderSize = Size.mSize;
+            lRenderSize.Height += (int)kHeaderHeight;
+            Rectangle lNewRectanlge = new Rectangle(Position.mPoint, lRenderSize);
             if(mAddedRectangle != lNewRectanlge)
             {
                 // Remove the old rectangle. 
