@@ -643,8 +643,8 @@ namespace kAI.Editor.Controls.DX
             {
                 lNode.LineRender();
             }
-
-            RenderRTreeRects();
+            
+            //RenderRTreeRects();
 
             layout.Dispose();
         }
