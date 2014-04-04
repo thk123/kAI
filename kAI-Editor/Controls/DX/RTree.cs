@@ -227,8 +227,14 @@ namespace kAI.Editor.Controls.DX
                 T lContents = Contents;
                 Contents = null;
                 --lDataEntries;
-
-                Rectangle = Rectangle.Empty;
+                if (lDataEntries == 0)
+                {
+                    Rectangle = Rectangle.Empty;
+                }
+                else
+                {
+                    OptimizeRectangles();
+                }
 
                 return lContents;
             }
