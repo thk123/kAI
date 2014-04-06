@@ -24,13 +24,22 @@ namespace kAI.Editor.Forms.ProjectProperties
 
             foreach (Assembly lAssembly in Project.ProjectDLLs)
             {
-                lAllTheMethods.AddRange(lAssembly.GetExportedTypes().Where((f) => { return f.IsSealed && f.IsAbstract; }).Select((t) =>
+                IEnumerable<Type> lStaticTypes =lAssembly.GetExportedTypes().Where((f) => { return f.IsSealed && f.IsAbstract; });
+                if (lStaticTypes.Any())
+                {
+                    MethodInfo[] lStaticMethods = lStaticTypes.Select((t) =>
                 {
                     return t.GetMethods();
                 }).Aggregate((a, b) =>
                 {
                     return a.Union(b).ToArray();
-                }));
+                });
+
+                    if (lStaticMethods != null && lStaticMethods.Length > 0)
+                    {
+                        lAllTheMethods.AddRange(lStaticMethods);
+                    }
+                }
             }
 
             lAllTheMethods.AddRange(typeof(kAIFunctionNodes).GetMethods());
@@ -41,7 +50,7 @@ namespace kAI.Editor.Forms.ProjectProperties
                 // Splits all the types in to 2 partitions, adding them to the project if they are a default type
                 Tuple<IEnumerable<MethodInfo>, IEnumerable<MethodInfo>> lTypeList = lAllTheMethods.Split(IsDefaultIncludeFunction);
 
-                mIncludedTypesList.Items.AddRange(lTypeList.Item1.ToArray());
+                mProjectFunctionsList.Items.AddRange(lTypeList.Item1.ToArray());
                 //mAllTypesList.SetSource(lTypeList.Item2);
 
                 foreach (MethodInfo lDefaultType in lTypeList.Item1)
