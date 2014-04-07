@@ -18,8 +18,17 @@ public class AIBehaviour : MonoBehaviour, kAIILogger {
 
     static bool firstTime = true;
 
+    static AIBehaviour()
+    {
+        // add custom properties dictionaries
+        Vector3Propertes x = new Vector3Propertes();
+        kAIFunctionNode.kAIFunctionConfiguration.kAIReturnConfiguration.kAIReturnConfigurationDictionary.AddDictionary(x, "he");
+    }
+
     void Awake()
     {
+        
+
         if(XmlPath != null && XmlPath != string.Empty)
         {
             FileInfo lFile = new FileInfo(XmlPath);

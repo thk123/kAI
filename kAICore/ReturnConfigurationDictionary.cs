@@ -26,7 +26,7 @@ namespace kAI.Core
                 /// <summary>
                 /// Represents a list of properties associated with a specific return type. 
                 /// </summary>
-                interface kAIIReturnConfigurationDictionary
+                public interface kAIIReturnConfigurationDictionary
                 {
                     /// <summary>
                     /// The number of properties.
@@ -53,6 +53,14 @@ namespace kAI.Core
                     }
 
                     /// <summary>
+                    /// The type this is a property dictionary for 
+                    /// </summary>
+                    Type PropertyType
+                    {
+                        get;
+                    }
+
+                    /// <summary>
                     /// Get the port for a specific property. 
                     /// </summary>
                     /// <param name="lPropertyIndex">The index of the property. </param>
@@ -67,6 +75,8 @@ namespace kAI.Core
                     /// <param name="lResult">The result of the function. </param>
                     /// <param name="lPreviousResult">The previous result of the function. </param>
                     void RunCode(int lPropertyIndex, kAINodeObject lFunctionNode, object lResult, object lPreviousResult);
+
+                    
                 }
 
                 /// <summary>
@@ -105,6 +115,17 @@ namespace kAI.Core
                         get
                         {
                             yield return true;
+                        }
+                    }
+
+                    /// <summary>
+                    /// This is the properties for all types so not directly applicable. 
+                    /// </summary>
+                    public Type PropertyType
+                    {
+                        get
+                        {
+                            return mType;
                         }
                     }
 
@@ -169,7 +190,7 @@ namespace kAI.Core
                 /// <summary>
                 /// Wrapper for static method to create the dictionary. 
                 /// </summary>
-                class kAIReturnConfigurationDictionary
+                public class kAIReturnConfigurationDictionary
                 {
                     /// <summary>
                     /// Configure the default dictionary. 
@@ -178,26 +199,78 @@ namespace kAI.Core
                     {
                         sReturnConfigs = new Dictionary<string, kAIIReturnConfigurationDictionary>();
 
-                        // Return configuration for boolean, the type here is just arbitrary. 
-                        kAIReturnConfigurationDictionary<object>.AddBooleanConfiguration();
+                        
+                        kAIReturnConfigurationDictionary.AddBooleanConfiguration();
                     }
+
+                    /// <summary>
+                    /// Add the default return properties to a specific property. 
+                    /// </summary>
+                    /// <typeparam name="U">The type we are creating. </typeparam>
+                    /// <param name="lCustom">The configuration dictionary we are creating. </param>
+                    public static void AddDefaultConfigToCustom<U>(kAIReturnConfigurationDictionary<U> lCustom)
+                    {
+                        kAIDefaultReturnConfiguration lDefaultReturn = new kAIDefaultReturnConfiguration(typeof(U));
+
+                        int lDefaultPropertyIndex = 0;
+                        foreach (string lPropertyName in lDefaultReturn.PropertyNames)
+                        {
+                            Assert(null, lDefaultPropertyIndex < lDefaultReturn.PropertyCount);
+                            int lCapturedPropertyIndex = lDefaultPropertyIndex;
+
+                            lCustom.AddProperty(
+                                lPropertyName,  // the name of the property
+                                () =>  // the function to create a port
+                                {
+                                    return lDefaultReturn.GetExternalPort(lCapturedPropertyIndex);
+                                },
+
+                                (lNodeObject, lResult, lPrevResult) => // the action to take when the function is evaluated
+                                {
+                                    lDefaultReturn.RunCode(lCapturedPropertyIndex, lNodeObject, lResult, lPrevResult);
+                                }
+                            );
+
+                            ++lDefaultPropertyIndex;
+                        }
+                    }
+
+                    /// <summary>
+                    /// Create the ReturnConfigurationDictionary for type boolean.
+                    /// </summary>
+                    public static void AddBooleanConfiguration()
+                    {
+                        AddDictionary(new kAIBooleanConfiguration());
+                    }
+
+                    /// <summary>
+                    /// Add a dictionary to the set of return configurations. 
+                    /// </summary>
+                    /// <param name="lDictionary">The set of properties. </param>
+                    public static void AddDictionary(kAIIReturnConfigurationDictionary lDictionary)
+                    {
+                        sReturnConfigs.Add(lDictionary.PropertyType.ToString(), lDictionary);
+                    }
+
                 }
 
+
+                 
                 /// <summary>
                 /// Represents a specialised set of return properties for a specific type. 
                 /// </summary>
                 /// <typeparam name="T">The type this is a specific set for. </typeparam>
-                class kAIReturnConfigurationDictionary<T> : kAIIReturnConfigurationDictionary
+                public class kAIReturnConfigurationDictionary<T> : kAIIReturnConfigurationDictionary
                 {
                     /// <summary>
                     /// The actions to perform when the function is evaluated. 
                     /// </summary>
-                    List<Action<kAINodeObject, T, T>> lEvaluateActions;
+                    List<Action<kAINodeObject, T, T>> mEvaluateActions;
 
                     /// <summary>
                     /// Functions for generating ports that are required. 
                     /// </summary>
-                    List<Func<kAIPort>> lAdditionalPorts;
+                    List<Func<kAIPort>> mAdditionalPorts;
 
                     /// <summary>
                     /// Names of the properties.
@@ -211,7 +284,7 @@ namespace kAI.Core
                     {
                         get
                         {
-                            return lEvaluateActions.Count;
+                            return mEvaluateActions.Count;
                         }
                     }
 
@@ -247,12 +320,23 @@ namespace kAI.Core
                     }
 
                     /// <summary>
+                    /// The type this a dictionary of properties for.
+                    /// </summary>
+                    public Type PropertyType
+                    {
+                        get
+                        {
+                            return typeof(T);
+                        }
+                    }
+
+                    /// <summary>
                     /// Create a new configuration dictionary. 
                     /// </summary>
                     public kAIReturnConfigurationDictionary()
                     {
-                        lEvaluateActions = new List<Action<kAINodeObject, T, T>>();
-                        lAdditionalPorts = new List<Func<kAIPort>>();
+                        mEvaluateActions = new List<Action<kAINodeObject, T, T>>();
+                        mAdditionalPorts = new List<Func<kAIPort>>();
                         mProperties = new List<string>();
                     }
 
@@ -263,7 +347,7 @@ namespace kAI.Core
                     /// <returns>A new instance of the port. </returns>
                     public kAIPort GetExternalPort(int lPropertyIndex)
                     {
-                        return lAdditionalPorts[lPropertyIndex]();
+                        return mAdditionalPorts[lPropertyIndex]();
                     }
 
                     /// <summary>
@@ -275,52 +359,40 @@ namespace kAI.Core
                     /// <param name="lPreviousResult">The result last time the function was invoked. </param>
                     public void RunCode(int lPropertyIndex, kAINodeObject lFunctionNode, object lResult, object lPreviousResult)
                     {
-                        lEvaluateActions[lPropertyIndex](lFunctionNode, (T)lResult, (T)lPreviousResult);
+                        mEvaluateActions[lPropertyIndex](lFunctionNode, (T)lResult, (T)lPreviousResult);
                     }
 
                     /// <summary>
-                    /// Add the default return properties to a specific property. 
+                    /// Add a property to this dictionary of properties. 
                     /// </summary>
-                    /// <typeparam name="U">The type we are creating. </typeparam>
-                    /// <param name="lCustom">The configuration dictionary we are creating. </param>
-                    static void AddDefaultConfigToCustom<U>(kAIReturnConfigurationDictionary<U> lCustom)
+                    /// <param name="lPropertyName">The (unqiue) name of the property. </param>
+                    /// <param name="lPortCreator">A function which creates any ports this property requires. </param>
+                    /// <param name="lAction">The action that should be performed when the function is evaluated. </param>
+                    public void AddProperty(string lPropertyName, Func<kAIPort> lPortCreator, Action<kAINodeObject, T, T> lAction)
                     {
-                        kAIDefaultReturnConfiguration lDefaultReturn = new kAIDefaultReturnConfiguration(typeof(U));
-
-                        int lDefaultPropertyIndex = 0;
-                        foreach (string lPropertyName in lDefaultReturn.PropertyNames)
-                        {
-                            Assert(null, lDefaultPropertyIndex < lDefaultReturn.PropertyCount);
-                            int lCapturedPropertyIndex = lDefaultPropertyIndex;
-                            lCustom.lAdditionalPorts.Add(() => { return lDefaultReturn.GetExternalPort(lCapturedPropertyIndex); });
-
-                            lCustom.lEvaluateActions.Add((lNodeObject, lResult, lPrevResult) =>
-                            {
-                                lDefaultReturn.RunCode(lCapturedPropertyIndex, lNodeObject, lResult, lPrevResult);
-                            });
-
-                            lCustom.mProperties.Add(lPropertyName);
-
-                            ++lDefaultPropertyIndex;
-                        }
+                        mAdditionalPorts.Add(lPortCreator);
+                        mEvaluateActions.Add(lAction);
+                        mProperties.Add(lPropertyName);
                     }
+                }
 
-                    /// <summary>
-                    /// Create the ReturnConfigurationDictionary for type boolean.
-                    /// </summary>
-                    public static void AddBooleanConfiguration()
+                /// <summary>
+                /// The dictionary of return configurations for each type. 
+                /// </summary>
+                static Dictionary<string, kAIIReturnConfigurationDictionary> sReturnConfigs;
+
+                class kAIBooleanConfiguration : kAIReturnConfigurationDictionary<bool>
+                {
+                    public kAIBooleanConfiguration()
                     {
-                        kAIReturnConfigurationDictionary<bool> lBoolReturnTypeConfigDictionary = new kAIReturnConfigurationDictionary<bool>();
-
-                        // We also add all the default settings to this.
-                        AddDefaultConfigToCustom<bool>(lBoolReturnTypeConfigDictionary);
+                        kAIReturnConfigurationDictionary.AddDefaultConfigToCustom<bool>(this);
 
 
                         // OnTrue Trigger
                         {
                             const string kPortID = "OnTrue";
                             Func<kAIPort> lOnTruePortCreate = () => { return new kAITriggerPort(kPortID, kAIPort.ePortDirection.PortDirection_Out); };
-                            lBoolReturnTypeConfigDictionary.lAdditionalPorts.Add(lOnTruePortCreate);
+                            
 
                             Action<kAINodeObject, bool, bool> lOnTrueAction = (lNodeObject, lResult, lOldResult) =>
                             {
@@ -331,17 +403,17 @@ namespace kAI.Core
                                 }
                             };
 
-                            lBoolReturnTypeConfigDictionary.lEvaluateActions.Add(lOnTrueAction);
-                            lBoolReturnTypeConfigDictionary.mProperties.Add("TriggerOnTrue");
+
+                            AddProperty("TriggerOnTrue", lOnTruePortCreate, lOnTrueAction);
                         }
 
                         // OnFalse Trigger
                         {
                             const string kPortID = "OnFalse";
                             Func<kAIPort> lOnFalse = () => { return new kAITriggerPort(kPortID, kAIPort.ePortDirection.PortDirection_Out); };
-                            lBoolReturnTypeConfigDictionary.lAdditionalPorts.Add(lOnFalse);
+                            
 
-                            Action<kAINodeObject, bool, bool> lOnFalseACtion = (lNodeObject, lResult, lOldResult) =>
+                            Action<kAINodeObject, bool, bool> lOnFalseAction = (lNodeObject, lResult, lOldResult) =>
                             {
                                 if (!lResult)
                                 {
@@ -350,15 +422,14 @@ namespace kAI.Core
                                 }
                             };
 
-                            lBoolReturnTypeConfigDictionary.lEvaluateActions.Add(lOnFalseACtion);
-                            lBoolReturnTypeConfigDictionary.mProperties.Add("TriggerOnFalse");
+
+                            AddProperty("TriggerOnFalse", lOnFalse, lOnFalseAction);
                         }
 
                         // OnBecomeTrue Trigger
                         {
                             const string kPortID = "OnBecomeTrue";
                             Func<kAIPort> lOnTruePortCreate = () => { return new kAITriggerPort(kPortID, kAIPort.ePortDirection.PortDirection_Out); };
-                            lBoolReturnTypeConfigDictionary.lAdditionalPorts.Add(lOnTruePortCreate);
 
                             Action<kAINodeObject, bool, bool> lOnTrueAction = (lNodeObject, lResult, lOldResult) =>
                             {
@@ -369,17 +440,16 @@ namespace kAI.Core
                                 }
                             };
 
-                            lBoolReturnTypeConfigDictionary.lEvaluateActions.Add(lOnTrueAction);
-                            lBoolReturnTypeConfigDictionary.mProperties.Add("TriggerOnBecomeTrue");
+                            
+                            AddProperty("TriggerOnBecomeTrue", lOnTruePortCreate, lOnTrueAction);
                         }
 
                         // OnBecomeFalse Trigger
                         {
                             const string kPortID = "OnBecomeFalse";
                             Func<kAIPort> lOnFalse = () => { return new kAITriggerPort(kPortID, kAIPort.ePortDirection.PortDirection_Out); };
-                            lBoolReturnTypeConfigDictionary.lAdditionalPorts.Add(lOnFalse);
 
-                            Action<kAINodeObject, bool, bool> lOnFalseACtion = (lNodeObject, lResult, lOldResult) =>
+                            Action<kAINodeObject, bool, bool> lOnFalseAction = (lNodeObject, lResult, lOldResult) =>
                             {
                                 if (!lResult && lOldResult)
                                 {
@@ -388,19 +458,12 @@ namespace kAI.Core
                                 }
                             };
 
-                            lBoolReturnTypeConfigDictionary.lEvaluateActions.Add(lOnFalseACtion);
-                            lBoolReturnTypeConfigDictionary.mProperties.Add("TriggerOnBecomeFalse");
+                            AddProperty("TriggerOnBecomeFalse", lOnFalse, lOnFalseAction);
                         }
 
-                        sReturnConfigs.Add(typeof(bool).ToString(), lBoolReturnTypeConfigDictionary);
+                        kAIReturnConfigurationDictionary.AddDefaultConfigToCustom<bool>(this);
                     }
-
                 }
-
-                /// <summary>
-                /// The dictionary of return configurations for each type. 
-                /// </summary>
-                static Dictionary<string, kAIIReturnConfigurationDictionary> sReturnConfigs;
             }
         }
     }

@@ -30,12 +30,31 @@ public class ShootTarget : CodeBehaviourTester {
     {
         GetComponent<MoveTo>().GiveOrder(target.transform.position);
     }
-	
+	 
 	// Update is called once per frame
 	void Update () 
 	{
         UpdateBehaviour();
 	}
+}
+
+public class Vector3Propertes : kAIFunctionNode.kAIFunctionConfiguration.kAIReturnConfiguration.kAIReturnConfigurationDictionary<Vector3>
+{
+
+
+    public Vector3Propertes()
+    {
+        kAIFunctionNode.kAIFunctionConfiguration.kAIReturnConfiguration.kAIReturnConfigurationDictionary.AddDefaultConfigToCustom<Vector3>(this);
+
+        Func<kAIPort> lTestFunction = ()=>{return new kAITriggerPort("IsNormal", kAIPort.ePortDirection.PortDirection_Out);};
+
+        Action<kAINodeObject, Vector3, Vector3> lTestACtion = (lObject, lResult, lOldResult) => { kAIObject.LogMessage(null, "Hi");  if (lResult.magnitude == 1.0f) { ((kAITriggerPort)lObject.GetPort("IsNormal")).Trigger(); } };
+
+
+        AddProperty("TestProperty", lTestFunction, lTestACtion);
+
+        
+    }
 }
 
 public class ShootTargetBehaviour : kAICodeBehaviour

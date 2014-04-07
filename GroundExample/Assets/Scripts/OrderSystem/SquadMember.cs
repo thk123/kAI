@@ -6,7 +6,7 @@ using kAI.Core;
 
 [RequireComponent(typeof(AIBehaviour))]
 public class SquadMember : MonoBehaviour {
-
+    
     kAIDataPort<IndividualOrder> orderPort;
 
     int count = 0;

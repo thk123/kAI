@@ -447,6 +447,16 @@ namespace kAI.Editor.Core
                         NodeObjects.Add(lSerialObject.GetFriendlyName(), lSerialObject);
                     }
                 }
+                else if (typeof(kAIFunctionNode.kAIFunctionConfiguration.kAIReturnConfiguration.kAIIReturnConfigurationDictionary).IsAssignableFrom(lType))
+                {
+                    kAIFunctionNode.kAIFunctionConfiguration.kAIReturnConfiguration.kAIIReturnConfigurationDictionary lDictionary;
+                    ConstructorInfo lConstructor = lType.GetConstructor(Type.EmptyTypes);
+                    if(lConstructor != null)
+                    {
+                        lDictionary =(kAIFunctionNode.kAIFunctionConfiguration.kAIReturnConfiguration.kAIIReturnConfigurationDictionary)lConstructor.Invoke(null);
+                        kAIFunctionNode.kAIFunctionConfiguration.kAIReturnConfiguration.kAIReturnConfigurationDictionary.AddDictionary(lDictionary);
+                    }
+                }
             }
 
             return lAssembly;
