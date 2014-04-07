@@ -71,6 +71,8 @@ namespace kAI.Editor.Controls.WinForms
             ClearGenericsBox();
             ClearReturnsBox();
 
+            mFirstParamSelf.Enabled = true;
+
             mSelectedMethod = lMethod;
             try
             {

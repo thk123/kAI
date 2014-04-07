@@ -118,6 +118,7 @@
             // mFirstParamSelf
             // 
             this.mFirstParamSelf.AutoSize = true;
+            this.mFirstParamSelf.Enabled = false;
             this.mFirstParamSelf.Location = new System.Drawing.Point(19, 315);
             this.mFirstParamSelf.Name = "mFirstParamSelf";
             this.mFirstParamSelf.Size = new System.Drawing.Size(128, 17);
