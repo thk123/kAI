@@ -246,25 +246,27 @@ namespace kAI.Editor.Controls.WinForms
 
         public override void OnClick(DebugControl control, kAIBehaviourEditorWindow editor)
         {
-            DebugTreeNode parentNode = this;
-            BehaviourEntryNode lRootNode = null;
-            Stack<kAINodeID> lNodes = new Stack<kAINodeID>();
-            do 
+            if (mIsXmlNode)
             {
-                NodeEntryNode lCurrentNode = (NodeEntryNode)parentNode;
-                lNodes.Push(lCurrentNode.mInfo.NodeID);
-                lRootNode = parentNode.Parent as BehaviourEntryNode;
-                parentNode = parentNode.Parent as NodeEntryNode;
-            } while (lRootNode == null);
+                DebugTreeNode parentNode = this;
+                BehaviourEntryNode lRootNode = null;
+                Stack<kAINodeID> lNodes = new Stack<kAINodeID>();
+                do
+                {
+                    NodeEntryNode lCurrentNode = (NodeEntryNode)parentNode;
+                    lNodes.Push(lCurrentNode.mInfo.NodeID);
+                    lRootNode = parentNode.Parent as BehaviourEntryNode;
+                    parentNode = parentNode.Parent as NodeEntryNode;
+                } while (lRootNode == null);
 
-            control.SetSelectedDebugInfo(lRootNode.Entry);
+                control.SetSelectedDebugInfo(lRootNode.Entry);
 
-            foreach (kAINodeID lNodeId in lNodes)
-            {
-                control.PushChildNode(lNodeId);
+                foreach (kAINodeID lNodeId in lNodes)
+                {
+                    control.PushChildNode(lNodeId);
+                }
+
             }
-
-            
         }
 
         internal void AddChildren(kAIDebugger lDebugger)
