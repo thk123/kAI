@@ -56,7 +56,7 @@ namespace kAI.Core
             Assert(mOwningBehaviourSet, "A port has not been told what XML behaviour it belongs to: " + PortID.ToString());
             if (!CheckState())
             {
-                throw new Exception("Currently releasing a port, cannot trigger more" + ToString());
+                throw new TriggeredPortInReleasePhaseException(this);
             }
 
 
@@ -126,6 +126,28 @@ namespace kAI.Core
         public override Debug.kAIPortDebugInfo GenerateDebugInfo()
         {
             return new Debug.kAITriggerPortDebugInfo(mLastTrigger, this);
+        }
+    }
+
+    class TriggeredPortInReleasePhaseException : Exception
+    {
+        public kAIPort PortTriggered
+        {
+            get;
+            private set;
+        }
+
+        public TriggeredPortInReleasePhaseException(kAIPort lPortTriggered)
+        {
+            PortTriggered = lPortTriggered;
+        }
+
+        public override string Message
+        {
+            get
+            {
+                return "Cannot trigger port " + PortTriggered.FQPortID + " in the release phase as this causes non determinism.";
+            }
         }
     }
 }
