@@ -78,7 +78,7 @@ namespace kAI.Core
         /// </summary>
         /// <param name="lPortID">The ID of the port. </param>
         /// <param name="lLogger">Optionally, the logger the port should use. </param>
-        public kAIEnumerableDataPort(kAIPortID lPortID, kAIILogger lLogger)
+        public kAIEnumerableDataPort(kAIPortID lPortID, kAIILogger lLogger = null)
             :base(lPortID, typeof(T), lLogger)
         {
             mValues = new Dictionary<kAIFQPortID, T>();
