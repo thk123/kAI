@@ -17,8 +17,6 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kAI-Editor", "kAI-Editor\kAI-Editor.csproj", "{37A7E56B-CF8F-455D-9789-D6C614E04E4A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kAIPM_2", "kAIPM_2\kAIPM_2.csproj", "{852DB4D4-B3C9-4B28-90FA-F030F15E1963}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SpriteTextRenderer", "SpriteTextRenderer\SpriteTextRenderer\SpriteTextRenderer.csproj", "{1F50D114-1B5C-4822-B3AA-659A0B3CF62E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "kAIBehaviourLoadTest", "kAIBehaviourLoadTest\kAIBehaviourLoadTest.csproj", "{DAFA3AEE-5736-458C-837A-94C4D7AD1295}"
