@@ -48,7 +48,7 @@ public class Vector3Propertes : kAIFunctionNode.kAIFunctionConfiguration.kAIRetu
 
         Func<kAIPort> lTestFunction = ()=>{return new kAITriggerPort("IsNormal", kAIPort.ePortDirection.PortDirection_Out);};
 
-        Action<kAINodeObject, Vector3, Vector3> lTestACtion = (lObject, lResult, lOldResult) => { kAIObject.LogMessage(null, "Hi");  if (lResult.magnitude == 1.0f) { ((kAITriggerPort)lObject.GetPort("IsNormal")).Trigger(); } };
+        Action<kAINodeObject, Vector3, Vector3> lTestACtion = (lObject, lResult, lOldResult) => { if (lResult.magnitude == 1.0f) { ((kAITriggerPort)lObject.GetPort("IsNormal")).Trigger(); } };
 
 
         AddProperty("TestProperty", lTestFunction, lTestACtion);

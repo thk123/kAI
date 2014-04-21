@@ -582,7 +582,7 @@ namespace kAI.Core
                 {
                     kAIPort lExternalPort = lPortToAdd.CreateOppositePort();
 
-                    if(lExternalPort is kAITriggerPort)
+                    if (lExternalPort is kAITriggerPort)
                     {
                         kAITriggerPort lExternalTrigger = lExternalPort as kAITriggerPort;
                         // Trigger the internal port if our direction is in
@@ -602,7 +602,7 @@ namespace kAI.Core
                         }
                     }
                     else
-                   { 
+                    {
                         kAIDataPort lExternalDataPort = lExternalPort as kAIDataPort;
                         // we select the port which as an in direction as this is the one that will receive the data
                         kAIDataPort lOutPort;
@@ -689,10 +689,21 @@ namespace kAI.Core
                 {
                     kAINode lStartNode = mInternalNodes[lPortID.NodeID];
 
-                    Assert(lStartNode);
+                    if (lStartNode == null)
+                    {
+                        throw new Exception("Could not find node to have port on:" + lPortID.NodeID);
+                    }
 
                     // TODO: Need a method to just get a port from the dictionary
-                    return lStartNode.GetExternalPorts().First((lPort) => { return lPort.PortID == lPortID.PortID; });
+                    try
+                    {
+                        return lStartNode.GetExternalPorts().First((lPort) => { return lPort.PortID == lPortID.PortID; });
+                    }
+                    catch (InvalidOperationException)
+                    {
+                        throw new Exception("Could not find port: " + lPortID);
+                    }
+                    
                 }
                 else
                 {
@@ -727,35 +738,22 @@ namespace kAI.Core
         /// <returns>The behaviour, read for use. </returns>
         public static kAIXmlBehaviour LoadFromFile(FileInfo lPath, GetAssemblyByName lAssemblyGetter)
         {
-            XmlObjectSerializer lProjectDeserialiser = new DataContractSerializer(typeof(InternalXml), kAINode.NodeSerialTypes);
-            /*try
-            {*/
-                Stream lXmlStream = lPath.OpenRead();
-
-                InternalXml lXmlFile = (InternalXml)lProjectDeserialiser.ReadObject(lXmlStream);
-
-                Assert(null, lXmlFile);
-
-                lXmlStream.Close();
-
-                return new kAIXmlBehaviour(lXmlFile, lAssemblyGetter, lPath);
-            /*}
-            catch (System.UnauthorizedAccessException)
+            using (Stream lXmlStream = lPath.OpenRead())
             {
-                //TODO: Error - have you forgot to check the file out of source control?
+                return LoadFromStream(lXmlStream, lAssemblyGetter, lPath);
             }
-            catch (System.IO.DirectoryNotFoundException)
-            {
-                //TODO: Error - Directory not found, ensure file still exists
-            }
-            catch (System.IO.IOException)
-            {
-                // TODOO: Error - File is already open elsewhere. 
-            }
-
-            return null;*/
         }
 
+        static kAIXmlBehaviour LoadFromStream(Stream lSourceStream, GetAssemblyByName lAssemblyGetter, FileInfo lPath)
+        {
+            XmlObjectSerializer lProjectDeserialiser = new DataContractSerializer(typeof(InternalXml), kAINode.NodeSerialTypes);
+
+            InternalXml lXmlFile = (InternalXml)lProjectDeserialiser.ReadObject(lSourceStream);
+
+            Assert(null, lXmlFile);
+
+            return new kAIXmlBehaviour(lXmlFile, lAssemblyGetter, lPath);
+        }
         /// <summary>
         /// Load an XML Behaviour from a file. 
         /// </summary>
