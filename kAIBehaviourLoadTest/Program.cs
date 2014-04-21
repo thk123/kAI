@@ -6,16 +6,13 @@ using System.IO;
 using System.Reflection;
 
 using kAI.Core;
-
-using AssemblyCSharp;
-
 namespace kAIBehaviourLoadTest
 {
     class Program
     {
         static void Main(string[] args)
         {
-            TestBehaviour lForced = new TestBehaviour(null);
+            /*TestBehaviour lForced = new TestBehaviour(null);
 
             string XmlBehaviourPath = @"E:\dev\C#\kAI\kAI-Example\kAIBehaviours\BaseBehaviour.xml";
             kAIXmlBehaviour mXmlBehaviour;
@@ -23,7 +20,7 @@ namespace kAIBehaviourLoadTest
             FileInfo lFile = new FileInfo(XmlBehaviourPath);
             mXmlBehaviour = kAIXmlBehaviour.LoadFromFile(lFile, GetAssemblyByName);
 
-            kAIRelativeObject.AddPathID(mXmlBehaviour.XmlLocationID, lFile.Directory);
+            kAIRelativeObject.AddPathID(mXmlBehaviour.XmlLocationID, lFile.Directory);*/
         }
 
         public static Assembly GetAssemblyByName(string lAssemblyName)
