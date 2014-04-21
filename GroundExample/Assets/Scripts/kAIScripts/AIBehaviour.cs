@@ -22,7 +22,7 @@ public class AIBehaviour : MonoBehaviour, kAIILogger {
     {
         // add custom properties dictionaries
         Vector3Propertes x = new Vector3Propertes();
-        kAIFunctionNode.kAIFunctionConfiguration.kAIReturnConfiguration.kAIReturnConfigurationDictionary.AddDictionary(x, "he");
+        kAIFunctionNode.kAIFunctionConfiguration.kAIReturnConfiguration.kAIReturnConfigurationDictionary.AddDictionary(x);
     }
 
     void Awake()
@@ -31,7 +31,7 @@ public class AIBehaviour : MonoBehaviour, kAIILogger {
 
         if(XmlPath != null && XmlPath != string.Empty)
         {
-            FileInfo lFile = new FileInfo(XmlPath);
+            FileInfo lFile = new FileInfo(Application.dataPath + "/" + XmlPath);
             mXmlBehaviour = kAIXmlBehaviour.LoadFromFile(lFile, GetAssemblyByName);
         }
 

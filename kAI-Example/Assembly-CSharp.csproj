@@ -46,6 +46,7 @@
 	</Reference>
   </ItemGroup>
   <ItemGroup>
+     <Compile Include="Assets\CopyBehaviours.cs" />
      <Compile Include="Assets\FunctionTest.cs" />
      <Compile Include="Assets\SwordTip.cs" />
      <Compile Include="Assets\Unity Behaviours\AIController.cs" />
@@ -59,6 +60,7 @@
      <None Include="Assets\kAIBehaviours\AIRunAwayBehaviour.xml" />
      <None Include="Assets\kAIBehaviours\AITriggerBase.xml" />
      <None Include="Assets\kAIBehaviours\TestFunctionBehaviour.xml" />
+     <None Include="Assets\kAIBehaviours\HandleSwordBehaviour.xml" />
      <None Include="Assets\kAIBehaviours\SimpleAIBase.xml" />
      <None Include="Assets\kAIBehaviours\AIIdleBehaviour.xml" />
      <None Include="Assets\kAIBehaviours\SubBehaviour.xml" />

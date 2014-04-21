@@ -74,35 +74,21 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
-        <NodeID>SwordSwingAction</NodeID>
+        <NodeID>AIIdleBehaviour</NodeID>
       </EndNodeID>
       <EndPortID>
         <PortID>Activate</PortID>
       </EndPortID>
       <StartNodeID>
-        <NodeID>IsGameObjectNear</NodeID>
+        <NodeID>InvalidNode</NodeID>
       </StartNodeID>
       <StartPortID>
-        <PortID>OnTrue</PortID>
+        <PortID>OnActivate</PortID>
       </StartPortID>
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
-        <NodeID>IsGameObjectNear</NodeID>
-      </EndNodeID>
-      <EndPortID>
-        <PortID>lDist</PortID>
-      </EndPortID>
-      <StartNodeID>
-        <NodeID>NearDistance</NodeID>
-      </StartNodeID>
-      <StartPortID>
-        <PortID>Value</PortID>
-      </StartPortID>
-    </kAIXmlBehaviour.InternalXml.SerialConnexion>
-    <kAIXmlBehaviour.InternalXml.SerialConnexion>
-      <EndNodeID>
-        <NodeID>AIIdleBehaviour</NodeID>
+        <NodeID>HandleSwordBehaviour</NodeID>
       </EndNodeID>
       <EndPortID>
         <PortID>Activate</PortID>
@@ -130,10 +116,10 @@
     </kAIXmlBehaviour.InternalXml.SerialConnexion>
     <kAIXmlBehaviour.InternalXml.SerialConnexion>
       <EndNodeID>
-        <NodeID>IsGameObjectNear</NodeID>
+        <NodeID>HandleSwordBehaviour</NodeID>
       </EndNodeID>
       <EndPortID>
-        <PortID>lOtherObject</PortID>
+        <PortID>Target</PortID>
       </EndPortID>
       <StartNodeID>
         <NodeID>InvalidNode</NodeID>
@@ -189,20 +175,6 @@
       <NodeSerialType>kAI.Core.kAIXmlBehaviour+SerialObject</NodeSerialType>
       <NodeType>kAI.Core.kAIXmlBehaviour</NodeType>
       <NodeTypeAssembly>kAICore</NodeTypeAssembly>
-    </kAIXmlBehaviour.InternalXml.SerialNode>
-    <kAIXmlBehaviour.InternalXml.SerialNode>
-      <NodeContents i:type="kAICodeBehaviour.SerialObject">
-        <BehaviourAssembly>Assembly-CSharp</BehaviourAssembly>
-        <BehaviourID>SwordSwingAction</BehaviourID>
-        <BehaviourType>SwordSwingAction</BehaviourType>
-      </NodeContents>
-      <NodeID>
-        <NodeID>SwordSwingAction</NodeID>
-      </NodeID>
-      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
-      <NodeSerialType>kAI.Core.kAICodeBehaviour+SerialObject</NodeSerialType>
-      <NodeType>SwordSwingAction</NodeType>
-      <NodeTypeAssembly>Assembly-CSharp</NodeTypeAssembly>
     </kAIXmlBehaviour.InternalXml.SerialNode>
     <kAIXmlBehaviour.InternalXml.SerialNode>
       <NodeContents i:type="kAIXmlBehaviour.SerialObject">
@@ -268,43 +240,21 @@
       <NodeTypeAssembly>kAICore</NodeTypeAssembly>
     </kAIXmlBehaviour.InternalXml.SerialNode>
     <kAIXmlBehaviour.InternalXml.SerialNode>
-      <NodeContents i:type="kAIFunctionNode.SerialObject">
-        <AssemblyName>Assembly-CSharp</AssemblyName>
-        <FunctionConfiguraion>
-          <GenericConfiguration />
-          <IsFirstParameterSelf>true</IsFirstParameterSelf>
-          <IsFunctionExecutable>false</IsFunctionExecutable>
-          <ReturnConfiguration>
-            <PropertyEnabled xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
-              <d7p1:boolean>false</d7p1:boolean>
-              <d7p1:boolean>true</d7p1:boolean>
-              <d7p1:boolean>false</d7p1:boolean>
-              <d7p1:boolean>false</d7p1:boolean>
-              <d7p1:boolean>false</d7p1:boolean>
-            </PropertyEnabled>
-          </ReturnConfiguration>
-        </FunctionConfiguraion>
-        <MethodName>IsGameObjectNear</MethodName>
-        <TypeName>SwordSwingAction</TypeName>
+      <NodeContents i:type="kAIXmlBehaviour.SerialObject">
+        <BehaviourID>
+          <BehaviourID>HandleSwordBehaviour</BehaviourID>
+        </BehaviourID>
+        <XmlBehaviourFile>
+          <Path>\HandleSwordBehaviour.xml</Path>
+          <RootID>Behaviour:SimpleAIBase</RootID>
+        </XmlBehaviourFile>
       </NodeContents>
       <NodeID>
-        <NodeID>IsGameObjectNear</NodeID>
+        <NodeID>HandleSwordBehaviour</NodeID>
       </NodeID>
       <NodeSerialAssembly>kAICore</NodeSerialAssembly>
-      <NodeSerialType>kAI.Core.kAIFunctionNode+SerialObject</NodeSerialType>
-      <NodeType>kAI.Core.kAIFunctionNode</NodeType>
-      <NodeTypeAssembly>kAICore</NodeTypeAssembly>
-    </kAIXmlBehaviour.InternalXml.SerialNode>
-    <kAIXmlBehaviour.InternalXml.SerialNode>
-      <NodeContents i:type="kAIConstantFloatNode.SerialObject">
-        <Value>5</Value>
-      </NodeContents>
-      <NodeID>
-        <NodeID>NearDistance</NodeID>
-      </NodeID>
-      <NodeSerialAssembly>kAICore</NodeSerialAssembly>
-      <NodeSerialType>kAI.Core.kAIConstantFloatNode+SerialObject</NodeSerialType>
-      <NodeType>kAI.Core.kAIConstantFloatNode</NodeType>
+      <NodeSerialType>kAI.Core.kAIXmlBehaviour+SerialObject</NodeSerialType>
+      <NodeType>kAI.Core.kAIXmlBehaviour</NodeType>
       <NodeTypeAssembly>kAICore</NodeTypeAssembly>
     </kAIXmlBehaviour.InternalXml.SerialNode>
   </InternalNodes>

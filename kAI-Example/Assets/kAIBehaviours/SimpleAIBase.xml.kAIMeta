@@ -12,15 +12,6 @@
     </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
     <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
       <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
-        <d4p1:NodeID>SwordSwingAction</d4p1:NodeID>
-      </Node>
-      <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
-        <d4p1:x>-83</d4p1:x>
-        <d4p1:y>261</d4p1:y>
-      </Position>
-    </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
-    <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
-      <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
         <d4p1:NodeID>AIRunAwayBehaviour</d4p1:NodeID>
       </Node>
       <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
@@ -48,20 +39,11 @@
     </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
     <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
       <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
-        <d4p1:NodeID>IsGameObjectNear</d4p1:NodeID>
+        <d4p1:NodeID>HandleSwordBehaviour</d4p1:NodeID>
       </Node>
       <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
-        <d4p1:x>-573</d4p1:x>
-        <d4p1:y>189</d4p1:y>
-      </Position>
-    </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
-    <kAIXmlBehaviourMetaSaveFile.kAINodePoint>
-      <Node xmlns:d4p1="http://schemas.datacontract.org/2004/07/kAI.Core">
-        <d4p1:NodeID>NearDistance</d4p1:NodeID>
-      </Node>
-      <Position xmlns:d4p1="http://schemas.datacontract.org/2004/07/System.Drawing">
-        <d4p1:x>-899</d4p1:x>
-        <d4p1:y>327</d4p1:y>
+        <d4p1:x>-420</d4p1:x>
+        <d4p1:y>115</d4p1:y>
       </Position>
     </kAIXmlBehaviourMetaSaveFile.kAINodePoint>
   </NodePositions>

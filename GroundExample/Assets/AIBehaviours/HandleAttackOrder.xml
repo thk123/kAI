@@ -214,6 +214,7 @@
               <d7p1:boolean>true</d7p1:boolean>
               <d7p1:boolean>false</d7p1:boolean>
               <d7p1:boolean>false</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
             </PropertyEnabled>
           </ReturnConfiguration>
         </FunctionConfiguraion>
@@ -256,6 +257,7 @@
           <ReturnConfiguration>
             <PropertyEnabled xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
               <d7p1:boolean>true</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
             </PropertyEnabled>
           </ReturnConfiguration>
         </FunctionConfiguraion>
@@ -299,6 +301,7 @@
           <ReturnConfiguration>
             <PropertyEnabled xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
               <d7p1:boolean>true</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
             </PropertyEnabled>
           </ReturnConfiguration>
         </FunctionConfiguraion>
@@ -328,6 +331,7 @@
           <ReturnConfiguration>
             <PropertyEnabled xmlns:d7p1="http://schemas.microsoft.com/2003/10/Serialization/Arrays">
               <d7p1:boolean>true</d7p1:boolean>
+              <d7p1:boolean>false</d7p1:boolean>
             </PropertyEnabled>
           </ReturnConfiguration>
         </FunctionConfiguraion>
