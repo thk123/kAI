@@ -1,0 +1,1023 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shfbBuild product="Sandcastle Help File Builder" version="1.9.6.0" projectFile="E:\dev\C#\kAI\kAI_Clean\kAIDocs\Sandcastle\kAI.shfbproj" started="4/30/2014 12:11:09 AM">
+<buildStep step="Initializing">
+Finding tools...
+Found Sandcastle tools in &#39;C:\Program Files (x86)\Sandcastle\&#39;
+</buildStep>
+<buildStep step="ClearWorkFolder">
+Clearing working folder...
+</buildStep>
+<buildStep step="ValidatingDocumentationSources">
+Validating and copying documentation source information
+Source: E:\dev\C#\kAI\kAI_Clean\kAI.sln
+    Found project &#39;E:\dev\C#\kAI\kAI_Clean\kAICore\kAICore.csproj&#39;
+    Found project &#39;E:\dev\C#\kAI\kAI_Clean\SpriteTextRenderer\SpriteTextRenderer\SpriteTextRenderer.csproj&#39;
+    Found project &#39;E:\dev\C#\kAI\kAI_Clean\ThreadMessaging\ThreadMessaging.csproj&#39;
+    Found project &#39;E:\dev\C#\kAI\kAI_Clean\FileMap\FileMap.csproj&#39;
+
+Parsing project files
+    Found assembly &#39;E:\dev\C#\kAI\kAI_Clean\kAICore\bin\Release\kAICore.dll&#39;
+    Found assembly &#39;E:\dev\C#\kAI\kAI_Clean\SpriteTextRenderer\SpriteTextRenderer\bin\x86\Release\SpriteTextRenderer.dll&#39;
+    Found assembly &#39;E:\dev\C#\kAI\kAI_Clean\ThreadMessaging\bin\Release\ThreadMessaging.dll&#39;
+    Found assembly &#39;E:\dev\C#\kAI\kAI_Clean\FileMap\bin\Release\Winterdom.IO.FileMap.dll&#39;
+
+References to include (excluding framework assemblies):
+    MiscUtil, Version=1.0.0.0, Culture=neutral, PublicKeyToken=d3c42c4bfacf7596, processorArchitecture=MSIL
+    SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86
+
+Copying XML comments files
+    E:\dev\C#\kAI\kAI_Clean\kAICore\bin\Release\kAICore.XML -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\kAICore.XML
+</buildStep>
+<buildStep step="GenerateSharedContent">
+Generating shared content files (en-US, English (United States))...
+    Last step completed in 00:00:00.0300
+</buildStep>
+<buildStep step="GenerateApiFilter">
+Generating API filter for MRefBuilder...
+    Last step completed in 00:00:00.0060
+</buildStep>
+<buildStep step="GenerateReflectionInfo">
+Generating reflection information...
+[C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe]
+C:\Windows\Microsoft.NET\Framework\v4.0.30319\Microsoft.Common.targets(1605,5): warning MSB3270: There was a mismatch between the processor architecture of the project being built &quot;MSIL&quot; and the processor architecture of the reference &quot;SlimDX, Version=4.0.13.43, Culture=neutral, PublicKeyToken=b1b0c32fd1ffe4f9, processorArchitecture=x86&quot;, &quot;AMD64&quot;. This mismatch may cause runtime failures. Please consider changing the targeted processor architecture of your project through the Configuration Manager so as to align the processor architectures between your project and references, or take a dependency on references with a processor architecture that matches the targeted processor architecture of your project. [E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\GenerateRefInfo.proj]
+  MRefBuilder (v2.7.2.0)
+  Copyright &#184; 2006-2012, Microsoft Corporation, All Rights Reserved
+  Info: Loaded 4 assemblies for reflection and 3 dependency assemblies.
+  Info: Wrote information on 6 namespaces, 134 types, and 723 members
+  XslTransform (v2.7.2.0)
+  Copyright &#184; 2006-2012, Microsoft Corporation, All Rights Reserved
+  Info: Applying XSL transformation &#39;C:\Program Files (x86)\Sandcastle\ProductionTransforms\MergeDuplicates.xsl&#39;.
+    Last step completed in 00:00:01.7331
+</buildStep>
+<buildStep step="GenerateNamespaceSummaries">
+Generating namespace summary information...
+    Last step completed in 00:00:00.0020
+</buildStep>
+<buildStep step="ApplyVisibilityProperties">
+Applying visibility properties to reflection information file
+    36 attribute nodes removed
+    0 explicit interface implementations removed
+    4 local and base class EII elements removed
+    Last step completed in 00:00:00.1260
+</buildStep>
+<buildStep step="TransformReflectionInfo">
+Transforming reflection output...
+[C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe]
+  XslTransform (v2.7.2.0)
+  Copyright &#184; 2006-2012, Microsoft Corporation, All Rights Reserved
+  Info: Applying XSL transformation &#39;C:\Program Files (x86)\Sandcastle\\ProductionTransforms\ApplyVSDocModel.xsl&#39;.
+  Info: Applying XSL transformation &#39;C:\Program Files (x86)\Sandcastle\ProductionTransforms\AddGuidFilenames.xsl&#39;.
+  XslTransform (v2.7.2.0)
+  Copyright &#184; 2006-2012, Microsoft Corporation, All Rights Reserved
+  Info: Applying XSL transformation &#39;C:\Program Files (x86)\Sandcastle\ProductionTransforms\ReflectionToManifest.xsl&#39;.
+    Last step completed in 00:00:01.1591
+</buildStep>
+<buildStep step="ModifyHelpTopicFilenames">
+Modifying help topic filenames in reflection information file
+    No changes required
+    Last step completed in 00:00:00.0730
+</buildStep>
+<buildStep step="CopyStandardContent">
+Copying standard help content...
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\adm.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\adm.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\adm_arch.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\adm_arch.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\adm_dev.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\adm_dev.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\adm_dev_arch.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\adm_dev_arch.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\alert_caution.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\alert_caution.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\alert_note.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\alert_note.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\alert_security.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\alert_security.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\arch.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\arch.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\big_adm.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\big_adm.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\big_arch.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\big_arch.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\big_dev.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\big_dev.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\big_kw.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\big_kw.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\box.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\box.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\Caution.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\Caution.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\CFW.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\CFW.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\collall.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\collall.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\collapse.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\collapse.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\collapse_all.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\collapse_all.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\copycode.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\copycode.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\copycodeHighlight.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\copycodeHighlight.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\dev.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\dev.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\dev_arch.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\dev_arch.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\dropdown.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\dropdown.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\dropdownHover.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\dropdownHover.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\drpdown.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\drpdown.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\drpdown_orange.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\drpdown_orange.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\drpdown_orange_up.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\drpdown_orange_up.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\drpup.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\drpup.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\exp.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\exp.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\expall.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\expall.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\expand_all.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\expand_all.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\filter1a.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\filter1a.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\filter1c.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\filter1c.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\footer.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\footer.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\gradient.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\gradient.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\greencheck.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\greencheck.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\greychck.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\greychck.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\header_prev_next.jpg -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\header_prev_next.jpg
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\header_sql_tutorial_blank.jpg -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\header_sql_tutorial_blank.jpg
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\header_sql_tutorial_logo.GIF -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\header_sql_tutorial_logo.GIF
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\kw.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\kw.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\kw_adm.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\kw_adm.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\kw_adm_arch.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\kw_adm_arch.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\kw_adm_dev.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\kw_adm_dev.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\kw_adm_dev_arch.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\kw_adm_dev_arch.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\kw_arch.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\kw_arch.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\kw_dev.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\kw_dev.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\kw_dev_arch.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\kw_dev_arch.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\LastChild.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\LastChild.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\load.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\load.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\load_hover.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\load_hover.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\note.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\note.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pencil.GIF -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\pencil.GIF
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\privclass.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\privclass.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\privdelegate.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\privdelegate.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\privenum.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\privenum.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\privenumeration.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\privenumeration.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\privevent.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\privevent.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\privextension.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\privextension.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\privfield.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\privfield.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\privinterface.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\privinterface.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\privmethod.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\privmethod.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\privproperty.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\privproperty.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\privstructure.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\privstructure.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protclass.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\protclass.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protdelegate.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\protdelegate.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protenum.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\protenum.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protenumeration.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\protenumeration.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protevent.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\protevent.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protextension.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\protextension.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protfield.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\protfield.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protinterface.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\protinterface.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protmethod.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\protmethod.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protoperator.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\protoperator.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protproperty.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\protproperty.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\protstructure.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\protstructure.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pubclass.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\pubclass.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pubdelegate.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\pubdelegate.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pubenum.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\pubenum.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pubenumeration.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\pubenumeration.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pubevent.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\pubevent.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pubextension.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\pubextension.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pubfield.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\pubfield.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pubinterface.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\pubinterface.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pubmethod.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\pubmethod.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\puboperator.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\puboperator.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pubproperty.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\pubproperty.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\pubstructure.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\pubstructure.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\requirements1a.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\requirements1a.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\requirements1c.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\requirements1c.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\save.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\save.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\save_hover.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\save_hover.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\security.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\security.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\seealso1a.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\seealso1a.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\seealso1c.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\seealso1c.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\slMobile.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\slMobile.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\static.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\static.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\icons\xna.gif -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\icons\xna.gif
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\scripts\CheckboxMenu.js -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\scripts\CheckboxMenu.js
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\scripts\CommonUtilities.js -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\scripts\CommonUtilities.js
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\scripts\Dropdown.js -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\scripts\Dropdown.js
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\scripts\EventUtilities.js -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\scripts\EventUtilities.js
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\scripts\script_feedBack.js -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\scripts\script_feedBack.js
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\scripts\script_manifold.js -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\scripts\script_manifold.js
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\scripts\SplitScreen.js -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\scripts\SplitScreen.js
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\styles\Presentation.css -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\styles\Presentation.css
+C:\Program Files (x86)\Sandcastle\\Presentation\VS2005\styles\Whidbey\Presentation.css -&gt; E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website\styles\Whidbey\Presentation.css
+    Last step completed in 00:00:00.0640
+</buildStep>
+<buildStep step="CopyAdditionalContent">
+Copying additional content files...
+No additional content to copy
+    Last step completed in 00:00:00.0000
+</buildStep>
+<buildStep step="MergeTablesOfContents">
+Merging conceptual and additional tables of contents...
+    Last step completed in 00:00:00.0000
+</buildStep>
+<buildStep step="GenerateIntermediateTableOfContents">
+Generating intermediate table of contents file...
+[C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe]
+  XslTransform (v2.7.2.0)
+  Copyright &#184; 2006-2012, Microsoft Corporation, All Rights Reserved
+  Info: Applying XSL transformation &#39;C:\Program Files (x86)\Sandcastle\\ProductionTransforms\CreateVSToc.xsl&#39;.
+Generating conceptual content intermediate TOC file...
+    Last step completed in 00:00:00.2760
+</buildStep>
+<buildStep step="CreateBuildAssemblerConfigs">
+Creating Sandcastle configuration files...
+    sandcastle.config
+    Last step completed in 00:00:00.0130
+</buildStep>
+<buildStep step="MergeCustomConfigs">
+Merging custom build component configurations
+E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\sandcastle.config
+    Last step completed in 00:00:00.0830
+</buildStep>
+<buildStep step="BuildReferenceTopics">
+Building reference help topics...
+[C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe]
+  BuildAssembler (v2.7.2.0)
+  Copyright &#184; 2006-2012, Microsoft Corporation, All Rights Reserved
+  Info: Loading configuration...
+  Info: Processing topics...
+  Warn: ShowMissingComponent: [M:kAI.Core.CoreUtil.GetAsFlags``1(``0)] Missing &lt;typeparam name=&quot;T&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.CoreUtil.HasFlag``1(``0,``0)] Missing &lt;typeparam name=&quot;T&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIBehaviourID.#ctor(System.String)] Missing &lt;param name=&quot;lBehaviourID&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIEnumerableDataPort.CreateEnumerablePort(System.Type,kAI.Core.kAIPortID)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIEnumerableDataPort.CreateEnumerablePort(System.Type,kAI.Core.kAIPortID)] Missing &lt;param name=&quot;lPortID&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIEnumerableDataPort`1.SetData(System.Object,kAI.Core.kAIPort)] Missing &lt;param name=&quot;lSender&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIFunctionNode.#ctor(System.Reflection.MethodInfo,kAI.Core.kAIFunctionNode.kAIFunctionConfiguration,kAI.Core.kAIILogger)] Missing &lt;param name=&quot;lConfig&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIFunctionNode.kAIFunctionConfiguration.kAIReturnConfiguration.#ctor(System.Type)] Missing &lt;param name=&quot;lReturnType&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIFunctionNode.kAIFunctionConfiguration.kAIReturnConfiguration.GetPropertyState(System.Int32)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIFunctionNode.kAIFunctionConfiguration.kAIReturnConfiguration.SerialObject.Instantiate(System.Type,kAI.Core.kAIXmlBehaviour.GetAssemblyByName)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIIBehaviourModifier.AddPort(kAI.Core.kAIPort)] Missing &lt;param name=&quot;lNewPort&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIIBehaviourModifier.Construct] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIIBehaviourModifier.RemovePort(kAI.Core.kAIPort)] Missing &lt;param name=&quot;lPortToRemove&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIIBehaviourModifier.SetBehaviourID(kAI.Core.kAIBehaviourID)] Missing &lt;param name=&quot;lBehaviourID&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIILogger.LogWarning(System.String,System.Collections.Generic.KeyValuePair{{System.String,System.Object}}[])] Missing &lt;param name=&quot;lDetails&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIINodeSerialObject.GetFriendlyName] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAINodeID.#ctor(System.String)] Missing &lt;param name=&quot;lNodeID&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAINodeObject.GetDataContractClass(kAI.Core.kAIXmlBehaviour)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAINodeObject.GetDataContractClass(kAI.Core.kAIXmlBehaviour)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAINodeObject.GetDataContractClass(kAI.Core.kAIXmlBehaviour)] Missing &lt;param name=&quot;lOwningBehaviour&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAINodeObject.GetDataContractType] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAINodeObject.GetDataContractType] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAINodeObject.GetNameTemplate] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAINodeObject.GetNameTemplate] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAINodeObject.Update(System.Single,System.Object)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAINodeObject.Update(System.Single,System.Object)] Missing &lt;param name=&quot;lDeltaTime&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAINodeObject.Update(System.Single,System.Object)] Missing &lt;param name=&quot;lUserData&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIPort.OnDisconnect(kAI.Core.kAIPort)] Missing &lt;param name=&quot;lOtherEnd&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIPort.OrderPorts``1(``0,``0,``0@,``0@)] Missing &lt;typeparam name=&quot;T&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIPortID.#ctor(System.String)] Missing &lt;param name=&quot;lPortID&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIXmlBehaviour.GetDataContractClass(kAI.Core.kAIXmlBehaviour)] Missing &lt;param name=&quot;lOwningBehaviour&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIXmlBehaviour.GetInternalPort(kAI.Core.kAIFQPortID)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIXmlBehaviour.ToString] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIXmlBehaviour.ToString] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [T:kAI.Core.kAIXmlBehaviour.GetAssemblyByName] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIXmlBehaviour.SerialObject.#ctor(kAI.Core.kAIXmlBehaviour,kAI.Core.kAIXmlBehaviour)] Missing &lt;param name=&quot;lOwningBehaviour&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:kAI.Core.kAIXmlBehaviour.SerialObject.ToString] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [T:kAI.Core.StaticConstraint.MethodDescription] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [N:kAI.Core.Debug] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [N:SpriteTextRenderer] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:SpriteTextRenderer.CoordinateType] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:SpriteTextRenderer.Helpers] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.Helpers.RectFromVectors(SlimDX.Vector2,SlimDX.Vector2)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.Helpers.RectFromVectors(SlimDX.Vector2,SlimDX.Vector2)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.Helpers.RectFromVectors(SlimDX.Vector2,SlimDX.Vector2)] Missing &lt;param name=&quot;Position&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.Helpers.RectFromVectors(SlimDX.Vector2,SlimDX.Vector2)] Missing &lt;param name=&quot;Size&quot;/&gt; documentation
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.Helpers.RectFromVectors(SlimDX.Vector2,SlimDX.Vector2)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.Helpers.RectFromVectors(SlimDX.Vector2,SlimDX.Vector2)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.Helpers.RectFromVectors(SlimDX.Vector2,SlimDX.Vector2)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.Helpers.RectFromVectors(SlimDX.Vector2,SlimDX.Vector2)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.Helpers.RectFromVectors(SlimDX.Vector2,SlimDX.Vector2)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.Helpers.RectFromVectors(SlimDX.Vector2,SlimDX.Vector2)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.Helpers.RectFromVectors(SlimDX.Vector2,SlimDX.Vector2)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.Helpers.RectFromVectors(SlimDX.Vector2,SlimDX.Vector2)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ShowMissingComponent: [T:SpriteTextRenderer.SpriteRenderer] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.#ctor(SlimDX.Direct3D11.Device,System.Int32)] Missing &lt;param name=&quot;device&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.#ctor(SlimDX.Direct3D11.Device,System.Int32)] Missing &lt;param name=&quot;BufferSize&quot;/&gt; documentation
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.#ctor(SlimDX.Direct3D11.Device,System.Int32)] Unknown reference link target &#39;T:SlimDX.Direct3D11.Device&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.#ctor(SlimDX.Direct3D11.Device,System.Int32)] Unknown reference link target &#39;T:SlimDX.Direct3D11.Device&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.#ctor(SlimDX.Direct3D11.Device,System.Int32)] Unknown reference link target &#39;T:SlimDX.Direct3D11.Device&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.#ctor(SlimDX.Direct3D11.Device,System.Int32)] Unknown reference link target &#39;T:SlimDX.Direct3D11.Device&#39;.
+  Warn: ShowMissingComponent: [P:SpriteTextRenderer.SpriteRenderer.AllowReorder] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.ClearReorderBuffer] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:SpriteTextRenderer.SpriteRenderer.Device] Missing &lt;summary&gt; documentation
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.SpriteRenderer.Device] Unknown reference link target &#39;T:SlimDX.Direct3D11.Device&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.SpriteRenderer.Device] Unknown reference link target &#39;T:SlimDX.Direct3D11.Device&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.SpriteRenderer.Device] Unknown reference link target &#39;T:SlimDX.Direct3D11.Device&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.SpriteRenderer.Device] Unknown reference link target &#39;T:SlimDX.Direct3D11.Device&#39;.
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;Texture&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;Position&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;Size&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;Color&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;CoordinateType&quot;/&gt; documentation
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Direct3D11.ShaderResourceView&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Direct3D11.ShaderResourceView&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Direct3D11.ShaderResourceView&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Direct3D11.ShaderResourceView&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;Texture&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;Position&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;Size&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;TexCoords&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;TexCoordsSize&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;Color&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;CoordinateType&quot;/&gt; documentation
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Direct3D11.ShaderResourceView&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Direct3D11.ShaderResourceView&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Direct3D11.ShaderResourceView&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Direct3D11.ShaderResourceView&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Vector2,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SpriteTextRenderer.CoordinateType)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;Texture&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;Position&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;Size&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;CoordinateType&quot;/&gt; documentation
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Direct3D11.ShaderResourceView&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Direct3D11.ShaderResourceView&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Direct3D11.ShaderResourceView&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Direct3D11.ShaderResourceView&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.SpriteRenderer.Draw(SlimDX.Direct3D11.ShaderResourceView,SlimDX.Vector2,SlimDX.Vector2,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.Flush] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:SpriteTextRenderer.SpriteRenderer.HandleBlendState] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:SpriteTextRenderer.SpriteRenderer.HandleDepthStencilState] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.SpriteRenderer.RefreshViewport] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:SpriteTextRenderer.SpriteRenderer.ScreenSize] Missing &lt;summary&gt; documentation
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.SpriteRenderer.ScreenSize] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.SpriteRenderer.ScreenSize] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.SpriteRenderer.ScreenSize] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.SpriteRenderer.ScreenSize] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.SpriteRenderer.ScreenSize] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ShowMissingComponent: [T:SpriteTextRenderer.StringMetrics] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:SpriteTextRenderer.StringMetrics.BottomRight] Missing &lt;summary&gt; documentation
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.StringMetrics.BottomRight] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.StringMetrics.BottomRight] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.StringMetrics.BottomRight] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.StringMetrics.BottomRight] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ShowMissingComponent: [P:SpriteTextRenderer.StringMetrics.FullRectSize] Missing &lt;summary&gt; documentation
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.StringMetrics.FullRectSize] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.StringMetrics.FullRectSize] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.StringMetrics.FullRectSize] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.StringMetrics.FullRectSize] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ShowMissingComponent: [P:SpriteTextRenderer.StringMetrics.FullRectTopLeft] Missing &lt;summary&gt; documentation
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.StringMetrics.FullRectTopLeft] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.StringMetrics.FullRectTopLeft] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.StringMetrics.FullRectTopLeft] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.StringMetrics.FullRectTopLeft] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.StringMetrics.Merge(SpriteTextRenderer.StringMetrics)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.StringMetrics.Merge(SpriteTextRenderer.StringMetrics)] Missing &lt;param name=&quot;second&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [P:SpriteTextRenderer.StringMetrics.OverhangBottom] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:SpriteTextRenderer.StringMetrics.OverhangLeft] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:SpriteTextRenderer.StringMetrics.OverhangRight] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:SpriteTextRenderer.StringMetrics.OverhangTop] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:SpriteTextRenderer.StringMetrics.Size] Missing &lt;summary&gt; documentation
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.StringMetrics.Size] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.StringMetrics.Size] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.StringMetrics.Size] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.StringMetrics.Size] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.StringMetrics.Size] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ShowMissingComponent: [P:SpriteTextRenderer.StringMetrics.TopLeft] Missing &lt;summary&gt; documentation
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.StringMetrics.TopLeft] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.StringMetrics.TopLeft] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.StringMetrics.TopLeft] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.StringMetrics.TopLeft] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [P:SpriteTextRenderer.StringMetrics.TopLeft] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ShowMissingComponent: [T:SpriteTextRenderer.TextAlignment] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:SpriteTextRenderer.TextBlockRenderer] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.#ctor(SpriteTextRenderer.SpriteRenderer,System.String,SlimDX.DirectWrite.FontWeight,SlimDX.DirectWrite.FontStyle,SlimDX.DirectWrite.FontStretch,System.Single)] Missing &lt;param name=&quot;Sprite&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.#ctor(SpriteTextRenderer.SpriteRenderer,System.String,SlimDX.DirectWrite.FontWeight,SlimDX.DirectWrite.FontStyle,SlimDX.DirectWrite.FontStretch,System.Single)] Missing &lt;param name=&quot;FontName&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.#ctor(SpriteTextRenderer.SpriteRenderer,System.String,SlimDX.DirectWrite.FontWeight,SlimDX.DirectWrite.FontStyle,SlimDX.DirectWrite.FontStretch,System.Single)] Missing &lt;param name=&quot;FontWeight&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.#ctor(SpriteTextRenderer.SpriteRenderer,System.String,SlimDX.DirectWrite.FontWeight,SlimDX.DirectWrite.FontStyle,SlimDX.DirectWrite.FontStretch,System.Single)] Missing &lt;param name=&quot;FontStyle&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.#ctor(SpriteTextRenderer.SpriteRenderer,System.String,SlimDX.DirectWrite.FontWeight,SlimDX.DirectWrite.FontStyle,SlimDX.DirectWrite.FontStretch,System.Single)] Missing &lt;param name=&quot;FontStretch&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.#ctor(SpriteTextRenderer.SpriteRenderer,System.String,SlimDX.DirectWrite.FontWeight,SlimDX.DirectWrite.FontStyle,SlimDX.DirectWrite.FontStretch,System.Single)] Missing &lt;param name=&quot;FontSize&quot;/&gt; documentation
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.#ctor(SpriteTextRenderer.SpriteRenderer,System.String,SlimDX.DirectWrite.FontWeight,SlimDX.DirectWrite.FontStyle,SlimDX.DirectWrite.FontStretch,System.Single)] Unknown reference link target &#39;T:SlimDX.DirectWrite.FontWeight&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.#ctor(SpriteTextRenderer.SpriteRenderer,System.String,SlimDX.DirectWrite.FontWeight,SlimDX.DirectWrite.FontStyle,SlimDX.DirectWrite.FontStretch,System.Single)] Unknown reference link target &#39;T:SlimDX.DirectWrite.FontStyle&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.#ctor(SpriteTextRenderer.SpriteRenderer,System.String,SlimDX.DirectWrite.FontWeight,SlimDX.DirectWrite.FontStyle,SlimDX.DirectWrite.FontStretch,System.Single)] Unknown reference link target &#39;T:SlimDX.DirectWrite.FontStretch&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.#ctor(SpriteTextRenderer.SpriteRenderer,System.String,SlimDX.DirectWrite.FontWeight,SlimDX.DirectWrite.FontStyle,SlimDX.DirectWrite.FontStretch,System.Single)] Unknown reference link target &#39;T:SlimDX.DirectWrite.FontWeight&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.#ctor(SpriteTextRenderer.SpriteRenderer,System.String,SlimDX.DirectWrite.FontWeight,SlimDX.DirectWrite.FontStyle,SlimDX.DirectWrite.FontStretch,System.Single)] Unknown reference link target &#39;T:SlimDX.DirectWrite.FontStyle&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.#ctor(SpriteTextRenderer.SpriteRenderer,System.String,SlimDX.DirectWrite.FontWeight,SlimDX.DirectWrite.FontStyle,SlimDX.DirectWrite.FontStretch,System.Single)] Unknown reference link target &#39;T:SlimDX.DirectWrite.FontStretch&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.#ctor(SpriteTextRenderer.SpriteRenderer,System.String,SlimDX.DirectWrite.FontWeight,SlimDX.DirectWrite.FontStyle,SlimDX.DirectWrite.FontStretch,System.Single)] Unknown reference link target &#39;T:SlimDX.DirectWrite.FontWeight&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.#ctor(SpriteTextRenderer.SpriteRenderer,System.String,SlimDX.DirectWrite.FontWeight,SlimDX.DirectWrite.FontStyle,SlimDX.DirectWrite.FontStretch,System.Single)] Unknown reference link target &#39;T:SlimDX.DirectWrite.FontStyle&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.#ctor(SpriteTextRenderer.SpriteRenderer,System.String,SlimDX.DirectWrite.FontWeight,SlimDX.DirectWrite.FontStyle,SlimDX.DirectWrite.FontStretch,System.Single)] Unknown reference link target &#39;T:SlimDX.DirectWrite.FontStretch&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.#ctor(SpriteTextRenderer.SpriteRenderer,System.String,SlimDX.DirectWrite.FontWeight,SlimDX.DirectWrite.FontStyle,SlimDX.DirectWrite.FontStretch,System.Single)] Unknown reference link target &#39;T:SlimDX.DirectWrite.FontWeight&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.#ctor(SpriteTextRenderer.SpriteRenderer,System.String,SlimDX.DirectWrite.FontWeight,SlimDX.DirectWrite.FontStyle,SlimDX.DirectWrite.FontStretch,System.Single)] Unknown reference link target &#39;T:SlimDX.DirectWrite.FontStyle&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.#ctor(SpriteTextRenderer.SpriteRenderer,System.String,SlimDX.DirectWrite.FontWeight,SlimDX.DirectWrite.FontStyle,SlimDX.DirectWrite.FontStretch,System.Single)] Unknown reference link target &#39;T:SlimDX.DirectWrite.FontStretch&#39;.
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,SlimDX.Color4)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,SlimDX.Color4)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,SlimDX.Color4)] Missing &lt;param name=&quot;text&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,SlimDX.Color4)] Missing &lt;param name=&quot;Position&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,SlimDX.Color4)] Missing &lt;param name=&quot;Color&quot;/&gt; documentation
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,SlimDX.Color4)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,SlimDX.Color4)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,SlimDX.Color4)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,SlimDX.Color4)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,SlimDX.Color4)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,SlimDX.Color4)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,SlimDX.Color4)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,SlimDX.Color4)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;text&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;Position&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;RealFontSize&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;Color&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;CoordinateType&quot;/&gt; documentation
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Vector2&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,SlimDX.Vector2,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,System.Drawing.RectangleF,SpriteTextRenderer.TextAlignment,SlimDX.Color4)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,System.Drawing.RectangleF,SpriteTextRenderer.TextAlignment,SlimDX.Color4)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,System.Drawing.RectangleF,SpriteTextRenderer.TextAlignment,SlimDX.Color4)] Missing &lt;param name=&quot;text&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,System.Drawing.RectangleF,SpriteTextRenderer.TextAlignment,SlimDX.Color4)] Missing &lt;param name=&quot;Rect&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,System.Drawing.RectangleF,SpriteTextRenderer.TextAlignment,SlimDX.Color4)] Missing &lt;param name=&quot;Align&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,System.Drawing.RectangleF,SpriteTextRenderer.TextAlignment,SlimDX.Color4)] Missing &lt;param name=&quot;Color&quot;/&gt; documentation
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,System.Drawing.RectangleF,SpriteTextRenderer.TextAlignment,SlimDX.Color4)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,System.Drawing.RectangleF,SpriteTextRenderer.TextAlignment,SlimDX.Color4)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,System.Drawing.RectangleF,SpriteTextRenderer.TextAlignment,SlimDX.Color4)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,System.Drawing.RectangleF,SpriteTextRenderer.TextAlignment,SlimDX.Color4)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,System.Drawing.RectangleF,SpriteTextRenderer.TextAlignment,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,System.Drawing.RectangleF,SpriteTextRenderer.TextAlignment,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,System.Drawing.RectangleF,SpriteTextRenderer.TextAlignment,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;text&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,System.Drawing.RectangleF,SpriteTextRenderer.TextAlignment,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;Rect&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,System.Drawing.RectangleF,SpriteTextRenderer.TextAlignment,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;Align&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,System.Drawing.RectangleF,SpriteTextRenderer.TextAlignment,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;RealFontSize&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,System.Drawing.RectangleF,SpriteTextRenderer.TextAlignment,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;Color&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,System.Drawing.RectangleF,SpriteTextRenderer.TextAlignment,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;CoordinateType&quot;/&gt; documentation
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,System.Drawing.RectangleF,SpriteTextRenderer.TextAlignment,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,System.Drawing.RectangleF,SpriteTextRenderer.TextAlignment,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,System.Drawing.RectangleF,SpriteTextRenderer.TextAlignment,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ResolveReferenceLinksComponent2: [M:SpriteTextRenderer.TextBlockRenderer.DrawString(System.String,System.Drawing.RectangleF,SpriteTextRenderer.TextAlignment,System.Single,SlimDX.Color4,SpriteTextRenderer.CoordinateType)] Unknown reference link target &#39;T:SlimDX.Color4&#39;.
+  Warn: ShowMissingComponent: [P:SpriteTextRenderer.TextBlockRenderer.FontSize] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.MeasureString(System.String)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.MeasureString(System.String)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.MeasureString(System.String)] Missing &lt;param name=&quot;text&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.MeasureString(System.String,System.Single,SpriteTextRenderer.CoordinateType)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.MeasureString(System.String,System.Single,SpriteTextRenderer.CoordinateType)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.MeasureString(System.String,System.Single,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;text&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.MeasureString(System.String,System.Single,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;RealFontSize&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:SpriteTextRenderer.TextBlockRenderer.MeasureString(System.String,System.Single,SpriteTextRenderer.CoordinateType)] Missing &lt;param name=&quot;CoordinateType&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [P:SpriteTextRenderer.TextBlockRenderer.PixCompatible] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [N:ThreadMessaging] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.ChannelDemultiplexer] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelDemultiplexer.#ctor(ThreadMessaging.IChannel[],System.Int32[],ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;channels&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelDemultiplexer.#ctor(ThreadMessaging.IChannel[],System.Int32[],ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;ids&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelDemultiplexer.#ctor(ThreadMessaging.IChannel[],System.Int32[],ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;input&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelDemultiplexer.#ctor(ThreadMessaging.IChannel[],System.Int32[],ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;autoStart&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelDemultiplexer.#ctor(ThreadMessaging.IChannel[],System.Int32[],ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;waitOnStop&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelDemultiplexer.Run] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.ChannelEventGateway] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelEventGateway.#ctor(ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;source&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelEventGateway.#ctor(ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;autoStart&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelEventGateway.#ctor(ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;waitOnStop&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [E:ThreadMessaging.ChannelEventGateway.MessageReceived] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelEventGateway.Run] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.ChannelFilter] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelFilter.#ctor(ThreadMessaging.IChannel,ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;source&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelFilter.#ctor(ThreadMessaging.IChannel,ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;target&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelFilter.#ctor(ThreadMessaging.IChannel,ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;autoStart&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelFilter.#ctor(ThreadMessaging.IChannel,ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;waitOnStop&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelFilter.LetPass(System.Object)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelFilter.LetPass(System.Object)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelFilter.LetPass(System.Object)] Missing &lt;param name=&quot;message&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelFilter.Run] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.ChannelForwarder] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelForwarder.#ctor(ThreadMessaging.IChannel,ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;source&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelForwarder.#ctor(ThreadMessaging.IChannel,ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;target&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelForwarder.#ctor(ThreadMessaging.IChannel,ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;autoStart&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelForwarder.#ctor(ThreadMessaging.IChannel,ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;waitOnStop&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelForwarder.#ctor(ThreadMessaging.IChannel,ThreadMessaging.IChannel,System.Int32,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;source&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelForwarder.#ctor(ThreadMessaging.IChannel,ThreadMessaging.IChannel,System.Int32,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;target&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelForwarder.#ctor(ThreadMessaging.IChannel,ThreadMessaging.IChannel,System.Int32,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;envelope&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelForwarder.#ctor(ThreadMessaging.IChannel,ThreadMessaging.IChannel,System.Int32,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;autoStart&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelForwarder.#ctor(ThreadMessaging.IChannel,ThreadMessaging.IChannel,System.Int32,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;waitOnStop&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelForwarder.Run] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.ChannelMultiplexer] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelMultiplexer.#ctor(ThreadMessaging.IChannel[],System.Int32[],ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;channels&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelMultiplexer.#ctor(ThreadMessaging.IChannel[],System.Int32[],ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;ids&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelMultiplexer.#ctor(ThreadMessaging.IChannel[],System.Int32[],ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;output&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelMultiplexer.#ctor(ThreadMessaging.IChannel[],System.Int32[],ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;autoStart&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ChannelMultiplexer.#ctor(ThreadMessaging.IChannel[],System.Int32[],ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;waitOnStop&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.DumpContainer] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.DumpContainer.Add(System.Object)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.DumpContainer.Add(System.Object)] Missing &lt;param name=&quot;item&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [P:ThreadMessaging.DumpContainer.Count] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.IBarrier] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.IBarrier.Barrier] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.IChannel] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.IChannel.Receive] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.IChannel.Receive] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.IChannel.Receive(System.TimeSpan)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.IChannel.Receive(System.TimeSpan)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.IChannel.Receive(System.TimeSpan)] Missing &lt;param name=&quot;timeout&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.IChannel.Send(System.Object)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.IChannel.Send(System.Object)] Missing &lt;param name=&quot;item&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.IChannel.Send(System.Object,System.TimeSpan)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.IChannel.Send(System.Object,System.TimeSpan)] Missing &lt;param name=&quot;item&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.IChannel.Send(System.Object,System.TimeSpan)] Missing &lt;param name=&quot;timeout&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.IMailBox] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:ThreadMessaging.IMailBox.Content] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.IReliability] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.IReliability.Dump] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:ThreadMessaging.IReliability.DumpContainer] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:ThreadMessaging.IReliability.IsDumped] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.IRendezVous] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.IRendezVous.RendezVous] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.IRunnable] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.IRunnable.ForceAbort] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.IRunnable.Start] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.IRunnable.Stop] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.ISemaphore] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ISemaphore.Acquire] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ISemaphore.Acquire(System.TimeSpan)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ISemaphore.Acquire(System.TimeSpan)] Missing &lt;param name=&quot;timeout&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ISemaphore.Release] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.MemoryMappedArray] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.#ctor(ThreadMessaging.MemoryMappedFileView,System.Int32,System.Int32,System.Boolean,System.Int32)] Missing &lt;param name=&quot;view&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.#ctor(ThreadMessaging.MemoryMappedFileView,System.Int32,System.Int32,System.Boolean,System.Int32)] Missing &lt;param name=&quot;length&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.#ctor(ThreadMessaging.MemoryMappedFileView,System.Int32,System.Int32,System.Boolean,System.Int32)] Missing &lt;param name=&quot;bytesPerEntry&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.#ctor(ThreadMessaging.MemoryMappedFileView,System.Int32,System.Int32,System.Boolean,System.Int32)] Missing &lt;param name=&quot;cooperative&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.#ctor(ThreadMessaging.MemoryMappedFileView,System.Int32,System.Int32,System.Boolean,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [P:ThreadMessaging.MemoryMappedArray.BytesPerEntry] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:ThreadMessaging.MemoryMappedArray.Item(System.Int32,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:ThreadMessaging.MemoryMappedArray.Length] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadByte(System.Int32,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadByte(System.Int32,System.Int32)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadByte(System.Int32,System.Int32)] Missing &lt;param name=&quot;index&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadByte(System.Int32,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadBytes(System.Byte[],System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadBytes(System.Byte[],System.Int32)] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadBytes(System.Byte[],System.Int32)] Missing &lt;param name=&quot;index&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadDeserialize(System.Int32,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadDeserialize(System.Int32,System.Int32)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadDeserialize(System.Int32,System.Int32)] Missing &lt;param name=&quot;index&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadDeserialize(System.Int32,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadInt16(System.Int32,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadInt16(System.Int32,System.Int32)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadInt16(System.Int32,System.Int32)] Missing &lt;param name=&quot;index&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadInt16(System.Int32,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadInt32(System.Int32,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadInt32(System.Int32,System.Int32)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadInt32(System.Int32,System.Int32)] Missing &lt;param name=&quot;index&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadInt32(System.Int32,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadInt64(System.Int32,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadInt64(System.Int32,System.Int32)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadInt64(System.Int32,System.Int32)] Missing &lt;param name=&quot;index&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.ReadInt64(System.Int32,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteByte(System.Byte,System.Int32,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteByte(System.Byte,System.Int32,System.Int32)] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteByte(System.Byte,System.Int32,System.Int32)] Missing &lt;param name=&quot;index&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteByte(System.Byte,System.Int32,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteBytes(System.Byte[],System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteBytes(System.Byte[],System.Int32)] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteBytes(System.Byte[],System.Int32)] Missing &lt;param name=&quot;index&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteInt16(System.Int16,System.Int32,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteInt16(System.Int16,System.Int32,System.Int32)] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteInt16(System.Int16,System.Int32,System.Int32)] Missing &lt;param name=&quot;index&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteInt16(System.Int16,System.Int32,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteInt32(System.Int32,System.Int32,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteInt32(System.Int32,System.Int32,System.Int32)] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteInt32(System.Int32,System.Int32,System.Int32)] Missing &lt;param name=&quot;index&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteInt32(System.Int32,System.Int32,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteInt64(System.Int64,System.Int32,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteInt64(System.Int64,System.Int32,System.Int32)] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteInt64(System.Int64,System.Int32,System.Int32)] Missing &lt;param name=&quot;index&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteInt64(System.Int64,System.Int32,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteSerialize(System.Object,System.Int32,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteSerialize(System.Object,System.Int32,System.Int32)] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteSerialize(System.Object,System.Int32,System.Int32)] Missing &lt;param name=&quot;index&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedArray.WriteSerialize(System.Object,System.Int32,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.MemoryMappedArrayFailedException] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.MemoryMappedFile] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFile.CreateFile(System.String,ThreadMessaging.MemoryMappedFile.FileAccess,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFile.CreateFile(System.String,ThreadMessaging.MemoryMappedFile.FileAccess,System.Int32)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFile.CreateFile(System.String,ThreadMessaging.MemoryMappedFile.FileAccess,System.Int32)] Missing &lt;param name=&quot;name&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFile.CreateFile(System.String,ThreadMessaging.MemoryMappedFile.FileAccess,System.Int32)] Missing &lt;param name=&quot;access&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFile.CreateFile(System.String,ThreadMessaging.MemoryMappedFile.FileAccess,System.Int32)] Missing &lt;param name=&quot;size&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFile.CreateView(System.Int32,System.Int32,ThreadMessaging.MemoryMappedFileView.ViewAccess)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFile.CreateView(System.Int32,System.Int32,ThreadMessaging.MemoryMappedFileView.ViewAccess)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFile.CreateView(System.Int32,System.Int32,ThreadMessaging.MemoryMappedFileView.ViewAccess)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFile.CreateView(System.Int32,System.Int32,ThreadMessaging.MemoryMappedFileView.ViewAccess)] Missing &lt;param name=&quot;size&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFile.CreateView(System.Int32,System.Int32,ThreadMessaging.MemoryMappedFileView.ViewAccess)] Missing &lt;param name=&quot;access&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.MemoryMappedFile.FileAccess] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.MemoryMappedFileView] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadByte(System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadByte(System.Int32)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadByte(System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadBytes(System.Byte[])] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadBytes(System.Byte[])] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadBytes(System.Byte[],System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadBytes(System.Byte[],System.Int32)] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadBytes(System.Byte[],System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadDeserialize] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadDeserialize] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadDeserialize(System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadDeserialize(System.Int32)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadDeserialize(System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadDeserialize(System.Int32,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadDeserialize(System.Int32,System.Int32)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadDeserialize(System.Int32,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadDeserialize(System.Int32,System.Int32)] Missing &lt;param name=&quot;length&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadInt16(System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadInt16(System.Int32)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadInt16(System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadInt32(System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadInt32(System.Int32)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadInt32(System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadInt64(System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadInt64(System.Int32)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadInt64(System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadStructure(System.Type)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadStructure(System.Type)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.ReadStructure(System.Type)] Missing &lt;param name=&quot;structureType&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [P:ThreadMessaging.MemoryMappedFileView.Size] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteByte(System.Byte,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteByte(System.Byte,System.Int32)] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteByte(System.Byte,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteBytes(System.Byte[])] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteBytes(System.Byte[])] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteBytes(System.Byte[],System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteBytes(System.Byte[],System.Int32)] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteBytes(System.Byte[],System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteInt16(System.Int16,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteInt16(System.Int16,System.Int32)] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteInt16(System.Int16,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteInt32(System.Int32,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteInt32(System.Int32,System.Int32)] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteInt32(System.Int32,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteInt64(System.Int64,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteInt64(System.Int64,System.Int32)] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteInt64(System.Int64,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteSerialize(System.Object)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteSerialize(System.Object)] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteSerialize(System.Object,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteSerialize(System.Object,System.Int32)] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteSerialize(System.Object,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteSerialize(System.Object,System.Int32,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteSerialize(System.Object,System.Int32,System.Int32)] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteSerialize(System.Object,System.Int32,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteSerialize(System.Object,System.Int32,System.Int32)] Missing &lt;param name=&quot;length&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteStructure(System.Object)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedFileView.WriteStructure(System.Object)] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.MemoryMappedFileView.ViewAccess] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.MemoryMappedQueue] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.#ctor(ThreadMessaging.MemoryMappedFileView,System.Int32,System.Int32,System.Boolean,System.Int32)] Missing &lt;param name=&quot;view&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.#ctor(ThreadMessaging.MemoryMappedFileView,System.Int32,System.Int32,System.Boolean,System.Int32)] Missing &lt;param name=&quot;length&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.#ctor(ThreadMessaging.MemoryMappedFileView,System.Int32,System.Int32,System.Boolean,System.Int32)] Missing &lt;param name=&quot;bytesPerEntry&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.#ctor(ThreadMessaging.MemoryMappedFileView,System.Int32,System.Int32,System.Boolean,System.Int32)] Missing &lt;param name=&quot;cooperative&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.#ctor(ThreadMessaging.MemoryMappedFileView,System.Int32,System.Int32,System.Boolean,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [P:ThreadMessaging.MemoryMappedQueue.BytesPerEntry] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.Dequeue] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.DumpClearAll] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.DumpClearAll] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.Enqueue] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:ThreadMessaging.MemoryMappedQueue.Item(System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:ThreadMessaging.MemoryMappedQueue.Length] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.ReadByte(System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.ReadByte(System.Int32)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.ReadByte(System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.ReadBytes(System.Byte[])] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.ReadBytes(System.Byte[])] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.ReadDeserialize(System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.ReadDeserialize(System.Int32)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.ReadDeserialize(System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.ReadInt16(System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.ReadInt16(System.Int32)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.ReadInt16(System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.ReadInt32(System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.ReadInt32(System.Int32)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.ReadInt32(System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.ReadInt64(System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.ReadInt64(System.Int32)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.ReadInt64(System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.RollbackDequeue] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.RollbackEnqueue] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.WriteByte(System.Byte,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.WriteByte(System.Byte,System.Int32)] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.WriteByte(System.Byte,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.WriteBytes(System.Byte[])] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.WriteBytes(System.Byte[])] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.WriteInt16(System.Int16,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.WriteInt16(System.Int16,System.Int32)] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.WriteInt16(System.Int16,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.WriteInt32(System.Int32,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.WriteInt32(System.Int32,System.Int32)] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.WriteInt32(System.Int32,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.WriteInt64(System.Int64,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.WriteInt64(System.Int64,System.Int32)] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.WriteInt64(System.Int64,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.WriteSerialize(System.Object,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.WriteSerialize(System.Object,System.Int32)] Missing &lt;param name=&quot;data&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MemoryMappedQueue.WriteSerialize(System.Object,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.MemoryMappingFailedException] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.MessageEnvelope] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [F:ThreadMessaging.MessageEnvelope.ID] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [F:ThreadMessaging.MessageEnvelope.Message] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.MessageReceivedEventArgs] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MessageReceivedEventArgs.#ctor(System.Object)] Missing &lt;param name=&quot;content&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [P:ThreadMessaging.MessageReceivedEventArgs.Content] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.MessageReceivedEventHandler] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.MultiRunnable] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MultiRunnable.ForceAbort] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [F:ThreadMessaging.MultiRunnable.running] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MultiRunnable.SetRunnables(ThreadMessaging.IRunnable[])] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MultiRunnable.SetRunnables(ThreadMessaging.IRunnable[])] Missing &lt;param name=&quot;runnables&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MultiRunnable.Start] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.MultiRunnable.Stop] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.ProcessChannel] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessChannel.#ctor(System.Int32,System.String,System.Int32)] Missing &lt;param name=&quot;size&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessChannel.#ctor(System.Int32,System.String,System.Int32)] Missing &lt;param name=&quot;name&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessChannel.#ctor(System.Int32,System.String,System.Int32)] Missing &lt;param name=&quot;maxBytesPerEntry&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessChannel.DumpStructure] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessChannel.Receive] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessChannel.Receive] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessChannel.Receive(System.TimeSpan)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessChannel.Receive(System.TimeSpan)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessChannel.Receive(System.TimeSpan)] Missing &lt;param name=&quot;timeout&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessChannel.Send(System.Object)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessChannel.Send(System.Object)] Missing &lt;param name=&quot;item&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessChannel.Send(System.Object,System.TimeSpan)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessChannel.Send(System.Object,System.TimeSpan)] Missing &lt;param name=&quot;item&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessChannel.Send(System.Object,System.TimeSpan)] Missing &lt;param name=&quot;timeout&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.ProcessMailBox] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessMailBox.#ctor(System.String,System.Int32)] Missing &lt;param name=&quot;name&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessMailBox.#ctor(System.String,System.Int32)] Missing &lt;param name=&quot;size&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [P:ThreadMessaging.ProcessMailBox.Content] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.ProcessReliability] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessReliability.Dump] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:ThreadMessaging.ProcessReliability.DumpContainer] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessReliability.DumpItem(System.Object)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessReliability.DumpItem(System.Object)] Missing &lt;param name=&quot;item&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessReliability.DumpItemSynchronized(System.Object)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessReliability.DumpItemSynchronized(System.Object)] Missing &lt;param name=&quot;item&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessReliability.DumpStructure] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:ThreadMessaging.ProcessReliability.DumpSyncRoot] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:ThreadMessaging.ProcessReliability.IsDumped] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.ProcessRendezVous] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessRendezVous.#ctor(System.String,System.String)] Missing &lt;param name=&quot;localName&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessRendezVous.#ctor(System.String,System.String)] Missing &lt;param name=&quot;remoteName&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessRendezVous.RendezVous] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.ProcessSemaphore] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessSemaphore.#ctor(System.String)] Missing &lt;param name=&quot;name&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessSemaphore.#ctor(System.String,System.Int32)] Missing &lt;param name=&quot;name&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessSemaphore.#ctor(System.String,System.Int32)] Missing &lt;param name=&quot;initial&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessSemaphore.#ctor(System.String,System.Int32,System.Int32)] Missing &lt;param name=&quot;name&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessSemaphore.#ctor(System.String,System.Int32,System.Int32)] Missing &lt;param name=&quot;initial&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessSemaphore.#ctor(System.String,System.Int32,System.Int32)] Missing &lt;param name=&quot;max&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessSemaphore.#ctor(System.String,System.Int32,System.Int32,System.Int32)] Missing &lt;param name=&quot;name&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessSemaphore.#ctor(System.String,System.Int32,System.Int32,System.Int32)] Missing &lt;param name=&quot;initial&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessSemaphore.#ctor(System.String,System.Int32,System.Int32,System.Int32)] Missing &lt;param name=&quot;max&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessSemaphore.#ctor(System.String,System.Int32,System.Int32,System.Int32)] Missing &lt;param name=&quot;interruptReactionTime&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessSemaphore.Acquire] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessSemaphore.Acquire(System.TimeSpan)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessSemaphore.Acquire(System.TimeSpan)] Missing &lt;param name=&quot;timeout&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ProcessSemaphore.Release] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.SemaphoreFailedException] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.SemaphoreLimitReachedException] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.SingleRunnable] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.SingleRunnable.#ctor(System.Boolean,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;interruptOnStop&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.SingleRunnable.#ctor(System.Boolean,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;autoStart&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.SingleRunnable.#ctor(System.Boolean,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;waitOnStop&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.SingleRunnable.ForceAbort] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.SingleRunnable.Run] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [F:ThreadMessaging.SingleRunnable.running] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.SingleRunnable.Start] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.SingleRunnable.Stop] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.ThreadBarrier] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadBarrier.#ctor(System.Int32)] Missing &lt;param name=&quot;count&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadBarrier.Barrier] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.ThreadChannel] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadChannel.#ctor(System.Int32)] Missing &lt;param name=&quot;size&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadChannel.DumpStructure] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadChannel.Receive] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadChannel.Receive] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadChannel.Receive(System.TimeSpan)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadChannel.Receive(System.TimeSpan)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadChannel.Receive(System.TimeSpan)] Missing &lt;param name=&quot;timeout&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadChannel.Send(System.Object)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadChannel.Send(System.Object)] Missing &lt;param name=&quot;item&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadChannel.Send(System.Object,System.TimeSpan)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadChannel.Send(System.Object,System.TimeSpan)] Missing &lt;param name=&quot;item&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadChannel.Send(System.Object,System.TimeSpan)] Missing &lt;param name=&quot;timeout&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.ThreadMailBox] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:ThreadMessaging.ThreadMailBox.Content] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.ThreadReliability] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadReliability.Dump] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:ThreadMessaging.ThreadReliability.DumpContainer] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadReliability.DumpItem(System.Object)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadReliability.DumpItem(System.Object)] Missing &lt;param name=&quot;item&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadReliability.DumpItemSynchronized(System.Object)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadReliability.DumpItemSynchronized(System.Object)] Missing &lt;param name=&quot;item&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadReliability.DumpStructure] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:ThreadMessaging.ThreadReliability.DumpSyncRoot] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:ThreadMessaging.ThreadReliability.IsDumped] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.ThreadRendezVous] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadRendezVous.RendezVous] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.ThreadSemaphore] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadSemaphore.#ctor(System.Int32)] Missing &lt;param name=&quot;initial&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadSemaphore.#ctor(System.Int32,System.Int32)] Missing &lt;param name=&quot;initial&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadSemaphore.#ctor(System.Int32,System.Int32)] Missing &lt;param name=&quot;max&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadSemaphore.Acquire] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadSemaphore.Acquire(System.TimeSpan)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadSemaphore.Acquire(System.TimeSpan)] Missing &lt;param name=&quot;timeout&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.ThreadSemaphore.Release] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [N:ThreadMessaging.Server] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.Server.Daemon] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.Server.Daemon.#ctor(ThreadMessaging.IChannel,ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;requests&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.Server.Daemon.#ctor(ThreadMessaging.IChannel,ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;responses&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.Server.Daemon.#ctor(ThreadMessaging.IChannel,ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;autoStart&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.Server.Daemon.#ctor(ThreadMessaging.IChannel,ThreadMessaging.IChannel,System.Boolean,System.Boolean)] Missing &lt;param name=&quot;waitOnStop&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.Server.Daemon.Process(ThreadMessaging.Server.Request)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.Server.Daemon.Process(ThreadMessaging.Server.Request)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.Server.Daemon.Process(ThreadMessaging.Server.Request)] Missing &lt;param name=&quot;request&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [F:ThreadMessaging.Server.Daemon.requests] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [F:ThreadMessaging.Server.Daemon.responses] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.Server.Daemon.Run] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.Server.Request] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [F:ThreadMessaging.Server.Request.Body] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [F:ThreadMessaging.Server.Request.Client] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [F:ThreadMessaging.Server.Request.Session] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.Server.Response] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [F:ThreadMessaging.Server.Response.Body] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [F:ThreadMessaging.Server.Response.Client] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [F:ThreadMessaging.Server.Response.Session] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.Server.Session] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [F:ThreadMessaging.Server.Session.ID] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:ThreadMessaging.Server.Sessions] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.Server.Sessions.#ctor(System.TimeSpan)] Missing &lt;param name=&quot;timeout&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.Server.Sessions.CleanUp] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.Server.Sessions.Create] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.Server.Sessions.Create] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.Server.Sessions.Remove(ThreadMessaging.Server.Session)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.Server.Sessions.Remove(ThreadMessaging.Server.Session)] Missing &lt;param name=&quot;session&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.Server.Sessions.StartAutoCleanUp] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.Server.Sessions.StopAutoCleanUp] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.Server.Sessions.Touch(ThreadMessaging.Server.Session)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:ThreadMessaging.Server.Sessions.Touch(ThreadMessaging.Server.Session)] Missing &lt;param name=&quot;session&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [N:Winterdom.IO.FileMap] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:Winterdom.IO.FileMap.FileMapIOException] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.FileMapIOException.#ctor(System.Int32)] Missing &lt;param name=&quot;error&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.FileMapIOException.#ctor(System.String)] Missing &lt;param name=&quot;message&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.FileMapIOException.#ctor(System.String,System.Exception)] Missing &lt;param name=&quot;message&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.FileMapIOException.#ctor(System.String,System.Exception)] Missing &lt;param name=&quot;innerException&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [P:Winterdom.IO.FileMap.FileMapIOException.Message] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:Winterdom.IO.FileMap.FileMapIOException.Win32ErrorCode] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:Winterdom.IO.FileMap.MapAccess] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:Winterdom.IO.FileMap.MapProtection] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [T:Winterdom.IO.FileMap.MapViewStream] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:Winterdom.IO.FileMap.MapViewStream.CanRead] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:Winterdom.IO.FileMap.MapViewStream.CanSeek] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:Winterdom.IO.FileMap.MapViewStream.CanWrite] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MapViewStream.Close] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MapViewStream.Finalize] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MapViewStream.Flush] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:Winterdom.IO.FileMap.MapViewStream.Length] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:Winterdom.IO.FileMap.MapViewStream.Position] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MapViewStream.Read(System.Byte[],System.Int32,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MapViewStream.Read(System.Byte[],System.Int32,System.Int32)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MapViewStream.Read(System.Byte[],System.Int32,System.Int32)] Missing &lt;param name=&quot;buffer&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MapViewStream.Read(System.Byte[],System.Int32,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MapViewStream.Read(System.Byte[],System.Int32,System.Int32)] Missing &lt;param name=&quot;count&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MapViewStream.Seek(System.Int64,System.IO.SeekOrigin)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MapViewStream.Seek(System.Int64,System.IO.SeekOrigin)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MapViewStream.Seek(System.Int64,System.IO.SeekOrigin)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MapViewStream.Seek(System.Int64,System.IO.SeekOrigin)] Missing &lt;param name=&quot;origin&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MapViewStream.SetLength(System.Int64)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MapViewStream.SetLength(System.Int64)] Missing &lt;param name=&quot;value&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MapViewStream.Write(System.Byte[],System.Int32,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MapViewStream.Write(System.Byte[],System.Int32,System.Int32)] Missing &lt;param name=&quot;buffer&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MapViewStream.Write(System.Byte[],System.Int32,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MapViewStream.Write(System.Byte[],System.Int32,System.Int32)] Missing &lt;param name=&quot;count&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [T:Winterdom.IO.FileMap.MemoryMappedFile] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Close] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(System.String,Winterdom.IO.FileMap.MapProtection)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(System.String,Winterdom.IO.FileMap.MapProtection)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(System.String,Winterdom.IO.FileMap.MapProtection)] Missing &lt;param name=&quot;fileName&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(System.String,Winterdom.IO.FileMap.MapProtection)] Missing &lt;param name=&quot;protection&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(System.String,Winterdom.IO.FileMap.MapProtection,System.Int64)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(System.String,Winterdom.IO.FileMap.MapProtection,System.Int64)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(System.String,Winterdom.IO.FileMap.MapProtection,System.Int64)] Missing &lt;param name=&quot;fileName&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(System.String,Winterdom.IO.FileMap.MapProtection,System.Int64)] Missing &lt;param name=&quot;protection&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(System.String,Winterdom.IO.FileMap.MapProtection,System.Int64)] Missing &lt;param name=&quot;maxSize&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(System.String,Winterdom.IO.FileMap.MapProtection,System.Int64,System.String)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(System.String,Winterdom.IO.FileMap.MapProtection,System.Int64,System.String)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(System.String,Winterdom.IO.FileMap.MapProtection,System.Int64,System.String)] Missing &lt;param name=&quot;fileName&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(System.String,Winterdom.IO.FileMap.MapProtection,System.Int64,System.String)] Missing &lt;param name=&quot;protection&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(System.String,Winterdom.IO.FileMap.MapProtection,System.Int64,System.String)] Missing &lt;param name=&quot;maxSize&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(System.String,Winterdom.IO.FileMap.MapProtection,System.Int64,System.String)] Missing &lt;param name=&quot;name&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(Winterdom.IO.FileMap.MapProtection,System.Int64)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(Winterdom.IO.FileMap.MapProtection,System.Int64)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(Winterdom.IO.FileMap.MapProtection,System.Int64)] Missing &lt;param name=&quot;protection&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(Winterdom.IO.FileMap.MapProtection,System.Int64)] Missing &lt;param name=&quot;maxSize&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(Winterdom.IO.FileMap.MapProtection,System.Int64,System.String)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(Winterdom.IO.FileMap.MapProtection,System.Int64,System.String)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(Winterdom.IO.FileMap.MapProtection,System.Int64,System.String)] Missing &lt;param name=&quot;protection&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(Winterdom.IO.FileMap.MapProtection,System.Int64,System.String)] Missing &lt;param name=&quot;maxSize&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Create(Winterdom.IO.FileMap.MapProtection,System.Int64,System.String)] Missing &lt;param name=&quot;name&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Finalize] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [P:Winterdom.IO.FileMap.MemoryMappedFile.IsOpen] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.MapView(Winterdom.IO.FileMap.MapAccess,System.Int64,System.Int32)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.MapView(Winterdom.IO.FileMap.MapAccess,System.Int64,System.Int32)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.MapView(Winterdom.IO.FileMap.MapAccess,System.Int64,System.Int32)] Missing &lt;param name=&quot;access&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.MapView(Winterdom.IO.FileMap.MapAccess,System.Int64,System.Int32)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.MapView(Winterdom.IO.FileMap.MapAccess,System.Int64,System.Int32)] Missing &lt;param name=&quot;size&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.MapView(Winterdom.IO.FileMap.MapAccess,System.Int64,System.IntPtr)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.MapView(Winterdom.IO.FileMap.MapAccess,System.Int64,System.IntPtr)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.MapView(Winterdom.IO.FileMap.MapAccess,System.Int64,System.IntPtr)] Missing &lt;param name=&quot;access&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.MapView(Winterdom.IO.FileMap.MapAccess,System.Int64,System.IntPtr)] Missing &lt;param name=&quot;offset&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.MapView(Winterdom.IO.FileMap.MapAccess,System.Int64,System.IntPtr)] Missing &lt;param name=&quot;size&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Open(Winterdom.IO.FileMap.MapAccess,System.String)] Missing &lt;summary&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Open(Winterdom.IO.FileMap.MapAccess,System.String)] Missing &lt;returns&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Open(Winterdom.IO.FileMap.MapAccess,System.String)] Missing &lt;param name=&quot;access&quot;/&gt; documentation
+  Warn: ShowMissingComponent: [M:Winterdom.IO.FileMap.MemoryMappedFile.Open(Winterdom.IO.FileMap.MapAccess,System.String)] Missing &lt;param name=&quot;name&quot;/&gt; documentation
+  Info: Processed 1200 topics
+    Last step completed in 00:01:44.2130
+</buildStep>
+<buildStep step="CombiningIntermediateTocFiles">
+Combining conceptual and API intermediate TOC files...
+
+Clearing any prior web output
+    Last step completed in 00:00:00.1930
+</buildStep>
+<buildStep step="ExtractingHtmlInfo">
+Extracting HTML info for HTML Help 1 and/or website...
+[C:\Windows\Microsoft.NET\Framework\v4.0.30319\MSBuild.exe]
+Sandcastle Help File Builder, version 1.9.6.0
+Copyright &#184; 2006-2012, Eric Woodruff, All Rights Reserved
+E-Mail: Eric@EWoodruff.us
+
+Using LCID &#39;1033&#39;, code page &#39;65001&#39;, encoding charset &#39;UTF-8&#39;.
+
+Processing website files in E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\Output\Website
+Processed 1200 HTML files
+Sorting keywords and generating See Also indices
+Saving website keyword index to E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\WebKI.xml
+Saving website table of contents to E:\dev\C#\kAI\kAI_Clean\kAIDocs\html\Working\WebTOC.xml
+    Last step completed in 00:00:05.6443
+</buildStep>
+<buildStep step="GenerateHelpFormatTableOfContents">
+Generating website table of contents file...
+    Last step completed in 00:00:00.0000
+</buildStep>
+<buildStep step="GenerateFullTextIndex">
+Generating full-text index for the website...
+
+    Last step completed in 00:00:03.6742
+</buildStep>
+<buildStep step="CopyingWebsiteFiles">
+Copying website files to output folder...
+
+Copied 100 files
+Copied 200 files
+Copied 300 files
+Copied 400 files
+Copied 500 files
+Copied 600 files
+Copied 700 files
+Copied 800 files
+Copied 900 files
+Copied 1000 files
+Copied 1100 files
+Copied 1200 files
+Copied 1300 files
+Copied 1333 files for the website content
+    Last step completed in 00:00:00.7300
+</buildStep>
+<buildStep step="CleanIntermediates">
+Removing intermediate files...
+    Last step completed in 00:00:00.3930
+</buildStep>
+<buildStep step="Completed">
+
+Build completed successfully at 04/30/2014 12:13 AM.  Total time: 00:01:58.4748
+
+</buildStep>
+</shfbBuild>
