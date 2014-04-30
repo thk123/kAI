@@ -141,7 +141,16 @@ namespace kAI.Editor
 
         private void LoadBehaviour(kAIXmlBehaviour lBehaviour)
         {
-            CreateBehaviourEditorWindow();
+            try
+            {
+                CreateBehaviourEditorWindow();
+            }
+            catch (System.Exception ex)
+            {
+                GlobalServices.Logger.LogWarning("Could not load behaviour as could not initialise editor");
+                return;
+            }
+            
             mBehaviourEditor.LoadBehaviour(lBehaviour);
             SetEnabledSetControls(mBehaviourLoadedControls, true);
 

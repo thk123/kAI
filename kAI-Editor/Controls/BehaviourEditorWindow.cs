@@ -129,11 +129,20 @@ namespace kAI.Editor.Controls
         /// <param name="lContainer"></param>
         public void Init(Control lContainer)
         {
-            mEditorImpl.Init(lContainer, this);
+            try
+            {
+                mEditorImpl.Init(lContainer, this);
 
-            mEditorImpl.ObjectSelected += ObjectSelected;
+                mEditorImpl.ObjectSelected += ObjectSelected;
 
-            UnloadBehaviour();
+                UnloadBehaviour();
+            }
+            catch (System.Exception ex)
+            {
+                GlobalServices.Logger.LogError("Could not init editor: " + ex.Message);
+                throw ex;
+            }
+            
         }
 
         /// <summary>

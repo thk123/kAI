@@ -80,7 +80,7 @@
             this.ProjectProperties_TabControl.Location = new System.Drawing.Point(0, 0);
             this.ProjectProperties_TabControl.Name = "ProjectProperties_TabControl";
             this.ProjectProperties_TabControl.SelectedIndex = 0;
-            this.ProjectProperties_TabControl.Size = new System.Drawing.Size(969, 713);
+            this.ProjectProperties_TabControl.Size = new System.Drawing.Size(969, 483);
             this.ProjectProperties_TabControl.TabIndex = 0;
             // 
             // TabPage_General
@@ -97,7 +97,7 @@
             this.TabPage_General.Location = new System.Drawing.Point(4, 22);
             this.TabPage_General.Name = "TabPage_General";
             this.TabPage_General.Padding = new System.Windows.Forms.Padding(3);
-            this.TabPage_General.Size = new System.Drawing.Size(961, 687);
+            this.TabPage_General.Size = new System.Drawing.Size(961, 457);
             this.TabPage_General.TabIndex = 0;
             this.TabPage_General.Text = "General";
             this.TabPage_General.UseVisualStyleBackColor = true;
@@ -265,6 +265,7 @@
             // 
             this.mAllTypesList.Location = new System.Drawing.Point(18, 90);
             this.mAllTypesList.Name = "mAllTypesList";
+            this.mAllTypesList.SelectionMode = System.Windows.Forms.SelectionMode.One;
             this.mAllTypesList.Size = new System.Drawing.Size(294, 259);
             this.mAllTypesList.TabIndex = 8;
             // 
@@ -326,6 +327,7 @@
             // 
             this.mAllFunctionsList.Location = new System.Drawing.Point(18, 90);
             this.mAllFunctionsList.Name = "mAllFunctionsList";
+            this.mAllFunctionsList.SelectionMode = System.Windows.Forms.SelectionMode.One;
             this.mAllFunctionsList.Size = new System.Drawing.Size(294, 259);
             this.mAllFunctionsList.TabIndex = 13;
             // 
@@ -392,7 +394,7 @@
             // Cancel_Btn
             // 
             this.Cancel_Btn.DialogResult = System.Windows.Forms.DialogResult.Cancel;
-            this.Cancel_Btn.Location = new System.Drawing.Point(675, 719);
+            this.Cancel_Btn.Location = new System.Drawing.Point(683, 489);
             this.Cancel_Btn.Name = "Cancel_Btn";
             this.Cancel_Btn.Size = new System.Drawing.Size(138, 23);
             this.Cancel_Btn.TabIndex = 13;
@@ -401,7 +403,7 @@
             // 
             // Confirm_Btn
             // 
-            this.Confirm_Btn.Location = new System.Drawing.Point(819, 719);
+            this.Confirm_Btn.Location = new System.Drawing.Point(827, 489);
             this.Confirm_Btn.Name = "Confirm_Btn";
             this.Confirm_Btn.Size = new System.Drawing.Size(138, 23);
             this.Confirm_Btn.TabIndex = 12;
@@ -413,7 +415,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(969, 747);
+            this.ClientSize = new System.Drawing.Size(969, 529);
             this.Controls.Add(this.Cancel_Btn);
             this.Controls.Add(this.Confirm_Btn);
             this.Controls.Add(this.ProjectProperties_TabControl);
