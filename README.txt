@@ -139,9 +139,8 @@ of the existing ones.
 
 6. Browsing the documentation
 ------------------------------------------------------------------------------
-To browse the documentation, open index.html in a web browser. N.b. Chrome 
-does not support frame navigation, Firefox is the recommended browser for 
-viewing the documentation. 
+The documentation can be seen at http://thk123.github.com/kAI (courtesy of 
+github pages!)
 
 7. Running the example games
 ------------------------------------------------------------------------------
